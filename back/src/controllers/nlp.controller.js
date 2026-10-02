@@ -4,6 +4,7 @@ const Lesson = require("../models/Lesson");
 const natural = require("natural");
 const nlp = require("compromise");
 const transcriptionService = require('../services/transcription.service');
+const config = require('../config/env');
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
@@ -353,6 +354,6 @@ exports.whisperStatus = async (req, res) => {
         : '❌ Whisper non disponible — lancez Flask sur le port 5001'
     });
   } catch (error) {
-    res.status(500).json({ available: false, message: error.message });
+    res.status(500).json({ available: false, message: config.prodLike ? 'Server error' : error.message });
   }
 };

@@ -118,11 +118,11 @@ app.use((err, req, res, next) => {
       ? "File type not allowed"
       : err.message === "Not allowed by CORS"
         ? "Origin not allowed"
-        : config.isProd
+        : config.prodLike
           ? "Server error"
           : err.message;
 
-  if (!config.isProd) {
+  if (!config.prodLike) {
     console.error("❌ Erreur:", err.message);
   }
 

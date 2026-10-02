@@ -136,7 +136,8 @@ exports.login = async (req, res) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: error.message
+      // ✅ prod/preprod: never leak internals to the client
+      message: config.prodLike ? "Server error" : error.message
     });
   }
 };
@@ -204,7 +205,10 @@ exports.verifyOTP = async (req, res) => {
     });
   } catch (error) {
     console.error("verifyOTP error:", error);
-    res.status(500).json({ success: false, message: error.message });
+    res.status(500).json({
+      success: false,
+      message: config.prodLike ? "Server error" : error.message
+    });
   }
 };
 
@@ -355,6 +359,8 @@ exports.changePassword = async (req, res) => {
 
     res.json({ message: "Password changed successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("changePassword error:", error.message);
+    // ✅ prod/preprod: never leak internals to the client
+    res.status(500).json({ message: config.prodLike ? "Server error" : error.message });
   }
 };

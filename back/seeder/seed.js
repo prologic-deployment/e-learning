@@ -372,8 +372,8 @@ async function main() {
   log(COLORS.cyan, '🌱 E-LEARNING DATABASE SEEDER');
   console.log('═'.repeat(60));
 
-  if (config.isProd) {
-    log(COLORS.red, '\n🚫 REFUSING to seed: NODE_ENV=production.');
+  if (config.prodLike) {
+    log(COLORS.red, `\n🚫 REFUSING to seed: NODE_ENV=${config.nodeEnv} (production/pre-production).`);
     process.exit(1);
   }
 

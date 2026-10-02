@@ -4,6 +4,7 @@ const Enrollment = require("../models/Enrollment");
 const Purchase = require("../models/Purchase");
 const { invalidateCache } = require("../middlewares/cache.middleware");  
 const { notifyNewCourse } = require("../services/notification.service");
+const config = require("../config/env");
 
 // ================= CREATE COURSE =================
 exports.createCourse = async (req, res) => {
@@ -354,7 +355,7 @@ exports.restoreCourse = async (req, res) => {
   });
   res.status(200).json({ message: 'Cours restauré' });
   } catch (error) {
-  res.status(500).json({ message: error.message });
+  res.status(500).json({ message: config.prodLike ? 'Server error' : error.message });
   }
 };
 
@@ -367,6 +368,6 @@ exports.archiveCourse = async (req, res) => {
     });
     res.status(200).json({ message: 'Cours archivé' });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: config.prodLike ? 'Server error' : error.message });
   }
 };

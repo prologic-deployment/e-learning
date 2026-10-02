@@ -6,6 +6,13 @@ const crypto = require('crypto');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const isProd = NODE_ENV === 'production';
+// ✅ PRE-PRODUCTION: a staging tier that behaves like production (real
+// secrets required, generic error responses, seeder blocked) while still
+// allowing the login dev code on screen for UAT sign-off.
+const isPreProd = NODE_ENV === 'preprod' || NODE_ENV === 'staging';
+// ✅ Shared by every production-only behaviour so preprod cannot drift into
+// "accidentally development-like".
+const prodLike = isProd || isPreProd;
 
 function requireEnv(name, opts = {}) {
   const value = process.env[name];
@@ -34,7 +41,7 @@ function isPlaceholder(value) {
  */
 function resolveSecret(name, { minLength = 32 } = {}) {
   const value = process.env[name];
-  if (isProd) {
+  if (prodLike) {
     return requireEnv(name, {
       notPlaceholder: true,
       help: `In production ${name} is mandatory (min ${minLength} chars). Generate one with: node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`
@@ -54,6 +61,8 @@ function resolveSecret(name, { minLength = 32 } = {}) {
 const config = {
   nodeEnv: NODE_ENV,
   isProd,
+  isPreProd,
+  prodLike,
 
   port: Number(process.env.PORT) || 5000,
 
@@ -83,17 +92,18 @@ const config = {
   },
 
   // ✅ Testing aid: return the login OTP in the API response so manual testing
-  // works when real inboxes can't receive email. Opt-in via DEV_EXPOSE_OTP=true
-  // and NO LONGER hard-blocked in production — the OTP is the second factor for
-  // every account, so enabling it under NODE_ENV=production makes login
-  // single-factor. Kept flag-gated and warned about loudly at boot.
+  // works when real inboxes can't receive email. Opt-in via DEV_EXPOSE_OTP=true.
+  // Intended for development and preprod (where the dev code is part of the
+  // flow). Under NODE_ENV=production it still works when enabled, but the OTP
+  // is the second factor for every account, so it turns login single-factor —
+  // hence the loud boot warning.
   devExposeOtp: process.env.DEV_EXPOSE_OTP === 'true'
 };
 
 function validateEnv() {
-  if (isProd) {
+  if (prodLike) {
     requireEnv('MONGO_URI');
-    console.log('✅ Environment validation passed (production)');
+    console.log(`✅ Environment validation passed (${NODE_ENV})`);
   } else {
     if (!process.env.MONGO_URI) {
       console.warn('⚠️  MONGO_URI not set — using default mongodb://127.0.0.1:27017/elearning');
@@ -104,13 +114,20 @@ function validateEnv() {
     console.warn('⚠️  GEMINI_API_KEY not set — chatbot/NLP features will return errors');
   }
   if (config.devExposeOtp) {
-    console.warn('🚨 DEV_EXPOSE_OTP=true — every login response includes its OTP (dev code).');
-    if (isProd) {
+    if (isPreProd) {
       console.warn(
-        '🚨🚨 NODE_ENV=production + DEV_EXPOSE_OTP=true — TWO-FACTOR IS DISABLED: ' +
-        'anyone who knows a password can read the code from the API response. ' +
-        'Set DEV_EXPOSE_OTP=false before serving real traffic.'
+        '🔧 DEV_EXPOSE_OTP=true — pre-production: the login dev code is shown ' +
+        'on screen by design for UAT. Do not enable this on real traffic.'
       );
+    } else {
+      console.warn('🚨 DEV_EXPOSE_OTP=true — every login response includes its OTP (dev code).');
+      if (isProd) {
+        console.warn(
+          '🚨🚨 NODE_ENV=production + DEV_EXPOSE_OTP=true — TWO-FACTOR IS DISABLED: ' +
+          'anyone who knows a password can read the code from the API response. ' +
+          'Set DEV_EXPOSE_OTP=false before serving real traffic.'
+        );
+      }
     }
   }
   if (!process.env.EMAIL_HOST) {
