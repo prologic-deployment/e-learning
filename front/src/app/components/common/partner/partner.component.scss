@@ -1,0 +1,73 @@
+.partner-wrap-inner-box {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: {
+        left: 100px;
+        right: 100px;
+    };
+    &.color-with-lavender-blush {
+        background-color: transparent;
+        margin-top: 70px;
+        padding: 0;
+    }
+}
+.partner-wrap-card {
+    text-align: center;
+    margin-bottom: 25px;
+}
+.d-none {
+    &.d-block {
+        display: block !important;
+    }
+}
+
+/* Max width 767px */
+@media only screen and (max-width : 767px) {
+
+    .partner-wrap-inner-box {
+        padding: {
+            left: 15px;
+            right: 15px;
+        };
+        &.color-with-lavender-blush {
+            margin-top: 30px;
+        }
+    }
+
+}
+
+/* Min width 576px to Max width 767px */
+@media only screen and (min-width : 576px) and (max-width : 767px) {}
+
+/* Min width 768px to Max width 991px */
+@media only screen and (min-width : 768px) and (max-width : 991px) {
+
+    .partner-wrap-inner-box {
+        padding: {
+            left: 25px;
+            right: 25px;
+        };
+        &.color-with-lavender-blush {
+            margin-top: 50px;
+        }
+    }
+
+}
+
+/* Min width 992px to Max width 1199px */
+@media only screen and (min-width : 992px) and (max-width : 1199px) {
+
+    .partner-wrap-inner-box {
+        padding: {
+            left: 30px;
+            right: 30px;
+        };
+    }
+
+}
+
+/* Min width 1200px to Max width 1399px */
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {}
+
+/* Min width 1600px */
+@media only screen and (min-width: 1600px) {}

@@ -1,0 +1,168 @@
+<div class="dashboard-area ptb-100">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="d-flex align-items-center gap-3">
+          <div style="font-size: 40px;">🤖</div>
+          <div>
+            <h2 class="mb-1">AI Recommendations</h2>
+            <p class="text-muted mb-0">
+              Personalized courses based on your CV, history and ratings
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Profile Summary -->
+    <div *ngIf="userProfile" class="card p-4 mb-4 shadow-sm"
+      style="background: linear-gradient(135deg, #667eea15, #764ba215);
+        border-left: 4px solid #667eea;">
+      <h5 class="mb-3">👤 Your Profile Analysis</h5>
+      <div class="row">
+        <div class="col-md-4 mb-2" *ngIf="userProfile.skills?.length > 0">
+          <h6 class="text-primary">🛠️ CV Skills</h6>
+          <div>
+            <span *ngFor="let skill of userProfile.skills"
+              class="badge me-1 mb-1"
+              style="background: linear-gradient(135deg, #667eea, #764ba2);
+                padding: 6px 12px; border-radius: 20px;">
+              {{ skill }}
+            </span>
+          </div>
+        </div>
+        <div class="col-md-4 mb-2" *ngIf="userProfile.enrolled_categories?.length > 0">
+          <h6 class="text-success">📚 Enrolled Categories</h6>
+          <div>
+            <span *ngFor="let cat of userProfile.enrolled_categories"
+              class="badge me-1 mb-1 bg-success"
+              style="padding: 6px 12px; border-radius: 20px;">
+              {{ cat }}
+            </span>
+          </div>
+        </div>
+        <div class="col-md-4 mb-2" *ngIf="userProfile.five_star_subjects?.length > 0">
+          <h6 class="text-warning">⭐ 5★ Rated Categories</h6>
+          <div>
+            <span *ngFor="let sub of userProfile.five_star_subjects"
+              class="badge me-1 mb-1 bg-warning text-dark"
+              style="padding: 6px 12px; border-radius: 20px;">
+              {{ sub }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary mb-3"></div>
+      <p class="text-muted">🤖 AI is analyzing your profile...</p>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+    <div *ngIf="!loading && recommendations.length > 0"
+    class="courses-area pt-100"
+    style="background: linear-gradient(135deg, #f8f9ff, #fff);">
+    <div class="container">
+        <div class="section-title">
+        <span class="sub-title">✨ Powered by AI</span>
+        <h2>🤖 Recommended for You</h2>
+        <p>Personalized courses based on your CV skills and learning history</p>
+        </div>
+
+        <div class="row">
+        <div class="col-xl-3 col-lg-4 col-sm-6 col-md-6"
+            *ngFor="let course of recommendations; let i = index">
+            <div class="single-courses-box">
+
+            <!-- Image -->
+            <div class="image" style="cursor:pointer;"
+                [routerLink]="['/courses-details', course._id]">
+                <div [style.background]="getCourseColor(course.category)"
+                style="height: 200px; display:flex; align-items:center;
+                    justify-content:center; border-radius: 8px; position: relative;">
+                <div class="text-center text-white p-3">
+                    <div style="font-size: 50px;">{{ getCategoryIcon(course.category) }}</div>
+                    <h5 class="mt-2 text-white" style="font-size: 14px;">{{ course.title }}</h5>
+                </div>
+                <!-- Rank badge -->
+                <div style="position: absolute; top: 10px; left: 10px;
+                    background: rgba(255,255,255,0.9); border-radius: 20px;
+                    padding: 4px 10px; font-size: 12px; font-weight: 700;
+                    color: #667eea;">
+                    #{{ i + 1 }} Match
+                </div>
+                <!-- Score badge -->
+                <div style="position: absolute; top: 10px; right: 10px;
+                    background: rgba(255,255,255,0.9); border-radius: 20px;
+                    padding: 4px 10px; font-size: 12px; font-weight: 700;
+                    color: #43e97b;">
+                    {{ (course.scores.hybrid_score * 100).toFixed(0) }}% ✓
+                </div>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="content">
+                <span *ngIf="course.category" class="badge bg-primary mb-1"
+                style="font-size:11px;">
+                {{ getCategoryIcon(course.category) }} {{ course.category }}
+                </span>
+                <h3>
+                <a [routerLink]="['/courses-details', course._id]">
+                    {{ course.title }}
+                </a>
+                </h3>
+                <a class="author">{{ course.trainer }}</a>
+
+                <div class="price mt-2">
+                <span class="new-price text-success" *ngIf="course.price === 0">
+                    Free
+                </span>
+                <span class="new-price" *ngIf="course.price > 0">
+                    {{ course.price }} TND
+                </span>
+                </div>
+
+                <!-- AI Scores mini -->
+                <div class="mt-2">
+                <div class="d-flex gap-1 flex-wrap">
+                    <small class="badge"
+                    style="background: #667eea20; color: #667eea; font-size: 10px;">
+                    🛠️ CV {{ (course.scores.cv_score * 100).toFixed(0) }}%
+                    </small>
+                    <small class="badge"
+                    style="background: #43e97b20; color: #43e97b; font-size: 10px;">
+                    📚 Cat {{ (course.scores.category_score * 100).toFixed(0) }}%
+                    </small>
+                    <small class="badge"
+                    style="background: #f5a62320; color: #f5a623; font-size: 10px;">
+                    🔥 Pop {{ (course.scores.popularity_score * 100).toFixed(0) }}%
+                    </small>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- No recommendations -->
+    <div *ngIf="!loading && recommendations.length === 0"
+      class="text-center py-5">
+      <div style="font-size: 60px;">🤖</div>
+      <h4 class="mt-3">Complete your profile for better recommendations !</h4>
+      <p class="text-muted">Add your CV skills and enroll in courses</p>
+      <button class="btn btn-primary" routerLink="/cv">
+        📄 Complete My CV
+      </button>
+    </div>
+
+  </div>
+</div>

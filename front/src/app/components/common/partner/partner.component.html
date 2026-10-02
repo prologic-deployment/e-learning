@@ -1,0 +1,22 @@
+<!-- Default Section -->
+<div class="partner-area">
+    <div class="container">
+        <div
+            class="partner-wrap-inner-box pt-100 pb-75"
+            [ngClass]="{'color-with-lavender-blush': router.url === '/learning-management'}"
+        >
+            <div class="row align-items-center justify-content-center">
+                <div
+                    class="col-lg-2 col-6 col-sm-4 col-md-4"
+                    *ngFor="let item of partnerList"
+                >
+                    <div class="partner-wrap-card">
+                        <a href="{{item.link}}" class="d-inline-block" target="_blank">
+                            <img [src]="item.img" alt="partner">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

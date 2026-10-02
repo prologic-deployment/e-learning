@@ -1,0 +1,63 @@
+<!-- Default Section -->
+<div
+    class="about-area pb-100"
+    [ngClass]="{'d-none': router.url === '/learning-management'}"
+>
+    <div class="container">
+        <div class="kc-about-inner-box">
+            <div class="row m-0">
+                <div class="col-lg-5 col-md-12 p-0">
+                    <div class="kc-about-image" style="background-image: url(assets/img/kitchen-coach/about/about.jpg);">
+                        <img src="assets/img/kitchen-coach/about/about.jpg" alt="about-image">
+                    </div>
+                </div>
+                <div class="col-lg-7 col-md-12 p-0">
+                    <div class="kc-about-content">
+                        <h2>I’m Ashlika, <br> The Kitchen Coach</h2>
+                        <p>I’ve been wanting to write this for a long time. Getting something off my chest that is both important and necessary. This is written for men, to men and will lay bare the out-of-control situation that exists for us today.</p>
+                        <p>As I sit behind the scenes at The Kitchen Coach, I observe the (mostly) women we work with making massive changes and creating a healthier, happier future for their families through whole foods. It is beautiful that these families commit to this change, and incredible some of the transformations that occur.</p>
+                        <p>There is a theme though, and one that I know brings a lot of heartache for many women. It’s a theme of resistance, resistance to change.</p>
+                        <div class="about-btn">
+                            <a routerLink="/courses-grid" class="default-btn">Find All Courses</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="kc-about-shape">
+                <img src="assets/img/kitchen-coach/about/shape.png" alt="image">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- This section for Learning Management Demo -->
+<div
+    class="vc-about-area ptb-100 d-none"
+    [ngClass]="{'d-block': router.url === '/learning-management'}"
+>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-5 col-md-12">
+                <div class="vc-about-image">
+                    <img src="assets/img/vendor-certification/about.jpg" alt="about-image">
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-12">
+                <div class="vc-about-content">
+                    <h2>Always take the harmless path, never take shortcuts</h2>
+                    <p>Here are some of the advantages that we have to describe related to the industrial business. Industries help in making the employment prospects for the people and in a common of the nations after agriculture. Its business has also a lot of opportunities for a job. It’s due to the presence of various industries that we get to use a selection of products like television, clothes, automobiles, furniture, etc</p>
+                    <div class="box">
+                        <div class="quotation">
+                            <img src="assets/img/vendor-certification/quotation.svg" alt="image">
+                        </div>
+                        <p>Our project management training equips learners with the knowledge and discipline required to effectively plan, manage, execute, and control projects regardless of industry. You will learn all about the most popular project management methodologies that help organizations deliver successful projects.</p>
+                    </div>
+                    <div class="about-btn">
+                        <a routerLink="/courses-grid" class="default-btn">Find All Courses</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <app-partner></app-partner>
+    </div>
+</div>

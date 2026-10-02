@@ -1,0 +1,71 @@
+<app-esd-banner></app-esd-banner>
+
+<!-- ✅ AI Recommendations -->
+<div *ngIf="isLoggedIn()">
+  <app-recommendations></app-recommendations>
+</div>
+
+<!-- Our Top Courses -->
+<div class="courses-area ptb-100">
+  <div class="container">
+    <div class="section-title">
+      <span class="sub-title">Learn At Your Own Pace</span>
+      <h2>Our Top Courses</h2>
+      <p>Discover the best courses available on our platform</p>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+      <p>Loading courses...</p>
+    </div>
+
+    <!-- Courses Grid -->
+    <div class="row" *ngIf="!loading">
+      <div *ngIf="courses.length === 0" class="col-12 text-center py-5">
+        <p class="text-muted">No courses available yet !</p>
+      </div>
+
+      <div class="col-xl-3 col-lg-4 col-sm-6 col-md-6"
+        *ngFor="let course of courses">
+        <div class="single-courses-box">
+          <div class="image" style="cursor:pointer;" [routerLink]="['/courses-details', course._id]">
+            <div [style.background]="getCourseColor(course.category)"
+              style="height: 200px; display:flex; align-items:center; justify-content:center; border-radius: 8px;">
+              <div class="text-center text-white p-3">
+                <div style="font-size: 50px;">{{ getCategoryIcon(course.category) }}</div>
+                <h5 class="mt-2 text-white" style="font-size: 14px;">{{ course.title }}</h5>
+              </div>
+            </div>
+          </div>
+          <div class="content">
+            <span *ngIf="course.category" class="badge bg-primary mb-1" style="font-size:11px;">
+              {{ course.category }}
+            </span>
+            <h3>
+              <a [routerLink]="['/courses-details', course._id]">
+                {{ course.title }}
+              </a>
+            </h3>
+            <a class="author">
+              {{ course.trainer?.firstname }} {{ course.trainer?.lastname }}
+            </a>
+            <div class="price mt-2">
+              <span class="new-price text-success" *ngIf="course.price === 0">Free</span>
+              <span class="new-price" *ngIf="course.price > 0">{{ course.price }} TND</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a routerLink="/courses-grid" class="default-btn">
+        <i class="flaticon-redo"></i> Explore All Courses
+      </a>
+    </div>
+  </div>
+</div>
+
+<app-categories></app-categories>
+
+<app-free-trial></app-free-trial>

@@ -1,0 +1,260 @@
+<!-- Default Section -->
+<div
+    class="feedback-area bg-f5f5f5 pt-100 pb-75"
+    [ngClass]="{'d-none': router.url === '/vendor-certification-etraining' || router.url === '/online-training-school' || router.url === '/distance-learning' || router.url === '/kitchen-coach' || router.url === '/learning-management' || router.url === '/online-education-courses' || router.url === '/remote-training' || router.url === '/online-art-learning'}"
+>
+    <div
+        class="container"
+        *ngFor="let content of feedbackContent"
+    >
+        <div class="section-title">
+            <h2>{{content.sectionTitle}}</h2>
+            <p>{{content.paragraph}}</p>
+        </div>
+        <div class="row justify-content-center">
+            <div
+                class="col-lg-4 col-md-6"
+                *ngFor="let text of content.feedback.reverse().slice(0, 3)"
+            >
+                <div class="single-feedback-box">
+                    <p>{{text.text}}</p>
+                    <div class="client-info d-flex align-items-center">
+                        <img [src]="text.img" alt="author">
+                        <div class="info">
+                            <h3>{{text.name}}</h3>
+                            <span>{{text.designation}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="shape4"><img src="assets/img/shape/shape4.png" alt="shape"></div>
+</div>
+
+<!-- This section for Vendor Certification eTraining Demo & Online Training School Demo & Distance Leaning Demo -->
+<div
+    class="feedback-area pt-100 pb-75 d-none"
+    [ngClass]="{'d-block': router.url === '/vendor-certification-etraining' || router.url === '/online-training-school' || router.url === '/distance-learning' || router.url === '/online-education-courses'}"
+>
+    <div
+        class="container"
+        *ngFor="let content of feedbackContent"
+    >
+        <div class="section-title">
+            <h2>{{content.sectionTitle}}</h2>
+            <p>{{content.paragraph}}</p>
+            <a routerLink="/feedback" class="default-btn">View All Feedback</a>
+        </div>
+        <div class="feedback-slides">
+            <owl-carousel-o [options]="feedbackSlides">
+                <ng-template
+                    carouselSlide
+                    *ngFor="let text of content.feedback.reverse()"
+                >
+                    <div class="single-feedback-box">
+                        <p>{{text.text}}</p>
+                        <div class="client-info d-flex align-items-center">
+                            <img [src]="text.img" alt="author">
+                            <div class="info">
+                                <h3>{{text.name}}</h3>
+                                <span>{{text.designation}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </owl-carousel-o>
+        </div>
+    </div>
+</div>
+
+<!-- This section for Kitchen Coach Demo -->
+<div
+    class="feedback-area ptb-100 d-none"
+    [ngClass]="{'d-block': router.url === '/kitchen-coach'}"
+>
+    <div class="container">
+        <div class="section-title">
+            <h2>Learners say about me</h2>
+            <p>Explore all of our courses and pick your suitable ones to enroll and start learning with us!</p>
+        </div>
+        <div class="feedback-slides-with-owl-dots">
+            <owl-carousel-o [options]="feedbackWithDotsSlides">
+                <ng-template carouselSlide>
+                    <div class="single-feedback-box">
+                        <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore et mag na aliqua. Minim veniam, quis nostrud ullamco laboris nisi ut aliquip ex ea commodo conse quatt adipiscing dolore.</p>
+                        <div class="client-info d-flex align-items-center">
+                            <img src="assets/img/user/user1.jpg" alt="author">
+                            <div class="info">
+                                <h3>Jasica Lora</h3>
+                                <span>TV Model</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="single-feedback-box">
+                        <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore et mag na aliqua. Minim veniam, quis nostrud ullamco laboris nisi ut aliquip ex ea commodo conse quatt adipiscing dolore.</p>
+                        <div class="client-info d-flex align-items-center">
+                            <img src="assets/img/user/user2.jpg" alt="author">
+                            <div class="info">
+                                <h3>Allien Zampa</h3>
+                                <span>Developer</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="single-feedback-box">
+                        <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore et mag na aliqua. Minim veniam, quis nostrud ullamco laboris nisi ut aliquip ex ea commodo conse quatt adipiscing dolore.</p>
+                        <div class="client-info d-flex align-items-center">
+                            <img src="assets/img/user/user3.jpg" alt="author">
+                            <div class="info">
+                                <h3>Ramos Leo</h3>
+                                <span>Designer</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="single-feedback-box">
+                        <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore et mag na aliqua. Minim veniam, quis nostrud ullamco laboris nisi ut aliquip ex ea commodo conse quatt adipiscing dolore.</p>
+                        <div class="client-info d-flex align-items-center">
+                            <img src="assets/img/user/user1.jpg" alt="author">
+                            <div class="info">
+                                <h3>Jasica Lora</h3>
+                                <span>TV Model</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="single-feedback-box">
+                        <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore et mag na aliqua. Minim veniam, quis nostrud ullamco laboris nisi ut aliquip ex ea commodo conse quatt adipiscing dolore.</p>
+                        <div class="client-info d-flex align-items-center">
+                            <img src="assets/img/user/user2.jpg" alt="author">
+                            <div class="info">
+                                <h3>Allien Zampa</h3>
+                                <span>Developer</span>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </owl-carousel-o>
+        </div>
+    </div>
+</div>
+
+<!-- This section for Learning Management Demo -->
+<div
+    class="feedback-area color-with-light-blue pt-100 pb-75 d-none"
+    [ngClass]="{'d-block': router.url === '/learning-management'}"
+>
+    <div
+        class="container"
+        *ngFor="let content of feedbackContent"
+    >
+        <div class="section-title text-center">
+            <h2>{{content.sectionTitle}}</h2>
+            <p>{{content.paragraph}}</p>
+        </div>
+        <div class="row justify-content-center">
+            <div
+                class="col-lg-6 col-md-6"
+                *ngFor="let text of content.feedback.reverse()"
+            >
+                <div class="single-feedback-box">
+                    <p>{{text.text}}</p>
+                    <div class="client-info d-flex align-items-center">
+                        <img [src]="text.img" alt="author">
+                        <div class="info">
+                            <h3>{{text.name}}</h3>
+                            <span>{{text.designation}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- This section for Remote Training Demo & Online Art Learning Demo -->
+<div
+    class="rt-feedback-area pb-100 d-none"
+    [ngClass]="{'d-block': router.url === '/remote-training' || router.url === '/online-art-learning'}"
+>
+    <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-lg-8 col-md-12">
+                <div class="rt-feedback-content">
+                    <h2>What Our Learners say about Edla</h2>
+                    <div class="rt-feedback-slides">
+                        <owl-carousel-o [options]="rtfeedbackSlides">
+                            <ng-template carouselSlide>
+                                <div class="rt-single-feedback-box">
+                                    <div class="client-info d-flex align-items-center">
+                                        <div class="quotes">
+                                            <img src="assets/img/remote-training/straight-quotes.svg" alt="author">
+                                        </div>
+                                        <div class="info">
+                                            <h3>Lousie Ferslev</h3>
+                                            <span>Founder & CEO</span>
+                                        </div>
+                                    </div>
+                                    <p><b>Edla</b> is a Global training provider based across the UK that specialis in accredited and bespoke Lorem ipsum dolor sit amet consectetur elit sed do eiusmod tempor incididunt ut labore et mag na aliqua consectetur elit sed do eiusmod tempor incididunt ut labore et mag na aliqua.</p>
+                                </div>
+                            </ng-template>
+                            <ng-template carouselSlide>
+                                <div class="rt-single-feedback-box">
+                                    <div class="client-info d-flex align-items-center">
+                                        <div class="quotes">
+                                            <img src="assets/img/remote-training/straight-quotes.svg" alt="author">
+                                        </div>
+                                        <div class="info">
+                                            <h3>Jasica Lora</h3>
+                                            <span>TV Model</span>
+                                        </div>
+                                    </div>
+                                    <p><b>Edla</b> is a Global training provider based across the UK that specialis in accredited and bespoke Lorem ipsum dolor sit amet consectetur elit sed do eiusmod tempor incididunt ut labore et mag na aliqua consectetur elit sed do eiusmod tempor incididunt ut labore et mag na aliqua.</p>
+                                </div>
+                            </ng-template>
+                            <ng-template carouselSlide>
+                                <div class="rt-single-feedback-box">
+                                    <div class="client-info d-flex align-items-center">
+                                        <div class="quotes">
+                                            <img src="assets/img/remote-training/straight-quotes.svg" alt="author">
+                                        </div>
+                                        <div class="info">
+                                            <h3>Allien Zampa</h3>
+                                            <span>Developer</span>
+                                        </div>
+                                    </div>
+                                    <p><b>Edla</b> is a Global training provider based across the UK that specialis in accredited and bespoke Lorem ipsum dolor sit amet consectetur elit sed do eiusmod tempor incididunt ut labore et mag na aliqua consectetur elit sed do eiusmod tempor incididunt ut labore et mag na aliqua.</p>
+                                </div>
+                            </ng-template>
+                            <ng-template carouselSlide>
+                                <div class="rt-single-feedback-box">
+                                    <div class="client-info d-flex align-items-center">
+                                        <div class="quotes">
+                                            <img src="assets/img/remote-training/straight-quotes.svg" alt="author">
+                                        </div>
+                                        <div class="info">
+                                            <h3>Lousie Ferslev</h3>
+                                            <span>Founder & CEO</span>
+                                        </div>
+                                    </div>
+                                    <p><b>Edla</b> is a Global training provider based across the UK that specialis in accredited and bespoke Lorem ipsum dolor sit amet consectetur elit sed do eiusmod tempor incididunt ut labore et mag na aliqua consectetur elit sed do eiusmod tempor incididunt ut labore et mag na aliqua.</p>
+                                </div>
+                            </ng-template>
+                        </owl-carousel-o>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-12">
+                <div class="rt-feedback-image">
+                    <img src="assets/img/remote-training/feedback.png" alt="image">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="vc-overview-area ptb-100" style="background-image: url(assets/img/vendor-certification/overview-bg.jpg);">
+    <div
+        class="container"
+        *ngFor="let content of overviewContent"
+    >
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-6 col-md-12">
+                <div class="vc-overview-content">
+                    <h2>{{content.title}}</h2>
+                    <p>{{content.paragraph}}</p>
+                    <div class="box">
+                        <p>{{content.paragraph2}}</p>
+                    </div>
+                    <div class="overview-btn">
+                        <a
+                            routerLink="{{content.buttonLink}}"
+                            class="default-btn"
+                        >
+                            {{content.buttonText}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="vc-overview-image">
+                    <img [src]="content.img" alt="image">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

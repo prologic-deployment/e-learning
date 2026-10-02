@@ -1,0 +1,574 @@
+.remote-training-banner-area {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    background: {
+        position: center center;
+        repeat: no-repeat;
+        size: cover;
+    };
+    padding: {
+        top: 100px;
+        bottom: 100px;
+    };
+    .container-fluid {
+        padding: {
+            left: 50px;
+            right: 50px;
+        };
+    }
+}
+.remote-training-banner-content {
+    h1 {
+        margin-bottom: 18px;
+        position: relative;
+        font-size: 70px;
+
+        b {
+            position: relative;
+
+            &::before {
+                top: -20px;
+                content: "";
+                z-index: -1;
+                right: -50px;
+                width: 125px;
+                height: 78px;
+                position: absolute;
+                animation: moveleftbounce 5s linear infinite;
+                background: {
+                    image: url(../../../../../assets/img/remote-training/banner/cap.png);
+                    position: center center;
+                    repeat: no-repeat;
+                    size: contain;
+                };
+            }
+        }
+    }
+    p {
+        font-size: 18px;
+        max-width: 750px;
+        color: #494b5a;
+
+        b {
+            font-weight: 600;
+        }
+    }
+    .search-box {
+        position: relative;
+        margin-top: 30px;
+        max-width: 650px;
+
+        .input-search {
+            border: 0;
+            width: 100%;
+            height: 60px;
+            display: block;
+            padding-left: 20px;
+            border-radius: 8px;
+            color: var(--blackColor);
+            font-size: var(--fontSize);
+            background-color: var(--whiteColor);
+            box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.06);
+
+            &::placeholder {
+                transition: var(--transition);
+                color: var(--paragraphColor);
+            }
+            &:focus {
+                &::placeholder {
+                    color: transparent;
+                }
+            }
+        }
+        button {
+            background-color: var(--primaryColor);
+            transition: var(--transition);
+            padding: 10px 58px 10px 30px;
+            color: var(--whiteColor);
+            display: inline-block;
+            border-radius: 8px;
+            position: absolute;
+            box-shadow: unset;
+            height: 50px;
+            border: 0;
+            right: 5px;
+            top: 5px;
+            font: {
+                size: var(--fontSize);
+                weight: 500;
+            };
+            i {
+                transform: translateY(-50%);
+                position: absolute;
+                margin-top: 1px;
+                line-height: 1;
+                font-size: 20px;
+                right: 30px;
+                top: 50%;
+            }
+            &:hover {
+                background-color: var(--secondaryColor);
+                color: var(--whiteColor);
+            }
+        }
+    }
+    .support-box {
+        margin-top: 35px;
+
+        .images {
+            img {
+                width: 65px;
+                height: 65px;
+                border-radius: 50%;
+                margin-right: -20px;
+                border: 4px solid var(--whiteColor);
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+        }
+        .text {
+            margin-left: 15px;
+
+            p {
+                font-size: 18px;
+                font-weight: bold;
+
+                span {
+                    color: #6b48ff;
+                }
+                a {
+                    color: var(--secondaryColor);
+                    text-decoration: underline;
+
+                    &:hover {
+                        color: var(--primaryColor);
+                    }
+                }
+            }
+        }
+    }
+}
+.remote-training-banner-image {
+    position: relative;
+    padding: {
+        left: 50px;
+        right: 30px;
+        bottom: 150px;
+    };
+    img {
+        border-radius: 10px;
+    }
+    .banner-video-1 {
+        left: 0;
+        bottom: 75px;
+        position: absolute;
+        display: inline-flex;
+
+        .video {
+            border-radius: 10px;
+            max-width: 190px;
+        }
+    }
+    .banner-video-2 {
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        display: inline-flex;
+
+        .video {
+            border-radius: 10px;
+            max-width: 210px;
+        }
+        .popup-video {
+            left: 0;
+            right: 0;
+            width: 50px;
+            border: none;
+            margin: auto;
+            bottom: 25px;
+            height: 50px;
+            line-height: 50px;
+            position: absolute;
+            text-align: center;
+            border-radius: 50px;
+            display: inline-block;
+            transition: var(--transition);
+            background-color: var(--whiteColor);
+
+            i { 
+                background: linear-gradient(115.26deg, #08A9E6 13.55%, #6B48FF 85.12%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                transition: var(--transition);
+                transform: translateY(-50%);
+                position: absolute;
+                border-radius: 5px;
+                border-radius: 5px;
+                font-size: 40px;
+                left: 4.5px;
+                right: 0;
+                top: 50%;
+            }
+            &:hover {
+                transform: translateY(-5px);
+            }
+        }
+    }
+    .banner-wrap-shape {
+        left: 0;
+        right: 0;
+        z-index: -1;
+        bottom: -120px;
+        text-align: center;
+        position: absolute;
+    }
+}
+
+/* Max width 767px */
+@media only screen and (max-width : 767px) {
+
+    .remote-training-banner-area {
+        padding: {
+            top: 60px;
+            bottom: 60px;
+        };
+        .container-fluid {
+            padding: {
+                left: var(--mdb-gutter-x, 0.75rem);
+                right: var(--mdb-gutter-x, 0.75rem);
+            };
+        }
+    }
+    .remote-training-banner-content {
+        h1 {
+            margin-bottom: 12px;
+            font-size: 30px;
+
+            b {
+                &::before {
+                    display: none;
+                }
+            }
+        }
+        p {
+            max-width: 100%;
+            font-size: 14px;
+        }
+        .search-box {
+            margin-top: 15px;
+            max-width: 100%;
+    
+            .input-search {
+                height: 50px;
+                font-size: 14px;
+                box-shadow: unset;
+                padding-left: 12px;
+                border-radius: 5px;
+            }
+            button {
+                padding: 11px 52px 11px 25px;
+                border-radius: 5px;
+                position: relative;
+                margin-top: 15px;
+                font-size: 14px;
+                height: auto;
+                right: 0;
+                top: 0;
+                
+                i {
+                    font-size: 18px;
+                    right: 25px;
+                }
+            }
+        }
+        .support-box {
+            margin-top: 20px;
+    
+            .d-flex {
+                display: block !important;
+
+                .d-flex {
+                    display: flex !important;
+                }
+            }
+            .images {
+                img {
+                    width: 40px;
+                    height: 40px;
+                    border-width: 2px;
+                    margin-right: -10px;
+                }
+            }
+            .text {
+                margin: {
+                    left: 0;
+                    top: 15px;
+                };
+                p {
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+    .remote-training-banner-image {
+        margin-top: 25px;
+        padding: {
+            left: 20px;
+            right: 20px;
+            bottom: 95px;
+        };
+        .banner-video-1 {
+            left: 0;
+            bottom: 75px;
+    
+            .video {
+                max-width: 90px;
+            }
+        }
+        .banner-video-2 {
+            .video {
+                max-width: 110px;
+            }
+            .popup-video {
+                width: 40px;
+                bottom: 10px;
+                height: 40px;
+                line-height: 40px;
+
+                i {
+                    left: 1px;
+                }
+            }
+        }
+    }
+
+}
+
+/* Min width 576px to Max width 767px */
+@media only screen and (min-width : 576px) and (max-width : 767px) {
+
+    .remote-training-banner-area {
+        .container-fluid {
+            max-width: 540px;
+        }
+    }
+
+}
+
+/* Min width 768px to Max width 991px */
+@media only screen and (min-width : 768px) and (max-width : 991px) {
+
+    .remote-training-banner-area {
+        padding: {
+            top: 80px;
+            bottom: 80px;
+        };
+        .container-fluid {
+            max-width: 720px;
+            padding: {
+                left: var(--mdb-gutter-x, 0.75rem);
+                right: var(--mdb-gutter-x, 0.75rem);
+            };
+        }
+    }
+    .remote-training-banner-content {
+        h1 {
+            font-size: 40px;
+
+            b {
+                &::before {
+                    display: none;
+                }
+            }
+        }
+        p {
+            max-width: 100%;
+            font-size: 15px;
+        }
+        .search-box {
+            margin-top: 20px;
+            max-width: 100%;
+    
+            .input-search {
+                padding-left: 15px;
+                font-size: 15px;
+            }
+            button {
+                font-size: 15px;
+            }
+        }
+        .support-box {
+            margin-top: 25px;
+    
+            .images {
+                img {
+                    width: 55px;
+                    height: 55px;
+                    border-width: 3px;
+                    margin-right: -15px;
+                }
+            }
+            .text {
+                margin-left: 12px;
+    
+                p {
+                    font-size: 15px;
+                }
+            }
+        }
+    }
+    .remote-training-banner-image {
+        margin-top: 25px;
+    }
+
+}
+
+/* Min width 992px to Max width 1199px */
+@media only screen and (min-width : 992px) and (max-width : 1199px) {
+
+    .remote-training-banner-area {
+        .container-fluid {
+            max-width: 960px;
+            padding: {
+                left: var(--mdb-gutter-x, 0.75rem);
+                right: var(--mdb-gutter-x, 0.75rem);
+            };
+        }
+    }
+    .remote-training-banner-content {
+        h1 {
+            font-size: 50px;
+
+            b {
+                &::before {
+                    display: none;
+                }
+            }
+        }
+        p {
+            max-width: 100%;
+            font-size: 17px;
+        }
+        .search-box {
+            margin-top: 25px;
+            max-width: 100%;
+    
+            .input-search {
+                padding-left: 15px;
+                font-size: 15px;
+            }
+            button {
+                padding: 10px 52px 10px 25px;
+                font-size: 15px;
+
+                i {
+                    right: 25px;
+                }
+            }
+        }
+        .support-box {
+            margin-top: 25px;
+    
+            .images {
+                img {
+                    width: 50px;
+                    height: 50px;
+                    border-width: 3px;
+                }
+            }
+            .text {
+                margin-left: 15px;
+    
+                p {
+                    font-size: 15px;
+                }
+            }
+        }
+    }
+    .remote-training-banner-image {
+        padding: {
+            left: 30px;
+            right: 20px;
+            bottom: 100px;
+        };
+        .banner-video-1 {
+            .video {
+                max-width: 150px;
+            }
+        }
+        .banner-video-2 {
+            .video {
+                max-width: 170px;
+            }
+        }
+    }
+
+}
+
+/* Min width 1200px to Max width 1399px */
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+
+    .remote-training-banner-area {
+        .container-fluid {
+            padding: {
+                left: 40px;
+                right: 40px;
+            };
+        }
+    }
+    .remote-training-banner-content {
+        h1 {
+            font-size: 60px;
+        }
+        p {
+            max-width: 100%;
+        }
+        .search-box {
+            max-width: 100%;
+        }
+        .support-box {
+            .text {
+                p {
+                    font-size: 16px;
+                }
+            }
+        }
+    }
+    .remote-training-banner-image {
+        .banner-video-1 {
+            .video {
+                max-width: 120px;
+            }
+        }
+        .banner-video-2 {
+            .video {
+                max-width: 180px;
+            }
+        }
+    }
+
+}
+
+/* Min width 1600px */
+@media only screen and (min-width: 1600px) {
+
+    .remote-training-banner-area {
+        .container-fluid {
+            max-width: 1900px;
+            padding: {
+                left: 100px;
+                right: 100px;
+            };
+        }
+    }
+    .remote-training-banner-content {
+        h1 {
+            margin-bottom: 20px;
+        }
+    }
+
+}

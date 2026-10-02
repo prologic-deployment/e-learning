@@ -1,0 +1,233 @@
+<!-- Page Title -->
+<!-- <div class="page-title-area">
+  <div class="container">
+    <div class="page-title-content">
+      <ul>
+        <li><a routerLink="/">Home</a></li>
+        <li>Courses</li>
+      </ul>
+      <h1 *ngIf="!selectedCategory">Explore Top Courses</h1>
+      <h1 *ngIf="selectedCategory">
+        {{ getCategoryIcon(selectedCategory) }} {{ selectedCategory }}
+      </h1>
+    </div>
+  </div>
+</div> -->
+
+<div class="courses-area ptb-100">
+  <div class="container">
+
+    <!-- Catégories -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <h5 class="mb-3">📂 Browse by Category</h5>
+        <div class="d-flex flex-wrap gap-2">
+          <button class="btn"
+            [class.btn-primary]="selectedCategory === ''"
+            [class.btn-outline-primary]="selectedCategory !== ''"
+            (click)="clearCategory()">
+            📚 All
+          </button>
+          <button *ngFor="let cat of categories" class="btn"
+            [class.btn-primary]="selectedCategory === cat"
+            [class.btn-outline-secondary]="selectedCategory !== cat"
+            (click)="filterByCategory(cat)">
+            {{ getCategoryIcon(cat) }} {{ cat }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search + Filters -->
+    <div class="row mb-4">
+      <div class="col-lg-6 mb-2">
+        <div class="input-group">
+          <input type="text" class="form-control"
+            placeholder="Search courses..."
+            [(ngModel)]="searchQuery"
+            (keyup.enter)="search()">
+          <button class="btn btn-primary" (click)="search()">🔍</button>
+        </div>
+      </div>
+      <div class="col-lg-6 mb-2">
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-primary"
+            [class.active]="selectedType === ''"
+            (click)="filterByType('')">All</button>
+          <button class="btn btn-outline-success"
+            [class.active]="selectedType === 'free'"
+            (click)="filterByType('free')">Free</button>
+          <button class="btn btn-outline-warning"
+            [class.active]="selectedType === 'paid'"
+            (click)="filterByType('paid')">Paid</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active category badge -->
+    <div *ngIf="selectedCategory" class="mb-3">
+      <span class="badge bg-primary p-2">
+        {{ getCategoryIcon(selectedCategory) }} {{ selectedCategory }}
+        <button class="btn-close btn-close-white ms-2"
+          style="font-size: 10px;"
+          (click)="clearCategory()">
+        </button>
+      </span>
+    </div>
+
+    <!-- Messages -->
+    <div *ngIf="enrollSuccess" class="alert alert-success">{{ enrollSuccess }}</div>
+    <div *ngIf="enrollError" class="alert alert-danger">{{ enrollError }}</div>
+
+    <!-- Result Count -->
+    <div class="edla-grid-sorting row align-items-center mb-3">
+      <div class="col-lg-6 result-count">
+        <p *ngIf="!loading">
+          We found <span class="count">{{ totalCourses }}</span> courses
+          <span *ngIf="selectedCategory"> in <strong>{{ selectedCategory }}</strong></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+      <p>Loading courses...</p>
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+    <!-- Courses Grid -->
+    <div class="row" *ngIf="!loading">
+      <div *ngIf="courses.length === 0" class="col-12 text-center py-5">
+        <p class="text-muted">No courses found in this category !</p>
+        <button class="btn btn-primary" (click)="clearCategory()">Browse All Courses</button>
+      </div>
+
+      <div class="col-xl-3 col-lg-4 col-sm-6 col-md-6" *ngFor="let course of courses">
+        <div class="single-courses-box">
+
+          <!-- Image -->
+          <div class="image" style="cursor:pointer;" (click)="goToCourseDetail(course._id)">
+            <div [style.background]="getCourseColor(course.category)"
+              style="height: 200px; display:flex; align-items:center;
+                justify-content:center; border-radius: 8px;">
+              <div class="text-center text-white p-3">
+                <div style="font-size: 50px;">{{ getCategoryIcon(course.category) }}</div>
+                <h5 class="mt-2 text-white" style="font-size: 14px;">{{ course.title }}</h5>
+              </div>
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="content">
+            <span *ngIf="course.category" class="badge bg-primary mb-1" style="font-size:11px;">
+              {{ getCategoryIcon(course.category) }} {{ course.category }}
+            </span>
+            <h3>
+              <a (click)="goToCourseDetail(course._id)" style="cursor:pointer;">
+                {{ course.title }}
+              </a>
+            </h3>
+            <a class="author">
+              {{ course.trainer?.firstname }} {{ course.trainer?.lastname }}
+            </a>
+
+            <div class="mt-1" *ngIf="course.tags?.length > 0">
+              <span *ngFor="let tag of course.tags"
+                class="badge bg-secondary me-1">{{ tag }}</span>
+            </div>
+
+            <div class="price mt-2">
+              <span class="new-price" *ngIf="course.price > 0">{{ course.price }} TND</span>
+              <span class="new-price text-success" *ngIf="course.price === 0">Free</span>
+            </div>
+
+            <!-- ✅ Rating -->
+            <div class="mt-2" *ngIf="getReviewTotal(course._id) > 0">
+              <span class="text-warning">{{ getStars(getReviewRating(course._id)) }}</span>
+              <small class="text-muted ms-1">
+                {{ getReviewRating(course._id) }}/5
+                ({{ getReviewTotal(course._id) }}
+                review{{ getReviewTotal(course._id) > 1 ? 's' : '' }})
+              </small>
+            </div>
+            <div class="mt-1" *ngIf="getReviewTotal(course._id) === 0">
+              <small class="text-muted">⭐ No reviews yet</small>
+            </div>
+          </div>
+
+          <!-- Popover quickview -->
+          <div class="popover-quickview">
+            <h3>{{ course.title }}</h3>
+            <p>{{ course.description }}</p>
+
+            <!-- ✅ Rating summary -->
+            <div class="mb-2" *ngIf="getReviewTotal(course._id) > 0">
+              <span class="text-warning">{{ getStars(getReviewRating(course._id)) }}</span>
+              <strong class="ms-1">{{ getReviewRating(course._id) }}/5</strong>
+              <small class="ms-1">({{ getReviewTotal(course._id) }} reviews)</small>
+            </div>
+
+            <!-- ✅ 2 derniers commentaires -->
+            <div *ngIf="getReviewList(course._id).length > 0" class="mb-2">
+              <div *ngFor="let review of getReviewList(course._id)"
+                class="p-2 mb-1 rounded"
+                style="background: rgba(255,255,255,0.15); font-size: 12px;">
+                <div class="d-flex align-items-center gap-1">
+                  <strong>{{ review.user?.firstname }} {{ review.user?.lastname }}</strong>
+                  <span class="text-warning ms-1">{{ getStars(review.rating) }}</span>
+                </div>
+                <p class="mb-0 mt-1" style="font-size: 11px; opacity: 0.9; font-style: italic;">
+                  "{{ review.comment.length > 60 ?
+                    (review.comment.substring(0, 60) + '...') : review.comment }}"
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-2" *ngIf="course.tags?.length > 0">
+              <span *ngFor="let tag of course.tags"
+                class="badge bg-secondary me-1">{{ tag }}</span>
+            </div>
+
+            <div class="btn-box d-flex align-items-center mt-3">
+              <button class="default-btn"
+                (click)="enrollCourse(course._id)"
+                [disabled]="enrollingCourseId === course._id">
+                {{ enrollingCourseId === course._id ? 'Enrolling...' : 'Enroll Now' }}
+              </button>
+              <button class="default-btn ms-2"
+                (click)="goToCourseDetail(course._id)">
+                View Details
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="col-xl-12 col-lg-12 col-sm-12 col-md-12" *ngIf="totalPages > 1">
+        <div class="pagination-area">
+          <div class="nav-links">
+            <a class="prev page-numbers"
+              (click)="goToPage(currentPage - 1)"
+              [class.disabled]="currentPage === 1"
+              style="cursor:pointer;">prev</a>
+
+            <span *ngFor="let page of getPages()"
+              (click)="goToPage(page)"
+              style="cursor:pointer;"
+              [class.current]="page === currentPage"
+              class="page-numbers">{{ page }}</span>
+
+            <a class="next page-numbers"
+              (click)="goToPage(currentPage + 1)"
+              [class.disabled]="currentPage === totalPages"
+              style="cursor:pointer;">next</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

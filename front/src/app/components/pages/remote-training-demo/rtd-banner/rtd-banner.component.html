@@ -1,0 +1,68 @@
+<div class="remote-training-banner-area" style="background-image: url(assets/img/remote-training/banner/banner-bg.jpg);">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-md-12">
+                <div class="remote-training-banner-content">
+                    <h1>Find Simple & Effective <b>Training</b> Courses Now</h1>
+                    <p><b>Edla</b> is a Global training provider based across the UK that specialises in accredited and bespoke training courses. Flexible easy to access learning opportunities can bring a significant change.</p>
+                    <form class="search-box">
+                        <input type="text" class="input-search" placeholder="What do you want to learn today?">
+                        <button type="submit"><i class="flaticon-search"></i> Search Now</button>
+                    </form>
+                    <div class="support-box">
+                        <div class="d-flex align-items-center">
+                            <div class="images d-flex align-items-center">
+                                <img src="assets/img/user/user1.jpg" alt="author">
+                                <img src="assets/img/user/user2.jpg" alt="author">
+                                <img src="assets/img/user/user3.jpg" alt="author">
+                            </div>
+                            <div class="text">
+                                <p><span>500K+</span> People already trusted us. <a routerLink="/feedback">View Reviews</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <div class="remote-training-banner-image">
+                    <img src="assets/img/remote-training/banner/main.jpg" alt="image">
+                    <div class="banner-video-1">
+                        <video loop="" muted="" autoplay="" poster="#" class="video">
+                            <source src="assets/img/remote-training/banner/video-1.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="banner-video-2">
+                        <video loop="" muted="" autoplay="" poster="#" class="video">
+                            <source src="assets/img/remote-training/banner/video-2.mp4" type="video/mp4">
+                        </video>
+                        <button
+                            type="button"
+                            class="popup-video"
+                            (click)="openPopup()"
+                        >
+                            <i class='bx bx-play'></i>
+                        </button>
+                    </div>
+                    <div class="banner-wrap-shape">
+                        <a routerLink="/student-story">
+                            <img src="assets/img/remote-training/banner/shape.png" alt="image">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Video Popup -->
+<div
+    class="video-popup"
+    *ngIf="isOpen"
+>
+    <div class="popup-inner">
+        <iframe src="https://www.youtube.com/embed/ODfy2YIKS1M" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <button (click)="closePopup()" type="button" class="close-btn">
+            <i class='bx bx-x'></i>
+        </button>
+    </div>
+</div>

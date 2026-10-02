@@ -1,0 +1,162 @@
+.vc-overview-area {
+    border-radius: 0 0 120px 120px;
+    background: {
+        position: center center;
+        repeat: no-repeat;
+        size: cover;
+    };
+}
+.vc-overview-content {
+    h2 {
+        font-size: 38px;
+        line-height: 1.4;
+        margin-bottom: 15px;
+    }
+    p {
+        font-size: 18px;
+    }
+    .box {
+        padding: 25px;
+        margin-top: 25px;
+        border-radius: 5px;
+        background-color: var(--whiteColor);
+
+        p {
+            font-size: 20px;
+            color: var(--blackColor);
+        }
+    }
+    .overview-btn {
+        margin-top: 30px;
+
+        .default-btn {
+            background-color: var(--primaryColor);
+            color: var(--whiteColor);
+
+            &:hover {
+                background-color: var(--secondaryColor);
+                border-color: var(--secondaryColor);
+            }
+        }
+    }
+}
+.vc-overview-image {
+    text-align: center;
+}
+
+/* Max width 767px */
+@media only screen and (max-width : 767px) {
+
+    .vc-overview-area {
+        border-radius: 0;
+    }
+    .vc-overview-content {
+        h2 {
+            font-size: 26px;
+            margin-bottom: 12px;
+        }
+        p {
+            font-size: 14px;
+        }
+        .box {
+            padding: 15px;
+            margin-top: 15px;
+    
+            p {
+                font-size: 15px;
+            }
+        }
+        .overview-btn {
+            margin-top: 15px;
+        }
+    }
+    .vc-overview-image {
+        margin-top: 25px;
+    }
+
+}
+
+/* Min width 576px to Max width 767px */
+@media only screen and (min-width : 576px) and (max-width : 767px) {}
+
+/* Min width 768px to Max width 991px */
+@media only screen and (min-width : 768px) and (max-width : 991px) {
+
+    .vc-overview-area {
+        border-radius: 0 0 20px 20px;
+    }
+    .vc-overview-content {
+        h2 {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+        p {
+            font-size: 15px;
+        }
+        .box {
+            padding: 20px;
+            margin-top: 20px;
+    
+            p {
+                font-size: 17px;
+            }
+        }
+        .overview-btn {
+            margin-top: 20px;
+        }
+    }
+    .vc-overview-image {
+        margin-top: 25px;
+    }
+
+}
+
+/* Min width 992px to Max width 1199px */
+@media only screen and (min-width : 992px) and (max-width : 1199px) {
+
+    .vc-overview-area {
+        border-radius: 0 0 120px 120px;
+        background: {
+            position: center center;
+            repeat: no-repeat;
+            size: cover;
+        };
+    }
+    .vc-overview-content {
+        h2 {
+            font-size: 35px;
+            margin-bottom: 12px;
+        }
+        p {
+            font-size: 17px;
+        }
+        .box {
+            padding: 20px;
+            margin-top: 20px;
+    
+            p {
+                font-size: 16px;
+            }
+        }
+        .overview-btn {
+            margin-top: 20px;
+        }
+    }
+
+}
+
+/* Min width 1200px to Max width 1399px */
+@media only screen and (min-width: 1200px) and (max-width: 1399px) {
+
+    .vc-overview-content {
+        .box {
+            p {
+                font-size: 19px;
+            }
+        }
+    }
+
+}
+
+/* Min width 1600px */
+@media only screen and (min-width: 1600px) {}

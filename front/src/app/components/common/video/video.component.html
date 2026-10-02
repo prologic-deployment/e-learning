@@ -1,0 +1,30 @@
+<div class="rt-video-area pb-100">
+    <div class="container">
+        <div class="rt-video-view">
+            <img src="assets/img/remote-training/video.jpg" alt="image">
+            <button
+                type="button"
+                (click)="openPopup()"
+                class="video-btn"
+            >
+                <div class="polygon-icon">
+                    <img src="assets/img/remote-training/polygon.svg" alt="image">
+                </div>
+                <span>See Our Student Success Story</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Video Popup -->
+<div
+    class="video-popup"
+    *ngIf="isOpen"
+>
+    <div class="popup-inner">
+        <iframe src="https://www.youtube.com/embed/ODfy2YIKS1M" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <button (click)="closePopup()" type="button" class="close-btn">
+            <i class='bx bx-x'></i>
+        </button>
+    </div>
+</div>

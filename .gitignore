@@ -1,0 +1,62 @@
+# ═══════════════════════════════════════════════════════════════════════
+# Workspace-wide ignore rules (back/ + front/ + recommender/ + docs)
+# Folder-specific rules live in back/.gitignore and front/.gitignore.
+# ═══════════════════════════════════════════════════════════════════════
+
+# ── Dependencies (back, front) ──────────────────────────────────────────
+node_modules/
+
+# ── Secrets ─────────────────────────────────────────────────────────────
+# `.env*` covers .env, .env.local, .env.production… ; the example file
+# (placeholders only) stays trackable.
+.env*
+!.env.example
+
+# ── Built output (front) ────────────────────────────────────────────────
+dist/
+.angular/
+tmp/
+out-tsc/
+
+# ── User-generated content — personal data, never commit ────────────────
+# NOTE: `dir/*` form is required — git cannot re-include a file whose parent
+# directory is itself excluded.
+uploads/*
+!uploads/.gitkeep
+
+# ── Generated data / local vector & model stores ────────────────────────
+chroma_db/
+recommender/*.pkl
+courses_processed.csv
+*.sqlite3
+*.sqlite
+
+# ── Logs & runtime scratch ──────────────────────────────────────────────
+logs/
+*.log
+*.pid
+pids/
+# Agent/dev-server scratch: logs, previews, node compile cache
+.freebuff/
+
+# ── Tests, coverage, caches ─────────────────────────────────────────────
+coverage/
+.nyc_output/
+*.lcov
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.cache/
+
+# ── Archived git metadata from the pre-monorepo layout ──────────────────
+# back/.git and front/.git were separate repos before the workspace was
+# unified; they are parked here, not tracked.
+_old-repos/
+
+# ── OS / editor ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/*
+!.vscode/settings.json

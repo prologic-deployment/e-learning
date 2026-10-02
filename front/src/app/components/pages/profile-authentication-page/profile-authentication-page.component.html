@@ -1,0 +1,470 @@
+
+<!-- <div class="page-title-area">
+  <div class="container">
+    <div class="page-title-content">
+      <ul>
+        <li><a routerLink="/">Home</a></li>
+        <li>{{ activeTab === 'login' ? 'Login' : 'Register' }}</li>
+      </ul>
+      <h1>{{ activeTab === 'login' ? 'Sign In' : 'Create Account' }}</h1>
+    </div>
+  </div>
+</div> -->
+
+<div class="profile-authentication-area ptb-100">
+  <div class="container">
+
+    <!-- ✅ Toggle Tabs -->
+    <div class="row justify-content-center mb-4" *ngIf="!showOTP">
+      <div class="col-lg-5 col-md-8">
+        <div class="d-flex rounded-pill overflow-hidden"
+          style="background: #f1f5f9; padding: 4px;">
+          <button
+            (click)="activeTab = 'login'"
+            style="flex: 1; padding: 10px 20px; border: none; border-radius: 50px;
+              font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;"
+            [style.background]="activeTab === 'login' ? 'linear-gradient(135deg, #667eea, #764ba2)' : 'transparent'"
+            [style.color]="activeTab === 'login' ? 'white' : '#64748b'">
+            🔑 Login
+          </button>
+          <button
+            (click)="activeTab = 'register'"
+            style="flex: 1; padding: 10px 20px; border: none; border-radius: 50px;
+              font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;"
+            [style.background]="activeTab === 'register' ? 'linear-gradient(135deg, #667eea, #764ba2)' : 'transparent'"
+            [style.color]="activeTab === 'register' ? 'white' : '#64748b'">
+            📝 Register
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-5 col-md-8">
+
+        <!-- ========== LOGIN TAB ========== -->
+        <div *ngIf="activeTab === 'login'">
+
+          <!-- ✅ Login Form -->
+          <div *ngIf="!showOTP"
+            style="background: white; border-radius: 20px;
+              box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+              padding: 40px; border: 1px solid #f0f0f0;">
+
+            <!-- Header -->
+            <div class="text-center mb-4">
+              <div style="width: 70px; height: 70px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                border-radius: 50%; display: flex; align-items: center;
+                justify-content: center; margin: 0 auto 15px;">
+                <span style="font-size: 28px;">🔑</span>
+              </div>
+              <h2 style="font-weight: 700; color: #1e293b; font-size: 24px;">
+                Sign in to your account
+              </h2>
+              <p class="text-muted" style="font-size: 14px;">
+                Welcome back ! Enter your credentials
+              </p>
+            </div>
+
+            <div *ngIf="loginError" class="alert alert-danger">{{ loginError }}</div>
+            <div *ngIf="loginSuccess" class="alert alert-success">
+              {{ loginSuccess }}
+              <strong *ngIf="devOtp" style="letter-spacing: 4px; font-size: 18px;">{{ devOtp }}</strong>
+            </div>
+
+            <form (ngSubmit)="onLogin()">
+
+              <!-- Email -->
+              <div class="mb-3">
+                <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                  Email address
+                </label>
+                <div class="mt-1">
+                  <input type="email"
+                    class="form-control"
+                    placeholder=""
+                    [(ngModel)]="loginData.email"
+                    name="email"
+                    required
+                    style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                      padding: 12px 15px; font-size: 14px;
+                      transition: border 0.2s;">
+                </div>
+              </div>
+
+              <!-- Password -->
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                    Password
+                  </label>
+                  <a routerLink="/forgot-password"
+                    style="font-size: 12px; color: #667eea;
+                      font-weight: 600; text-decoration: none;">
+                    Forgot password?
+                  </a>
+                </div>
+                <div class="mt-1">
+                  <input type="password"
+                    class="form-control"
+                    placeholder=""
+                    [(ngModel)]="loginData.password"
+                    name="password"
+                    required
+                    style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                      padding: 12px 15px; font-size: 14px;">
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <button type="submit"
+                [disabled]="loginLoading"
+                style="width: 100%; padding: 13px; border: none;
+                  border-radius: 10px; font-size: 15px; font-weight: 600;
+                  color: white; cursor: pointer; margin-top: 8px;
+                  background: linear-gradient(135deg, #667eea, #764ba2);
+                  box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+                  transition: opacity 0.2s;"
+                [style.opacity]="loginLoading ? '0.7' : '1'">
+                <span *ngIf="!loginLoading">🔑 Sign In</span>
+                <span *ngIf="loginLoading">
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Signing in...
+                </span>
+              </button>
+
+            </form>
+
+            <!-- Link to register -->
+            <p class="text-center mt-4 mb-0" style="font-size: 13px; color: #64748b;">
+              Not a member ?
+              <a (click)="activeTab = 'register'"
+                style="color: #667eea; font-weight: 600;
+                  text-decoration: none; cursor: pointer;">
+                Create an account
+              </a>
+            </p>
+
+          </div>
+
+          <!-- ✅ OTP Form -->
+          <div *ngIf="showOTP"
+            style="background: white; border-radius: 20px;
+              box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+              padding: 40px; border: 1px solid #f0f0f0;">
+
+            <div class="text-center mb-4">
+              <div style="width: 70px; height: 70px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                border-radius: 50%; display: flex; align-items: center;
+                justify-content: center; margin: 0 auto 15px;">
+                <span style="font-size: 30px;">🔐</span>
+              </div>
+              <h4 style="font-weight: 700; color: #2d3748;">Verification Code</h4>
+              <p class="text-muted" style="font-size: 13px;">
+                We sent a 6-digit code to<br>
+                <strong>{{ tempEmail }}</strong><br>
+                This code will expire in 5 minutes
+              </p>
+            </div>
+
+            <!-- ✅ DEV-ONLY: OTP shown on screen when DEV_EXPOSE_OTP=true (fake inboxes can't receive email) -->
+            <div *ngIf="devOtp" class="alert alert-info text-center" style="border: 2px dashed #4f8cff;">
+              🔧 Dev code: <strong style="letter-spacing: 4px; font-size: 18px;">{{ devOtp }}</strong>
+            </div>
+
+            <div *ngIf="loginError" class="alert alert-danger text-center">
+              {{ loginError }}
+            </div>
+
+            <div class="mb-4">
+              <input type="text"
+                class="form-control text-center"
+                placeholder="• • • • • •"
+                [(ngModel)]="otpCode"
+                maxlength="6"
+                style="font-size: 28px; font-weight: 700; letter-spacing: 12px;
+                  border: 2px solid #e2e8f0; border-radius: 12px; padding: 15px;">
+            </div>
+
+            <button
+              (click)="onVerifyOTP()"
+              [disabled]="otpLoading || otpCode.length < 6"
+              style="width: 100%; padding: 13px; border: none; border-radius: 10px;
+                font-size: 15px; font-weight: 600; color: white; cursor: pointer;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                box-shadow: 0 4px 15px rgba(102,126,234,0.4);">
+              <span *ngIf="!otpLoading">✅ Verify Code</span>
+              <span *ngIf="otpLoading">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Verifying...
+              </span>
+            </button>
+
+            <div class="text-center mt-3">
+              <p class="text-muted" style="font-size: 13px;">
+                Didn't receive the code ?
+                <a *ngIf="resendCooldown <= 0"
+                  (click)="onResendOTP()"
+                  style="color: #667eea; font-weight: 600;
+                    text-decoration: none; cursor: pointer;">
+                  Resend Code
+                </a>
+                <span *ngIf="resendCooldown > 0"
+                  style="color: #999; font-weight: 600;">
+                  Resend available in {{ resendCooldown }}s
+                </span>
+              </p>
+              <a (click)="showOTP = false; otpCode = ''"
+                style="color: #999; font-size: 13px;
+                  text-decoration: none; cursor: pointer;">
+                ← Back to Login
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ========== REGISTER TAB ========== -->
+        <div *ngIf="activeTab === 'register'">
+          <div style="background: white; border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            padding: 40px; border: 1px solid #f0f0f0;">
+
+            <!-- Header -->
+            <div class="text-center mb-4">
+              <div style="width: 70px; height: 70px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                border-radius: 50%; display: flex; align-items: center;
+                justify-content: center; margin: 0 auto 15px;">
+                <span style="font-size: 28px;">📝</span>
+              </div>
+              <h2 style="font-weight: 700; color: #1e293b; font-size: 24px;">
+                Create your account
+              </h2>
+              <p class="text-muted" style="font-size: 14px;">Join us today !</p>
+            </div>
+
+            <div *ngIf="registerError" class="alert alert-danger">{{ registerError }}</div>
+            <div *ngIf="registerSuccess" class="alert alert-success">{{ registerSuccess }}</div>
+
+            <form (ngSubmit)="onRegister()">
+
+              <!-- First + Last Name -->
+              <div class="row">
+                <div class="col-6">
+                  <div class="mb-3">
+                    <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                      First Name *
+                    </label>
+                    <input type="text" class="form-control mt-1"
+                      placeholder="John..."
+                      [(ngModel)]="registerData.firstname"
+                      name="firstname"
+                      (blur)="touch('firstname')"
+                      style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
+                      [style.border]="isInvalid('firstname') ?
+                        '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
+                    <small *ngIf="isInvalid('firstname')"
+                      style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
+                      ⚠️ Le prénom est obligatoire
+                    </small>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="mb-3">
+                    <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                      Last Name *
+                    </label>
+                    <input type="text" class="form-control mt-1"
+                      placeholder="Doe..."
+                      [(ngModel)]="registerData.lastname"
+                      name="lastname"
+                      (blur)="touch('lastname')"
+                      style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
+                      [style.border]="isInvalid('lastname') ?
+                        '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
+                    <small *ngIf="isInvalid('lastname')"
+                      style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
+                      ⚠️ Le nom est obligatoire
+                    </small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div class="mb-3">
+                <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                  Email address *
+                </label>
+                <input type="email" class="form-control mt-1"
+                  placeholder="you@example.com"
+                  [(ngModel)]="registerData.email"
+                  name="email"
+                  (blur)="touch('email')"
+                  style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
+                  [style.border]="isInvalid('email') ?
+                    '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
+                <small *ngIf="isInvalid('email')"
+                  style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
+                  ⚠️ Veuillez entrer une adresse email valide
+                </small>
+              </div>
+
+              <!-- Date of Birth -->
+              <div class="mb-3">
+                <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                  Date of Birth *
+                </label>
+                <input type="date" class="form-control mt-1"
+                  [(ngModel)]="registerData.dateOfBirth"
+                  name="dateOfBirth"
+                  (blur)="touch('dateOfBirth')"
+                  style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
+                  [style.border]="isInvalid('dateOfBirth') ?
+                    '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
+                <small *ngIf="isInvalid('dateOfBirth')"
+                  style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
+                  ⚠️ La date de naissance est obligatoire
+                </small>
+              </div>
+
+              <!-- Phone -->
+              <div class="mb-3">
+                <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                  Phone Number *
+                </label>
+                <div class="input-group mt-1">
+                  <span class="input-group-text"
+                    style="border-radius: 10px 0 0 10px; border: 1.5px solid #e2e8f0;
+                      background: #f8f9fa; font-weight: 600; color: #374151; font-size: 13px;"
+                    [style.borderColor]="isInvalid('phone') ? '#ef4444' : '#e2e8f0'">
+                    🇹🇳 +216
+                  </span>
+                  <input type="tel" class="form-control"
+                    placeholder="XX XXX XXX"
+                    [(ngModel)]="registerData.phone"
+                    name="phone"
+                    maxlength="8"
+                    (blur)="touch('phone')"
+                    style="border-radius: 0 10px 10px 0; border-left: none;
+                      padding: 12px 15px; font-size: 14px;"
+                    [style.border]="isInvalid('phone') ?
+                      '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
+                </div>
+                <small *ngIf="isInvalid('phone')"
+                  style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
+                  ⚠️ Veuillez entrer un numéro valide (8 chiffres)
+                </small>
+              </div>
+
+              <!-- Password -->
+              <div class="mb-4">
+                <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                  Password *
+                </label>
+                <input type="password" class="form-control mt-1"
+                  placeholder="Min 8 chars, 1 uppercase, 1 number"
+                  [(ngModel)]="registerData.password"
+                  name="password"
+                  (blur)="touch('password')"
+                  style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
+                  [style.border]="isInvalid('password') ?
+                    '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
+
+                <!-- ✅ Indicateur de force du mot de passe -->
+                <div *ngIf="registerTouched.password && registerData.password"
+                  class="mt-2">
+                  <div style="display: flex; gap: 4px; margin-bottom: 4px;">
+                    <div style="flex: 1; height: 3px; border-radius: 99px; transition: background 0.3s;"
+                      [style.background]="getPasswordStrength() >= 1 ? getPasswordColor() : '#e2e8f0'">
+                    </div>
+                    <div style="flex: 1; height: 3px; border-radius: 99px; transition: background 0.3s;"
+                      [style.background]="getPasswordStrength() >= 2 ? getPasswordColor() : '#e2e8f0'">
+                    </div>
+                    <div style="flex: 1; height: 3px; border-radius: 99px; transition: background 0.3s;"
+                      [style.background]="getPasswordStrength() >= 3 ? getPasswordColor() : '#e2e8f0'">
+                    </div>
+                    <div style="flex: 1; height: 3px; border-radius: 99px; transition: background 0.3s;"
+                      [style.background]="getPasswordStrength() >= 4 ? getPasswordColor() : '#e2e8f0'">
+                    </div>
+                  </div>
+                  <small style="font-size: 11px;" [style.color]="getPasswordColor()">
+                    {{ getPasswordLabel() }}
+                  </small>
+                </div>
+
+                <small *ngIf="isInvalid('password')"
+                  style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
+                  ⚠️ Le mot de passe doit contenir au moins 8 caractères
+                </small>
+              </div>
+
+              <!-- Role -->
+              <div class="mb-4">
+                <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                  I want to join as
+                </label>
+                <div class="d-flex gap-3 mt-2">
+                  <div (click)="registerData.role = 'user'"
+                    style="flex: 1; padding: 12px; border-radius: 10px;
+                      border: 2px solid; cursor: pointer; text-align: center;
+                      transition: all 0.2s;"
+                    [style.borderColor]="registerData.role === 'user' ? '#667eea' : '#e2e8f0'"
+                    [style.background]="registerData.role === 'user' ? '#f0f4ff' : 'white'">
+                    <div style="font-size: 24px;">👤</div>
+                    <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
+                      [style.color]="registerData.role === 'user' ? '#667eea' : '#64748b'">
+                      Student
+                    </div>
+                  </div>
+                  <div (click)="registerData.role = 'trainer'"
+                    style="flex: 1; padding: 12px; border-radius: 10px;
+                      border: 2px solid; cursor: pointer; text-align: center;
+                      transition: all 0.2s;"
+                    [style.borderColor]="registerData.role === 'trainer' ? '#667eea' : '#e2e8f0'"
+                    [style.background]="registerData.role === 'trainer' ? '#f0f4ff' : 'white'">
+                    <div style="font-size: 24px;">🎓</div>
+                    <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
+                      [style.color]="registerData.role === 'trainer' ? '#667eea' : '#64748b'">
+                      Trainer
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Submit -->
+              <button type="submit"
+                [disabled]="registerLoading"
+                style="width: 100%; padding: 13px; border: none;
+                  border-radius: 10px; font-size: 15px; font-weight: 600;
+                  color: white; cursor: pointer;
+                  background: linear-gradient(135deg, #667eea, #764ba2);
+                  box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+                [style.opacity]="registerLoading ? '0.7' : '1'">
+                <span *ngIf="!registerLoading">📝 Create Account</span>
+                <span *ngIf="registerLoading">
+                  <span class="spinner-border spinner-border-sm me-2"></span>
+                  Creating...
+                </span>
+              </button>
+
+            </form>
+
+            <p class="text-center mt-4 mb-0" style="font-size: 13px; color: #64748b;">
+              Already have an account ?
+              <a (click)="activeTab = 'login'"
+                style="color: #667eea; font-weight: 600;
+                  text-decoration: none; cursor: pointer;">
+                Sign in
+              </a>
+            </p>
+          </div>
+        </div>
+        </div>
+
+      </div>
+    </div>
+</div>
+

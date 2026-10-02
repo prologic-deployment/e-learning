@@ -1,0 +1,86 @@
+<!-- Page Title -->
+<div class="page-title-area">
+  <div class="container">
+    <div class="page-title-content">
+      <ul>
+        <li><a routerLink="/">Home</a></li>
+        <li>Cart</li>
+      </ul>
+      <h1>Shopping Cart 🛒</h1>
+    </div>
+  </div>
+</div>
+
+<!-- Cart -->
+<div class="cart-area ptb-100">
+  <div class="container">
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+      <p>Loading cart...</p>
+    </div>
+
+    <!-- Empty Cart -->
+    <div *ngIf="!loading && (!cart || cart.items?.length === 0)" class="text-center py-5">
+      <h4 class="text-muted">Your cart is empty ! 🛒</h4>
+      <button class="btn btn-primary mt-3" routerLink="/courses-grid">
+        Browse Courses
+      </button>
+    </div>
+
+    <!-- Cart Items -->
+    <div *ngIf="!loading && cart && cart.items?.length > 0">
+      <div class="cart-table table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Trainer</th>
+              <th>Price</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of cart.items">
+              <td>
+                <strong>{{ item.course?.title }}</strong>
+                <p class="text-muted mb-0" style="font-size: 12px;">
+                  {{ item.course?.description | slice:0:60 }}...
+                </p>
+              </td>
+              <td>
+                {{ item.course?.trainer?.firstname }}
+                {{ item.course?.trainer?.lastname }}
+              </td>
+              <td><strong>{{ item.price }} TND</strong></td>
+              <td>
+                <button class="btn btn-sm btn-danger"
+                  (click)="removeFromCart(item.course?._id)"
+                  [disabled]="removeLoading === item.course?._id">
+                  <i class='bx bx-trash-alt'></i>
+                  {{ removeLoading === item.course?._id ? '...' : 'Remove' }}
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Cart Total -->
+      <div class="cart-totals">
+        <ul>
+          <li>Total <span><strong>{{ cart.totalPrice }} TND</strong></span></li>
+        </ul>
+        <div class="d-flex gap-3 mt-3">
+          <button class="btn btn-outline-danger" (click)="clearCart()">
+            🗑️ Clear Cart
+          </button>
+          <button class="default-btn" routerLink="/checkout">
+            💳 Go to Payment
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

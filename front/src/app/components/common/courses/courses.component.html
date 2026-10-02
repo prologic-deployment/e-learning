@@ -1,0 +1,77 @@
+<div class="courses-area pt-100 pb-75"
+  [ngClass]="{'pt-0': router.url === '/online-training-school' || router.url === '/online-education-courses'}">
+  <div class="container">
+    <div class="section-title">
+      <h2>Explore top courses</h2>
+      <p>Explore all of our courses and pick your suitable ones to enroll and start learning with us!</p>
+      <a routerLink="/courses-grid" class="default-btn">View All Courses</a>
+    </div>
+
+    <!-- Messages -->
+    <div *ngIf="enrollSuccess" class="alert alert-success mb-3">{{ enrollSuccess }}</div>
+    <div *ngIf="enrollError" class="alert alert-danger mb-3">{{ enrollError }}</div>
+
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+      <p>Loading courses...</p>
+    </div>
+
+    <!-- Courses Grid -->
+    <div class="row" *ngIf="!loading">
+      <div *ngIf="courses.length === 0" class="col-12 text-center py-5">
+        <p class="text-muted">No courses available yet !</p>
+      </div>
+
+      <div class="col-xl-3 col-lg-4 col-sm-6 col-md-6"
+        *ngFor="let course of courses">
+        <div class="single-courses-box">
+          <div class="image">
+            <img src="assets/img/courses/courses-img1.jpg" alt="course">
+            <a (click)="goToCourse(course._id)" class="link-btn" style="cursor:pointer;"></a>
+          </div>
+          <div class="content">
+            <h3>
+              <a (click)="goToCourse(course._id)" style="cursor:pointer;">
+                {{ course.title }}
+              </a>
+            </h3>
+            <a class="author">
+              {{ course.trainer?.firstname }} {{ course.trainer?.lastname }}
+            </a>
+            <div class="price">
+              <span class="new-price" *ngIf="course.price > 0">{{ course.price }} TND</span>
+              <span class="new-price" *ngIf="course.price === 0" style="color: green;">Free</span>
+            </div>
+          </div>
+          <div class="popover-quickview">
+            <h3>{{ course.title }}</h3>
+            <p>{{ course.description }}</p>
+            <div class="mt-2" *ngIf="course.tags?.length > 0">
+              <span *ngFor="let tag of course.tags"
+                class="badge bg-secondary me-1">{{ tag }}</span>
+            </div>
+            <div class="btn-box d-flex align-items-center mt-3">
+              <button class="default-btn"
+                (click)="enrollCourse(course._id)"
+                [disabled]="enrollingId === course._id">
+                {{ enrollingId === course._id ? 'Enrolling...' : 'Enroll Now' }}
+              </button>
+              <button class="default-btn ms-2"
+                (click)="goToCourse(course._id)">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="shape2" [ngClass]="{'style-two': router.url === '/vendor-certification-etraining'}">
+    <img src="assets/img/shape/shape2.png" alt="shape">
+  </div>
+  <div class="shape3"><img src="assets/img/shape/shape3.png" alt="shape"></div>
+  <div class="shape4" [ngClass]="{'style-three': router.url === '/vendor-certification-etraining'}">
+    <img src="assets/img/shape/shape4.png" alt="shape">
+  </div>
+</div>

@@ -1,0 +1,44 @@
+# ── Python ──────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments (venv/ alone was not enough)
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# ── Secrets ─────────────────────────────────────────────────────────────
+# NOTE: keep .env.example tracked — it is the only safe source of the
+# variable names/placeholders. `.env.*` alone used to swallow it.
+.env
+.env.*
+!.env.example
+
+# ── Generated model + data artifacts ────────────────────────────────────
+# Produced by train_model.py from the committed udemy_courses.csv dataset.
+# Regenerate locally with `python train_model.py` instead of committing
+# binaries (tfidf_model.pkl / cosine_sim.pkl were previously inconsistent:
+# only one of the two artifacts was ignored, listed twice).
+*.pkl
+courses_processed.csv
+
+# ── Runtime ─────────────────────────────────────────────────────────────
+uploads/
+instance/
+*.log
+
+# ── OS / editor ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini

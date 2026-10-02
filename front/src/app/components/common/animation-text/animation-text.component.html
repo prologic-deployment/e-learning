@@ -1,0 +1,29 @@
+<div class="animation-text-area pb-100">
+    <div class="oa-feedback-animation-slides">
+        <owl-carousel-o [options]="textSlides">
+            <ng-template carouselSlide>
+                <div class="oa-animation-content">
+                    <h1>Best <span>Online</span> Art <span>Learning</span> Platform</h1>
+                </div>
+            </ng-template>
+            <ng-template carouselSlide>
+                <div class="oa-animation-content">
+                    <h1>Best <span>Online</span> Art <span>Learning</span> Platform</h1>
+                </div>
+            </ng-template>
+            <ng-template carouselSlide>
+                <div class="oa-animation-content">
+                    <h1>Best <span>Online</span> Art <span>Learning</span> Platform</h1>
+                </div>
+            </ng-template>
+        </owl-carousel-o>
+    </div>
+    <svg style="display:none;">
+        <defs>
+            <filter id="stroke-text">
+                <feMorphology radius="1" operator="dilate"></feMorphology>
+                <feComposite operator="xor" in="SourceGraphic"/>
+            </filter>
+        </defs>
+    </svg>
+</div>

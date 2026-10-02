@@ -1,0 +1,175 @@
+<!-- Default Section -->
+<div class="categories-area pt-100 pb-75"
+  [ngClass]="{'d-none': router.url === '/distance-learning' || router.url === '/remote-training'}">
+  <div class="container">
+    <div class="section-title">
+      <h2>Top Categories</h2>
+      <p>Explore all of our courses and pick your suitable ones to enroll and start learning with us!</p>
+    </div>
+    <div class="row justify-content-center">
+
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+        <div class="single-categories-box">
+          <div class="icon"><i class="flaticon-web-programming"></i></div>
+          <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Development'}">💻 Development</a></h3>
+          <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Development'}" class="link-btn">
+            <i class="flaticon-right-arrow-outline"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+        <div class="single-categories-box">
+          <div class="icon"><i class="flaticon-career"></i></div>
+          <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Business'}">💼 Business</a></h3>
+          <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Business'}" class="link-btn">
+            <i class="flaticon-right-arrow-outline"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+        <div class="single-categories-box">
+          <div class="icon"><i class="flaticon-money"></i></div>
+          <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Finance'}">💰 Finance</a></h3>
+          <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Finance'}" class="link-btn">
+            <i class="flaticon-right-arrow-outline"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+        <div class="single-categories-box">
+          <div class="icon"><i class="flaticon-coding"></i></div>
+          <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'IT & Software'}">🖥️ IT & Software</a></h3>
+          <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'IT & Software'}" class="link-btn">
+            <i class="flaticon-right-arrow-outline"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+        <div class="single-categories-box">
+          <div class="icon"><i class="flaticon-paint-palette"></i></div>
+          <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Design'}">🎨 Design</a></h3>
+          <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Design'}" class="link-btn">
+            <i class="flaticon-right-arrow-outline"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+        <div class="single-categories-box">
+          <div class="icon"><i class="flaticon-megaphone"></i></div>
+          <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Marketing'}">📣 Marketing</a></h3>
+          <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Marketing'}" class="link-btn">
+            <i class="flaticon-right-arrow-outline"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+        <div class="single-categories-box">
+          <div class="icon"><i class="flaticon-data"></i></div>
+          <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Data Science'}">📊 Data Science</a></h3>
+          <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Data Science'}" class="link-btn">
+            <i class="flaticon-right-arrow-outline"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="shape6"><img src="assets/img/shape/shape6.png" alt="shape"></div>
+</div>
+
+<!-- Distance Learning Section -->
+<div class="categories-area pb-100 d-none"
+  [ngClass]="{'d-block': router.url === '/distance-learning'}">
+  <div class="container">
+    <div class="section-title style-two">
+      <h2>Top Categories</h2>
+      <p>Explore all of our courses and pick your suitable ones to enroll and start learning with us!</p>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="single-categories-item">
+          <img src="assets/img/icon/icon1.png" alt="icon">
+          <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Development'}">Development</a></h3>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="single-categories-item">
+          <img src="assets/img/icon/icon2.png" alt="icon">
+          <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Marketing'}">Marketing</a></h3>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="single-categories-item">
+          <img src="assets/img/icon/icon3.png" alt="icon">
+          <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Design'}">Design</a></h3>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="single-categories-item">
+          <img src="assets/img/icon/icon4.png" alt="icon">
+          <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Data Science'}">Data Science</a></h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remote Training Section -->
+<div class="rt-categories-area pt-100 pb-75 d-none"
+  style="background-image: url(assets/img/remote-training/categories/categories-bg.jpg);"
+  [ngClass]="{'d-block': router.url === '/remote-training'}">
+  <div class="container">
+    <div class="section-title">
+      <h2>Search By Top Categories</h2>
+      <p>Explore all of our courses and pick your suitable ones to enroll and start learning with us!</p>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+        <div class="rt-categories-box">
+          <div class="content">
+            <div class="image-icon">
+              <img src="assets/img/remote-training/categories/categories1.png" alt="image">
+            </div>
+            <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Development'}">Development</a></h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+        <div class="rt-categories-box">
+          <div class="content">
+            <div class="image-icon">
+              <img src="assets/img/remote-training/categories/categories2.png" alt="image">
+            </div>
+            <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Marketing'}">Marketing</a></h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+        <div class="rt-categories-box">
+          <div class="content">
+            <div class="image-icon">
+              <img src="assets/img/remote-training/categories/categories3.png" alt="image">
+            </div>
+            <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Data Science'}">Data Science</a></h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
+        <div class="rt-categories-box">
+          <div class="content">
+            <div class="image-icon">
+              <img src="assets/img/remote-training/categories/categories4.png" alt="image">
+            </div>
+            <h3><a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Business'}">Business</a></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

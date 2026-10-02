@@ -1,0 +1,356 @@
+<!-- Default Section -->
+<div
+    class="blog-area pt-100 pb-75"
+    [ngClass]="{'d-none': router.url === '/kitchen-coach' || router.url === '/learning-management' || router.url === '/remote-training' || router.url === '/online-art-learning'}"
+>
+    <div class="container">
+        <div class="section-title">
+            <h2>Edla latest publications</h2>
+            <p>Explore all of our courses and pick your suitable ones to enroll and start learning with us!</p>
+            <a routerLink="/blog-grid" class="default-btn">View All News</a>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog-post">
+                    <div class="image">
+                        <a routerLink="/blog-details" class="d-block">
+                            <img src="assets/img/blog/blog-img1.jpg" alt="blog-image">
+                        </a>
+                    </div>
+                    <div class="content">
+                        <ul class="meta">
+                            <li><a routerLink="/blog-grid">Web Dev</a></li>
+                            <li>15th Nov, 2024</li>
+                        </ul>
+                        <h3><a routerLink="/blog-details">Corporate online learning trends you still need to implement in 2024</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog-post">
+                    <div class="image">
+                        <a routerLink="/blog-details" class="d-block">
+                            <img src="assets/img/blog/blog-img2.jpg" alt="blog-image">
+                        </a>
+                    </div>
+                    <div class="content">
+                        <ul class="meta">
+                            <li><a routerLink="/blog-grid">Design</a></li>
+                            <li>14th Nov, 2024</li>
+                        </ul>
+                        <h3><a routerLink="/blog-details">Standard operating procedures (SOP) changes with an LMS</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog-post">
+                    <div class="image">
+                        <a routerLink="/blog-details" class="d-block">
+                            <img src="assets/img/blog/blog-img3.jpg" alt="blog-image">
+                        </a>
+                    </div>
+                    <div class="content">
+                        <ul class="meta">
+                            <li><a routerLink="/blog-grid">Software</a></li>
+                            <li>13th Nov, 2024</li>
+                        </ul>
+                        <h3><a routerLink="/blog-details">Questions to ask vendors before choosing an LMS platform</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="shape2"><img src="assets/img/shape/shape2.png" alt="shape"></div>
+    <div class="shape4"><img src="assets/img/shape/shape4.png" alt="shape"></div>
+</div>
+
+<!-- This section for Kitchen Coach Demo -->
+<div
+    class="blog-area pt-100 pb-75 d-none"
+    [ngClass]="{'d-block': router.url === '/kitchen-coach'}"
+>
+    <div class="container">
+        <div class="section-title">
+            <h2>Edla latest news</h2>
+            <p>Explore all of our courses and pick your suitable ones to enroll and start learning with us!</p>
+            <a routerLink="/blog-grid" class="default-btn">View All News</a>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog-post">
+                    <div class="image">
+                        <a routerLink="/blog-details" class="d-block">
+                            <img src="assets/img/kitchen-coach/blog/blog1.jpg" alt="blog-image">
+                        </a>
+                    </div>
+                    <div class="content">
+                        <ul class="meta">
+                            <li><a routerLink="/blog-grid">Wine</a></li>
+                            <li>15th Nov, 2024</li>
+                        </ul>
+                        <h3><a routerLink="/blog-details">Getting Started with Wine: Buy Smarter, Taste More</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog-post">
+                    <div class="image">
+                        <a routerLink="/blog-details" class="d-block">
+                            <img src="assets/img/kitchen-coach/blog/blog2.jpg" alt="blog-image">
+                        </a>
+                    </div>
+                    <div class="content">
+                        <ul class="meta">
+                            <li><a routerLink="/blog-grid">Pastries</a></li>
+                            <li>14th Nov, 2024</li>
+                        </ul>
+                        <h3><a routerLink="/blog-details">Baking Basics: Make Perfect Pastries Every Time</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog-post">
+                    <div class="image">
+                        <a routerLink="/blog-details" class="d-block">
+                            <img src="assets/img/kitchen-coach/blog/blog3.jpg" alt="blog-image">
+                        </a>
+                    </div>
+                    <div class="content">
+                        <ul class="meta">
+                            <li><a routerLink="/blog-grid">Meal</a></li>
+                            <li>13th Nov, 2024</li>
+                        </ul>
+                        <h3><a routerLink="/blog-details">Creative Cooking: Simple Sauces to Elevate Every Meal</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- This section for Learning Management Demo -->
+<div
+    class="blog-area pt-100 pb-75 d-none"
+    [ngClass]="{'d-block': router.url === '/learning-management'}"
+>
+    <div class="container">
+        <div class="section-title">
+            <h2>Edla latest news</h2>
+            <p>Explore all of our courses and pick your suitable ones to enroll and start learning with us!</p>
+            <a routerLink="/blog-grid" class="default-btn">View All News</a>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog-item">
+                    <div class="image">
+                        <a routerLink="/blog-details" class="d-block">
+                            <img src="assets/img/vendor-certification/blog/blog1.jpg" alt="blog-image">
+                        </a>
+                        <a routerLink="/blog-grid" class="tag">Web Dev</a>
+                    </div>
+                    <div class="content">
+                        <span class="date">15th Nov, 2024</span>
+                        <h3><a routerLink="/blog-details">Corporate online learning trends you still need to implement in 2024</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                        <a href="#" class="default-btn">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog-item">
+                    <div class="image">
+                        <a routerLink="/blog-details" class="d-block">
+                            <img src="assets/img/vendor-certification/blog/blog2.jpg" alt="blog-image">
+                        </a>
+                        <a routerLink="/blog-grid" class="tag">Design</a>
+                    </div>
+                    <div class="content">
+                        <span class="date">14th Nov, 2024</span>
+                        <h3><a routerLink="/blog-details">Standard operating procedures (SOP) changes with an LMS</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                        <a href="#" class="default-btn">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="single-blog-item">
+                    <div class="image">
+                        <a routerLink="/blog-details" class="d-block">
+                            <img src="assets/img/vendor-certification/blog/blog3.jpg" alt="blog-image">
+                        </a>
+                        <a routerLink="/blog-grid" class="tag">Software</a>
+                    </div>
+                    <div class="content">
+                        <span class="date">13th Nov, 2024</span>
+                        <h3><a routerLink="/blog-details">Questions to ask vendors before choosing an LMS platform</a></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+                        <a href="#" class="default-btn">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- This section for Remote Training Demo & Online Art Learning Demo -->
+<div
+    class="rt-blog-area pt-100 pb-75 d-none"
+    [ngClass]="{'d-block': router.url === '/remote-training' || router.url === '/online-art-learning'}"
+>
+    <div class="container">
+        <div class="section-title">
+            <h2>Edla latest publications</h2>
+        </div>
+        <div class="rt-blog-slides">
+            <owl-carousel-o [options]="blogSlides">
+                <ng-template carouselSlide>
+                    <div class="rt-blog-card">
+                        <div class="blog-image">
+                            <a routerLink="/blog-details" class="d-block">
+                                <img src="assets/img/remote-training/blog/blog1.jpg" alt="image">
+                            </a>
+                        </div>
+                        <div class="blog-content">
+                            <h3>
+                                <a routerLink="/blog-details">In person, virtual or hybrid: helpful tools for back to school</a>
+                            </h3>
+                            <ul class="meta">
+                                <li>
+                                    <a routerLink="/blog-grid">
+                                        <img src="assets/img/user/user1.jpg" alt="image">
+                                        Andrew Watson
+                                    </a>
+                                </li>
+                                <li>2nd Nov, 2024</li>
+                            </ul>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="rt-blog-card">
+                        <div class="blog-image">
+                            <a routerLink="/blog-details" class="d-block">
+                                <img src="assets/img/remote-training/blog/blog2.jpg" alt="image">
+                            </a>
+                        </div>
+                        <div class="blog-content">
+                            <h3>
+                                <a routerLink="/blog-details">A new model for inclusive Advance computer science education</a>
+                            </h3>
+                            <ul class="meta">
+                                <li>
+                                    <a routerLink="/blog-grid">
+                                        <img src="assets/img/user/user2.jpg" alt="image">
+                                        Jonathon Ronan
+                                    </a>
+                                </li>
+                                <li>2nd Nov, 2024</li>
+                            </ul>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="rt-blog-card">
+                        <div class="blog-image">
+                            <a routerLink="/blog-details" class="d-block">
+                                <img src="assets/img/remote-training/blog/blog3.jpg" alt="image">
+                            </a>
+                        </div>
+                        <div class="blog-content">
+                            <h3>
+                                <a routerLink="/blog-details">9 apps to help people to sharpen their coding skills</a>
+                            </h3>
+                            <ul class="meta">
+                                <li>
+                                    <a routerLink="/blog-grid">
+                                        <img src="assets/img/user/user3.jpg" alt="image">
+                                        Angela Carter
+                                    </a>
+                                </li>
+                                <li>2nd Nov, 2024</li>
+                            </ul>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="rt-blog-card">
+                        <div class="blog-image">
+                            <a routerLink="/blog-details" class="d-block">
+                                <img src="assets/img/remote-training/blog/blog1.jpg" alt="image">
+                            </a>
+                        </div>
+                        <div class="blog-content">
+                            <h3>
+                                <a routerLink="/blog-details">In person, virtual or hybrid: helpful tools for back to school</a>
+                            </h3>
+                            <ul class="meta">
+                                <li>
+                                    <a routerLink="/blog-grid">
+                                        <img src="assets/img/user/user1.jpg" alt="image">
+                                        Andrew Watson
+                                    </a>
+                                </li>
+                                <li>2nd Nov, 2024</li>
+                            </ul>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="rt-blog-card">
+                        <div class="blog-image">
+                            <a routerLink="/blog-details" class="d-block">
+                                <img src="assets/img/remote-training/blog/blog2.jpg" alt="image">
+                            </a>
+                        </div>
+                        <div class="blog-content">
+                            <h3>
+                                <a routerLink="/blog-details">A new model for inclusive Advance computer science education</a>
+                            </h3>
+                            <ul class="meta">
+                                <li>
+                                    <a routerLink="/blog-grid">
+                                        <img src="assets/img/user/user2.jpg" alt="image">
+                                        Jonathon Ronan
+                                    </a>
+                                </li>
+                                <li>2nd Nov, 2024</li>
+                            </ul>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template carouselSlide>
+                    <div class="rt-blog-card">
+                        <div class="blog-image">
+                            <a routerLink="/blog-details" class="d-block">
+                                <img src="assets/img/remote-training/blog/blog3.jpg" alt="image">
+                            </a>
+                        </div>
+                        <div class="blog-content">
+                            <h3>
+                                <a routerLink="/blog-details">9 apps to help people to sharpen their coding skills</a>
+                            </h3>
+                            <ul class="meta">
+                                <li>
+                                    <a routerLink="/blog-grid">
+                                        <img src="assets/img/user/user3.jpg" alt="image">
+                                        Angela Carter
+                                    </a>
+                                </li>
+                                <li>2nd Nov, 2024</li>
+                            </ul>
+                        </div>
+                    </div>
+                </ng-template>
+            </owl-carousel-o>
+        </div>
+    </div>
+    <div class="rt-blog-shape">
+        <img src="assets/img/remote-training/blog/shape.png" alt="image">
+    </div>
+</div>

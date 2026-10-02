@@ -1,0 +1,1080 @@
+<div class="dashboard-area ptb-100">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="row mb-4 align-items-center">
+      <div class="col-lg-8">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 56px; height: 56px; border-radius: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px; flex-shrink: 0;">
+            👤
+          </div>
+          <div>
+            <h2 style="font-weight: 800; color: #0f172a; margin: 0; font-size: 26px;">
+              Bonjour, {{ currentUser?.firstname }} {{ currentUser?.lastname }} 👋
+            </h2>
+            <p style="color: #64748b; margin: 0; font-size: 14px;">
+              Bienvenue sur votre espace d'apprentissage
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 text-end d-flex gap-2 justify-content-end mt-3 mt-lg-0">
+        <button (click)="goToCourses()"
+          style="padding: 10px 20px; border: 1.5px solid #667eea; border-radius: 12px;
+            color: #667eea; background: white; font-weight: 600; font-size: 13px;
+            cursor: pointer; transition: all 0.2s;">
+          📚 Explorer
+        </button>
+        <a routerLink="/cv"
+          style="padding: 10px 20px; border: none; border-radius: 12px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white; font-weight: 600; font-size: 13px;
+            cursor: pointer; text-decoration: none; display: inline-flex;
+            align-items: center;">
+          📄 Mon CV
+        </a>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div style="background: #f1f5f9; border-radius: 14px; padding: 6px;
+          display: flex; gap: 4px; flex-wrap: wrap;">
+          <ng-container *ngFor="let tab of tabs">
+            <button (click)="setTab(tab.id)"
+              style="padding: 9px 16px; border: none; border-radius: 10px;
+                font-size: 13px; font-weight: 600; cursor: pointer;
+                transition: all 0.2s; white-space: nowrap;"
+              [style.background]="activeTab === tab.id ? 'white' : 'transparent'"
+              [style.color]="activeTab === tab.id ? '#667eea' : '#64748b'"
+              [style.boxShadow]="activeTab === tab.id ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
+              {{ tab.icon }} {{ tab.label }}
+              <span *ngIf="tab.id === 'notifications' && unreadCount > 0"
+                style="background: #ef4444; color: white; padding: 1px 7px;
+                  border-radius: 20px; font-size: 10px; margin-left: 4px;">
+                {{ unreadCount }}
+              </span>
+            </button>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== OVERVIEW TAB ========== -->
+    <div *ngIf="activeTab === 'overview'">
+      <div *ngIf="profileLoading" class="text-center py-5">
+        <div class="spinner-border text-primary"></div>
+      </div>
+
+      <div *ngIf="profile && !profileLoading">
+
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+          <div class="col-lg-3 col-md-6 mb-3">
+            <div style="background: white; border-radius: 20px;
+              padding: 24px; border: 1px solid #f0f0f0;
+              box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <div style="width: 44px; height: 44px; border-radius: 12px;
+                  background: #ede9fe; display: flex; align-items: center;
+                  justify-content: center; font-size: 20px;">📚</div>
+                <span style="font-size: 11px; font-weight: 600; color: #667eea;
+                  background: #f0f4ff; padding: 4px 10px; border-radius: 20px;">
+                  Total
+                </span>
+              </div>
+              <div style="font-size: 32px; font-weight: 800; color: #0f172a; line-height: 1;">
+                {{ profile.stats?.totalEnrolledCourses || 0 }}
+              </div>
+              <div style="font-size: 13px; color: #64748b; margin-top: 4px;">
+                Cours inscrits
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mb-3">
+            <div style="background: white; border-radius: 20px;
+              padding: 24px; border: 1px solid #f0f0f0;
+              box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <div style="width: 44px; height: 44px; border-radius: 12px;
+                  background: #dcfce7; display: flex; align-items: center;
+                  justify-content: center; font-size: 20px;">🏆</div>
+                <span style="font-size: 11px; font-weight: 600; color: #10b981;
+                  background: #f0fdf4; padding: 4px 10px; border-radius: 20px;">
+                  Terminés
+                </span>
+              </div>
+              <div style="font-size: 32px; font-weight: 800; color: #0f172a; line-height: 1;">
+                {{ profile.stats?.completedCourses || 0 }}
+              </div>
+              <div style="font-size: 13px; color: #64748b; margin-top: 4px;">
+                Cours complétés
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mb-3">
+            <div style="background: white; border-radius: 20px;
+              padding: 24px; border: 1px solid #f0f0f0;
+              box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <div style="width: 44px; height: 44px; border-radius: 12px;
+                  background: #fef3c7; display: flex; align-items: center;
+                  justify-content: center; font-size: 20px;">📈</div>
+                <span style="font-size: 11px; font-weight: 600; color: #f59e0b;
+                  background: #fffbeb; padding: 4px 10px; border-radius: 20px;">
+                  Moy.
+                </span>
+              </div>
+              <div style="font-size: 32px; font-weight: 800; color: #0f172a; line-height: 1;">
+                {{ profile.stats?.averageProgress || 0 }}<span style="font-size: 18px;">%</span>
+              </div>
+              <div style="font-size: 13px; color: #64748b; margin-top: 4px;">
+                Progression moyenne
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 mb-3">
+            <div style="background: white; border-radius: 20px;
+              padding: 24px; border: 1px solid #f0f0f0;
+              box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <div style="width: 44px; height: 44px; border-radius: 12px;
+                  background: #e0f2fe; display: flex; align-items: center;
+                  justify-content: center; font-size: 20px;">🏅</div>
+                <span style="font-size: 11px; font-weight: 600; color: #06b6d4;
+                  background: #f0fdfe; padding: 4px 10px; border-radius: 20px;">
+                  Badges
+                </span>
+              </div>
+              <div style="font-size: 32px; font-weight: 800; color: #0f172a; line-height: 1;">
+                {{ badges.length }}
+              </div>
+              <div style="font-size: 13px; color: #64748b; margin-top: 4px;">
+                Badges obtenus
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Courses -->
+        <div style="background: white; border-radius: 20px; padding: 28px;
+          border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
+                Cours récents
+              </h5>
+              <p style="font-size: 13px; color: #64748b; margin: 0;">
+                Vos dernières formations
+              </p>
+            </div>
+            <button (click)="setTab('courses')"
+              style="padding: 8px 16px; border: 1.5px solid #e2e8f0;
+                border-radius: 10px; background: white; color: #64748b;
+                font-size: 13px; font-weight: 600; cursor: pointer;">
+              Voir tout →
+            </button>
+          </div>
+
+          <div *ngIf="enrollments.length === 0" class="text-center py-4">
+            <div style="font-size: 48px; margin-bottom: 12px;">📚</div>
+            <p style="color: #64748b; margin-bottom: 16px;">
+              Aucun cours pour le moment
+            </p>
+            <button (click)="goToCourses()"
+              style="padding: 10px 24px; border: none; border-radius: 12px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white; font-weight: 600; cursor: pointer;">
+              Explorer les cours
+            </button>
+          </div>
+
+          <div *ngFor="let enrollment of enrollments.slice(0, 3)" class="mb-4">
+            <div style="display: flex; justify-content: space-between;
+              align-items: center; margin-bottom: 8px;">
+              <div>
+                <div style="font-weight: 600; color: #0f172a; font-size: 14px;">
+                  {{ enrollment.course?.title }}
+                </div>
+                <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">
+                  {{ enrollment.course?.category }}
+                </div>
+              </div>
+              <span style="padding: 4px 12px; border-radius: 20px; font-size: 11px;
+                font-weight: 600;"
+                [style.background]="enrollment.completed ? '#f0fdf4' : '#f0f4ff'"
+                [style.color]="enrollment.completed ? '#10b981' : '#667eea'">
+                {{ enrollment.completed ? 'Terminé' : 'En cours' }}
+              </span>
+            </div>
+            <div style="background: #f1f5f9; border-radius: 99px; height: 8px; overflow: hidden;">
+              <div style="height: 100%; border-radius: 99px; transition: width 0.5s;"
+                [style.width.%]="enrollment.progress"
+                [style.background]="enrollment.completed ?
+                  'linear-gradient(135deg, #10b981, #059669)' :
+                  'linear-gradient(135deg, #667eea, #764ba2)'">
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-between;
+              margin-top: 4px;">
+              <span style="font-size: 11px; color: #94a3b8;">
+                {{ enrollment.progress }}% complété
+              </span>
+              <span *ngIf="enrollment.deadline" style="font-size: 11px; color: #ef4444;">
+                ⏰ {{ enrollment.deadline | date:'dd/MM/yyyy' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== COURSES TAB ========== -->
+    <div *ngIf="activeTab === 'courses'">
+      <div *ngIf="enrollmentsLoading" class="text-center py-5">
+        <div class="spinner-border text-primary"></div>
+      </div>
+      <div *ngIf="!enrollmentsLoading">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h5 style="font-weight: 700; color: #0f172a; margin: 0;">Mes Formations</h5>
+            <p style="font-size: 13px; color: #64748b; margin: 0;">
+              {{ enrollments.length }} cours inscrits
+            </p>
+          </div>
+          <button (click)="exportExcel()"
+            style="padding: 9px 18px; border: none; border-radius: 12px;
+              background: linear-gradient(135deg, #667eea, #764ba2);
+              color: white; font-weight: 600; font-size: 13px; cursor: pointer;">
+            📊 Exporter
+          </button>
+        </div>
+
+        <div *ngIf="enrollments.length === 0" class="text-center py-5">
+          <div style="font-size: 56px; margin-bottom: 16px;">📚</div>
+          <h5 style="color: #0f172a; font-weight: 700;">Aucune formation</h5>
+          <p style="color: #64748b; margin-bottom: 20px;">
+            Inscrivez-vous à un cours pour commencer votre apprentissage
+          </p>
+          <button (click)="goToCourses()"
+            style="padding: 12px 28px; border: none; border-radius: 12px;
+              background: linear-gradient(135deg, #667eea, #764ba2);
+              color: white; font-weight: 600; cursor: pointer;">
+            Explorer les cours
+          </button>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6 mb-4" *ngFor="let enrollment of enrollments">
+            <div style="background: white; border-radius: 20px; padding: 24px;
+              border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+              height: 100%;">
+
+              <!-- Header -->
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div style="flex: 1;">
+                  <div style="font-weight: 700; color: #0f172a; font-size: 15px;
+                    margin-bottom: 4px; line-height: 1.4;">
+                    {{ enrollment.course?.title }}
+                  </div>
+                  <div style="font-size: 12px; color: #94a3b8;">
+                    {{ enrollment.course?.description ?
+                      enrollment.course.description.substring(0, 60) + '...' : '' }}
+                  </div>
+                </div>
+                <span style="padding: 4px 12px; border-radius: 20px; font-size: 11px;
+                  font-weight: 700; margin-left: 12px; flex-shrink: 0;"
+                  [style.background]="enrollment.completed ? '#f0fdf4' : '#f0f4ff'"
+                  [style.color]="enrollment.completed ? '#10b981' : '#667eea'">
+                  {{ enrollment.completed ? 'Terminé' : 'En cours' }}
+                </span>
+              </div>
+
+              <!-- Category badge -->
+              <div style="margin-bottom: 16px;">
+                <span style="background: #f1f5f9; color: #64748b; padding: 4px 10px;
+                  border-radius: 8px; font-size: 11px; font-weight: 600;">
+                  {{ enrollment.course?.category }}
+                </span>
+              </div>
+
+              <!-- Progress -->
+              <div style="margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between;
+                  margin-bottom: 6px;">
+                  <span style="font-size: 12px; font-weight: 600; color: #374151;">
+                    Progression
+                  </span>
+                  <span style="font-size: 12px; font-weight: 700;"
+                    [style.color]="enrollment.completed ? '#10b981' : '#667eea'">
+                    {{ enrollment.progress }}%
+                  </span>
+                </div>
+                <div style="background: #f1f5f9; border-radius: 99px; height: 8px;">
+                  <div style="height: 100%; border-radius: 99px; transition: width 0.5s;"
+                    [style.width.%]="enrollment.progress"
+                    [style.background]="enrollment.completed ?
+                      'linear-gradient(135deg, #10b981, #059669)' :
+                      'linear-gradient(135deg, #667eea, #764ba2)'">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Deadline -->
+              <div *ngIf="enrollment.deadline" style="margin-bottom: 16px;">
+                <span style="font-size: 12px; color: #ef4444; font-weight: 600;
+                  background: #fef2f2; padding: 4px 10px; border-radius: 8px;">
+                  ⏰ Deadline : {{ enrollment.deadline | date:'dd/MM/yyyy' }}
+                </span>
+              </div>
+
+              <!-- Action -->
+              <button (click)="goToCourse(enrollment.course?._id)"
+                style="width: 100%; padding: 10px; border: none; border-radius: 12px;
+                  font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;"
+                [style.background]="enrollment.completed ?
+                  '#f0fdf4' : 'linear-gradient(135deg, #667eea, #764ba2)'"
+                [style.color]="enrollment.completed ? '#10b981' : 'white'">
+                {{ enrollment.completed ? '🔁 Revoir le cours' : '▶ Continuer' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== HISTORY TAB ========== -->
+    <div *ngIf="activeTab === 'history'">
+      <div *ngIf="historyLoading" class="text-center py-5">
+        <div class="spinner-border text-primary"></div>
+      </div>
+      <div *ngIf="!historyLoading">
+
+        <!-- Enrollments History -->
+        <div style="background: white; border-radius: 20px; padding: 28px;
+          border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+          margin-bottom: 24px;">
+
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <div style="width: 44px; height: 44px; border-radius: 12px;
+              background: #ede9fe; display: flex; align-items: center;
+              justify-content: center; font-size: 20px;">📚</div>
+            <div>
+              <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
+                Historique des formations
+              </h5>
+              <p style="font-size: 13px; color: #64748b; margin: 0;">
+                {{ history.length }} enrollment(s)
+              </p>
+            </div>
+          </div>
+
+          <div *ngIf="history.length === 0" class="text-center py-4">
+            <div style="font-size: 48px; margin-bottom: 12px;">📚</div>
+            <p style="color: #64748b;">Aucun historique disponible</p>
+          </div>
+
+          <div class="table-responsive" *ngIf="history.length > 0">
+            <table class="table align-middle" style="font-size: 13px;">
+              <thead>
+                <tr style="border-bottom: 2px solid #f1f5f9;">
+                  <th style="color: #94a3b8; font-weight: 600; padding: 12px 8px;
+                    border: none; text-transform: uppercase; font-size: 11px;
+                    letter-spacing: 0.5px;">Cours</th>
+                  <th style="color: #94a3b8; font-weight: 600; padding: 12px 8px;
+                    border: none; text-transform: uppercase; font-size: 11px;
+                    letter-spacing: 0.5px;">Catégorie</th>
+                  <th style="color: #94a3b8; font-weight: 600; padding: 12px 8px;
+                    border: none; text-transform: uppercase; font-size: 11px;
+                    letter-spacing: 0.5px;">Progression</th>
+                  <th style="color: #94a3b8; font-weight: 600; padding: 12px 8px;
+                    border: none; text-transform: uppercase; font-size: 11px;
+                    letter-spacing: 0.5px;">Statut</th>
+                  <th style="color: #94a3b8; font-weight: 600; padding: 12px 8px;
+                    border: none; text-transform: uppercase; font-size: 11px;
+                    letter-spacing: 0.5px;">Date</th>
+                  <th style="border: none;"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let enrollment of history"
+                  style="border-bottom: 1px solid #f8fafc; transition: background 0.2s;"
+                  onmouseover="this.style.background='#fafbff'"
+                  onmouseout="this.style.background='white'">
+                  <td style="padding: 14px 8px; border: none;">
+                    <div style="font-weight: 600; color: #0f172a;">
+                      {{ enrollment.course?.title }}
+                    </div>
+                    <div style="font-size: 11px; color: #94a3b8;">
+                      {{ enrollment.course?.trainer?.firstname }}
+                      {{ enrollment.course?.trainer?.lastname }}
+                    </div>
+                  </td>
+                  <td style="padding: 14px 8px; border: none;">
+                    <span style="background: #f1f5f9; color: #64748b; padding: 4px 10px;
+                      border-radius: 8px; font-size: 11px; font-weight: 600;">
+                      {{ enrollment.course?.category || 'N/A' }}
+                    </span>
+                  </td>
+                  <td style="padding: 14px 8px; border: none; min-width: 130px;">
+                    <div style="background: #f1f5f9; border-radius: 99px;
+                      height: 6px; margin-bottom: 4px;">
+                      <div style="height: 100%; border-radius: 99px;"
+                        [style.width.%]="enrollment.progress"
+                        [style.background]="enrollment.completed ?
+                          'linear-gradient(135deg, #10b981, #059669)' :
+                          'linear-gradient(135deg, #667eea, #764ba2)'">
+                      </div>
+                    </div>
+                    <span style="font-size: 11px; color: #94a3b8;">
+                      {{ enrollment.progress }}%
+                    </span>
+                  </td>
+                  <td style="padding: 14px 8px; border: none;">
+                    <span style="padding: 4px 12px; border-radius: 20px;
+                      font-size: 11px; font-weight: 700;"
+                      [style.background]="enrollment.completed ? '#f0fdf4' :
+                        enrollment.progress > 0 ? '#f0f4ff' : '#f8fafc'"
+                      [style.color]="enrollment.completed ? '#10b981' :
+                        enrollment.progress > 0 ? '#667eea' : '#94a3b8'">
+                      {{ enrollment.completed ? 'Terminé' :
+                        enrollment.progress > 0 ? 'En cours' : 'Non commencé' }}
+                    </span>
+                  </td>
+                  <td style="padding: 14px 8px; border: none;">
+                    <span style="font-size: 12px; color: #94a3b8;">
+                      {{ enrollment.createdAt | date:'dd/MM/yyyy' }}
+                    </span>
+                  </td>
+                  <td style="padding: 14px 8px; border: none;">
+                    <button (click)="goToCourse(enrollment.course?._id)"
+                      style="padding: 6px 14px; border: 1.5px solid #e2e8f0;
+                        border-radius: 8px; background: white; color: #667eea;
+                        font-size: 12px; font-weight: 600; cursor: pointer;">
+                      ▶
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Purchases History -->
+        <div style="background: white; border-radius: 20px; padding: 28px;
+          border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <div style="width: 44px; height: 44px; border-radius: 12px;
+              background: #dcfce7; display: flex; align-items: center;
+              justify-content: center; font-size: 20px;">🛒</div>
+            <div>
+              <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
+                Historique des achats
+              </h5>
+              <p style="font-size: 13px; color: #64748b; margin: 0;">
+                {{ purchases.length }} achat(s)
+              </p>
+            </div>
+          </div>
+
+          <div *ngIf="purchases.length === 0" class="text-center py-4">
+            <div style="font-size: 48px; margin-bottom: 12px;">🛒</div>
+            <p style="color: #64748b;">Aucun achat pour le moment</p>
+          </div>
+
+          <div class="table-responsive" *ngIf="purchases.length > 0">
+            <table class="table align-middle" style="font-size: 13px;">
+              <thead>
+                <tr style="border-bottom: 2px solid #f1f5f9;">
+                  <th style="color: #94a3b8; font-weight: 600; padding: 12px 8px;
+                    border: none; text-transform: uppercase; font-size: 11px;
+                    letter-spacing: 0.5px;">Cours</th>
+                  <th style="color: #94a3b8; font-weight: 600; padding: 12px 8px;
+                    border: none; text-transform: uppercase; font-size: 11px;
+                    letter-spacing: 0.5px;">Montant</th>
+                  <th style="color: #94a3b8; font-weight: 600; padding: 12px 8px;
+                    border: none; text-transform: uppercase; font-size: 11px;
+                    letter-spacing: 0.5px;">Méthode</th>
+                  <th style="color: #94a3b8; font-weight: 600; padding: 12px 8px;
+                    border: none; text-transform: uppercase; font-size: 11px;
+                    letter-spacing: 0.5px;">Statut</th>
+                  <th style="color: #94a3b8; font-weight: 600; padding: 12px 8px;
+                    border: none; text-transform: uppercase; font-size: 11px;
+                    letter-spacing: 0.5px;">Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let purchase of purchases"
+                  style="border-bottom: 1px solid #f8fafc;">
+                  <td style="padding: 14px 8px; border: none; font-weight: 600; color: #0f172a;">
+                    {{ purchase.course?.title }}
+                  </td>
+                  <td style="padding: 14px 8px; border: none;">
+                    <span style="font-weight: 700; color: #10b981;">
+                      {{ purchase.amount || purchase.course?.price }} TND
+                    </span>
+                  </td>
+                  <td style="padding: 14px 8px; border: none;">
+                    <span style="background: #f0f4ff; color: #667eea; padding: 4px 10px;
+                      border-radius: 8px; font-size: 11px; font-weight: 600;">
+                      {{ purchase.paymentMethod || 'Online' }}
+                    </span>
+                  </td>
+                  <td style="padding: 14px 8px; border: none;">
+                    <span style="padding: 4px 12px; border-radius: 20px;
+                      font-size: 11px; font-weight: 700;"
+                      [style.background]="purchase.status === 'completed' ? '#f0fdf4' :
+                        purchase.status === 'pending' ? '#fffbeb' : '#fef2f2'"
+                      [style.color]="purchase.status === 'completed' ? '#10b981' :
+                        purchase.status === 'pending' ? '#f59e0b' : '#ef4444'">
+                      {{ purchase.status === 'completed' ? 'Complété' :
+                        purchase.status === 'pending' ? 'En attente' : 'Échoué' }}
+                    </span>
+                  </td>
+                  <td style="padding: 14px 8px; border: none;">
+                    <span style="font-size: 12px; color: #94a3b8;">
+                      {{ purchase.createdAt | date:'dd/MM/yyyy' }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== BADGES TAB ========== -->
+    <div *ngIf="activeTab === 'badges'">
+      <div *ngIf="badgesLoading" class="text-center py-5">
+        <div class="spinner-border text-primary"></div>
+      </div>
+      <div *ngIf="!badgesLoading">
+
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div>
+            <h5 style="font-weight: 700; color: #0f172a; margin: 0;">Mes Badges</h5>
+            <p style="font-size: 13px; color: #64748b; margin: 0;">
+              {{ badges.length }} badge(s) obtenus
+            </p>
+          </div>
+        </div>
+
+        <div *ngIf="badges.length === 0"
+          style="background: white; border-radius: 20px; padding: 60px;
+            border: 1px solid #f0f0f0; text-align: center;">
+          <div style="font-size: 64px; margin-bottom: 16px;">🏅</div>
+          <h5 style="font-weight: 700; color: #0f172a; margin-bottom: 8px;">
+            Aucun badge pour le moment
+          </h5>
+          <p style="color: #64748b; margin-bottom: 20px;">
+            Terminez des cours pour débloquer vos premiers badges
+          </p>
+          <button (click)="goToCourses()"
+            style="padding: 12px 28px; border: none; border-radius: 12px;
+              background: linear-gradient(135deg, #667eea, #764ba2);
+              color: white; font-weight: 600; cursor: pointer;">
+            Commencer à apprendre
+          </button>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-3 col-md-6 mb-4" *ngFor="let item of badges">
+            <div style="background: white; border-radius: 20px; padding: 28px;
+              border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+              text-align: center; position: relative; overflow: hidden;">
+
+              <div style="position: absolute; top: 0; left: 0; right: 0; height: 3px;"
+                [style.background]="item.badge?.color || 'linear-gradient(135deg, #667eea, #764ba2)'">
+              </div>
+
+              <div style="width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 16px;
+                display: flex; align-items: center; justify-content: center; font-size: 36px;"
+                [style.background]="item.badge?.color ? item.badge.color + '22' : '#f0f4ff'">
+                {{ item.badge?.icon || '🏅' }}
+              </div>
+
+              <div style="font-weight: 700; color: #0f172a; font-size: 15px; margin-bottom: 6px;">
+                {{ item.badge?.name }}
+              </div>
+
+              <div style="font-size: 12px; color: #64748b; margin-bottom: 16px; line-height: 1.5;">
+                {{ item.badge?.description }}
+              </div>
+
+              <div style="background: #f8fafc; padding: 6px 12px; border-radius: 8px;
+                font-size: 11px; color: #94a3b8; font-weight: 600; display: inline-block;">
+                🗓 {{ item.earnedAt | date:'dd/MM/yyyy' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== CERTIFICATES TAB ========== -->
+    <div *ngIf="activeTab === 'certificates'">
+      <div *ngIf="certificatesLoading" class="text-center py-5">
+        <div class="spinner-border text-primary"></div>
+      </div>
+      <div *ngIf="!certificatesLoading">
+
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <div>
+            <h5 style="font-weight: 700; color: #0f172a; margin: 0;">Mes Certificats</h5>
+            <p style="font-size: 13px; color: #64748b; margin: 0;">
+              {{ certificates.length }} certificat(s) obtenus
+            </p>
+          </div>
+        </div>
+
+        <div *ngIf="certificates.length === 0"
+          style="background: white; border-radius: 20px; padding: 60px;
+            border: 1px solid #f0f0f0; text-align: center;">
+          <div style="font-size: 64px; margin-bottom: 16px;">🎓</div>
+          <h5 style="font-weight: 700; color: #0f172a; margin-bottom: 8px;">
+            Aucun certificat pour le moment
+          </h5>
+          <p style="color: #64748b;">
+            Terminez un cours pour obtenir votre premier certificat
+          </p>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6 mb-4" *ngFor="let cert of certificates">
+            <div style="background: white; border-radius: 20px; padding: 28px;
+              border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+              position: relative; overflow: hidden;">
+
+              <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px;
+                background: linear-gradient(135deg, #667eea, #764ba2);">
+              </div>
+
+              <div class="d-flex align-items-start gap-3">
+                <div style="width: 52px; height: 52px; border-radius: 14px;
+                  background: linear-gradient(135deg, #667eea22, #764ba222);
+                  display: flex; align-items: center; justify-content: center;
+                  font-size: 26px; flex-shrink: 0;">
+                  🎓
+                </div>
+                <div style="flex: 1;">
+                  <div style="font-weight: 700; color: #0f172a; font-size: 15px;
+                    margin-bottom: 4px;">
+                    {{ cert.course?.title }}
+                  </div>
+                  <div style="font-size: 12px; color: #94a3b8; margin-bottom: 12px;">
+                    Délivré le {{ cert.date | date:'dd/MM/yyyy' }}
+                  </div>
+                  <div class="d-flex align-items-center gap-2">
+                    <span style="padding: 4px 12px; border-radius: 20px; font-size: 11px;
+                      font-weight: 700;"
+                      [style.background]="cert.isValid ? '#f0fdf4' : '#fef2f2'"
+                      [style.color]="cert.isValid ? '#10b981' : '#ef4444'">
+                      {{ cert.isValid ? 'Valide' : 'Révoqué' }}
+                    </span>
+                    <a *ngIf="cert.certificateUrl"
+                      [href]="'http://localhost:5000' + cert.certificateUrl"
+                      target="_blank"
+                      style="padding: 6px 14px; border: 1.5px solid #667eea;
+                        border-radius: 10px; color: #667eea; text-decoration: none;
+                        font-size: 12px; font-weight: 600;">
+                      📄 Télécharger
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== NOTIFICATIONS TAB ========== -->
+    <div *ngIf="activeTab === 'notifications'">
+      <div *ngIf="notificationsLoading" class="text-center py-5">
+        <div class="spinner-border text-primary"></div>
+      </div>
+      <div *ngIf="!notificationsLoading">
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
+              🔔 Notifications
+            </h5>
+            <p style="font-size: 13px; color: #64748b; margin: 0;">
+              <span *ngIf="unreadCount > 0" style="color: #667eea; font-weight: 600;">
+                {{ unreadCount }} non lue(s)
+              </span>
+              <span *ngIf="unreadCount === 0">Tout est lu ✅</span>
+            </p>
+          </div>
+          <div class="d-flex gap-2">
+            <button (click)="loadNotifications()"
+              style="padding: 9px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px;
+                background: white; color: #64748b; font-size: 13px;
+                font-weight: 600; cursor: pointer;">
+              🔄 Actualiser
+            </button>
+            <button *ngIf="unreadCount > 0" (click)="markAllAsRead()"
+              style="padding: 9px 18px; border: none; border-radius: 12px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white; font-size: 13px; font-weight: 600; cursor: pointer;">
+              Tout marquer comme lu
+            </button>
+          </div>
+        </div>
+
+        <!-- Empty state -->
+        <div *ngIf="notifications.length === 0"
+          style="background: white; border-radius: 20px; padding: 60px;
+            border: 1px solid #f0f0f0; text-align: center;">
+          <div style="font-size: 64px; margin-bottom: 16px;">🔔</div>
+          <h5 style="font-weight: 700; color: #0f172a; margin-bottom: 8px;">
+            Aucune notification
+          </h5>
+          <p style="color: #64748b; margin: 0;">
+            Vous recevrez des notifications pour vos cours, badges et certificats
+          </p>
+        </div>
+
+        <!-- Notifications list -->
+        <div *ngFor="let notif of notifications" class="mb-3"
+          style="background: white; border-radius: 16px; padding: 20px;
+            border: 1px solid; transition: all 0.2s; position: relative; overflow: hidden;"
+          [style.borderColor]="!notif.isRead ? '#667eea' : '#f0f0f0'"
+          [style.boxShadow]="!notif.isRead ? '0 4px 20px rgba(102,126,234,0.1)' : 'none'">
+
+          <!-- ✅ Barre colorée à gauche si non lu -->
+          <div *ngIf="!notif.isRead"
+            style="position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+              background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 4px 0 0 4px;">
+          </div>
+
+          <div class="d-flex justify-content-between align-items-start gap-3"
+            [style.paddingLeft]="!notif.isRead ? '8px' : '0'">
+
+            <div style="display: flex; gap: 14px; flex: 1;">
+
+              <!-- ✅ Icône dynamique selon le type -->
+              <div style="width: 46px; height: 46px; border-radius: 14px; flex-shrink: 0;
+                display: flex; align-items: center; justify-content: center; font-size: 22px;"
+                [style.background]="!notif.isRead ? '#f0f4ff' : '#f8fafc'">
+                {{ getNotifIcon(notif.type) }}
+              </div>
+
+              <div style="flex: 1;">
+                <!-- Title -->
+                <div style="font-size: 14px; margin-bottom: 4px; color: #0f172a;"
+                  [style.fontWeight]="!notif.isRead ? '700' : '600'">
+                  {{ notif.title || 'Nouvelle notification' }}
+                </div>
+
+                <!-- Message -->
+                <div style="font-size: 13px; color: #64748b; margin-bottom: 8px;
+                  line-height: 1.5;">
+                  {{ notif.message }}
+                </div>
+
+                <!-- Footer info -->
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                  <span style="font-size: 11px; color: #94a3b8;">
+                    🕐 {{ notif.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                  </span>
+                  <!-- ✅ Badge type -->
+                  <span *ngIf="notif.type"
+                    style="font-size: 10px; font-weight: 600; padding: 2px 8px;
+                      border-radius: 20px; background: #f0f4ff; color: #667eea;">
+                    {{ notif.type?.replace('_', ' ') }}
+                  </span>
+                  <!-- ✅ Badge temps réel -->
+                  <span *ngIf="!notif._id"
+                    style="font-size: 10px; font-weight: 600; padding: 2px 8px;
+                      border-radius: 20px; background: #f0fdf4; color: #10b981;">
+                    🔴 En direct
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="d-flex flex-column align-items-end gap-2">
+              <!-- Point bleu -->
+              <div *ngIf="!notif.isRead"
+                style="width: 10px; height: 10px; border-radius: 50%;
+                  background: #667eea; flex-shrink: 0;">
+              </div>
+              <!-- Bouton Lu -->
+              <button *ngIf="!notif.isRead && notif._id"
+                (click)="markAsRead(notif._id)"
+                style="padding: 6px 14px; border: 1.5px solid #e2e8f0;
+                  border-radius: 8px; background: white; color: #667eea;
+                  font-size: 12px; font-weight: 600; cursor: pointer;
+                  white-space: nowrap;"
+                onmouseover="this.style.background='#f0f4ff'"
+                onmouseout="this.style.background='white'">
+                ✓ Lu
+              </button>
+              <!-- Badge déjà lu -->
+              <span *ngIf="notif.isRead"
+                style="font-size: 11px; color: #94a3b8;">
+                Lu
+              </span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========== PROFILE TAB ========== -->
+    <div *ngIf="activeTab === 'profile'">
+      <div class="row">
+
+        <!-- Avatar + Stats -->
+        <div class="col-lg-4 mb-4">
+          <div style="background: white; border-radius: 20px; padding: 28px;
+            border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            text-align: center; margin-bottom: 20px;">
+
+            <div style="position: relative; display: inline-block; margin-bottom: 16px;">
+              <img *ngIf="avatarPreview" [src]="avatarPreview" alt="preview"
+                style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
+                  border: 3px solid #667eea;">
+              <img *ngIf="!avatarPreview && profile?.user?.avatar"
+                [src]="'http://localhost:5000' + profile.user.avatar" alt="avatar"
+                style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
+                  border: 3px solid #667eea;">
+              <img *ngIf="!avatarPreview && !profile?.user?.avatar"
+                src="assets/img/user/user1.jpg" alt="avatar"
+                style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
+                  border: 3px solid #667eea;">
+            </div>
+
+            <div style="font-weight: 700; color: #0f172a; font-size: 18px; margin-bottom: 4px;">
+              {{ profile?.user?.firstname }} {{ profile?.user?.lastname }}
+            </div>
+            <div style="font-size: 13px; color: #94a3b8; margin-bottom: 12px;">
+              {{ profile?.user?.email }}
+            </div>
+            <span style="background: linear-gradient(135deg, #667eea, #764ba2);
+              color: white; padding: 5px 16px; border-radius: 20px;
+              font-size: 12px; font-weight: 600;">
+              👤 {{ profile?.user?.role }}
+            </span>
+
+            <div class="mt-4">
+              <input type="file" class="form-control mb-2"
+                accept=".jpg,.jpeg,.png,.webp"
+                (change)="onAvatarSelected($event)"
+                style="border-radius: 10px; font-size: 13px; border: 1.5px solid #e2e8f0;">
+              <button (click)="updateAvatar()" [disabled]="!selectedAvatar"
+                style="width: 100%; padding: 10px; border: none; border-radius: 12px;
+                  background: linear-gradient(135deg, #667eea, #764ba2);
+                  color: white; font-weight: 600; font-size: 13px; cursor: pointer;"
+                [style.opacity]="!selectedAvatar ? '0.5' : '1'">
+                📷 Mettre à jour la photo
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Stats -->
+          <div style="background: white; border-radius: 20px; padding: 24px;
+            border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);"
+            *ngIf="profile">
+            <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 16px;">
+              📊 Statistiques
+            </h6>
+            <div class="row g-2">
+              <div class="col-6">
+                <div style="background: #f8fafc; border-radius: 12px; padding: 14px;
+                  text-align: center;">
+                  <div style="font-size: 22px; font-weight: 800; color: #667eea;">
+                    {{ profile?.stats?.totalEnrolledCourses || 0 }}
+                  </div>
+                  <div style="font-size: 11px; color: #64748b;">Cours</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div style="background: #f8fafc; border-radius: 12px; padding: 14px;
+                  text-align: center;">
+                  <div style="font-size: 22px; font-weight: 800; color: #10b981;">
+                    {{ profile?.stats?.completedCourses || 0 }}
+                  </div>
+                  <div style="font-size: 11px; color: #64748b;">Terminés</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div style="background: #f8fafc; border-radius: 12px; padding: 14px;
+                  text-align: center;">
+                  <div style="font-size: 22px; font-weight: 800; color: #f59e0b;">
+                    {{ profile?.stats?.averageProgress || 0 }}%
+                  </div>
+                  <div style="font-size: 11px; color: #64748b;">Progression</div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div style="background: #f8fafc; border-radius: 12px; padding: 14px;
+                  text-align: center;">
+                  <div style="font-size: 22px; font-weight: 800; color: #06b6d4;">
+                    {{ badges.length }}
+                  </div>
+                  <div style="font-size: 11px; color: #64748b;">Badges</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Profile + Password -->
+        <div class="col-lg-8">
+          <div *ngIf="profileUpdateSuccess" class="alert alert-success mb-3"
+            style="border-radius: 12px;">
+            {{ profileUpdateSuccess }}
+          </div>
+          <div *ngIf="profileUpdateError" class="alert alert-danger mb-3"
+            style="border-radius: 12px;">
+            {{ profileUpdateError }}
+          </div>
+
+          <!-- Edit Profile -->
+          <div style="background: white; border-radius: 20px; padding: 28px;
+            border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            margin-bottom: 20px;">
+            <h5 style="font-weight: 700; color: #0f172a; margin-bottom: 24px;">
+              ✏️ Modifier le profil
+            </h5>
+
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                    Prénom
+                  </label>
+                  <input type="text" class="form-control mt-1"
+                    [(ngModel)]="profileData.firstname" placeholder="Prénom"
+                    style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                      padding: 12px 15px; font-size: 14px;">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                    Nom
+                  </label>
+                  <input type="text" class="form-control mt-1"
+                    [(ngModel)]="profileData.lastname" placeholder="Nom"
+                    style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                      padding: 12px 15px; font-size: 14px;">
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                Téléphone
+              </label>
+              <input type="text" class="form-control mt-1"
+                [(ngModel)]="profileData.phone" placeholder="Téléphone"
+                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                  padding: 12px 15px; font-size: 14px;">
+            </div>
+
+            <div class="mb-4">
+              <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                Adresse
+              </label>
+              <input type="text" class="form-control mt-1"
+                [(ngModel)]="profileData.address" placeholder="Adresse"
+                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                  padding: 12px 15px; font-size: 14px;">
+            </div>
+
+            <button (click)="updateProfile()" [disabled]="profileUpdateLoading"
+              style="width: 100%; padding: 13px; border: none; border-radius: 12px;
+                font-size: 14px; font-weight: 600; color: white; cursor: pointer;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+              [style.opacity]="profileUpdateLoading ? '0.7' : '1'">
+              <span *ngIf="!profileUpdateLoading">💾 Sauvegarder</span>
+              <span *ngIf="profileUpdateLoading">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Mise à jour...
+              </span>
+            </button>
+          </div>
+
+          <!-- Change Password -->
+          <div style="background: white; border-radius: 20px; padding: 28px;
+            border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+            <h5 style="font-weight: 700; color: #0f172a; margin-bottom: 24px;">
+              🔒 Changer le mot de passe
+            </h5>
+
+            <div *ngIf="passwordSuccess" class="alert alert-success mb-3"
+              style="border-radius: 10px;">{{ passwordSuccess }}</div>
+            <div *ngIf="passwordError" class="alert alert-danger mb-3"
+              style="border-radius: 10px;">{{ passwordError }}</div>
+
+            <div class="mb-3">
+              <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                Mot de passe actuel *
+              </label>
+              <input type="password" class="form-control mt-1"
+                [(ngModel)]="passwordData.currentPassword"
+                placeholder="Mot de passe actuel"
+                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                  padding: 12px 15px; font-size: 14px;">
+            </div>
+
+            <div class="mb-3">
+              <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                Nouveau mot de passe *
+              </label>
+              <input type="password" class="form-control mt-1"
+                [(ngModel)]="passwordData.newPassword"
+                placeholder="Min 8 caractères, 1 majuscule, 1 chiffre"
+                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                  padding: 12px 15px; font-size: 14px;">
+            </div>
+
+            <div class="mb-4">
+              <label style="font-size: 13px; font-weight: 600; color: #374151;">
+                Confirmer le mot de passe *
+              </label>
+              <input type="password" class="form-control mt-1"
+                [(ngModel)]="passwordData.confirmPassword"
+                placeholder="Confirmer le mot de passe"
+                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                  padding: 12px 15px; font-size: 14px;">
+            </div>
+
+            <button (click)="changePassword()" [disabled]="passwordLoading"
+              style="width: 100%; padding: 13px; border: none; border-radius: 12px;
+                font-size: 14px; font-weight: 600; color: white; cursor: pointer;
+                background: linear-gradient(135deg, #f59e0b, #ef4444);
+                box-shadow: 0 4px 15px rgba(245,158,11,0.4);"
+              [style.opacity]="passwordLoading ? '0.7' : '1'">
+              <span *ngIf="!passwordLoading">🔒 Changer le mot de passe</span>
+              <span *ngIf="passwordLoading">
+                <span class="spinner-border spinner-border-sm me-2"></span>
+                Changement...
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

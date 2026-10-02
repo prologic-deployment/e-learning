@@ -1,0 +1,47 @@
+# ── Dependencies ─────────────────────────────────────────────────────────
+node_modules/
+jspm_packages/
+
+# ── Secrets ──────────────────────────────────────────────────────────────
+# `.env*` covers .env, .env.local, .env.production, … ; the example file
+# (placeholders only) stays trackable.
+.env*
+!.env.example
+
+# ── User-generated content ───────────────────────────────────────────────
+# Personal data (avatars, CVs, certificates, videos) — never commit.
+# NOTE: the `dir/*` form is required — git cannot re-include a file whose
+# parent directory is itself excluded, so the previous `uploads/` +
+# `!uploads/.gitkeep` pair silently did nothing.
+uploads/*
+!uploads/.gitkeep
+
+# ── Generated data / local vector stores ─────────────────────────────────
+chroma_db/
+*.sqlite3
+*.sqlite
+*.pkl
+
+# ── Logs ─────────────────────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pids/
+*.pid
+
+# ── Tests & coverage ─────────────────────────────────────────────────────
+coverage/
+.nyc_output/
+*.lcov
+
+# ── Caches / scratch ─────────────────────────────────────────────────────
+.cache/
+tmp/
+temp/
+
+# ── OS cruft ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini

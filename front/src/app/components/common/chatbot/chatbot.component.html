@@ -1,0 +1,116 @@
+<!-- ✅ Chat Button -->
+<div class="chatbot-wrapper">
+
+  <!-- Bubble Button -->
+  <button class="chat-bubble-btn" (click)="toggleChat()"
+    [class.open]="isOpen"
+    title="Assistant IA">
+    <span *ngIf="!isOpen" style="font-size: 26px;">💬</span>
+    <span *ngIf="isOpen" style="font-size: 20px; font-weight: 700;">✕</span>
+    <span class="chat-bubble-dot"></span>
+  </button>
+
+  <!-- Chat Window -->
+  <div class="chat-window" [class.visible]="isOpen">
+
+    <!-- Header -->
+    <div class="chat-header">
+      <div class="d-flex align-items-center gap-2">
+        <div class="bot-avatar">🤖</div>
+        <div>
+          <div style="font-weight: 700; font-size: 14px;">EduBot</div>
+          <div style="font-size: 11px; opacity: 0.8;">
+            <span class="status-dot"></span> En ligne
+          </div>
+        </div>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="chat-header-btn" (click)="clearChat()" title="Effacer la conversation">🗑️</button>
+        <button class="chat-header-btn" (click)="toggleChat()" title="Fermer">✕</button>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="chat-body" id="chatBody" #chatBody>
+
+      <!-- Messages -->
+      <div *ngFor="let msg of messages" class="message-wrapper"
+        [class.user-wrapper]="msg.role === 'user'"
+        [class.bot-wrapper]="msg.role === 'model'">
+
+        <!-- Bot avatar -->
+        <div *ngIf="msg.role === 'model'" class="bot-msg-avatar">🤖</div>
+
+        <!-- Message bubble -->
+        <div class="message-bubble"
+          [class.user-bubble]="msg.role === 'user'"
+          [class.bot-bubble]="msg.role === 'model'">
+
+          <!-- Content -->
+          <div [innerHTML]="msg.contentHtml || msg.content"
+            style="font-size: 13px; line-height: 1.6;"></div>
+
+          <!-- Sources / Course links -->
+          <div *ngIf="msg.sources && msg.sources.length > 0" class="sources-section">
+            <div style="font-size: 11px; font-weight: 700; color: #667eea; margin-bottom: 6px;">
+              📚 Cours mentionnés :
+            </div>
+            <div *ngFor="let source of msg.sources" class="source-chip">
+              <a [href]="source.url" target="_blank">
+                {{ source.title }}
+                <span class="price-badge">{{ source.price }}</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Timestamp -->
+          <div class="msg-time">{{ getTime(msg.timestamp) }}</div>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="loading" class="message-wrapper bot-wrapper">
+        <div class="bot-msg-avatar">🤖</div>
+        <div class="bot-bubble message-bubble">
+          <div class="typing-dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Suggested Questions (show only at start) -->
+    <div *ngIf="messages.length <= 2 && !loading" class="suggestions-bar">
+      <div style="font-size: 11px; color: #94a3b8; margin-bottom: 6px; padding: 0 8px;">
+        Questions fréquentes :
+      </div>
+      <div class="suggestions-scroll">
+        <button *ngFor="let q of suggestedQuestions"
+          class="suggestion-chip"
+          (click)="useSuggestedQuestion(q)">
+          {{ q }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Input -->
+    <div class="chat-input-area">
+      <textarea
+        [(ngModel)]="message"
+        (keydown)="onKeyPress($event)"
+        placeholder="Écrivez votre message..."
+        rows="1"
+        class="chat-input"
+        [disabled]="loading">
+      </textarea>
+      <button class="send-btn"
+        (click)="sendMessage()"
+        [disabled]="!message.trim() || loading">
+        <span *ngIf="!loading">➤</span>
+        <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
+      </button>
+    </div>
+
+  </div>
+</div>
