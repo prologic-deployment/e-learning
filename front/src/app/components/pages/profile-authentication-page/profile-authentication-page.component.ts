@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-profile-authentication-page',
@@ -23,6 +24,10 @@ export class ProfileAuthenticationPageComponent implements OnInit {
   otpLoading = false;
   tempEmail = '';
   devOtp = ''; // ✅ DEV-ONLY: OTP shown on screen when DEV_EXPOSE_OTP=true (fake inboxes can't receive email)
+  // ✅ Which API this bundle actually calls + why no code arrived — both are
+  // needed to debug a production build where the dev code doesn't show up.
+  apiUrl = environment.apiUrl;
+  otpHint = '';
   resendCooldown = 0;   // ✅ seconds remaining before resend is allowed
   private resendTimer: any = null;
 
@@ -90,6 +95,10 @@ export class ProfileAuthenticationPageComponent implements OnInit {
           // ✅ DEV-ONLY: surface the OTP on screen when the backend exposes it,
           // so manual testing works without a real inbox.
           this.devOtp = res.devOtp || '';
+          this.otpHint = this.devOtp
+            ? ''
+            : `No dev code in the API response from ${this.apiUrl}. On the server set ` +
+              `DEV_EXPOSE_OTP=true in back/.env, deploy the latest code and restart the process.`;
           this.loginSuccess = res.devOtp
             ? `OTP sent — dev code: ${res.devOtp}`
             : 'OTP sent ! Check your email.';
