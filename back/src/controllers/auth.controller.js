@@ -113,15 +113,22 @@ exports.login = async (req, res) => {
       console.error('❌ OTP email error:', err.message)
     );
 
-    // ✅ DEV TESTING AID: fake @test.com inboxes can't receive OTP emails, so in
-    // non-production (and only when DEV_EXPOSE_OTP=true) the code is returned so
-    // manual testing can complete the flow. Hard-blocked in production.
+    // ✅ TESTING AID: fake @test.com inboxes can't receive OTP emails, so when
+    // DEV_EXPOSE_OTP=true the code is returned so manual testing can complete
+    // the flow. Applies to every NODE_ENV, including production: since the OTP
+    // is the second factor for all accounts (admin included), enabling this
+    // under NODE_ENV=production makes login single-factor. Each exposure is
+    // logged so it is visible in production logs.
     const payload = {
       success: true,
       message: "OTP sent to your email"
     };
-    if (config.nodeEnv !== "production" && config.devExposeOtp) {
+    if (config.devExposeOtp) {
       payload.devOtp = otp;
+      console.warn(
+        `🚨 OTP exposed in login response for ${user.email}` +
+        (config.isProd ? ' (NODE_ENV=production — 2FA bypassed)' : '')
+      );
     }
 
     res.status(200).json(payload);

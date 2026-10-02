@@ -14,7 +14,7 @@ password-only bypass:
 1. `POST /api/auth/login` with `{ "email": "…", "password": "…" }`
 2. `POST /api/auth/verify-otp` with `{ "email": "…", "otp": "…" }` → JWT
 
-With `DEV_EXPOSE_OTP=true` in `back/.env` (development only), step 1 also returns
+With `DEV_EXPOSE_OTP=true` in `back/.env`, step 1 also returns
 `devOtp` in the response, because the `@test.com` inboxes can't receive real email.
 The OTP expires after 5 minutes; 3 wrong attempts lock the account for 10 minutes.
 

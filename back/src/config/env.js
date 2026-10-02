@@ -82,8 +82,11 @@ const config = {
     aiMax: Number(process.env.RATE_LIMIT_AI_MAX) || 20
   },
 
-  // ✅ DEV-ONLY testing aid: return the login OTP in the API response so
-  // manual testing works with fake inboxes (@test.com). Hard-blocked in prod.
+  // ✅ Testing aid: return the login OTP in the API response so manual testing
+  // works when real inboxes can't receive email. Opt-in via DEV_EXPOSE_OTP=true
+  // and NO LONGER hard-blocked in production — the OTP is the second factor for
+  // every account, so enabling it under NODE_ENV=production makes login
+  // single-factor. Kept flag-gated and warned about loudly at boot.
   devExposeOtp: process.env.DEV_EXPOSE_OTP === 'true'
 };
 
@@ -99,6 +102,16 @@ function validateEnv() {
   }
   if (!process.env.GEMINI_API_KEY) {
     console.warn('⚠️  GEMINI_API_KEY not set — chatbot/NLP features will return errors');
+  }
+  if (config.devExposeOtp) {
+    console.warn('🚨 DEV_EXPOSE_OTP=true — every login response includes its OTP (dev code).');
+    if (isProd) {
+      console.warn(
+        '🚨🚨 NODE_ENV=production + DEV_EXPOSE_OTP=true — TWO-FACTOR IS DISABLED: ' +
+        'anyone who knows a password can read the code from the API response. ' +
+        'Set DEV_EXPOSE_OTP=false before serving real traffic.'
+      );
+    }
   }
   if (!process.env.EMAIL_HOST) {
     console.warn('⚠️  EMAIL_* not set — OTP emails will fail (log-only mode)');
