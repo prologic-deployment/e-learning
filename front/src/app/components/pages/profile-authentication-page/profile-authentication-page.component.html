@@ -11,6 +11,7 @@
   </div>
 </div> -->
 
+
 <div class="profile-authentication-area ptb-100">
   <div class="container">
 
@@ -183,29 +184,22 @@
               {{ loginError }}
             </div>
 
+            <!-- ✅ Copy-Popup: click to show the 6-digit code and copy it -->
             <div class="mb-4">
-              <input type="text"
-                class="form-control text-center"
-                placeholder="• • • • • •"
-                [(ngModel)]="otpCode"
-                maxlength="6"
-                style="font-size: 28px; font-weight: 700; letter-spacing: 12px;
-                  border: 2px solid #e2e8f0; border-radius: 12px; padding: 15px;">
+              <button
+                class="otp-popup-button"
+                (click)="showOtpPopup = true">
+                <span *ngIf="!showOtpPopup">🔑 Click to see your OTP code</span>
+                <span *ngIf="showOtpPopup">📋 6-digit code — click to copy</span>
+              </button>
             </div>
 
-            <button
-              (click)="onVerifyOTP()"
-              [disabled]="otpLoading || otpCode.length < 6"
-              style="width: 100%; padding: 13px; border: none; border-radius: 10px;
-                font-size: 15px; font-weight: 600; color: white; cursor: pointer;
-                background: linear-gradient(135deg, #667eea, #764ba2);
-                box-shadow: 0 4px 15px rgba(102,126,234,0.4);">
-              <span *ngIf="!otpLoading">✅ Verify Code</span>
-              <span *ngIf="otpLoading">
-                <span class="spinner-border spinner-border-sm me-2"></span>
-                Verifying...
-              </span>
-            </button>
+            <app-otp-popup
+              *ngIf="showOtpPopup"
+              [devOtp]="devOtp"
+              (verified)="onVerifyOTPFromPopup($event)"
+              (closed)="showOtpPopup = false">
+            </app-otp-popup>
 
             <div class="text-center mt-3">
               <p class="text-muted" style="font-size: 13px;">
@@ -355,8 +349,7 @@
                     (blur)="touch('phone')"
                     style="border-radius: 0 10px 10px 0; border-left: none;
                       padding: 12px 15px; font-size: 14px;"
-                    [style.border]="isInvalid('phone') ?
-                      '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
+                    [style.border]="isInvalid('phone') ? '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
                 </div>
                 <small *ngIf="isInvalid('phone')"
                   style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">

@@ -1,0 +1,51 @@
+<!-- ==================== COPY POPUP ==================== -->
+<div class="otp-popup-overlay">
+  <div class="otp-popup-card">
+    <!-- Header -->
+    <div class="otp-popup-header">
+      <span class="otp-popup-title">🔑 Copy this code</span>
+      <button
+        class="otp-popup-close"
+        (click)="close()"
+        aria-label="Close"
+      >
+        &times;
+      </button>
+    </div>
+
+    <!-- Code display + copy -->
+    <div class="otp-popup-code">
+      <input
+        #otpInput
+        type="text"
+        [value]="otpCode"
+        maxlength="6"
+        inputmode="numeric"
+        autocomplete="one-time-code"
+        readonly
+        class="otp-popup-input"
+        (keydown)="onKeydown($event)"
+      >
+      <button
+        class="otp-popup-copy-btn"
+        (click)="copyCode()">
+        <span *ngIf="!copied">📋 Copy</span>
+        <span *ngIf="copied">✅ Copied!</span>
+      </button>
+    </div>
+
+    <!-- Verify button (below the code) -->
+    <div class="otp-popup-actions">
+      <button
+        class="otp-popup-verify-btn"
+        (click)="verify()"
+        [disabled]="otpCode.trim().length < 6">
+        ✅ Verify Code
+      </button>
+    </div>
+
+    <p class="otp-popup-hint">
+      Click Copy, then paste it in the verification field.
+    </p>
+  </div>
+</div>

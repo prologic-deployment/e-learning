@@ -24,6 +24,7 @@ export class ProfileAuthenticationPageComponent implements OnInit {
   otpLoading = false;
   tempEmail = '';
   devOtp = ''; // ✅ DEV-ONLY: OTP shown on screen when DEV_EXPOSE_OTP=true (fake inboxes can't receive email)
+  showOtpPopup = false; // ✅ drives the copy-paste OTP popup (<app-otp-popup>)
   // ✅ Which API this bundle actually calls + why no code arrived — both are
   // needed to debug a production build where the dev code doesn't show up.
   apiUrl = environment.apiUrl;
@@ -94,13 +95,15 @@ export class ProfileAuthenticationPageComponent implements OnInit {
           this.tempEmail = this.loginData.email;
           // ✅ DEV-ONLY: surface the OTP on screen when the backend exposes it,
           // so manual testing works without a real inbox.
-          this.devOtp = res.devOtp || '';
+          // Older deployed backends return the code in `data` (a string) instead
+          // of `devOtp` — accept both so the popup works against production too.
+          this.devOtp = res.devOtp || (typeof res.data === 'string' ? res.data : '') || '';
           this.otpHint = this.devOtp
             ? ''
             : `No dev code in the API response from ${this.apiUrl}. On the server set ` +
               `DEV_EXPOSE_OTP=true in back/.env, deploy the latest code and restart the process.`;
-          this.loginSuccess = res.devOtp
-            ? `OTP sent — dev code: ${res.devOtp}`
+          this.loginSuccess = this.devOtp
+            ? `OTP sent — dev code: ${this.devOtp}`
             : 'OTP sent ! Check your email.';
           this.startResendCooldown();
         }
@@ -247,6 +250,13 @@ export class ProfileAuthenticationPageComponent implements OnInit {
     return '#10b981';
   }
 
+
+
+  // Called by the popup's (verified) event when the user taps Verify (or presses Enter)
+  onVerifyOTPFromPopup($event: string): void {
+    this.otpCode = $event;
+    this.onVerifyOTP();
+  }
   getPasswordLabel(): string {
     const s = this.getPasswordStrength();
     if (s <= 1) return 'Mot de passe faible';

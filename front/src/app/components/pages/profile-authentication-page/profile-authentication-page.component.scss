@@ -337,3 +337,23 @@
 
 /* Min width 1600px */
 @media only screen and (min-width: 1600px) {}
+
+/* ==================== OTP COPY POPUP TRIGGER ==================== */
+
+.otp-popup-button {
+  width: 100%;
+  padding: 13px;
+  border: 2px dashed #667eea;
+  border-radius: 10px;
+  background: #f0f4ff;
+  color: #667eea;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+
+  &:hover {
+    background: #667eea;
+    color: #fff;
+  }
+}

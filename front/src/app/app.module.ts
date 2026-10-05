@@ -43,6 +43,7 @@ import { RelatedCoursesComponent } from './components/common/related-courses/rel
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { OtpPopupComponent } from './components/pages/profile-authentication-page/otp-popup.component';
 import { AdminDashboardComponent } from './components/pages/dashboard/admin-dashboard/admin-dashboard.component';
 import { ManagerDashboardComponent } from './components/pages/dashboard/manager-dashboard/manager-dashboard.component';
 import { TrainerDashboardComponent } from './components/pages/dashboard/trainer-dashboard/trainer-dashboard.component';
@@ -74,6 +75,7 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
         AboutComponent,
         AboutUsPageComponent,
         ProfileAuthenticationPageComponent,
+        OtpPopupComponent,
         ForgotPasswordComponent,
         CartPageComponent,
         ProductDetailsPageComponent,
