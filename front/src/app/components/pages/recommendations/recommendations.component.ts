@@ -45,9 +45,9 @@ export class RecommendationsComponent implements OnInit {
       'Beginner Level': '#43e97b',
       'Intermediate Level': '#f093fb',
       'Expert Level': '#f5576c',
-      'All Levels': '#667eea'
+      'All Levels': '#457B9D'
     };
-    return colors[level] || '#667eea';
+    return colors[level] || '#457B9D';
   }
 
   getLevelIcon(level: string): string {
@@ -73,7 +73,7 @@ export class RecommendationsComponent implements OnInit {
   getScoreColor(score: number): string {
     if (score >= 0.7) return '#43e97b';
     if (score >= 0.4) return '#f093fb';
-    return '#667eea';
+    return '#457B9D';
   }
 
   openCourse(url: string): void {
@@ -95,7 +95,7 @@ export class RecommendationsComponent implements OnInit {
 
   getCourseColor(category: string): string {
     const colors: any = {
-      'Development': 'linear-gradient(135deg, #667eea, #764ba2)',
+      'Development': 'linear-gradient(135deg, #457B9D, #1D3557)',
       'Business': 'linear-gradient(135deg, #f093fb, #f5576c)',
       'Finance': 'linear-gradient(135deg, #4facfe, #00f2fe)',
       'IT & Software': 'linear-gradient(135deg, #43e97b, #38f9d7)',
@@ -103,7 +103,7 @@ export class RecommendationsComponent implements OnInit {
       'Marketing': 'linear-gradient(135deg, #a18cd1, #fbc2eb)',
       'Data Science': 'linear-gradient(135deg, #ffecd2, #fcb69f)'
     };
-    return colors[category] || 'linear-gradient(135deg, #667eea, #764ba2)';
+    return colors[category] || 'linear-gradient(135deg, #457B9D, #1D3557)';
   }
 
 

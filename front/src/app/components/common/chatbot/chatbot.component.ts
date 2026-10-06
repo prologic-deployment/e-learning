@@ -79,7 +79,7 @@ export class ChatbotComponent implements OnInit {
       // URLs cliquables (ne matche plus les &quot; échappés)
       .replace(
         /(https?:\/\/[^\s\)]+)/g,
-        '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #667eea; text-decoration: underline; font-weight: 600;">🔗 $1</a>'
+        '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #457B9D; text-decoration: underline; font-weight: 600;">🔗 $1</a>'
       )
       // Listes avec tirets
       .replace(/^- (.+)$/gm, '<li style="margin: 4px 0;">$1</li>')

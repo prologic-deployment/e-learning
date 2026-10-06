@@ -14,8 +14,8 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
-        <h4 style="font-weight: 800; color: #0f172a; margin: 0;">Mon CV Professionnel</h4>
-        <p style="font-size: 13px; color: #64748b; margin: 0;">
+        <h4 style="font-weight: 800; color: #1D3557; margin: 0;">Mon CV Professionnel</h4>
+        <p style="font-size: 13px; color: #5C7184; margin: 0;">
           Construisez et téléchargez votre CV
         </p>
       </div>
@@ -29,7 +29,7 @@
     </div>
 
     <!-- Tabs -->
-    <div style="background: #f1f5f9; border-radius: 14px; padding: 6px;
+    <div style="background: #EAF3F5; border-radius: 14px; padding: 6px;
       display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 28px;">
       <button *ngFor="let tab of cvTabs"
         (click)="activeTab = tab.id"
@@ -37,7 +37,7 @@
           font-size: 13px; font-weight: 600; cursor: pointer;
           transition: all 0.2s; white-space: nowrap;"
         [style.background]="activeTab === tab.id ? 'white' : 'transparent'"
-        [style.color]="activeTab === tab.id ? '#667eea' : '#64748b'"
+        [style.color]="activeTab === tab.id ? '#457B9D' : '#5C7184'"
         [style.boxShadow]="activeTab === tab.id ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
         {{ tab.icon }} {{ tab.label }}
       </button>
@@ -46,23 +46,23 @@
     <!-- Loading -->
     <div *ngIf="loading" class="text-center py-5">
       <div class="spinner-border text-primary"></div>
-      <p style="color: #64748b; margin-top: 12px;">Chargement du CV...</p>
+      <p style="color: #5C7184; margin-top: 12px;">Chargement du CV...</p>
     </div>
 
     <!-- ========== PERSONAL INFO ========== -->
     <div *ngIf="activeTab === 'info' && !loading">
       <div style="background: white; border-radius: 20px; padding: 32px;
-        border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
 
         <div class="d-flex align-items-center gap-3 mb-4">
           <div style="width: 44px; height: 44px; border-radius: 12px;
-            background: #ede9fe; display: flex; align-items: center;
+            background: #F4F8F9; display: flex; align-items: center;
             justify-content: center; font-size: 20px;">👤</div>
           <div>
-            <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
+            <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
               Informations Personnelles
             </h5>
-            <p style="font-size: 13px; color: #64748b; margin: 0;">
+            <p style="font-size: 13px; color: #5C7184; margin: 0;">
               Vos coordonnées de base
             </p>
           </div>
@@ -81,7 +81,7 @@
               </label>
               <input type="text" class="form-control mt-1"
                 [(ngModel)]="cvInfo.prenom" placeholder="Prénom"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -92,7 +92,7 @@
               </label>
               <input type="text" class="form-control mt-1"
                 [(ngModel)]="cvInfo.nom" placeholder="Nom"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -104,7 +104,7 @@
           </label>
           <input type="email" class="form-control mt-1"
             [(ngModel)]="cvInfo.email" placeholder="email@example.com"
-            style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+            style="border-radius: 10px; border: 1.5px solid #D7E3E7;
               padding: 12px 15px; font-size: 14px;">
         </div>
 
@@ -114,7 +114,7 @@
           </label>
           <input type="text" class="form-control mt-1"
             [(ngModel)]="cvInfo.telephone" placeholder="+216 XX XXX XXX"
-            style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+            style="border-radius: 10px; border: 1.5px solid #D7E3E7;
               padding: 12px 15px; font-size: 14px;">
         </div>
 
@@ -125,7 +125,7 @@
           <textarea class="form-control mt-1" rows="4"
             [(ngModel)]="cvInfo.description"
             placeholder="Brève description de votre profil professionnel..."
-            style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+            style="border-radius: 10px; border: 1.5px solid #D7E3E7;
               padding: 12px 15px; font-size: 14px; resize: none;">
           </textarea>
         </div>
@@ -137,14 +137,14 @@
           <input type="file" class="form-control mt-1"
             accept=".jpg,.jpeg,.png,.webp"
             (change)="onPhotoSelected($event)"
-            style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+            style="border-radius: 10px; border: 1.5px solid #D7E3E7;
               padding: 10px 15px; font-size: 14px;">
         </div>
 
         <button (click)="saveCV()" [disabled]="saveLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #457B9D, #1D3557);
             box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
           [style.opacity]="saveLoading ? '0.7' : '1'">
           <span *ngIf="!saveLoading">💾 Sauvegarder</span>
@@ -161,14 +161,14 @@
 
       <!-- Add Form -->
       <div style="background: white; border-radius: 20px; padding: 32px;
-        border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         margin-bottom: 24px;">
 
         <div class="d-flex align-items-center gap-3 mb-4">
           <div style="width: 44px; height: 44px; border-radius: 12px;
-            background: #dbeafe; display: flex; align-items: center;
+            background: #EAF3F5; display: flex; align-items: center;
             justify-content: center; font-size: 20px;">💼</div>
-          <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
+          <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
             Ajouter une Expérience
           </h5>
         </div>
@@ -181,7 +181,7 @@
               </label>
               <input type="text" class="form-control mt-1"
                 [(ngModel)]="newExperience.titre" placeholder="Ex: Développeur Full Stack"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -192,7 +192,7 @@
               </label>
               <input type="text" class="form-control mt-1"
                 [(ngModel)]="newExperience.entreprise" placeholder="Ex: Prologic"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -203,7 +203,7 @@
               </label>
               <input type="date" class="form-control mt-1"
                 [(ngModel)]="newExperience.dateDebut"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -214,7 +214,7 @@
               </label>
               <input type="date" class="form-control mt-1"
                 [(ngModel)]="newExperience.dateFin"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -226,7 +226,7 @@
               <textarea class="form-control mt-1" rows="3"
                 [(ngModel)]="newExperience.description"
                 placeholder="Décrivez vos responsabilités..."
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px; resize: none;">
               </textarea>
             </div>
@@ -236,7 +236,7 @@
         <button (click)="addExperience()" [disabled]="expLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #457B9D, #1D3557);
             box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
           [style.opacity]="expLoading ? '0.7' : '1'">
           <span *ngIf="!expLoading">➕ Ajouter l'expérience</span>
@@ -248,34 +248,34 @@
 
       <!-- List -->
       <div *ngIf="cv?.experiences?.length === 0" class="text-center py-5"
-        style="background: white; border-radius: 20px; border: 1px solid #f0f0f0;">
+        style="background: white; border-radius: 20px; border: 1px solid #D7E3E7;">
         <div style="font-size: 48px; margin-bottom: 12px;">💼</div>
-        <p style="color: #64748b;">Aucune expérience ajoutée</p>
+        <p style="color: #5C7184;">Aucune expérience ajoutée</p>
       </div>
 
       <div *ngFor="let exp of cv?.experiences" class="mb-3"
         style="background: white; border-radius: 16px; padding: 24px;
-          border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+          border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
         <div class="d-flex justify-content-between align-items-start">
           <div style="display: flex; gap: 16px; flex: 1;">
             <div style="width: 44px; height: 44px; border-radius: 12px;
-              background: #dbeafe; display: flex; align-items: center;
+              background: #EAF3F5; display: flex; align-items: center;
               justify-content: center; font-size: 20px; flex-shrink: 0;">
               💼
             </div>
             <div>
-              <div style="font-weight: 700; color: #0f172a; font-size: 15px;">
+              <div style="font-weight: 700; color: #1D3557; font-size: 15px;">
                 {{ exp.titre }}
               </div>
-              <div style="color: #667eea; font-weight: 600; font-size: 13px;
+              <div style="color: #457B9D; font-weight: 600; font-size: 13px;
                 margin: 4px 0;">
                 {{ exp.entreprise }}
               </div>
-              <div style="font-size: 12px; color: #94a3b8; margin-bottom: 8px;">
+              <div style="font-size: 12px; color: #7E93A3; margin-bottom: 8px;">
                 {{ exp.dateDebut | date:'MM/yyyy' }} →
                 {{ exp.dateFin ? (exp.dateFin | date:'MM/yyyy') : 'Présent' }}
               </div>
-              <div style="font-size: 13px; color: #64748b; line-height: 1.6;">
+              <div style="font-size: 13px; color: #5C7184; line-height: 1.6;">
                 {{ exp.description }}
               </div>
             </div>
@@ -294,14 +294,14 @@
     <div *ngIf="activeTab === 'formation' && !loading">
 
       <div style="background: white; border-radius: 20px; padding: 32px;
-        border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         margin-bottom: 24px;">
 
         <div class="d-flex align-items-center gap-3 mb-4">
           <div style="width: 44px; height: 44px; border-radius: 12px;
             background: #dcfce7; display: flex; align-items: center;
             justify-content: center; font-size: 20px;">🎓</div>
-          <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
+          <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
             Ajouter une Formation
           </h5>
         </div>
@@ -314,7 +314,7 @@
               </label>
               <input type="text" class="form-control mt-1"
                 [(ngModel)]="newFormation.diplome" placeholder="Ex: Licence Informatique"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -325,7 +325,7 @@
               </label>
               <input type="text" class="form-control mt-1"
                 [(ngModel)]="newFormation.etablissement" placeholder="Ex: ESPRIT"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -336,7 +336,7 @@
               </label>
               <input type="date" class="form-control mt-1"
                 [(ngModel)]="newFormation.dateDebut"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -347,7 +347,7 @@
               </label>
               <input type="date" class="form-control mt-1"
                 [(ngModel)]="newFormation.dateFin"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -356,7 +356,7 @@
         <button (click)="addFormation()" [disabled]="formLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #457B9D, #1D3557);
             box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
           [style.opacity]="formLoading ? '0.7' : '1'">
           <span *ngIf="!formLoading">➕ Ajouter la formation</span>
@@ -367,14 +367,14 @@
       </div>
 
       <div *ngIf="cv?.formations?.length === 0" class="text-center py-5"
-        style="background: white; border-radius: 20px; border: 1px solid #f0f0f0;">
+        style="background: white; border-radius: 20px; border: 1px solid #D7E3E7;">
         <div style="font-size: 48px; margin-bottom: 12px;">🎓</div>
-        <p style="color: #64748b;">Aucune formation ajoutée</p>
+        <p style="color: #5C7184;">Aucune formation ajoutée</p>
       </div>
 
       <div *ngFor="let form of cv?.formations" class="mb-3"
         style="background: white; border-radius: 16px; padding: 24px;
-          border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+          border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
         <div class="d-flex justify-content-between align-items-start">
           <div style="display: flex; gap: 16px; flex: 1;">
             <div style="width: 44px; height: 44px; border-radius: 12px;
@@ -383,14 +383,14 @@
               🎓
             </div>
             <div>
-              <div style="font-weight: 700; color: #0f172a; font-size: 15px;">
+              <div style="font-weight: 700; color: #1D3557; font-size: 15px;">
                 {{ form.diplome }}
               </div>
               <div style="color: #10b981; font-weight: 600; font-size: 13px;
                 margin: 4px 0;">
                 {{ form.etablissement }}
               </div>
-              <div style="font-size: 12px; color: #94a3b8;">
+              <div style="font-size: 12px; color: #7E93A3;">
                 {{ form.dateDebut | date:'MM/yyyy' }} →
                 {{ form.dateFin ? (form.dateFin | date:'MM/yyyy') : 'Présent' }}
               </div>
@@ -410,14 +410,14 @@
     <div *ngIf="activeTab === 'competence' && !loading">
 
       <div style="background: white; border-radius: 20px; padding: 32px;
-        border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         margin-bottom: 24px;">
 
         <div class="d-flex align-items-center gap-3 mb-4">
           <div style="width: 44px; height: 44px; border-radius: 12px;
             background: #fef3c7; display: flex; align-items: center;
             justify-content: center; font-size: 20px;">⚡</div>
-          <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
+          <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
             Ajouter une Compétence
           </h5>
         </div>
@@ -430,7 +430,7 @@
               </label>
               <input type="text" class="form-control mt-1"
                 [(ngModel)]="newCompetence.nom" placeholder="Ex: Angular, Node.js"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -440,7 +440,7 @@
                 Niveau *
               </label>
               <select class="form-select mt-1" [(ngModel)]="newCompetence.niveau"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
                 <option value="Débutant">Débutant</option>
                 <option value="Intermédiaire">Intermédiaire</option>
@@ -454,7 +454,7 @@
         <button (click)="addCompetence()" [disabled]="compLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #457B9D, #1D3557);
             box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
           [style.opacity]="compLoading ? '0.7' : '1'">
           <span *ngIf="!compLoading">➕ Ajouter la compétence</span>
@@ -465,29 +465,29 @@
       </div>
 
       <div *ngIf="cv?.competences?.length === 0" class="text-center py-5"
-        style="background: white; border-radius: 20px; border: 1px solid #f0f0f0;">
+        style="background: white; border-radius: 20px; border: 1px solid #D7E3E7;">
         <div style="font-size: 48px; margin-bottom: 12px;">⚡</div>
-        <p style="color: #64748b;">Aucune compétence ajoutée</p>
+        <p style="color: #5C7184;">Aucune compétence ajoutée</p>
       </div>
 
       <div class="row">
         <div class="col-lg-4 mb-3" *ngFor="let comp of cv?.competences">
           <div style="background: white; border-radius: 16px; padding: 20px;
-            border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             display: flex; justify-content: space-between; align-items: center;">
             <div>
-              <div style="font-weight: 700; color: #0f172a; font-size: 14px;
+              <div style="font-weight: 700; color: #1D3557; font-size: 14px;
                 margin-bottom: 6px;">
                 {{ comp.nom }}
               </div>
               <span style="padding: 3px 10px; border-radius: 20px; font-size: 11px;
                 font-weight: 600;"
                 [style.background]="comp.niveau === 'Expert' ? '#fef3c7' :
-                  comp.niveau === 'Avancé' ? '#dbeafe' :
-                  comp.niveau === 'Intermédiaire' ? '#dcfce7' : '#f1f5f9'"
+                  comp.niveau === 'Avancé' ? '#EAF3F5' :
+                  comp.niveau === 'Intermédiaire' ? '#dcfce7' : '#EAF3F5'"
                 [style.color]="comp.niveau === 'Expert' ? '#f59e0b' :
-                  comp.niveau === 'Avancé' ? '#3b82f6' :
-                  comp.niveau === 'Intermédiaire' ? '#10b981' : '#64748b'">
+                  comp.niveau === 'Avancé' ? '#457B9D' :
+                  comp.niveau === 'Intermédiaire' ? '#10b981' : '#5C7184'">
                 {{ comp.niveau }}
               </span>
             </div>
@@ -506,14 +506,14 @@
     <div *ngIf="activeTab === 'langue' && !loading">
 
       <div style="background: white; border-radius: 20px; padding: 32px;
-        border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         margin-bottom: 24px;">
 
         <div class="d-flex align-items-center gap-3 mb-4">
           <div style="width: 44px; height: 44px; border-radius: 12px;
             background: #e0f2fe; display: flex; align-items: center;
             justify-content: center; font-size: 20px;">🌍</div>
-          <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
+          <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
             Ajouter une Langue
           </h5>
         </div>
@@ -526,7 +526,7 @@
               </label>
               <input type="text" class="form-control mt-1"
                 [(ngModel)]="newLangue.langue" placeholder="Ex: Français, Anglais"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -536,7 +536,7 @@
                 Niveau *
               </label>
               <select class="form-select mt-1" [(ngModel)]="newLangue.niveau"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
                 <option value="Débutant">Débutant</option>
                 <option value="Intermédiaire">Intermédiaire</option>
@@ -551,7 +551,7 @@
         <button (click)="addLangue()" [disabled]="langLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #457B9D, #1D3557);
             box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
           [style.opacity]="langLoading ? '0.7' : '1'">
           <span *ngIf="!langLoading">➕ Ajouter la langue</span>
@@ -562,31 +562,31 @@
       </div>
 
       <div *ngIf="cv?.langues?.length === 0" class="text-center py-5"
-        style="background: white; border-radius: 20px; border: 1px solid #f0f0f0;">
+        style="background: white; border-radius: 20px; border: 1px solid #D7E3E7;">
         <div style="font-size: 48px; margin-bottom: 12px;">🌍</div>
-        <p style="color: #64748b;">Aucune langue ajoutée</p>
+        <p style="color: #5C7184;">Aucune langue ajoutée</p>
       </div>
 
       <div class="row">
         <div class="col-lg-4 mb-3" *ngFor="let lang of cv?.langues">
           <div style="background: white; border-radius: 16px; padding: 20px;
-            border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             display: flex; justify-content: space-between; align-items: center;">
             <div>
-              <div style="font-weight: 700; color: #0f172a; font-size: 14px;
+              <div style="font-weight: 700; color: #1D3557; font-size: 14px;
                 margin-bottom: 6px;">
                 🌍 {{ lang.langue }}
               </div>
               <span style="padding: 3px 10px; border-radius: 20px; font-size: 11px;
                 font-weight: 600;"
                 [style.background]="lang.niveau === 'Natif' ? '#fef3c7' :
-                  lang.niveau === 'Bilingue' ? '#ede9fe' :
-                  lang.niveau === 'Avancé' ? '#dbeafe' :
-                  lang.niveau === 'Intermédiaire' ? '#dcfce7' : '#f1f5f9'"
+                  lang.niveau === 'Bilingue' ? '#F4F8F9' :
+                  lang.niveau === 'Avancé' ? '#EAF3F5' :
+                  lang.niveau === 'Intermédiaire' ? '#dcfce7' : '#EAF3F5'"
                 [style.color]="lang.niveau === 'Natif' ? '#f59e0b' :
                   lang.niveau === 'Bilingue' ? '#8b5cf6' :
-                  lang.niveau === 'Avancé' ? '#3b82f6' :
-                  lang.niveau === 'Intermédiaire' ? '#10b981' : '#64748b'">
+                  lang.niveau === 'Avancé' ? '#457B9D' :
+                  lang.niveau === 'Intermédiaire' ? '#10b981' : '#5C7184'">
                 {{ lang.niveau }}
               </span>
             </div>
@@ -605,14 +605,14 @@
     <div *ngIf="activeTab === 'hobby' && !loading">
 
       <div style="background: white; border-radius: 20px; padding: 32px;
-        border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         margin-bottom: 24px;">
 
         <div class="d-flex align-items-center gap-3 mb-4">
           <div style="width: 44px; height: 44px; border-radius: 12px;
             background: #fce7f3; display: flex; align-items: center;
             justify-content: center; font-size: 20px;">🎯</div>
-          <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
+          <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
             Ajouter un Centre d'Intérêt
           </h5>
         </div>
@@ -625,7 +625,7 @@
               </label>
               <input type="text" class="form-control mt-1"
                 [(ngModel)]="newHobby.nom" placeholder="Ex: Lecture, Sport, Musique"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -634,7 +634,7 @@
               <button (click)="addHobby()" [disabled]="hobbyLoading"
                 style="width: 100%; padding: 13px; border: none; border-radius: 12px;
                   font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-                  background: linear-gradient(135deg, #667eea, #764ba2);"
+                  background: linear-gradient(135deg, #457B9D, #1D3557);"
                 [style.opacity]="hobbyLoading ? '0.7' : '1'">
                 <span *ngIf="!hobbyLoading">➕ Ajouter</span>
                 <span *ngIf="hobbyLoading">
@@ -647,19 +647,19 @@
       </div>
 
       <div *ngIf="cv?.hobbies?.length === 0" class="text-center py-5"
-        style="background: white; border-radius: 20px; border: 1px solid #f0f0f0;">
+        style="background: white; border-radius: 20px; border: 1px solid #D7E3E7;">
         <div style="font-size: 48px; margin-bottom: 12px;">🎯</div>
-        <p style="color: #64748b;">Aucun centre d'intérêt ajouté</p>
+        <p style="color: #5C7184;">Aucun centre d'intérêt ajouté</p>
       </div>
 
       <div class="row">
         <div class="col-lg-3 col-md-4 col-6 mb-3"
           *ngFor="let hobby of cv?.hobbies">
           <div style="background: white; border-radius: 16px; padding: 18px;
-            border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             display: flex; justify-content: space-between; align-items: center;
             gap: 8px;">
-            <div style="font-weight: 600; color: #0f172a; font-size: 13px;">
+            <div style="font-weight: 600; color: #1D3557; font-size: 13px;">
               🎯 {{ hobby.nom }}
             </div>
             <button (click)="deleteHobby(hobby._id)"

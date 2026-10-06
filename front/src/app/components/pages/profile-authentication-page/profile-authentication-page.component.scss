@@ -343,17 +343,17 @@
 .otp-popup-button {
   width: 100%;
   padding: 13px;
-  border: 2px dashed #667eea;
+  border: 2px dashed #457B9D;
   border-radius: 10px;
   background: #f0f4ff;
-  color: #667eea;
+  color: #457B9D;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
 
   &:hover {
-    background: #667eea;
+    background: #457B9D;
     color: #fff;
   }
 }

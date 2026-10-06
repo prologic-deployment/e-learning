@@ -4,7 +4,7 @@
     <!-- Header -->
     <div class="row mb-4 align-items-center">
       <div class="col-lg-8">
-        <h2 style="font-weight: 800; color: #1e293b;">👔 Manager Dashboard</h2>
+        <h2 style="font-weight: 800; color: #1D3557;">👔 Manager Dashboard</h2>
         <p class="text-muted mb-0" *ngIf="currentUser">
           Welcome back, <strong>{{ currentUser.firstname }} {{ currentUser.lastname }}</strong> 👋
         </p>
@@ -18,7 +18,7 @@
         </button>
         <button (click)="exportExcel()"
           style="padding: 8px 16px; border: none; border-radius: 10px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #457B9D, #1D3557);
             color: white; font-weight: 600; font-size: 13px; cursor: pointer;">
           📊 Export Excel
         </button>
@@ -63,16 +63,16 @@
         <div class="row mb-4">
           <div class="col-lg-3 col-md-6 mb-3">
             <div style="background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-              border: 1px solid #f0f0f0; padding: 20px; border-left: 4px solid #667eea;">
+              border: 1px solid #D7E3E7; padding: 20px; border-left: 4px solid #457B9D;">
               <div class="d-flex align-items-center justify-content-between">
                 <div>
                   <p class="text-muted mb-1" style="font-size: 12px; font-weight: 600;
                     text-transform: uppercase; letter-spacing: 0.5px;">Team Size</p>
-                  <h3 style="font-weight: 800; color: #1e293b; margin: 0;">
+                  <h3 style="font-weight: 800; color: #1D3557; margin: 0;">
                     {{ stats.overview.teamSize }}
                   </h3>
                 </div>
-                <div style="width: 50px; height: 50px; border-radius: 12px; background: #667eea22;
+                <div style="width: 50px; height: 50px; border-radius: 12px; background: #457B9D22;
                   display: flex; align-items: center; justify-content: center; font-size: 22px;">👥</div>
               </div>
             </div>
@@ -80,12 +80,12 @@
 
           <div class="col-lg-3 col-md-6 mb-3">
             <div style="background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-              border: 1px solid #f0f0f0; padding: 20px; border-left: 4px solid #43e97b;">
+              border: 1px solid #D7E3E7; padding: 20px; border-left: 4px solid #43e97b;">
               <div class="d-flex align-items-center justify-content-between">
                 <div>
                   <p class="text-muted mb-1" style="font-size: 12px; font-weight: 600;
                     text-transform: uppercase; letter-spacing: 0.5px;">Enrollments</p>
-                  <h3 style="font-weight: 800; color: #1e293b; margin: 0;">
+                  <h3 style="font-weight: 800; color: #1D3557; margin: 0;">
                     {{ stats.overview.totalEnrollments }}
                   </h3>
                 </div>
@@ -97,12 +97,12 @@
 
           <div class="col-lg-3 col-md-6 mb-3">
             <div style="background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-              border: 1px solid #f0f0f0; padding: 20px; border-left: 4px solid #f59e0b;">
+              border: 1px solid #D7E3E7; padding: 20px; border-left: 4px solid #f59e0b;">
               <div class="d-flex align-items-center justify-content-between">
                 <div>
                   <p class="text-muted mb-1" style="font-size: 12px; font-weight: 600;
                     text-transform: uppercase; letter-spacing: 0.5px;">Completion Rate</p>
-                  <h3 style="font-weight: 800; color: #1e293b; margin: 0;">
+                  <h3 style="font-weight: 800; color: #1D3557; margin: 0;">
                     {{ stats.overview.completionRate }}<small style="font-size: 14px; font-weight: 600;">%</small>
                   </h3>
                 </div>
@@ -114,12 +114,12 @@
 
           <div class="col-lg-3 col-md-6 mb-3">
             <div style="background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-              border: 1px solid #f0f0f0; padding: 20px; border-left: 4px solid #10b981;">
+              border: 1px solid #D7E3E7; padding: 20px; border-left: 4px solid #10b981;">
               <div class="d-flex align-items-center justify-content-between">
                 <div>
                   <p class="text-muted mb-1" style="font-size: 12px; font-weight: 600;
                     text-transform: uppercase; letter-spacing: 0.5px;">Avg Progress</p>
-                  <h3 style="font-weight: 800; color: #1e293b; margin: 0;">
+                  <h3 style="font-weight: 800; color: #1D3557; margin: 0;">
                     {{ stats.overview.averageProgress }}<small style="font-size: 14px; font-weight: 600;">%</small>
                   </h3>
                 </div>
@@ -132,34 +132,34 @@
 
         <!-- Filters -->
         <div class="card p-4 mb-4"
-          style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
-          <h6 style="font-weight: 700; color: #1e293b; margin-bottom: 16px;">🔍 Filters</h6>
+          style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #D7E3E7;">
+          <h6 style="font-weight: 700; color: #1D3557; margin-bottom: 16px;">🔍 Filters</h6>
           <div class="row g-3">
             <div class="col-lg-5">
               <input type="text" class="form-control"
                 placeholder="🔎 Search by member name..."
                 [(ngModel)]="filterMember"
                 (keyup)="applyFilters()"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 10px 15px; font-size: 14px;">
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 10px 15px; font-size: 14px;">
             </div>
             <div class="col-lg-3">
-              <label style="font-size: 12px; font-weight: 600; color: #64748b;">From</label>
+              <label style="font-size: 12px; font-weight: 600; color: #5C7184;">From</label>
               <input type="date" class="form-control mt-1"
                 [(ngModel)]="filterDateFrom"
                 (change)="applyFilters()"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 10px 15px; font-size: 14px;">
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 10px 15px; font-size: 14px;">
             </div>
             <div class="col-lg-3">
-              <label style="font-size: 12px; font-weight: 600; color: #64748b;">To</label>
+              <label style="font-size: 12px; font-weight: 600; color: #5C7184;">To</label>
               <input type="date" class="form-control mt-1"
                 [(ngModel)]="filterDateTo"
                 (change)="applyFilters()"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 10px 15px; font-size: 14px;">
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 10px 15px; font-size: 14px;">
             </div>
             <div class="col-lg-1 d-flex align-items-end">
               <button (click)="resetFilters()"
                 style="width: 100%; padding: 10px; border: none; border-radius: 10px;
-                  background: #f1f5f9; color: #64748b; font-weight: 600; cursor: pointer;">
+                  background: #EAF3F5; color: #5C7184; font-weight: 600; cursor: pointer;">
                 🔄
               </button>
             </div>
@@ -168,11 +168,11 @@
 
         <!-- Team Progress Table -->
         <div class="card p-4"
-          style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
+          style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #D7E3E7;">
 
           <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <h5 class="mb-1" style="font-weight: 700; color: #1e293b;">👥 Team Progress</h5>
+              <h5 class="mb-1" style="font-weight: 700; color: #1D3557;">👥 Team Progress</h5>
               <small class="text-muted">{{ filteredTeamStats.length }} member(s)</small>
             </div>
             <button class="btn btn-outline-primary btn-sm" style="border-radius: 8px;"
@@ -200,7 +200,7 @@
                   <td>
                     <div class="d-flex align-items-center gap-2">
                       <div style="width: 36px; height: 36px; border-radius: 50%;
-                        background: linear-gradient(135deg, #667eea, #764ba2);
+                        background: linear-gradient(135deg, #457B9D, #1D3557);
                         display: flex; align-items: center; justify-content: center;
                         color: white; font-weight: 700; font-size: 13px; flex-shrink: 0;">
                         {{ member.user.firstname[0] }}{{ member.user.lastname[0] }}
@@ -216,7 +216,7 @@
                   </td>
                   <td>
                     <span class="badge"
-                      style="background: linear-gradient(135deg, #667eea, #764ba2); font-size: 12px; padding: 5px 10px;">
+                      style="background: linear-gradient(135deg, #457B9D, #1D3557); font-size: 12px; padding: 5px 10px;">
                       {{ member.totalCourses }}
                     </span>
                   </td>
@@ -265,10 +265,10 @@
     <!-- ========== ASSIGN COURSE TAB ========== -->
     <div *ngIf="activeTab === 'assign'">
       <div class="card p-4"
-        style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
+        style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #D7E3E7;">
 
         <div class="mb-4">
-          <h4 class="mb-1" style="font-weight: 700; color: #1e293b;">📚 Assign Course to Team Members</h4>
+          <h4 class="mb-1" style="font-weight: 700; color: #1D3557;">📚 Assign Course to Team Members</h4>
           <small class="text-muted">
             Assign a course with an optional deadline — team members will be notified automatically.
           </small>
@@ -281,7 +281,7 @@
         <div class="mb-4">
           <label style="font-size: 13px; font-weight: 600; color: #374151;">📖 Select Course *</label>
           <select class="form-select mt-1" [(ngModel)]="selectedCourseId"
-            style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+            style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
             <option value="">-- Choose a course --</option>
             <option *ngFor="let course of courses" [value]="course._id">
               {{ course.title }} ({{ course.price === 0 ? '🎁 Free' : course.price + ' TND' }})
@@ -296,7 +296,7 @@
           </label>
           <input type="date" class="form-control mt-1"
             [(ngModel)]="assignDeadline" [min]="today"
-            style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+            style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
           <small class="text-muted mt-1 d-block" style="font-size: 11px;">
             📧 Team members will receive a notification email when a deadline is set.
           </small>
@@ -312,7 +312,7 @@
           </small>
 
           <div class="p-3 mt-1"
-            style="max-height: 320px; overflow-y: auto; border: 1.5px solid #e2e8f0;
+            style="max-height: 320px; overflow-y: auto; border: 1.5px solid #D7E3E7;
               border-radius: 12px; background: #f8f9fa;">
 
             <div *ngIf="teamMembers.length === 0" class="text-center py-4">
@@ -324,7 +324,7 @@
               class="d-flex align-items-center p-3 mb-2"
               style="background: white; border-radius: 12px; border: 1.5px solid;
                 cursor: pointer; transition: all 0.2s;"
-              [style.borderColor]="isSelected(member._id) ? '#667eea' : '#e9ecef'"
+              [style.borderColor]="isSelected(member._id) ? '#457B9D' : '#e9ecef'"
               [style.background]="isSelected(member._id) ? '#f0f4ff' : 'white'"
               (click)="toggleUserSelection(member._id)">
 
@@ -334,14 +334,14 @@
                 style="width: 18px; height: 18px; cursor: pointer;">
 
               <div style="width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
-                background: linear-gradient(135deg, #667eea, #764ba2);
+                background: linear-gradient(135deg, #457B9D, #1D3557);
                 display: flex; align-items: center; justify-content: center;
                 color: white; font-weight: 700; font-size: 13px; margin-right: 12px;">
                 {{ member.firstname[0] }}{{ member.lastname[0] }}
               </div>
 
               <div class="flex-grow-1">
-                <strong style="font-size: 13px; color: #1e293b;">
+                <strong style="font-size: 13px; color: #1D3557;">
                   {{ member.firstname }} {{ member.lastname }}
                 </strong>
                 <br>
@@ -361,7 +361,7 @@
           [disabled]="assignLoading || !selectedCourseId || selectedUserIds.length === 0"
           style="width: 100%; padding: 13px; border: none; border-radius: 10px;
             font-size: 15px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #457B9D, #1D3557);
             box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
           [style.opacity]="(assignLoading || !selectedCourseId || selectedUserIds.length === 0) ? '0.6' : '1'">
           <span *ngIf="!assignLoading">
@@ -377,11 +377,11 @@
     <!-- ========== OVERDUE TAB ========== -->
     <div *ngIf="activeTab === 'overdue'">
       <div class="card p-4"
-        style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
+        style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #D7E3E7;">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
           <div>
-            <h5 class="mb-1" style="font-weight: 700; color: #1e293b;">⚠️ Overdue Enrollments</h5>
+            <h5 class="mb-1" style="font-weight: 700; color: #1D3557;">⚠️ Overdue Enrollments</h5>
             <small class="text-muted">Members who haven't completed their courses on time</small>
           </div>
           <span *ngIf="overdueEnrollments.length > 0"
@@ -446,7 +446,7 @@
                 <td>
                   <input type="date" class="form-control form-control-sm"
                     [(ngModel)]="selectedDeadline" [min]="today"
-                    style="border-radius: 8px; border: 1.5px solid #e2e8f0; font-size: 13px;">
+                    style="border-radius: 8px; border: 1.5px solid #D7E3E7; font-size: 13px;">
                 </td>
                 <td>
                   <button (click)="setDeadline(enrollment._id)"
@@ -475,28 +475,28 @@
         <div class="col-lg-4 mb-4">
 
           <div class="card p-4 text-center"
-            style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
+            style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #D7E3E7;">
 
             <div style="position: relative; display: inline-block; margin: 0 auto 16px;">
               <img *ngIf="avatarPreview" [src]="avatarPreview" alt="preview"
                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-                  border: 4px solid #667eea; box-shadow: 0 4px 20px rgba(102,126,234,0.3);">
+                  border: 4px solid #457B9D; box-shadow: 0 4px 20px rgba(102,126,234,0.3);">
               <img *ngIf="!avatarPreview && profile?.user?.avatar"
                 [src]="'http://localhost:5000' + profile.user.avatar" alt="avatar"
                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-                  border: 4px solid #667eea; box-shadow: 0 4px 20px rgba(102,126,234,0.3);">
+                  border: 4px solid #457B9D; box-shadow: 0 4px 20px rgba(102,126,234,0.3);">
               <img *ngIf="!avatarPreview && !profile?.user?.avatar"
                 src="assets/img/user/user1.jpg" alt="avatar"
                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-                  border: 4px solid #667eea; box-shadow: 0 4px 20px rgba(102,126,234,0.3);">
+                  border: 4px solid #457B9D; box-shadow: 0 4px 20px rgba(102,126,234,0.3);">
             </div>
 
-            <h5 style="font-weight: 700; color: #1e293b;">
+            <h5 style="font-weight: 700; color: #1D3557;">
               {{ profile?.user?.firstname }} {{ profile?.user?.lastname }}
             </h5>
             <p class="text-muted" style="font-size: 13px;">{{ profile?.user?.email }}</p>
             <span class="badge"
-              style="background: linear-gradient(135deg, #667eea, #764ba2);
+              style="background: linear-gradient(135deg, #457B9D, #1D3557);
                 font-size: 12px; padding: 6px 14px;">
               👔 Manager
             </span>
@@ -508,7 +508,7 @@
                 style="border-radius: 10px; font-size: 13px;">
               <button (click)="updateAvatar()" [disabled]="!selectedAvatar"
                 style="width: 100%; padding: 10px; border: none; border-radius: 10px;
-                  background: linear-gradient(135deg, #667eea, #764ba2);
+                  background: linear-gradient(135deg, #457B9D, #1D3557);
                   color: white; font-weight: 600; font-size: 13px; cursor: pointer;"
                 [style.opacity]="!selectedAvatar ? '0.5' : '1'">
                 📷 Update Profile Picture
@@ -518,16 +518,16 @@
 
           <!-- Team Mini Stats -->
           <div class="card p-4 mt-3"
-            style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;"
+            style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #D7E3E7;"
             *ngIf="stats">
-            <h6 style="font-weight: 700; color: #1e293b; margin-bottom: 16px;">📊 Team Quick Stats</h6>
+            <h6 style="font-weight: 700; color: #1D3557; margin-bottom: 16px;">📊 Team Quick Stats</h6>
             <div class="row">
               <div class="col-6 mb-3">
                 <div class="text-center p-2" style="background: #f0f4ff; border-radius: 12px;">
-                  <div style="font-size: 22px; font-weight: 800; color: #667eea;">
+                  <div style="font-size: 22px; font-weight: 800; color: #457B9D;">
                     {{ stats.overview.teamSize }}
                   </div>
-                  <div style="font-size: 11px; color: #64748b;">👥 Team</div>
+                  <div style="font-size: 11px; color: #5C7184;">👥 Team</div>
                 </div>
               </div>
               <div class="col-6 mb-3">
@@ -535,7 +535,7 @@
                   <div style="font-size: 22px; font-weight: 800; color: #10b981;">
                     {{ stats.overview.totalEnrollments }}
                   </div>
-                  <div style="font-size: 11px; color: #64748b;">📝 Enrollments</div>
+                  <div style="font-size: 11px; color: #5C7184;">📝 Enrollments</div>
                 </div>
               </div>
               <div class="col-6">
@@ -543,7 +543,7 @@
                   <div style="font-size: 22px; font-weight: 800; color: #f59e0b;">
                     {{ stats.overview.completionRate }}%
                   </div>
-                  <div style="font-size: 11px; color: #64748b;">✅ Completion</div>
+                  <div style="font-size: 11px; color: #5C7184;">✅ Completion</div>
                 </div>
               </div>
               <div class="col-6">
@@ -551,7 +551,7 @@
                   <div style="font-size: 22px; font-weight: 800; color: #06b6d4;">
                     {{ stats.overview.averageProgress }}%
                   </div>
-                  <div style="font-size: 11px; color: #64748b;">📈 Progress</div>
+                  <div style="font-size: 11px; color: #5C7184;">📈 Progress</div>
                 </div>
               </div>
             </div>
@@ -566,8 +566,8 @@
 
           <!-- Edit Profile -->
           <div class="card p-4 mb-4"
-            style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
-            <h5 class="mb-4" style="font-weight: 700; color: #1e293b;">✏️ Edit Profile</h5>
+            style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #D7E3E7;">
+            <h5 class="mb-4" style="font-weight: 700; color: #1D3557;">✏️ Edit Profile</h5>
 
             <div class="row">
               <div class="col-lg-6">
@@ -575,7 +575,7 @@
                   <label style="font-size: 13px; font-weight: 600; color: #374151;">First Name</label>
                   <input type="text" class="form-control mt-1" placeholder="First Name"
                     [(ngModel)]="profileData.firstname"
-                    style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                    style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
                 </div>
               </div>
               <div class="col-lg-6">
@@ -583,7 +583,7 @@
                   <label style="font-size: 13px; font-weight: 600; color: #374151;">Last Name</label>
                   <input type="text" class="form-control mt-1" placeholder="Last Name"
                     [(ngModel)]="profileData.lastname"
-                    style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                    style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
                 </div>
               </div>
             </div>
@@ -592,20 +592,20 @@
               <label style="font-size: 13px; font-weight: 600; color: #374151;">Phone</label>
               <input type="text" class="form-control mt-1" placeholder="Phone number"
                 [(ngModel)]="profileData.phone"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
             </div>
 
             <div class="mb-4">
               <label style="font-size: 13px; font-weight: 600; color: #374151;">Address</label>
               <input type="text" class="form-control mt-1" placeholder="Address"
                 [(ngModel)]="profileData.address"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
             </div>
 
             <button (click)="updateProfile()" [disabled]="profileUpdateLoading"
               style="width: 100%; padding: 13px; border: none; border-radius: 10px;
                 font-size: 15px; font-weight: 600; color: white; cursor: pointer;
-                background: linear-gradient(135deg, #667eea, #764ba2);
+                background: linear-gradient(135deg, #457B9D, #1D3557);
                 box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
               [style.opacity]="profileUpdateLoading ? '0.7' : '1'">
               <span *ngIf="!profileUpdateLoading">💾 Save Changes</span>
@@ -617,8 +617,8 @@
 
           <!-- Change Password -->
           <div class="card p-4"
-            style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
-            <h5 class="mb-4" style="font-weight: 700; color: #1e293b;">🔒 Change Password</h5>
+            style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #D7E3E7;">
+            <h5 class="mb-4" style="font-weight: 700; color: #1D3557;">🔒 Change Password</h5>
 
             <div *ngIf="passwordSuccess" class="alert alert-success">{{ passwordSuccess }}</div>
             <div *ngIf="passwordError" class="alert alert-danger">{{ passwordError }}</div>
@@ -627,7 +627,7 @@
               <label style="font-size: 13px; font-weight: 600; color: #374151;">Current Password *</label>
               <input type="password" class="form-control mt-1" placeholder="Enter current password"
                 [(ngModel)]="passwordData.currentPassword"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
             </div>
 
             <div class="mb-3">
@@ -635,14 +635,14 @@
               <input type="password" class="form-control mt-1"
                 placeholder="Min 8 chars, 1 uppercase, 1 number"
                 [(ngModel)]="passwordData.newPassword"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
             </div>
 
             <div class="mb-4">
               <label style="font-size: 13px; font-weight: 600; color: #374151;">Confirm New Password *</label>
               <input type="password" class="form-control mt-1" placeholder="Confirm new password"
                 [(ngModel)]="passwordData.confirmPassword"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
             </div>
 
             <button (click)="changePassword()" [disabled]="passwordLoading"

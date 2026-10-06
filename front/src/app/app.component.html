@@ -11,7 +11,7 @@
 
   <div *ngFor="let toast of toasts"
     style="background: white; border-radius: 16px; padding: 16px 20px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.15); border: 1px solid #e2e8f0;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15); border: 1px solid #D7E3E7;
       transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       overflow: hidden; position: relative; pointer-events: all;"
     [style.borderLeft]="'4px solid ' + getNotifColor(toast.type)"
@@ -29,28 +29,28 @@
 
       <!-- Texte -->
       <div style="flex: 1; min-width: 0;">
-        <div style="font-weight: 700; color: #0f172a; font-size: 14px; margin-bottom: 4px;
+        <div style="font-weight: 700; color: #1D3557; font-size: 14px; margin-bottom: 4px;
           white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
           {{ toast.title }}
         </div>
-        <div style="font-size: 12px; color: #64748b; line-height: 1.5;">
+        <div style="font-size: 12px; color: #5C7184; line-height: 1.5;">
           {{ toast.message }}
         </div>
       </div>
 
       <!-- Fermer -->
       <button (click)="closeToast(toast.id)"
-        style="background: none; border: none; color: #94a3b8; cursor: pointer;
+        style="background: none; border: none; color: #7E93A3; cursor: pointer;
           font-size: 16px; padding: 0; flex-shrink: 0; line-height: 1;"
         onmouseover="this.style.color='#374151'"
-        onmouseout="this.style.color='#94a3b8'">
+        onmouseout="this.style.color='#7E93A3'">
         ✕
       </button>
     </div>
 
     <!-- Barre de progression -->
     <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
-      background: #f1f5f9;">
+      background: #EAF3F5;">
       <div style="height: 100%;"
         [style.background]="getNotifColor(toast.type)"
         [style.animation]="toast.visible ? 'shrinkBar 5s linear forwards' : 'none'">

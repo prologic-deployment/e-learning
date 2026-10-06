@@ -1683,7 +1683,7 @@
 
 
 .cat-section {
-  background: #1e293b;
+  background: #1D3557;
   padding: 12px 16px;
 
   &:hover {
@@ -1714,7 +1714,7 @@
   }
 
   &:hover .cat-name {
-    color: #667eea;
+    color: #457B9D;
   }
 }
 
@@ -1735,7 +1735,7 @@
 
     &:hover {
       background: rgba(102,126,234,0.3);
-      color: #667eea;
+      color: #457B9D;
     }
   }
 }
@@ -1744,7 +1744,7 @@
   padding: 16px;
 
   &:hover {
-    background: #f8fafc !important;
+    background: #F4F8F9 !important;
   }
 }
 
@@ -1759,13 +1759,13 @@
 }
 
 .cat-name {
-  color: #1e293b;
+  color: #1D3557;
   font-weight: 700;
   font-size: 13px;
 }
 
 .cat-desc {
-  color: #94a3b8;
+  color: #7E93A3;
   font-size: 11px;
   margin-top: 2px;
 }
@@ -1776,17 +1776,17 @@
   gap: 6px;
 
   a {
-    color: #64748b;
+    color: #5C7184;
     font-size: 11px;
     text-decoration: none;
-    background: #f1f5f9;
+    background: #EAF3F5;
     padding: 3px 10px;
     border-radius: 20px;
     font-weight: 500;
     transition: all 0.2s;
 
     &:hover {
-      background: #667eea;
+      background: #457B9D;
       color: white;
     }
   }

@@ -19,21 +19,21 @@
     <div class="row justify-content-center mb-4" *ngIf="!showOTP">
       <div class="col-lg-5 col-md-8">
         <div class="d-flex rounded-pill overflow-hidden"
-          style="background: #f1f5f9; padding: 4px;">
+          style="background: #EAF3F5; padding: 4px;">
           <button
             (click)="activeTab = 'login'"
             style="flex: 1; padding: 10px 20px; border: none; border-radius: 50px;
               font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;"
-            [style.background]="activeTab === 'login' ? 'linear-gradient(135deg, #667eea, #764ba2)' : 'transparent'"
-            [style.color]="activeTab === 'login' ? 'white' : '#64748b'">
+            [style.background]="activeTab === 'login' ? 'linear-gradient(135deg, #457B9D, #1D3557)' : 'transparent'"
+            [style.color]="activeTab === 'login' ? 'white' : '#5C7184'">
             🔑 Login
           </button>
           <button
             (click)="activeTab = 'register'"
             style="flex: 1; padding: 10px 20px; border: none; border-radius: 50px;
               font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;"
-            [style.background]="activeTab === 'register' ? 'linear-gradient(135deg, #667eea, #764ba2)' : 'transparent'"
-            [style.color]="activeTab === 'register' ? 'white' : '#64748b'">
+            [style.background]="activeTab === 'register' ? 'linear-gradient(135deg, #457B9D, #1D3557)' : 'transparent'"
+            [style.color]="activeTab === 'register' ? 'white' : '#5C7184'">
             📝 Register
           </button>
         </div>
@@ -50,17 +50,17 @@
           <div *ngIf="!showOTP"
             style="background: white; border-radius: 20px;
               box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-              padding: 40px; border: 1px solid #f0f0f0;">
+              padding: 40px; border: 1px solid #D7E3E7;">
 
             <!-- Header -->
             <div class="text-center mb-4">
               <div style="width: 70px; height: 70px;
-                background: linear-gradient(135deg, #667eea, #764ba2);
+                background: linear-gradient(135deg, #457B9D, #1D3557);
                 border-radius: 50%; display: flex; align-items: center;
                 justify-content: center; margin: 0 auto 15px;">
                 <span style="font-size: 28px;">🔑</span>
               </div>
-              <h2 style="font-weight: 700; color: #1e293b; font-size: 24px;">
+              <h2 style="font-weight: 700; color: #1D3557; font-size: 24px;">
                 Sign in to your account
               </h2>
               <p class="text-muted" style="font-size: 14px;">
@@ -88,7 +88,7 @@
                     [(ngModel)]="loginData.email"
                     name="email"
                     required
-                    style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                    style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                       padding: 12px 15px; font-size: 14px;
                       transition: border 0.2s;">
                 </div>
@@ -101,7 +101,7 @@
                     Password
                   </label>
                   <a routerLink="/forgot-password"
-                    style="font-size: 12px; color: #667eea;
+                    style="font-size: 12px; color: #457B9D;
                       font-weight: 600; text-decoration: none;">
                     Forgot password?
                   </a>
@@ -113,7 +113,7 @@
                     [(ngModel)]="loginData.password"
                     name="password"
                     required
-                    style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                    style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                       padding: 12px 15px; font-size: 14px;">
                 </div>
               </div>
@@ -124,7 +124,7 @@
                 style="width: 100%; padding: 13px; border: none;
                   border-radius: 10px; font-size: 15px; font-weight: 600;
                   color: white; cursor: pointer; margin-top: 8px;
-                  background: linear-gradient(135deg, #667eea, #764ba2);
+                  background: linear-gradient(135deg, #457B9D, #1D3557);
                   box-shadow: 0 4px 15px rgba(102,126,234,0.4);
                   transition: opacity 0.2s;"
                 [style.opacity]="loginLoading ? '0.7' : '1'">
@@ -138,10 +138,10 @@
             </form>
 
             <!-- Link to register -->
-            <p class="text-center mt-4 mb-0" style="font-size: 13px; color: #64748b;">
+            <p class="text-center mt-4 mb-0" style="font-size: 13px; color: #5C7184;">
               Not a member ?
               <a (click)="activeTab = 'register'"
-                style="color: #667eea; font-weight: 600;
+                style="color: #457B9D; font-weight: 600;
                   text-decoration: none; cursor: pointer;">
                 Create an account
               </a>
@@ -153,11 +153,11 @@
           <div *ngIf="showOTP"
             style="background: white; border-radius: 20px;
               box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-              padding: 40px; border: 1px solid #f0f0f0;">
+              padding: 40px; border: 1px solid #D7E3E7;">
 
             <div class="text-center mb-4">
               <div style="width: 70px; height: 70px;
-                background: linear-gradient(135deg, #667eea, #764ba2);
+                background: linear-gradient(135deg, #457B9D, #1D3557);
                 border-radius: 50%; display: flex; align-items: center;
                 justify-content: center; margin: 0 auto 15px;">
                 <span style="font-size: 30px;">🔐</span>
@@ -206,7 +206,7 @@
                 Didn't receive the code ?
                 <a *ngIf="resendCooldown <= 0"
                   (click)="onResendOTP()"
-                  style="color: #667eea; font-weight: 600;
+                  style="color: #457B9D; font-weight: 600;
                     text-decoration: none; cursor: pointer;">
                   Resend Code
                 </a>
@@ -229,17 +229,17 @@
         <div *ngIf="activeTab === 'register'">
           <div style="background: white; border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            padding: 40px; border: 1px solid #f0f0f0;">
+            padding: 40px; border: 1px solid #D7E3E7;">
 
             <!-- Header -->
             <div class="text-center mb-4">
               <div style="width: 70px; height: 70px;
-                background: linear-gradient(135deg, #667eea, #764ba2);
+                background: linear-gradient(135deg, #457B9D, #1D3557);
                 border-radius: 50%; display: flex; align-items: center;
                 justify-content: center; margin: 0 auto 15px;">
                 <span style="font-size: 28px;">📝</span>
               </div>
-              <h2 style="font-weight: 700; color: #1e293b; font-size: 24px;">
+              <h2 style="font-weight: 700; color: #1D3557; font-size: 24px;">
                 Create your account
               </h2>
               <p class="text-muted" style="font-size: 14px;">Join us today !</p>
@@ -264,7 +264,7 @@
                       (blur)="touch('firstname')"
                       style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
                       [style.border]="isInvalid('firstname') ?
-                        '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
+                        '1.5px solid #ef4444' : '1.5px solid #D7E3E7'">
                     <small *ngIf="isInvalid('firstname')"
                       style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
                       ⚠️ Le prénom est obligatoire
@@ -283,7 +283,7 @@
                       (blur)="touch('lastname')"
                       style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
                       [style.border]="isInvalid('lastname') ?
-                        '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
+                        '1.5px solid #ef4444' : '1.5px solid #D7E3E7'">
                     <small *ngIf="isInvalid('lastname')"
                       style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
                       ⚠️ Le nom est obligatoire
@@ -304,7 +304,7 @@
                   (blur)="touch('email')"
                   style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
                   [style.border]="isInvalid('email') ?
-                    '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
+                    '1.5px solid #ef4444' : '1.5px solid #D7E3E7'">
                 <small *ngIf="isInvalid('email')"
                   style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
                   ⚠️ Veuillez entrer une adresse email valide
@@ -322,7 +322,7 @@
                   (blur)="touch('dateOfBirth')"
                   style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
                   [style.border]="isInvalid('dateOfBirth') ?
-                    '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
+                    '1.5px solid #ef4444' : '1.5px solid #D7E3E7'">
                 <small *ngIf="isInvalid('dateOfBirth')"
                   style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
                   ⚠️ La date de naissance est obligatoire
@@ -336,9 +336,9 @@
                 </label>
                 <div class="input-group mt-1">
                   <span class="input-group-text"
-                    style="border-radius: 10px 0 0 10px; border: 1.5px solid #e2e8f0;
+                    style="border-radius: 10px 0 0 10px; border: 1.5px solid #D7E3E7;
                       background: #f8f9fa; font-weight: 600; color: #374151; font-size: 13px;"
-                    [style.borderColor]="isInvalid('phone') ? '#ef4444' : '#e2e8f0'">
+                    [style.borderColor]="isInvalid('phone') ? '#ef4444' : '#D7E3E7'">
                     🇹🇳 +216
                   </span>
                   <input type="tel" class="form-control"
@@ -349,7 +349,7 @@
                     (blur)="touch('phone')"
                     style="border-radius: 0 10px 10px 0; border-left: none;
                       padding: 12px 15px; font-size: 14px;"
-                    [style.border]="isInvalid('phone') ? '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
+                    [style.border]="isInvalid('phone') ? '1.5px solid #ef4444' : '1.5px solid #D7E3E7'">
                 </div>
                 <small *ngIf="isInvalid('phone')"
                   style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
@@ -369,23 +369,23 @@
                   (blur)="touch('password')"
                   style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
                   [style.border]="isInvalid('password') ?
-                    '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
+                    '1.5px solid #ef4444' : '1.5px solid #D7E3E7'">
 
                 <!-- ✅ Indicateur de force du mot de passe -->
                 <div *ngIf="registerTouched.password && registerData.password"
                   class="mt-2">
                   <div style="display: flex; gap: 4px; margin-bottom: 4px;">
                     <div style="flex: 1; height: 3px; border-radius: 99px; transition: background 0.3s;"
-                      [style.background]="getPasswordStrength() >= 1 ? getPasswordColor() : '#e2e8f0'">
+                      [style.background]="getPasswordStrength() >= 1 ? getPasswordColor() : '#D7E3E7'">
                     </div>
                     <div style="flex: 1; height: 3px; border-radius: 99px; transition: background 0.3s;"
-                      [style.background]="getPasswordStrength() >= 2 ? getPasswordColor() : '#e2e8f0'">
+                      [style.background]="getPasswordStrength() >= 2 ? getPasswordColor() : '#D7E3E7'">
                     </div>
                     <div style="flex: 1; height: 3px; border-radius: 99px; transition: background 0.3s;"
-                      [style.background]="getPasswordStrength() >= 3 ? getPasswordColor() : '#e2e8f0'">
+                      [style.background]="getPasswordStrength() >= 3 ? getPasswordColor() : '#D7E3E7'">
                     </div>
                     <div style="flex: 1; height: 3px; border-radius: 99px; transition: background 0.3s;"
-                      [style.background]="getPasswordStrength() >= 4 ? getPasswordColor() : '#e2e8f0'">
+                      [style.background]="getPasswordStrength() >= 4 ? getPasswordColor() : '#D7E3E7'">
                     </div>
                   </div>
                   <small style="font-size: 11px;" [style.color]="getPasswordColor()">
@@ -409,11 +409,11 @@
                     style="flex: 1; padding: 12px; border-radius: 10px;
                       border: 2px solid; cursor: pointer; text-align: center;
                       transition: all 0.2s;"
-                    [style.borderColor]="registerData.role === 'user' ? '#667eea' : '#e2e8f0'"
+                    [style.borderColor]="registerData.role === 'user' ? '#457B9D' : '#D7E3E7'"
                     [style.background]="registerData.role === 'user' ? '#f0f4ff' : 'white'">
                     <div style="font-size: 24px;">👤</div>
                     <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
-                      [style.color]="registerData.role === 'user' ? '#667eea' : '#64748b'">
+                      [style.color]="registerData.role === 'user' ? '#457B9D' : '#5C7184'">
                       Student
                     </div>
                   </div>
@@ -421,11 +421,11 @@
                     style="flex: 1; padding: 12px; border-radius: 10px;
                       border: 2px solid; cursor: pointer; text-align: center;
                       transition: all 0.2s;"
-                    [style.borderColor]="registerData.role === 'trainer' ? '#667eea' : '#e2e8f0'"
+                    [style.borderColor]="registerData.role === 'trainer' ? '#457B9D' : '#D7E3E7'"
                     [style.background]="registerData.role === 'trainer' ? '#f0f4ff' : 'white'">
                     <div style="font-size: 24px;">🎓</div>
                     <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
-                      [style.color]="registerData.role === 'trainer' ? '#667eea' : '#64748b'">
+                      [style.color]="registerData.role === 'trainer' ? '#457B9D' : '#5C7184'">
                       Trainer
                     </div>
                   </div>
@@ -438,7 +438,7 @@
                 style="width: 100%; padding: 13px; border: none;
                   border-radius: 10px; font-size: 15px; font-weight: 600;
                   color: white; cursor: pointer;
-                  background: linear-gradient(135deg, #667eea, #764ba2);
+                  background: linear-gradient(135deg, #457B9D, #1D3557);
                   box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
                 [style.opacity]="registerLoading ? '0.7' : '1'">
                 <span *ngIf="!registerLoading">📝 Create Account</span>
@@ -450,10 +450,10 @@
 
             </form>
 
-            <p class="text-center mt-4 mb-0" style="font-size: 13px; color: #64748b;">
+            <p class="text-center mt-4 mb-0" style="font-size: 13px; color: #5C7184;">
               Already have an account ?
               <a (click)="activeTab = 'login'"
-                style="color: #667eea; font-weight: 600;
+                style="color: #457B9D; font-weight: 600;
                   text-decoration: none; cursor: pointer;">
                 Sign in
               </a>

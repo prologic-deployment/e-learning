@@ -6,15 +6,15 @@
       <div class="col-lg-8">
         <div style="display: flex; align-items: center; gap: 16px;">
           <div style="width: 52px; height: 52px; border-radius: 14px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #457B9D, #1D3557);
             display: flex; align-items: center; justify-content: center; font-size: 22px;">
             ⚡
           </div>
           <div>
-            <h2 style="font-weight: 800; color: #0f172a; margin: 0; font-size: 24px;">
+            <h2 style="font-weight: 800; color: #1D3557; margin: 0; font-size: 24px;">
               Admin Dashboard
             </h2>
-            <p style="color: #64748b; margin: 0; font-size: 13px;">
+            <p style="color: #5C7184; margin: 0; font-size: 13px;">
               Gestion complète de la plateforme
             </p>
           </div>
@@ -25,13 +25,13 @@
     <!-- Tabs -->
     <div class="row mb-4">
       <div class="col-12">
-        <div style="background: #f1f5f9; border-radius: 14px; padding: 6px;
+        <div style="background: #EAF3F5; border-radius: 14px; padding: 6px;
           display: flex; gap: 4px; flex-wrap: wrap;">
           <button (click)="setTab('stats')"
             style="padding: 9px 14px; border: none; border-radius: 10px; font-size: 12px;
               font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;"
             [style.background]="activeTab === 'stats' ? 'white' : 'transparent'"
-            [style.color]="activeTab === 'stats' ? '#667eea' : '#64748b'"
+            [style.color]="activeTab === 'stats' ? '#457B9D' : '#5C7184'"
             [style.boxShadow]="activeTab === 'stats' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
             📊 Stats
           </button>
@@ -39,7 +39,7 @@
             style="padding: 9px 14px; border: none; border-radius: 10px; font-size: 12px;
               font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;"
             [style.background]="activeTab === 'users' ? 'white' : 'transparent'"
-            [style.color]="activeTab === 'users' ? '#667eea' : '#64748b'"
+            [style.color]="activeTab === 'users' ? '#457B9D' : '#5C7184'"
             [style.boxShadow]="activeTab === 'users' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
             👥 Users
           </button>
@@ -47,7 +47,7 @@
             style="padding: 9px 14px; border: none; border-radius: 10px; font-size: 12px;
               font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;"
             [style.background]="activeTab === 'courses' ? 'white' : 'transparent'"
-            [style.color]="activeTab === 'courses' ? '#667eea' : '#64748b'"
+            [style.color]="activeTab === 'courses' ? '#457B9D' : '#5C7184'"
             [style.boxShadow]="activeTab === 'courses' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
             📚 Courses
           </button>
@@ -55,7 +55,7 @@
             style="padding: 9px 14px; border: none; border-radius: 10px; font-size: 12px;
               font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;"
             [style.background]="activeTab === 'archived' ? 'white' : 'transparent'"
-            [style.color]="activeTab === 'archived' ? '#667eea' : '#64748b'"
+            [style.color]="activeTab === 'archived' ? '#457B9D' : '#5C7184'"
             [style.boxShadow]="activeTab === 'archived' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
             🗄️ Archivés
           </button>
@@ -63,7 +63,7 @@
             style="padding: 9px 14px; border: none; border-radius: 10px; font-size: 12px;
               font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;"
             [style.background]="activeTab === 'create' ? 'white' : 'transparent'"
-            [style.color]="activeTab === 'create' ? '#667eea' : '#64748b'"
+            [style.color]="activeTab === 'create' ? '#457B9D' : '#5C7184'"
             [style.boxShadow]="activeTab === 'create' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
             ➕ Create Course
           </button>
@@ -71,7 +71,7 @@
             style="padding: 9px 14px; border: none; border-radius: 10px; font-size: 12px;
               font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;"
             [style.background]="activeTab === 'assign' ? 'white' : 'transparent'"
-            [style.color]="activeTab === 'assign' ? '#667eea' : '#64748b'"
+            [style.color]="activeTab === 'assign' ? '#457B9D' : '#5C7184'"
             [style.boxShadow]="activeTab === 'assign' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
             🔗 Assign Users
           </button>
@@ -79,7 +79,7 @@
             style="padding: 9px 14px; border: none; border-radius: 10px; font-size: 12px;
               font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;"
             [style.background]="activeTab === 'staff' ? 'white' : 'transparent'"
-            [style.color]="activeTab === 'staff' ? '#667eea' : '#64748b'"
+            [style.color]="activeTab === 'staff' ? '#457B9D' : '#5C7184'"
             [style.boxShadow]="activeTab === 'staff' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
             👔 Create Staff
           </button>
@@ -87,7 +87,7 @@
             style="padding: 9px 14px; border: none; border-radius: 10px; font-size: 12px;
               font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;"
             [style.background]="activeTab === 'reviews' ? 'white' : 'transparent'"
-            [style.color]="activeTab === 'reviews' ? '#667eea' : '#64748b'"
+            [style.color]="activeTab === 'reviews' ? '#457B9D' : '#5C7184'"
             [style.boxShadow]="activeTab === 'reviews' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
             💬 Reviews
           </button>
@@ -95,7 +95,7 @@
             style="padding: 9px 14px; border: none; border-radius: 10px; font-size: 12px;
               font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;"
             [style.background]="activeTab === 'quiz-results' ? 'white' : 'transparent'"
-            [style.color]="activeTab === 'quiz-results' ? '#667eea' : '#64748b'"
+            [style.color]="activeTab === 'quiz-results' ? '#457B9D' : '#5C7184'"
             [style.boxShadow]="activeTab === 'quiz-results' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
             📝 Quiz Results
           </button>
@@ -106,7 +106,7 @@
     <!-- ========== STATS TAB ========== -->
     <div *ngIf="activeTab === 'stats'">
       <div *ngIf="statsLoading" class="text-center py-5">
-        <div class="spinner-border" style="color: #667eea;"></div>
+        <div class="spinner-border" style="color: #457B9D;"></div>
       </div>
       <div *ngIf="statsError" class="alert alert-danger" style="border-radius: 12px;">
         {{ statsError }}
@@ -115,8 +115,8 @@
 
         <div class="d-flex justify-content-between align-items-center mb-4">
           <div>
-            <h5 style="font-weight: 700; color: #0f172a; margin: 0;">Statistiques Globales</h5>
-            <p style="font-size: 13px; color: #64748b; margin: 0;">Vue d'ensemble de la plateforme</p>
+            <h5 style="font-weight: 700; color: #1D3557; margin: 0;">Statistiques Globales</h5>
+            <p style="font-size: 13px; color: #5C7184; margin: 0;">Vue d'ensemble de la plateforme</p>
           </div>
           <div class="d-flex gap-2">
             <button (click)="exportPDF()"
@@ -128,7 +128,7 @@
             <button (click)="exportExcel()"
               style="padding: 9px 16px; border: none; border-radius: 10px; font-size: 12px;
                 font-weight: 600; color: white; cursor: pointer;
-                background: linear-gradient(135deg, #667eea, #764ba2);">
+                background: linear-gradient(135deg, #457B9D, #1D3557);">
               📊 Excel
             </button>
           </div>
@@ -136,13 +136,13 @@
 
         <div class="row mb-3">
           <div class="col-lg-3 col-md-6 mb-3" *ngFor="let stat of [
-            {label:'Total Users', value: stats.overview.totalUsers, icon:'👥', color:'#667eea', bg:'#f0f4ff'},
+            {label:'Total Users', value: stats.overview.totalUsers, icon:'👥', color:'#457B9D', bg:'#f0f4ff'},
             {label:'Total Courses', value: stats.overview.totalCourses, icon:'📚', color:'#10b981', bg:'#f0fdf4'},
             {label:'Pending Courses', value: stats.overview.pendingCourses, icon:'⏳', color:'#f59e0b', bg:'#fffbeb'},
             {label:'Revenue (TND)', value: stats.overview.totalRevenue, icon:'💰', color:'#06b6d4', bg:'#f0fdfe'}
           ]">
             <div style="background: white; border-radius: 18px; padding: 22px;
-              border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+              border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
               <div class="d-flex align-items-center justify-content-between mb-3">
                 <div style="width: 44px; height: 44px; border-radius: 12px; font-size: 20px;
                   display: flex; align-items: center; justify-content: center;"
@@ -150,10 +150,10 @@
                 <span style="font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px;"
                   [style.background]="stat.bg" [style.color]="stat.color">Total</span>
               </div>
-              <div style="font-size: 30px; font-weight: 800; color: #0f172a; line-height: 1;">
+              <div style="font-size: 30px; font-weight: 800; color: #1D3557; line-height: 1;">
                 {{ stat.value }}
               </div>
-              <div style="font-size: 12px; color: #64748b; margin-top: 4px;">{{ stat.label }}</div>
+              <div style="font-size: 12px; color: #5C7184; margin-top: 4px;">{{ stat.label }}</div>
             </div>
           </div>
         </div>
@@ -166,73 +166,73 @@
             {label:'Certificates', value: stats.overview.totalCertificates, icon:'🏅', color:'#f97316', bg:'#fff7ed'}
           ]">
             <div style="background: white; border-radius: 18px; padding: 22px;
-              border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+              border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
               <div class="d-flex align-items-center justify-content-between mb-3">
                 <div style="width: 44px; height: 44px; border-radius: 12px; font-size: 20px;
                   display: flex; align-items: center; justify-content: center;"
                   [style.background]="stat.bg">{{ stat.icon }}</div>
               </div>
-              <div style="font-size: 30px; font-weight: 800; color: #0f172a; line-height: 1;">
+              <div style="font-size: 30px; font-weight: 800; color: #1D3557; line-height: 1;">
                 {{ stat.value }}
               </div>
-              <div style="font-size: 12px; color: #64748b; margin-top: 4px;">{{ stat.label }}</div>
+              <div style="font-size: 12px; color: #5C7184; margin-top: 4px;">{{ stat.label }}</div>
             </div>
           </div>
         </div>
 
         <!-- Top Courses -->
         <div style="background: white; border-radius: 20px; padding: 28px;
-          border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
-          <h5 style="font-weight: 700; color: #0f172a; margin-bottom: 4px;">🏆 Top Courses</h5>
-          <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">Cours les plus populaires</p>
+          border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+          <h5 style="font-weight: 700; color: #1D3557; margin-bottom: 4px;">🏆 Top Courses</h5>
+          <p style="font-size: 13px; color: #5C7184; margin-bottom: 20px;">Cours les plus populaires</p>
           <div *ngIf="!stats.topCourses?.length" class="text-center py-4">
             <div style="font-size: 40px; margin-bottom: 8px;">📚</div>
-            <p style="color: #64748b; margin: 0;">Aucun cours pour le moment</p>
+            <p style="color: #5C7184; margin: 0;">Aucun cours pour le moment</p>
           </div>
           <div class="table-responsive" *ngIf="stats.topCourses?.length > 0">
             <table class="table align-middle" style="font-size: 13px;">
               <thead>
-                <tr style="border-bottom: 2px solid #f1f5f9;">
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                <tr style="border-bottom: 2px solid #EAF3F5;">
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">#</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Cours</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Inscriptions</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Progression</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let course of stats.topCourses; let i = index"
-                  style="border-bottom: 1px solid #f8fafc;">
+                  style="border-bottom: 1px solid #F4F8F9;">
                   <td style="border: none; padding: 12px 8px;">
                     <div style="width: 28px; height: 28px; border-radius: 50%;
-                      background: linear-gradient(135deg, #667eea, #764ba2);
+                      background: linear-gradient(135deg, #457B9D, #1D3557);
                       color: white; font-weight: 700; font-size: 12px;
                       display: flex; align-items: center; justify-content: center;">
                       {{ i + 1 }}
                     </div>
                   </td>
                   <td style="border: none; padding: 12px 8px;">
-                    <span style="font-weight: 600; color: #0f172a;">{{ course.courseTitle }}</span>
+                    <span style="font-weight: 600; color: #1D3557;">{{ course.courseTitle }}</span>
                   </td>
                   <td style="border: none; padding: 12px 8px;">
-                    <span style="background: #f0f4ff; color: #667eea; padding: 4px 12px;
+                    <span style="background: #f0f4ff; color: #457B9D; padding: 4px 12px;
                       border-radius: 20px; font-size: 12px; font-weight: 600;">
                       {{ course.enrollments }} étudiants
                     </span>
                   </td>
                   <td style="border: none; padding: 12px 8px; min-width: 150px;">
                     <div class="d-flex align-items-center gap-2">
-                      <div style="flex: 1; background: #f1f5f9; border-radius: 99px;
+                      <div style="flex: 1; background: #EAF3F5; border-radius: 99px;
                         height: 6px; overflow: hidden;">
                         <div style="height: 100%; border-radius: 99px;
-                          background: linear-gradient(135deg, #667eea, #764ba2);"
+                          background: linear-gradient(135deg, #457B9D, #1D3557);"
                           [style.width.%]="(course.enrollments / stats.topCourses[0].enrollments) * 100">
                         </div>
                       </div>
-                      <span style="font-size: 11px; color: #94a3b8; white-space: nowrap;">
+                      <span style="font-size: 11px; color: #7E93A3; white-space: nowrap;">
                         {{ ((course.enrollments / stats.topCourses[0].enrollments) * 100) | number:'1.0-0' }}%
                       </span>
                     </div>
@@ -248,64 +248,64 @@
     <!-- ========== USERS TAB ========== -->
     <div *ngIf="activeTab === 'users'">
       <div *ngIf="usersLoading" class="text-center py-5">
-        <div class="spinner-border" style="color: #667eea;"></div>
+        <div class="spinner-border" style="color: #457B9D;"></div>
       </div>
       <div *ngIf="!usersLoading">
         <div style="background: white; border-radius: 20px; padding: 28px;
-          border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+          border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
           <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <h5 style="font-weight: 700; color: #0f172a; margin: 0;">Gestion des Utilisateurs</h5>
-              <p style="font-size: 13px; color: #64748b; margin: 0;">{{ users.length }} utilisateurs</p>
+              <h5 style="font-weight: 700; color: #1D3557; margin: 0;">Gestion des Utilisateurs</h5>
+              <p style="font-size: 13px; color: #5C7184; margin: 0;">{{ users.length }} utilisateurs</p>
             </div>
             <button (click)="loadUsers()"
-              style="padding: 8px 16px; border: 1.5px solid #e2e8f0; border-radius: 10px;
-                background: white; color: #64748b; font-size: 12px; font-weight: 600; cursor: pointer;">
+              style="padding: 8px 16px; border: 1.5px solid #D7E3E7; border-radius: 10px;
+                background: white; color: #5C7184; font-size: 12px; font-weight: 600; cursor: pointer;">
               🔄 Actualiser
             </button>
           </div>
           <div *ngIf="users.length === 0" class="text-center py-5">
             <div style="font-size: 48px; margin-bottom: 12px;">👥</div>
-            <p style="color: #64748b;">Aucun utilisateur trouvé</p>
+            <p style="color: #5C7184;">Aucun utilisateur trouvé</p>
           </div>
           <div class="table-responsive" *ngIf="users.length > 0">
             <table class="table align-middle" style="font-size: 13px;">
               <thead>
-                <tr style="border-bottom: 2px solid #f1f5f9;">
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                <tr style="border-bottom: 2px solid #EAF3F5;">
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Utilisateur</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Email</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Rôle</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Statut</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let user of users"
-                  style="border-bottom: 1px solid #f8fafc; transition: background 0.15s;"
+                  style="border-bottom: 1px solid #F4F8F9; transition: background 0.15s;"
                   onmouseover="this.style.background='#fafbff'"
                   onmouseout="this.style.background='white'">
                   <td style="border: none; padding: 14px 8px;">
                     <div style="display: flex; align-items: center; gap: 10px;">
                       <div style="width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
-                        background: linear-gradient(135deg, #667eea, #764ba2);
+                        background: linear-gradient(135deg, #457B9D, #1D3557);
                         display: flex; align-items: center; justify-content: center;
                         color: white; font-weight: 700; font-size: 13px;">
                         {{ user.firstname?.[0] }}{{ user.lastname?.[0] }}
                       </div>
-                      <span style="font-weight: 600; color: #0f172a;">
+                      <span style="font-weight: 600; color: #1D3557;">
                         {{ user.firstname }} {{ user.lastname }}
                       </span>
                     </div>
                   </td>
-                  <td style="border: none; padding: 14px 8px; color: #64748b;">{{ user.email }}</td>
+                  <td style="border: none; padding: 14px 8px; color: #5C7184;">{{ user.email }}</td>
                   <td style="border: none; padding: 14px 8px;">
                     <select class="form-select form-select-sm"
-                      style="width: 130px; border-radius: 8px; border: 1.5px solid #e2e8f0;
+                      style="width: 130px; border-radius: 8px; border: 1.5px solid #D7E3E7;
                         font-size: 12px; font-weight: 600;"
                       [(ngModel)]="user.role" (change)="changeRole(user._id, user.role)">
                       <option value="user">👤 User</option>
@@ -342,19 +342,19 @@
     <!-- ========== COURSES TAB ========== -->
     <div *ngIf="activeTab === 'courses'">
       <div *ngIf="coursesLoading" class="text-center py-5">
-        <div class="spinner-border" style="color: #667eea;"></div>
+        <div class="spinner-border" style="color: #457B9D;"></div>
       </div>
       <div *ngIf="!coursesLoading">
         <div style="background: white; border-radius: 20px; padding: 28px;
-          border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+          border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
           <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <h5 style="font-weight: 700; color: #0f172a; margin: 0;">Gestion des Cours</h5>
-              <p style="font-size: 13px; color: #64748b; margin: 0;">{{ courses.length }} cours actifs</p>
+              <h5 style="font-weight: 700; color: #1D3557; margin: 0;">Gestion des Cours</h5>
+              <p style="font-size: 13px; color: #5C7184; margin: 0;">{{ courses.length }} cours actifs</p>
             </div>
             <button (click)="loadCourses()"
-              style="padding: 8px 16px; border: 1.5px solid #e2e8f0; border-radius: 10px;
-                background: white; color: #64748b; font-size: 12px; font-weight: 600; cursor: pointer;">
+              style="padding: 8px 16px; border: 1.5px solid #D7E3E7; border-radius: 10px;
+                background: white; color: #5C7184; font-size: 12px; font-weight: 600; cursor: pointer;">
               🔄 Actualiser
             </button>
           </div>
@@ -362,48 +362,48 @@
             <input type="text" placeholder="🔍 Rechercher un cours..."
               [(ngModel)]="searchQuery" (keyup.enter)="searchCourses()"
               style="flex: 1; max-width: 400px; border-radius: 10px;
-                border: 1.5px solid #e2e8f0; padding: 10px 15px; font-size: 13px;">
+                border: 1.5px solid #D7E3E7; padding: 10px 15px; font-size: 13px;">
             <button (click)="searchCourses()"
               style="padding: 10px 18px; border: none; border-radius: 10px; font-size: 13px;
                 font-weight: 600; color: white; cursor: pointer;
-                background: linear-gradient(135deg, #667eea, #764ba2);">
+                background: linear-gradient(135deg, #457B9D, #1D3557);">
               Rechercher
             </button>
           </div>
           <div *ngIf="courses.length === 0" class="text-center py-5">
             <div style="font-size: 48px; margin-bottom: 12px;">📚</div>
-            <p style="color: #64748b;">Aucun cours trouvé</p>
+            <p style="color: #5C7184;">Aucun cours trouvé</p>
           </div>
           <div class="table-responsive" *ngIf="courses.length > 0">
             <table class="table align-middle" style="font-size: 13px;">
               <thead>
-                <tr style="border-bottom: 2px solid #f1f5f9;">
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                <tr style="border-bottom: 2px solid #EAF3F5;">
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Cours</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Formateur</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Catégorie</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Prix</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Statut</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let course of courses"
-                  style="border-bottom: 1px solid #f8fafc; transition: background 0.15s;"
+                  style="border-bottom: 1px solid #F4F8F9; transition: background 0.15s;"
                   onmouseover="this.style.background='#fafbff'"
                   onmouseout="this.style.background='white'">
                   <td style="border: none; padding: 14px 8px;">
-                    <div style="font-weight: 600; color: #0f172a; margin-bottom: 4px;">
+                    <div style="font-weight: 600; color: #1D3557; margin-bottom: 4px;">
                       {{ course.title }}
                     </div>
                     <div *ngIf="course.tags?.length > 0" style="display: flex; gap: 4px; flex-wrap: wrap;">
                       <span *ngFor="let tag of course.tags.slice(0,2)"
-                        style="background: #f1f5f9; color: #64748b; padding: 2px 8px;
+                        style="background: #EAF3F5; color: #5C7184; padding: 2px 8px;
                           border-radius: 20px; font-size: 10px; font-weight: 500;">
                         #{{ tag }}
                       </span>
@@ -417,20 +417,20 @@
                         color: white; font-weight: 700; font-size: 11px; flex-shrink: 0;">
                         {{ course.trainer?.firstname?.[0] }}{{ course.trainer?.lastname?.[0] }}
                       </div>
-                      <span style="color: #64748b; font-size: 12px;">
+                      <span style="color: #5C7184; font-size: 12px;">
                         {{ course.trainer?.firstname }} {{ course.trainer?.lastname }}
                       </span>
                     </div>
                   </td>
                   <td style="border: none; padding: 14px 8px;">
-                    <span style="background: #f0f4ff; color: #667eea; padding: 4px 10px;
+                    <span style="background: #f0f4ff; color: #457B9D; padding: 4px 10px;
                       border-radius: 20px; font-size: 11px; font-weight: 600;">
                       {{ course.category }}
                     </span>
                   </td>
                   <td style="border: none; padding: 14px 8px;">
                     <span style="font-weight: 700; font-size: 14px;"
-                      [style.color]="course.price === 0 ? '#10b981' : '#0f172a'">
+                      [style.color]="course.price === 0 ? '#10b981' : '#1D3557'">
                       {{ course.price === 0 ? 'Gratuit' : course.price + ' TND' }}
                     </span>
                   </td>
@@ -451,11 +451,11 @@
                         onmouseover="this.style.background='#10b981'; this.style.color='white'"
                         onmouseout="this.style.background='#f0fdf4'; this.style.color='#10b981'">✓</button>
                       <button (click)="editExistingCourse(course)" title="Modifier le cours"
-                        style="width: 32px; height: 32px; border: 1.5px solid #e0e7ff; border-radius: 8px;
-                          background: #f0f4ff; color: #667eea; font-size: 14px; cursor: pointer;
+                        style="width: 32px; height: 32px; border: 1.5px solid #EAF3F5; border-radius: 8px;
+                          background: #f0f4ff; color: #457B9D; font-size: 14px; cursor: pointer;
                           display: flex; align-items: center; justify-content: center;"
-                        onmouseover="this.style.background='#667eea'; this.style.color='white'"
-                        onmouseout="this.style.background='#f0f4ff'; this.style.color='#667eea'">✏️</button>
+                        onmouseover="this.style.background='#457B9D'; this.style.color='white'"
+                        onmouseout="this.style.background='#f0f4ff'; this.style.color='#457B9D'">✏️</button>
                       <button (click)="archiveCourse(course)" title="Archiver le cours"
                         style="width: 32px; height: 32px; border: 1.5px solid #fde68a; border-radius: 8px;
                           background: #fffbeb; color: #f59e0b; font-size: 14px; cursor: pointer;
@@ -481,55 +481,55 @@
     <!-- ========== ARCHIVED TAB ========== -->
     <div *ngIf="activeTab === 'archived'">
       <div style="background: white; border-radius: 20px; padding: 28px;
-        border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <div>
-            <h5 style="font-weight: 700; color: #0f172a; margin: 0;">🗄️ Cours Archivés</h5>
-            <p style="font-size: 13px; color: #64748b; margin: 0;">
+            <h5 style="font-weight: 700; color: #1D3557; margin: 0;">🗄️ Cours Archivés</h5>
+            <p style="font-size: 13px; color: #5C7184; margin: 0;">
               {{ archivedCourses.length }} cours archivés
             </p>
           </div>
         </div>
         <div *ngIf="archivedCourses.length === 0" class="text-center py-5">
           <div style="font-size: 48px; margin-bottom: 12px;">🗄️</div>
-          <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 8px;">Aucun cours archivé</h6>
-          <p style="color: #64748b; margin: 0;">Les cours archivés apparaîtront ici</p>
+          <h6 style="font-weight: 700; color: #1D3557; margin-bottom: 8px;">Aucun cours archivé</h6>
+          <p style="color: #5C7184; margin: 0;">Les cours archivés apparaîtront ici</p>
         </div>
         <div class="table-responsive" *ngIf="archivedCourses.length > 0">
           <table class="table align-middle" style="font-size: 13px;">
             <thead>
-              <tr style="border-bottom: 2px solid #f1f5f9;">
-                <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+              <tr style="border-bottom: 2px solid #EAF3F5;">
+                <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                   text-transform: uppercase; border: none; padding: 10px 8px;">Cours</th>
-                <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                   text-transform: uppercase; border: none; padding: 10px 8px;">Formateur</th>
-                <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                   text-transform: uppercase; border: none; padding: 10px 8px;">Catégorie</th>
-                <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                   text-transform: uppercase; border: none; padding: 10px 8px;">Archivé le</th>
-                <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                   text-transform: uppercase; border: none; padding: 10px 8px;">Actions</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let course of archivedCourses" style="border-bottom: 1px solid #f8fafc;">
+              <tr *ngFor="let course of archivedCourses" style="border-bottom: 1px solid #F4F8F9;">
                 <td style="border: none; padding: 14px 8px;">
-                  <div style="font-weight: 600; color: #64748b;">{{ course.title }}</div>
-                  <div style="font-size: 11px; color: #94a3b8; margin-top: 2px;">
+                  <div style="font-weight: 600; color: #5C7184;">{{ course.title }}</div>
+                  <div style="font-size: 11px; color: #7E93A3; margin-top: 2px;">
                     Archivé — accès restreint
                   </div>
                 </td>
-                <td style="border: none; padding: 14px 8px; color: #64748b;">
+                <td style="border: none; padding: 14px 8px; color: #5C7184;">
                   {{ course.trainer?.firstname }} {{ course.trainer?.lastname }}
                 </td>
                 <td style="border: none; padding: 14px 8px;">
-                  <span style="background: #f1f5f9; color: #64748b; padding: 4px 10px;
+                  <span style="background: #EAF3F5; color: #5C7184; padding: 4px 10px;
                     border-radius: 20px; font-size: 11px; font-weight: 600;">
                     {{ course.category }}
                   </span>
                 </td>
                 <td style="border: none; padding: 14px 8px;">
-                  <span style="font-size: 12px; color: #94a3b8;">
+                  <span style="font-size: 12px; color: #7E93A3;">
                     {{ course.archivedAt | date:'dd/MM/yyyy' }}
                   </span>
                 </td>
@@ -564,21 +564,21 @@
     <div *ngIf="activeTab === 'create'">
 
       <div style="background: white; border-radius: 20px; padding: 28px;
-        border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 24px;">
+        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 24px;">
 
         <div class="d-flex justify-content-between align-items-center mb-4">
           <div>
-            <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
+            <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
               {{ createdCourse ? '✏️ Modifier le cours' : '➕ Créer un nouveau cours' }}
             </h5>
-            <p style="font-size: 13px; color: #64748b; margin: 0;">
+            <p style="font-size: 13px; color: #5C7184; margin: 0;">
               {{ createdCourse ? 'Modifier les détails du cours' : 'Remplissez les informations du cours' }}
             </p>
           </div>
           <button *ngIf="createdCourse"
             (click)="createdCourse = null; clearCourseForm()"
-            style="padding: 8px 16px; border: 1.5px solid #e2e8f0; border-radius: 10px;
-              background: white; color: #64748b; font-size: 12px; font-weight: 600; cursor: pointer;">
+            style="padding: 8px 16px; border: 1.5px solid #D7E3E7; border-radius: 10px;
+              background: white; color: #5C7184; font-size: 12px; font-weight: 600; cursor: pointer;">
             ← Nouveau cours
           </button>
         </div>
@@ -594,7 +594,7 @@
           <label style="font-size: 13px; font-weight: 600; color: #374151;">Titre *</label>
           <input type="text" class="form-control mt-1" placeholder="Titre du cours"
             [(ngModel)]="newCourse.title"
-            style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+            style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
         </div>
 
         <div class="row">
@@ -603,7 +603,7 @@
               <label style="font-size: 13px; font-weight: 600; color: #374151;">Catégorie *</label>
               <select class="form-select mt-1" [(ngModel)]="newCourse.category"
                 (change)="onCategoryChange()"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
                 <option value="">-- Choisir une catégorie --</option>
                 <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
                 <option value="__custom__">➕ Ajouter une catégorie...</option>
@@ -611,10 +611,10 @@
               <div *ngIf="newCourse.category === '__custom__'" class="mt-2 d-flex gap-2">
                 <input type="text" class="form-control" placeholder="Nouvelle catégorie..."
                   [(ngModel)]="customCategoryInput"
-                  style="border-radius: 10px; border: 1.5px solid #667eea; padding: 10px 15px; font-size: 13px;">
+                  style="border-radius: 10px; border: 1.5px solid #457B9D; padding: 10px 15px; font-size: 13px;">
                 <button (click)="addCustomCategory()"
                   style="padding: 8px 14px; border: none; border-radius: 10px;
-                    background: linear-gradient(135deg, #667eea, #764ba2);
+                    background: linear-gradient(135deg, #457B9D, #1D3557);
                     color: white; font-weight: 600; font-size: 13px; cursor: pointer; white-space: nowrap;">
                   Ajouter
                 </button>
@@ -624,11 +624,11 @@
           <div class="col-lg-6">
             <div class="mb-3">
               <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Sous-catégorie <small style="color: #94a3b8; font-weight: 400;">(optionnel)</small>
+                Sous-catégorie <small style="color: #7E93A3; font-weight: 400;">(optionnel)</small>
               </label>
               <select class="form-select mt-1" [(ngModel)]="newCourse.subCategory"
                 [disabled]="!newCourse.category || newCourse.category === '__custom__'"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
                 <option value="">-- Choisir --</option>
                 <option *ngFor="let sub of currentSubCategories" [value]="sub">{{ sub }}</option>
                 <option value="__custom_sub__">➕ Ajouter...</option>
@@ -636,10 +636,10 @@
               <div *ngIf="newCourse.subCategory === '__custom_sub__'" class="mt-2 d-flex gap-2">
                 <input type="text" class="form-control" placeholder="Nouvelle sous-catégorie..."
                   [(ngModel)]="customSubCategoryInput"
-                  style="border-radius: 10px; border: 1.5px solid #667eea; padding: 10px 15px; font-size: 13px;">
+                  style="border-radius: 10px; border: 1.5px solid #457B9D; padding: 10px 15px; font-size: 13px;">
                 <button (click)="addCustomSubCategory()"
                   style="padding: 8px 14px; border: none; border-radius: 10px;
-                    background: linear-gradient(135deg, #667eea, #764ba2);
+                    background: linear-gradient(135deg, #457B9D, #1D3557);
                     color: white; font-weight: 600; font-size: 13px; cursor: pointer; white-space: nowrap;">
                   Ajouter
                 </button>
@@ -653,7 +653,7 @@
           <textarea class="form-control mt-1" rows="4"
             placeholder="Décrivez ce que les apprenants vont apprendre..."
             [(ngModel)]="newCourse.description"
-            style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+            style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
           </textarea>
         </div>
 
@@ -661,21 +661,21 @@
           <div class="col-lg-6">
             <div class="mb-3">
               <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Tags <small style="color: #94a3b8; font-weight: 400;">(séparés par des virgules)</small>
+                Tags <small style="color: #7E93A3; font-weight: 400;">(séparés par des virgules)</small>
               </label>
               <input type="text" class="form-control mt-1"
                 placeholder="javascript, angular, web" [(ngModel)]="newCourse.tags"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
           <div class="col-lg-6">
             <div class="mb-3">
               <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Prix (TND) <small style="color: #94a3b8; font-weight: 400;">(0 = Gratuit)</small>
+                Prix (TND) <small style="color: #7E93A3; font-weight: 400;">(0 = Gratuit)</small>
               </label>
               <input type="number" class="form-control mt-1" placeholder="0"
                 [(ngModel)]="newCourse.price"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
         </div>
@@ -684,7 +684,7 @@
           [disabled]="createCourseLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 15px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #457B9D, #1D3557);
             box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
           [style.opacity]="createCourseLoading ? '0.7' : '1'">
           <span *ngIf="!createCourseLoading">
@@ -714,19 +714,19 @@
 
         <!-- Lessons List -->
         <div style="background: white; border-radius: 20px; padding: 28px;
-          border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 24px;">
+          border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 24px;">
 
           <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <h5 style="font-weight: 700; color: #0f172a; margin: 0;">📖 Leçons</h5>
-              <p style="font-size: 13px; color: #64748b; margin: 0;">{{ lessons.length }} leçon(s)</p>
+              <h5 style="font-weight: 700; color: #1D3557; margin: 0;">📖 Leçons</h5>
+              <p style="font-size: 13px; color: #5C7184; margin: 0;">{{ lessons.length }} leçon(s)</p>
             </div>
           </div>
 
           <div *ngIf="lessons.length === 0" class="text-center py-4"
-            style="background: #f8fafc; border-radius: 14px; border: 2px dashed #e2e8f0;">
+            style="background: #F4F8F9; border-radius: 14px; border: 2px dashed #D7E3E7;">
             <div style="font-size: 32px; margin-bottom: 8px;">📖</div>
-            <p style="color: #64748b; margin: 0; font-size: 13px;">
+            <p style="color: #5C7184; margin: 0; font-size: 13px;">
               Aucune leçon — ajoutez votre première leçon ci-dessous
             </p>
           </div>
@@ -735,17 +735,17 @@
 
             <!-- Lesson Header -->
             <div style="display: flex; justify-content: space-between; align-items: center;
-              padding: 14px 16px; margin-bottom: 8px; background: #f8fafc;
-              border-radius: 12px; border: 1px solid #e2e8f0;">
+              padding: 14px 16px; margin-bottom: 8px; background: #F4F8F9;
+              border-radius: 12px; border: 1px solid #D7E3E7;">
               <div>
-                <div style="font-weight: 600; color: #0f172a; font-size: 14px;">
+                <div style="font-weight: 600; color: #1D3557; font-size: 14px;">
                   {{ i + 1 }}. {{ lesson.title }}
                 </div>
                 <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
                   <span *ngIf="lesson.contentType"
                     style="font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px;"
-                    [style.background]="lesson.contentType === 'video' ? '#ede9fe' : '#dbeafe'"
-                    [style.color]="lesson.contentType === 'video' ? '#8b5cf6' : '#3b82f6'">
+                    [style.background]="lesson.contentType === 'video' ? '#F4F8F9' : '#EAF3F5'"
+                    [style.color]="lesson.contentType === 'video' ? '#8b5cf6' : '#457B9D'">
                     {{ lesson.contentType === 'video' ? '🎬 Video' : '📄 PDF' }}
                   </span>
                   <span *ngIf="lesson.quiz?.questions?.length > 0"
@@ -765,7 +765,7 @@
                   </span>
                   <span *ngIf="!lesson.quiz2?.questions?.length"
                     style="font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px;
-                      background: #f1f5f9; color: #64748b;">
+                      background: #EAF3F5; color: #5C7184;">
                     Sans Quiz 2
                   </span>
                 </div>
@@ -775,11 +775,11 @@
                 <!-- Quiz 1 -->
                 <ng-container *ngIf="lesson.quiz?.questions?.length > 0; else addQuiz1Btn">
                   <button (click)="editQuiz(lesson)" title="Modifier Quiz 1"
-                    style="padding: 6px 10px; border: 1.5px solid #e0e7ff; border-radius: 8px;
-                      background: #f0f4ff; color: #667eea; font-size: 12px;
+                    style="padding: 6px 10px; border: 1.5px solid #EAF3F5; border-radius: 8px;
+                      background: #f0f4ff; color: #457B9D; font-size: 12px;
                       font-weight: 600; cursor: pointer;"
-                    onmouseover="this.style.background='#667eea'; this.style.color='white'"
-                    onmouseout="this.style.background='#f0f4ff'; this.style.color='#667eea'">
+                    onmouseover="this.style.background='#457B9D'; this.style.color='white'"
+                    onmouseout="this.style.background='#f0f4ff'; this.style.color='#457B9D'">
                     ✏️ Q1
                   </button>
                   <button (click)="deleteQuiz(lesson._id)" title="Supprimer Quiz 1"
@@ -793,8 +793,8 @@
                 </ng-container>
                 <ng-template #addQuiz1Btn>
                   <button (click)="openQuizForm(lesson._id)"
-                    style="padding: 6px 10px; border: 1.5px solid #e0e7ff; border-radius: 8px;
-                      background: #f0f4ff; color: #667eea; font-size: 12px;
+                    style="padding: 6px 10px; border: 1.5px solid #EAF3F5; border-radius: 8px;
+                      background: #f0f4ff; color: #457B9D; font-size: 12px;
                       font-weight: 600; cursor: pointer;">
                     ➕ Quiz 1
                   </button>
@@ -843,13 +843,13 @@
             <!-- Quiz 1 Form -->
             <div *ngIf="showQuizForm && selectedLessonId === lesson._id"
               style="background: white; border-radius: 16px; padding: 24px; margin-bottom: 12px;
-                border: 2px solid #667eea; box-shadow: 0 4px 20px rgba(102,126,234,0.15);">
+                border: 2px solid #457B9D; box-shadow: 0 4px 20px rgba(102,126,234,0.15);">
 
               <div class="d-flex justify-content-between align-items-center mb-4">
-                <h6 style="font-weight: 700; color: #0f172a; margin: 0;">
+                <h6 style="font-weight: 700; color: #1D3557; margin: 0;">
                   📝 Quiz 1 — {{ lesson.title }}
                 </h6>
-                <span style="background: #f0f4ff; color: #667eea; padding: 4px 12px;
+                <span style="background: #f0f4ff; color: #457B9D; padding: 4px 12px;
                   border-radius: 20px; font-size: 11px; font-weight: 600;">
                   {{ newQuiz.questions.length }} question(s)
                 </span>
@@ -859,7 +859,7 @@
                 {{ quizError }}
               </div>
 
-              <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+              <div style="background: #F4F8F9; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
                 <label style="font-size: 13px; font-weight: 600; color: #374151;">
                   Score minimum pour réussir (%)
                 </label>
@@ -867,21 +867,21 @@
                   <input type="number" class="form-control"
                     [(ngModel)]="newQuiz.noteMinimale" [ngModelOptions]="{standalone: true}"
                     min="0" max="100"
-                    style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 10px 15px;
+                    style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 10px 15px;
                       max-width: 120px; font-weight: 700; font-size: 18px; text-align: center;">
-                  <span style="font-size: 13px; color: #64748b;">
+                  <span style="font-size: 13px; color: #5C7184;">
                     Score minimum : <strong>{{ newQuiz.noteMinimale }}%</strong>
                   </span>
                 </div>
               </div>
 
               <div *ngFor="let q of newQuiz.questions; let qi = index; trackBy: trackByIndex"
-                style="background: #f8fafc; border-radius: 14px; padding: 20px;
-                  margin-bottom: 16px; border: 1px solid #e2e8f0;">
+                style="background: #F4F8F9; border-radius: 14px; padding: 20px;
+                  margin-bottom: 16px; border: 1px solid #D7E3E7;">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <div style="display: flex; align-items: center; gap: 8px;">
                     <div style="width: 28px; height: 28px; border-radius: 50%;
-                      background: linear-gradient(135deg, #667eea, #764ba2);
+                      background: linear-gradient(135deg, #457B9D, #1D3557);
                       color: white; font-weight: 700; font-size: 13px;
                       display: flex; align-items: center; justify-content: center;">
                       {{ qi + 1 }}
@@ -895,13 +895,13 @@
                   </button>
                 </div>
                 <div class="mb-3">
-                  <label style="font-size: 12px; font-weight: 600; color: #64748b;
+                  <label style="font-size: 12px; font-weight: 600; color: #5C7184;
                     text-transform: uppercase;">Question *</label>
                   <input type="text" class="form-control mt-1"
                     [value]="newQuiz.questions[qi].texte"
                     (blur)="newQuiz.questions[qi].texte = $any($event.target).value"
                     placeholder="Entrez votre question..."
-                    style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                    style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
                 </div>
                 <div *ngFor="let opt of q.options; let oi = index; trackBy: trackByIndex" class="mb-2">
                   <div style="display: flex; align-items: center; gap: 8px;">
@@ -909,12 +909,12 @@
                       style="width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
                         display: flex; align-items: center; justify-content: center;
                         border: 2px solid; flex-shrink: 0; transition: all 0.2s;"
-                      [style.borderColor]="newQuiz.questions[qi].correctAnswer === oi ? '#10b981' : '#e2e8f0'"
+                      [style.borderColor]="newQuiz.questions[qi].correctAnswer === oi ? '#10b981' : '#D7E3E7'"
                       [style.background]="newQuiz.questions[qi].correctAnswer === oi ? '#10b981' : 'white'">
                       <span *ngIf="newQuiz.questions[qi].correctAnswer === oi"
                         style="color: white; font-size: 14px;">✓</span>
                       <span *ngIf="newQuiz.questions[qi].correctAnswer !== oi"
-                        style="color: #94a3b8; font-size: 12px; font-weight: 700;">
+                        style="color: #7E93A3; font-size: 12px; font-weight: 700;">
                         {{ ['A','B','C','D'][oi] }}
                       </span>
                     </div>
@@ -924,15 +924,15 @@
                       [placeholder]="'Option ' + ['A','B','C','D'][oi]"
                       style="border-radius: 10px; padding: 10px 15px; font-size: 14px;"
                       [style.border]="newQuiz.questions[qi].correctAnswer === oi ?
-                        '1.5px solid #10b981' : '1.5px solid #e2e8f0'"
+                        '1.5px solid #10b981' : '1.5px solid #D7E3E7'"
                       [style.background]="newQuiz.questions[qi].correctAnswer === oi ? '#f0fdf4' : 'white'">
                   </div>
                 </div>
               </div>
 
               <button (click)="addQuizQuestion()"
-                style="width: 100%; padding: 12px; border: 2px dashed #667eea; border-radius: 10px;
-                  background: #f0f4ff; color: #667eea; font-weight: 600; font-size: 14px;
+                style="width: 100%; padding: 12px; border: 2px dashed #457B9D; border-radius: 10px;
+                  background: #f0f4ff; color: #457B9D; font-weight: 600; font-size: 14px;
                   cursor: pointer; margin-bottom: 16px;">
                 ➕ Ajouter une question
               </button>
@@ -941,7 +941,7 @@
                 <button (click)="saveQuiz()" [disabled]="quizLoading"
                   style="flex: 1; padding: 13px; border: none; border-radius: 12px;
                     font-size: 15px; font-weight: 600; color: white; cursor: pointer;
-                    background: linear-gradient(135deg, #667eea, #764ba2);"
+                    background: linear-gradient(135deg, #457B9D, #1D3557);"
                   [style.opacity]="quizLoading ? '0.7' : '1'">
                   <span *ngIf="!quizLoading">💾 Sauvegarder Quiz 1</span>
                   <span *ngIf="quizLoading">
@@ -949,8 +949,8 @@
                   </span>
                 </button>
                 <button (click)="showQuizForm = false"
-                  style="padding: 13px 20px; border: 1.5px solid #e2e8f0; border-radius: 12px;
-                    background: white; color: #64748b; font-weight: 600; cursor: pointer;">
+                  style="padding: 13px 20px; border: 1.5px solid #D7E3E7; border-radius: 12px;
+                    background: white; color: #5C7184; font-weight: 600; cursor: pointer;">
                   Annuler
                 </button>
               </div>
@@ -962,7 +962,7 @@
                 border: 2px solid #06b6d4; box-shadow: 0 4px 20px rgba(6,182,212,0.15);">
 
               <div class="d-flex justify-content-between align-items-center mb-4">
-                <h6 style="font-weight: 700; color: #0f172a; margin: 0;">
+                <h6 style="font-weight: 700; color: #1D3557; margin: 0;">
                   📝 Quiz 2 — {{ lesson.title }}
                 </h6>
                 <span style="background: #f0fdfe; color: #06b6d4; padding: 4px 12px;
@@ -975,7 +975,7 @@
                 {{ quizError2 }}
               </div>
 
-              <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+              <div style="background: #F4F8F9; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
                 <label style="font-size: 13px; font-weight: 600; color: #374151;">
                   Score minimum pour réussir (%)
                 </label>
@@ -983,17 +983,17 @@
                   <input type="number" class="form-control"
                     [(ngModel)]="newQuiz2.noteMinimale" [ngModelOptions]="{standalone: true}"
                     min="0" max="100"
-                    style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 10px 15px;
+                    style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 10px 15px;
                       max-width: 120px; font-weight: 700; font-size: 18px; text-align: center;">
-                  <span style="font-size: 13px; color: #64748b;">
+                  <span style="font-size: 13px; color: #5C7184;">
                     Score minimum : <strong>{{ newQuiz2.noteMinimale }}%</strong>
                   </span>
                 </div>
               </div>
 
               <div *ngFor="let q of newQuiz2.questions; let qi = index; trackBy: trackByIndex"
-                style="background: #f8fafc; border-radius: 14px; padding: 20px;
-                  margin-bottom: 16px; border: 1px solid #e2e8f0;">
+                style="background: #F4F8F9; border-radius: 14px; padding: 20px;
+                  margin-bottom: 16px; border: 1px solid #D7E3E7;">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <div style="display: flex; align-items: center; gap: 8px;">
                     <div style="width: 28px; height: 28px; border-radius: 50%;
@@ -1015,7 +1015,7 @@
                     [value]="newQuiz2.questions[qi].texte"
                     (blur)="newQuiz2.questions[qi].texte = $any($event.target).value"
                     placeholder="Entrez votre question..."
-                    style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                    style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
                 </div>
                 <div *ngFor="let opt of q.options; let oi = index; trackBy: trackByIndex" class="mb-2">
                   <div style="display: flex; align-items: center; gap: 8px;">
@@ -1023,12 +1023,12 @@
                       style="width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
                         display: flex; align-items: center; justify-content: center;
                         border: 2px solid; flex-shrink: 0; transition: all 0.2s;"
-                      [style.borderColor]="newQuiz2.questions[qi].correctAnswer === oi ? '#10b981' : '#e2e8f0'"
+                      [style.borderColor]="newQuiz2.questions[qi].correctAnswer === oi ? '#10b981' : '#D7E3E7'"
                       [style.background]="newQuiz2.questions[qi].correctAnswer === oi ? '#10b981' : 'white'">
                       <span *ngIf="newQuiz2.questions[qi].correctAnswer === oi"
                         style="color: white; font-size: 14px;">✓</span>
                       <span *ngIf="newQuiz2.questions[qi].correctAnswer !== oi"
-                        style="color: #94a3b8; font-size: 12px; font-weight: 700;">
+                        style="color: #7E93A3; font-size: 12px; font-weight: 700;">
                         {{ ['A','B','C','D'][oi] }}
                       </span>
                     </div>
@@ -1038,7 +1038,7 @@
                       [placeholder]="'Option ' + ['A','B','C','D'][oi]"
                       style="border-radius: 10px; padding: 10px 15px; font-size: 14px;"
                       [style.border]="newQuiz2.questions[qi].correctAnswer === oi ?
-                        '1.5px solid #10b981' : '1.5px solid #e2e8f0'"
+                        '1.5px solid #10b981' : '1.5px solid #D7E3E7'"
                       [style.background]="newQuiz2.questions[qi].correctAnswer === oi ? '#f0fdf4' : 'white'">
                   </div>
                 </div>
@@ -1063,8 +1063,8 @@
                   </span>
                 </button>
                 <button (click)="showQuizForm2 = false"
-                  style="padding: 13px 20px; border: 1.5px solid #e2e8f0; border-radius: 12px;
-                    background: white; color: #64748b; font-weight: 600; cursor: pointer;">
+                  style="padding: 13px 20px; border: 1.5px solid #D7E3E7; border-radius: 12px;
+                    background: white; color: #5C7184; font-weight: 600; cursor: pointer;">
                   Annuler
                 </button>
               </div>
@@ -1075,8 +1075,8 @@
 
         <!-- Add Lesson -->
         <div style="background: white; border-radius: 20px; padding: 28px;
-          border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 24px;">
-          <h5 style="font-weight: 700; color: #0f172a; margin-bottom: 20px;">➕ Ajouter une leçon</h5>
+          border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 24px;">
+          <h5 style="font-weight: 700; color: #1D3557; margin-bottom: 20px;">➕ Ajouter une leçon</h5>
           <div *ngIf="lessonError" class="alert alert-danger" style="border-radius: 10px;">
             {{ lessonError }}
           </div>
@@ -1084,27 +1084,27 @@
             <label style="font-size: 13px; font-weight: 600; color: #374151;">Titre *</label>
             <input type="text" class="form-control mt-1" placeholder="Titre de la leçon"
               [(ngModel)]="newLesson.title"
-              style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+              style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
           </div>
           <div class="mb-3">
             <label style="font-size: 13px; font-weight: 600; color: #374151;">Description</label>
             <textarea class="form-control mt-1" rows="3" placeholder="Description de la leçon"
               [(ngModel)]="newLesson.content"
-              style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+              style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
             </textarea>
           </div>
           <div class="mb-4">
             <label style="font-size: 13px; font-weight: 600; color: #374151;">
-              Fichier <small style="color: #94a3b8; font-weight: 400;">(PDF ou Vidéo)</small>
+              Fichier <small style="color: #7E93A3; font-weight: 400;">(PDF ou Vidéo)</small>
             </label>
             <input type="file" class="form-control mt-1" accept=".pdf,.mp4,.mov,.avi"
               (change)="onLessonFileSelected($event)"
-              style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 10px 15px;">
+              style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 10px 15px;">
           </div>
           <button (click)="addLesson()" [disabled]="lessonLoading"
             style="width: 100%; padding: 13px; border: none; border-radius: 12px;
               font-size: 15px; font-weight: 600; color: white; cursor: pointer;
-              background: linear-gradient(135deg, #667eea, #764ba2);"
+              background: linear-gradient(135deg, #457B9D, #1D3557);"
             [style.opacity]="lessonLoading ? '0.7' : '1'">
             <span *ngIf="!lessonLoading">➕ Ajouter la leçon</span>
             <span *ngIf="lessonLoading">
@@ -1115,19 +1115,19 @@
 
         <!-- Final Exam -->
         <div style="background: white; border-radius: 20px; padding: 28px;
-          border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 24px;">
+          border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 24px;">
 
           <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 style="font-weight: 700; color: #0f172a; margin: 0;">🎓 Examen Final</h5>
+            <h5 style="font-weight: 700; color: #1D3557; margin: 0;">🎓 Examen Final</h5>
             <div *ngIf="!showFinalExamForm" style="display: flex; gap: 8px;">
               <button (click)="editFinalExam()"
-                style="padding: 7px 14px; border: 1.5px solid #e2e8f0; border-radius: 10px;
-                  background: white; color: #667eea; font-size: 12px; font-weight: 600; cursor: pointer;">
+                style="padding: 7px 14px; border: 1.5px solid #D7E3E7; border-radius: 10px;
+                  background: white; color: #457B9D; font-size: 12px; font-weight: 600; cursor: pointer;">
                 ✏️ Modifier
               </button>
               <button (click)="openFinalExamForm()"
                 style="padding: 7px 14px; border: none; border-radius: 10px;
-                  background: linear-gradient(135deg, #667eea, #764ba2);
+                  background: linear-gradient(135deg, #457B9D, #1D3557);
                   color: white; font-size: 12px; font-weight: 600; cursor: pointer;">
                 ➕ Ajouter
               </button>
@@ -1144,15 +1144,15 @@
           </div>
 
           <div *ngIf="!showFinalExamForm" class="text-center py-4"
-            style="background: #f8fafc; border-radius: 14px; border: 2px dashed #e2e8f0;">
+            style="background: #F4F8F9; border-radius: 14px; border: 2px dashed #D7E3E7;">
             <div style="font-size: 32px; margin-bottom: 8px;">🎓</div>
-            <p style="color: #64748b; margin: 0; font-size: 13px;">
+            <p style="color: #5C7184; margin: 0; font-size: 13px;">
               Aucun examen final — cliquez sur Ajouter pour en créer un
             </p>
           </div>
 
           <div *ngIf="showFinalExamForm">
-            <div style="background: #f8fafc; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+            <div style="background: #F4F8F9; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
               <label style="font-size: 13px; font-weight: 600; color: #374151;">
                 Score minimum pour réussir (%)
               </label>
@@ -1160,17 +1160,17 @@
                 <input type="number" class="form-control"
                   [(ngModel)]="newFinalExam.noteMinimale" [ngModelOptions]="{standalone: true}"
                   min="0" max="100"
-                  style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 10px 15px;
+                  style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 10px 15px;
                     max-width: 120px; font-weight: 700; font-size: 18px; text-align: center;">
-                <span style="font-size: 13px; color: #64748b;">
+                <span style="font-size: 13px; color: #5C7184;">
                   Score minimum : <strong>{{ newFinalExam.noteMinimale }}%</strong>
                 </span>
               </div>
             </div>
 
             <div *ngFor="let q of newFinalExam.questions; let qi = index; trackBy: trackByIndex"
-              style="background: #f8fafc; border-radius: 14px; padding: 20px;
-                margin-bottom: 16px; border: 1px solid #e2e8f0;">
+              style="background: #F4F8F9; border-radius: 14px; padding: 20px;
+                margin-bottom: 16px; border: 1px solid #D7E3E7;">
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <div style="display: flex; align-items: center; gap: 8px;">
                   <div style="width: 28px; height: 28px; border-radius: 50%;
@@ -1192,7 +1192,7 @@
                   [value]="newFinalExam.questions[qi].texte"
                   (blur)="newFinalExam.questions[qi].texte = $any($event.target).value"
                   placeholder="Entrez votre question..."
-                  style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+                  style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
               </div>
               <div *ngFor="let opt of q.options; let oi = index; trackBy: trackByIndex" class="mb-2">
                 <div style="display: flex; align-items: center; gap: 8px;">
@@ -1200,12 +1200,12 @@
                     style="width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
                       display: flex; align-items: center; justify-content: center;
                       border: 2px solid; flex-shrink: 0; transition: all 0.2s;"
-                    [style.borderColor]="newFinalExam.questions[qi].correctAnswer === oi ? '#10b981' : '#e2e8f0'"
+                    [style.borderColor]="newFinalExam.questions[qi].correctAnswer === oi ? '#10b981' : '#D7E3E7'"
                     [style.background]="newFinalExam.questions[qi].correctAnswer === oi ? '#10b981' : 'white'">
                     <span *ngIf="newFinalExam.questions[qi].correctAnswer === oi"
                       style="color: white; font-size: 14px;">✓</span>
                     <span *ngIf="newFinalExam.questions[qi].correctAnswer !== oi"
-                      style="color: #94a3b8; font-size: 12px; font-weight: 700;">
+                      style="color: #7E93A3; font-size: 12px; font-weight: 700;">
                       {{ ['A','B','C','D'][oi] }}
                     </span>
                   </div>
@@ -1215,7 +1215,7 @@
                     [placeholder]="'Option ' + ['A','B','C','D'][oi]"
                     style="border-radius: 10px; padding: 10px 15px; font-size: 14px;"
                     [style.border]="newFinalExam.questions[qi].correctAnswer === oi ?
-                      '1.5px solid #10b981' : '1.5px solid #e2e8f0'"
+                      '1.5px solid #10b981' : '1.5px solid #D7E3E7'"
                     [style.background]="newFinalExam.questions[qi].correctAnswer === oi ? '#f0fdf4' : 'white'">
                 </div>
               </div>
@@ -1240,8 +1240,8 @@
                 </span>
               </button>
               <button (click)="showFinalExamForm = false"
-                style="padding: 13px 20px; border: 1.5px solid #e2e8f0; border-radius: 12px;
-                  background: white; color: #64748b; font-weight: 600; cursor: pointer;">
+                style="padding: 13px 20px; border: 1.5px solid #D7E3E7; border-radius: 12px;
+                  background: white; color: #5C7184; font-weight: 600; cursor: pointer;">
                 Annuler
               </button>
             </div>
@@ -1250,8 +1250,8 @@
 
         <div class="text-center mb-4">
           <a [routerLink]="['/courses-details', createdCourse._id]"
-            style="display: inline-block; padding: 12px 30px; border: 2px solid #667eea;
-              border-radius: 25px; color: #667eea; font-weight: 600; text-decoration: none;">
+            style="display: inline-block; padding: 12px 30px; border: 2px solid #457B9D;
+              border-radius: 25px; color: #457B9D; font-weight: 600; text-decoration: none;">
             👁️ Prévisualiser le cours
           </a>
         </div>
@@ -1261,16 +1261,16 @@
     <!-- ========== ASSIGN USERS TAB ========== -->
     <div *ngIf="activeTab === 'assign'">
       <div style="background: white; border-radius: 20px; padding: 28px;
-        border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
 
         <div class="d-flex align-items-center gap-3 mb-4">
           <div style="width: 44px; height: 44px; border-radius: 12px; background: #f0f4ff;
             display: flex; align-items: center; justify-content: center; font-size: 20px;">🔗</div>
           <div>
-            <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
+            <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
               Assigner un utilisateur à un manager
             </h5>
-            <p style="font-size: 13px; color: #64748b; margin: 0;">
+            <p style="font-size: 13px; color: #5C7184; margin: 0;">
               Lier les utilisateurs à leur manager
             </p>
           </div>
@@ -1288,7 +1288,7 @@
             Sélectionner un utilisateur *
           </label>
           <select class="form-select mt-1" [(ngModel)]="assignUserId"
-            style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+            style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
             <option value="">-- Choisir un utilisateur --</option>
             <ng-container *ngFor="let u of users">
               <option *ngIf="u.role === 'user'" [value]="u._id">
@@ -1303,7 +1303,7 @@
             Sélectionner un manager *
           </label>
           <select class="form-select mt-1" [(ngModel)]="assignManagerId"
-            style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
+            style="border-radius: 10px; border: 1.5px solid #D7E3E7; padding: 12px 15px; font-size: 14px;">
             <option value="">-- Choisir un manager --</option>
             <option *ngFor="let manager of managers" [value]="manager._id">
               {{ manager.firstname }} {{ manager.lastname }} — {{ manager.email }}
@@ -1314,7 +1314,7 @@
         <button (click)="assignUserToManager()" [disabled]="assignUserLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #457B9D, #1D3557);
             box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
           [style.opacity]="assignUserLoading ? '0.7' : '1'">
           <span *ngIf="!assignUserLoading">🔗 Assigner</span>
@@ -1325,43 +1325,43 @@
 
         <!-- Tableau assignments -->
         <div class="mt-4">
-          <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 16px;">
+          <h6 style="font-weight: 700; color: #1D3557; margin-bottom: 16px;">
             📋 Assignments actuels
           </h6>
           <div class="table-responsive">
             <table class="table align-middle" style="font-size: 13px;">
               <thead>
-                <tr style="border-bottom: 2px solid #f1f5f9;">
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                <tr style="border-bottom: 2px solid #EAF3F5;">
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Utilisateur</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Email</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Rôle</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Manager</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let user of users" style="border-bottom: 1px solid #f8fafc;">
+                <tr *ngFor="let user of users" style="border-bottom: 1px solid #F4F8F9;">
                   <td style="border: none; padding: 12px 8px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                       <div style="width: 32px; height: 32px; border-radius: 8px;
-                        background: linear-gradient(135deg, #667eea, #764ba2);
+                        background: linear-gradient(135deg, #457B9D, #1D3557);
                         display: flex; align-items: center; justify-content: center;
                         color: white; font-weight: 700; font-size: 11px; flex-shrink: 0;">
                         {{ user.firstname?.[0] }}{{ user.lastname?.[0] }}
                       </div>
-                      <span style="font-weight: 600; color: #0f172a; font-size: 13px;">
+                      <span style="font-weight: 600; color: #1D3557; font-size: 13px;">
                         {{ user.firstname }} {{ user.lastname }}
                       </span>
                     </div>
                   </td>
-                  <td style="border: none; padding: 12px 8px; color: #64748b; font-size: 12px;">
+                  <td style="border: none; padding: 12px 8px; color: #5C7184; font-size: 12px;">
                     {{ user.email }}
                   </td>
                   <td style="border: none; padding: 12px 8px;">
-                    <span style="background: #f0f4ff; color: #667eea; padding: 3px 10px;
+                    <span style="background: #f0f4ff; color: #457B9D; padding: 3px 10px;
                       border-radius: 20px; font-size: 11px; font-weight: 600;">
                       {{ user.role }}
                     </span>
@@ -1384,16 +1384,16 @@
     <!-- ========== CREATE STAFF TAB ========== -->
     <div *ngIf="activeTab === 'staff'">
       <div style="background: white; border-radius: 20px; padding: 28px;
-        border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
 
         <div class="d-flex align-items-center gap-3 mb-4">
           <div style="width: 44px; height: 44px; border-radius: 12px; background: #fef3c7;
             display: flex; align-items: center; justify-content: center; font-size: 20px;">👔</div>
           <div>
-            <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
+            <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
               Créer un membre du staff
             </h5>
-            <p style="font-size: 13px; color: #64748b; margin: 0;">
+            <p style="font-size: 13px; color: #5C7184; margin: 0;">
               Ajouter un nouveau staff à la plateforme
             </p>
           </div>
@@ -1419,11 +1419,11 @@
               (click)="newStaff.role = role.id"
               style="flex: 1; padding: 16px; border-radius: 14px; border: 2px solid;
                 cursor: pointer; text-align: center; transition: all 0.2s;"
-              [style.borderColor]="newStaff.role === role.id ? '#667eea' : '#e2e8f0'"
+              [style.borderColor]="newStaff.role === role.id ? '#457B9D' : '#D7E3E7'"
               [style.background]="newStaff.role === role.id ? '#f0f4ff' : 'white'">
               <div style="font-size: 28px; margin-bottom: 8px;">{{ role.icon }}</div>
               <div style="font-size: 13px; font-weight: 600;"
-                [style.color]="newStaff.role === role.id ? '#667eea' : '#64748b'">
+                [style.color]="newStaff.role === role.id ? '#457B9D' : '#5C7184'">
                 {{ role.label }}
               </div>
             </div>
@@ -1436,7 +1436,7 @@
               <label style="font-size: 13px; font-weight: 600; color: #374151;">Prénom *</label>
               <input type="text" class="form-control mt-1" placeholder="John"
                 [(ngModel)]="newStaff.firstname"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -1445,7 +1445,7 @@
               <label style="font-size: 13px; font-weight: 600; color: #374151;">Nom *</label>
               <input type="text" class="form-control mt-1" placeholder="Doe"
                 [(ngModel)]="newStaff.lastname"
-                style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
                   padding: 12px 15px; font-size: 14px;">
             </div>
           </div>
@@ -1455,7 +1455,7 @@
           <label style="font-size: 13px; font-weight: 600; color: #374151;">Email *</label>
           <input type="email" class="form-control mt-1" placeholder="john@example.com"
             [(ngModel)]="newStaff.email"
-            style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+            style="border-radius: 10px; border: 1.5px solid #D7E3E7;
               padding: 12px 15px; font-size: 14px;">
         </div>
 
@@ -1464,7 +1464,7 @@
           <input type="password" class="form-control mt-1"
             placeholder="Min 8 caractères, 1 majuscule, 1 chiffre"
             [(ngModel)]="newStaff.password"
-            style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+            style="border-radius: 10px; border: 1.5px solid #D7E3E7;
               padding: 12px 15px; font-size: 14px;">
         </div>
 
@@ -1473,14 +1473,14 @@
             Date de naissance *
           </label>
           <input type="date" class="form-control mt-1" [(ngModel)]="newStaff.dateOfBirth"
-            style="border-radius: 10px; border: 1.5px solid #e2e8f0;
+            style="border-radius: 10px; border: 1.5px solid #D7E3E7;
               padding: 12px 15px; font-size: 14px;">
         </div>
 
         <button (click)="createStaff()" [disabled]="createStaffLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #457B9D, #1D3557);
             box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
           [style.opacity]="createStaffLoading ? '0.7' : '1'">
           <span *ngIf="!createStaffLoading">➕ Créer le membre</span>
@@ -1494,16 +1494,16 @@
     <!-- ========== REVIEWS TAB ========== -->
     <div *ngIf="activeTab === 'reviews'">
       <div *ngIf="reviewsLoading" class="text-center py-5">
-        <div class="spinner-border" style="color: #667eea;"></div>
+        <div class="spinner-border" style="color: #457B9D;"></div>
       </div>
       <div *ngIf="!reviewsLoading">
         <div style="background: white; border-radius: 20px; padding: 28px;
-          border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+          border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
 
           <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <h5 style="font-weight: 700; color: #0f172a; margin: 0;">Gestion des Avis</h5>
-              <p style="font-size: 13px; color: #64748b; margin: 0;">
+              <h5 style="font-weight: 700; color: #1D3557; margin: 0;">Gestion des Avis</h5>
+              <p style="font-size: 13px; color: #5C7184; margin: 0;">
                 {{ reviews.length }} avis ·
                 <span style="color: #f59e0b; font-weight: 600;">{{ pendingReviewsCount }} en attente</span> ·
                 <span style="color: #10b981; font-weight: 600;">
@@ -1512,8 +1512,8 @@
               </p>
             </div>
             <button (click)="loadReviews()"
-              style="padding: 8px 16px; border: 1.5px solid #e2e8f0; border-radius: 10px;
-                background: white; color: #64748b; font-size: 12px; font-weight: 600; cursor: pointer;">
+              style="padding: 8px 16px; border: 1.5px solid #D7E3E7; border-radius: 10px;
+                background: white; color: #5C7184; font-size: 12px; font-weight: 600; cursor: pointer;">
               🔄 Actualiser
             </button>
           </div>
@@ -1522,8 +1522,8 @@
             <button (click)="reviewFilter = 'all'"
               style="padding: 7px 16px; border: none; border-radius: 20px; font-size: 12px;
                 font-weight: 600; cursor: pointer; transition: all 0.2s;"
-              [style.background]="reviewFilter === 'all' ? '#0f172a' : '#f1f5f9'"
-              [style.color]="reviewFilter === 'all' ? 'white' : '#64748b'">
+              [style.background]="reviewFilter === 'all' ? '#1D3557' : '#EAF3F5'"
+              [style.color]="reviewFilter === 'all' ? 'white' : '#5C7184'">
               Tous ({{ reviews.length }})
             </button>
             <button (click)="reviewFilter = 'pending'"
@@ -1544,73 +1544,73 @@
 
           <div *ngIf="filteredReviews.length === 0" class="text-center py-5">
             <div style="font-size: 48px; margin-bottom: 12px;">💬</div>
-            <p style="color: #64748b;">Aucun avis trouvé</p>
+            <p style="color: #5C7184;">Aucun avis trouvé</p>
           </div>
 
           <div class="table-responsive" *ngIf="filteredReviews.length > 0">
             <table class="table align-middle" style="font-size: 13px;">
               <thead>
-                <tr style="border-bottom: 2px solid #f1f5f9;">
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                <tr style="border-bottom: 2px solid #EAF3F5;">
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Utilisateur</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Cours</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Note</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Commentaire</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Date</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Statut</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let review of filteredReviews"
-                  style="border-bottom: 1px solid #f8fafc; transition: background 0.15s;"
+                  style="border-bottom: 1px solid #F4F8F9; transition: background 0.15s;"
                   onmouseover="this.style.background='#fafbff'"
                   onmouseout="this.style.background='white'">
                   <td style="border: none; padding: 14px 8px;">
                     <div style="display: flex; align-items: center; gap: 10px;">
                       <div style="width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
-                        background: linear-gradient(135deg, #667eea, #764ba2);
+                        background: linear-gradient(135deg, #457B9D, #1D3557);
                         display: flex; align-items: center; justify-content: center;
                         color: white; font-weight: 700; font-size: 12px;">
                         {{ review.user?.firstname?.[0] }}{{ review.user?.lastname?.[0] }}
                       </div>
                       <div>
-                        <div style="font-weight: 600; color: #0f172a; font-size: 13px;">
+                        <div style="font-weight: 600; color: #1D3557; font-size: 13px;">
                           {{ review.user?.firstname }} {{ review.user?.lastname }}
                         </div>
-                        <div style="font-size: 11px; color: #94a3b8;">{{ review.user?.email }}</div>
+                        <div style="font-size: 11px; color: #7E93A3;">{{ review.user?.email }}</div>
                       </div>
                     </div>
                   </td>
                   <td style="border: none; padding: 14px 8px;">
-                    <div style="font-weight: 600; color: #0f172a; font-size: 13px; margin-bottom: 4px;">
+                    <div style="font-weight: 600; color: #1D3557; font-size: 13px; margin-bottom: 4px;">
                       {{ review.course?.title }}
                     </div>
-                    <span style="background: #f0f4ff; color: #667eea; padding: 2px 8px;
+                    <span style="background: #f0f4ff; color: #457B9D; padding: 2px 8px;
                       border-radius: 20px; font-size: 10px; font-weight: 600;">
                       {{ review.course?.category }}
                     </span>
                   </td>
                   <td style="border: none; padding: 14px 8px;">
                     <div style="color: #fbbf24; font-size: 13px;">★★★★★</div>
-                    <div style="font-weight: 700; color: #0f172a; font-size: 13px;">
+                    <div style="font-weight: 700; color: #1D3557; font-size: 13px;">
                       {{ review.rating }}/5
                     </div>
                   </td>
                   <td style="border: none; padding: 14px 8px; max-width: 200px;">
-                    <p style="font-size: 12px; color: #64748b; margin: 0; line-height: 1.5;">
+                    <p style="font-size: 12px; color: #5C7184; margin: 0; line-height: 1.5;">
                       {{ review.comment.length > 80 ?
                         (review.comment.substring(0, 80) + '...') : review.comment }}
                     </p>
                   </td>
                   <td style="border: none; padding: 14px 8px;">
-                    <span style="font-size: 12px; color: #94a3b8;">
+                    <span style="font-size: 12px; color: #7E93A3;">
                       {{ review.createdAt | date:'dd/MM/yyyy' }}
                     </span>
                   </td>
@@ -1662,24 +1662,24 @@
     <!-- ========== QUIZ RESULTS TAB ========== -->
     <div *ngIf="activeTab === 'quiz-results'">
       <div *ngIf="quizResultsLoading" class="text-center py-5">
-        <div class="spinner-border" style="color: #667eea;"></div>
+        <div class="spinner-border" style="color: #457B9D;"></div>
       </div>
       <div *ngIf="!quizResultsLoading">
         <div style="background: white; border-radius: 20px; padding: 28px;
-          border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
+          border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
 
           <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <h5 style="font-weight: 700; color: #0f172a; margin: 0;">Résultats des Quiz</h5>
-              <p style="font-size: 13px; color: #64748b; margin: 0;">
+              <h5 style="font-weight: 700; color: #1D3557; margin: 0;">Résultats des Quiz</h5>
+              <p style="font-size: 13px; color: #5C7184; margin: 0;">
                 {{ quizResults.length }} résultats ·
                 <span style="color: #10b981; font-weight: 600;">{{ passedCount }} réussis</span> ·
                 <span style="color: #ef4444; font-weight: 600;">{{ failedCount }} échoués</span>
               </p>
             </div>
             <button (click)="loadQuizResults()"
-              style="padding: 8px 16px; border: 1.5px solid #e2e8f0; border-radius: 10px;
-                background: white; color: #64748b; font-size: 12px; font-weight: 600; cursor: pointer;">
+              style="padding: 8px 16px; border: 1.5px solid #D7E3E7; border-radius: 10px;
+                background: white; color: #5C7184; font-size: 12px; font-weight: 600; cursor: pointer;">
               🔄 Actualiser
             </button>
           </div>
@@ -1688,8 +1688,8 @@
             <button (click)="quizResultsFilter = 'all'"
               style="padding: 7px 16px; border: none; border-radius: 20px; font-size: 12px;
                 font-weight: 600; cursor: pointer; transition: all 0.2s;"
-              [style.background]="quizResultsFilter === 'all' ? '#0f172a' : '#f1f5f9'"
-              [style.color]="quizResultsFilter === 'all' ? 'white' : '#64748b'">
+              [style.background]="quizResultsFilter === 'all' ? '#1D3557' : '#EAF3F5'"
+              [style.color]="quizResultsFilter === 'all' ? 'white' : '#5C7184'">
               Tous ({{ quizResults.length }})
             </button>
             <button (click)="quizResultsFilter = 'passed'"
@@ -1710,74 +1710,74 @@
 
           <div *ngIf="filteredQuizResults.length === 0" class="text-center py-5">
             <div style="font-size: 48px; margin-bottom: 12px;">📝</div>
-            <p style="color: #64748b;">Aucun résultat trouvé</p>
+            <p style="color: #5C7184;">Aucun résultat trouvé</p>
           </div>
 
           <div class="table-responsive" *ngIf="filteredQuizResults.length > 0">
             <table class="table align-middle" style="font-size: 13px;">
               <thead>
-                <tr style="border-bottom: 2px solid #f1f5f9;">
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                <tr style="border-bottom: 2px solid #EAF3F5;">
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Étudiant</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Cours</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Quiz</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Type</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Score</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Statut</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Tentatives</th>
-                  <th style="color: #94a3b8; font-weight: 600; font-size: 11px;
+                  <th style="color: #7E93A3; font-weight: 600; font-size: 11px;
                     text-transform: uppercase; border: none; padding: 10px 8px;">Date</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let result of filteredQuizResults"
-                  style="border-bottom: 1px solid #f8fafc; transition: background 0.15s;"
+                  style="border-bottom: 1px solid #F4F8F9; transition: background 0.15s;"
                   onmouseover="this.style.background='#fafbff'"
                   onmouseout="this.style.background='white'">
                   <td style="border: none; padding: 14px 8px;">
                     <div style="display: flex; align-items: center; gap: 10px;">
                       <div style="width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
-                        background: linear-gradient(135deg, #667eea, #764ba2);
+                        background: linear-gradient(135deg, #457B9D, #1D3557);
                         display: flex; align-items: center; justify-content: center;
                         color: white; font-weight: 700; font-size: 12px;">
                         {{ result.user?.firstname?.[0] }}{{ result.user?.lastname?.[0] }}
                       </div>
                       <div>
-                        <div style="font-weight: 600; color: #0f172a; font-size: 13px;">
+                        <div style="font-weight: 600; color: #1D3557; font-size: 13px;">
                           {{ result.user?.firstname }} {{ result.user?.lastname }}
                         </div>
-                        <div style="font-size: 11px; color: #94a3b8;">{{ result.user?.email }}</div>
+                        <div style="font-size: 11px; color: #7E93A3;">{{ result.user?.email }}</div>
                       </div>
                     </div>
                   </td>
                   <td style="border: none; padding: 14px 8px;">
-                    <div style="font-weight: 600; color: #0f172a; font-size: 13px; margin-bottom: 4px;">
+                    <div style="font-weight: 600; color: #1D3557; font-size: 13px; margin-bottom: 4px;">
                       {{ result.course?.title }}
                     </div>
-                    <span style="background: #f0f4ff; color: #667eea; padding: 2px 8px;
+                    <span style="background: #f0f4ff; color: #457B9D; padding: 2px 8px;
                       border-radius: 20px; font-size: 10px; font-weight: 600;">
                       {{ result.course?.category }}
                     </span>
                   </td>
-                  <td style="border: none; padding: 14px 8px; color: #64748b; font-size: 12px;">
+                  <td style="border: none; padding: 14px 8px; color: #5C7184; font-size: 12px;">
                     {{ result.lessonTitle }}
                   </td>
                   <td style="border: none; padding: 14px 8px;">
                     <span style="padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;"
                       [style.background]="result.type === 'lesson_quiz' ? '#f0f4ff' : '#fffbeb'"
-                      [style.color]="result.type === 'lesson_quiz' ? '#667eea' : '#f59e0b'">
+                      [style.color]="result.type === 'lesson_quiz' ? '#457B9D' : '#f59e0b'">
                       {{ result.type === 'lesson_quiz' ? '📝 Quiz' : '🎓 Examen Final' }}
                     </span>
                   </td>
                   <td style="border: none; padding: 14px 8px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
-                      <div style="width: 60px; background: #f1f5f9; border-radius: 99px;
+                      <div style="width: 60px; background: #EAF3F5; border-radius: 99px;
                         height: 6px; overflow: hidden;">
                         <div style="height: 100%; border-radius: 99px;"
                           [style.width.%]="result.score"
@@ -1800,13 +1800,13 @@
                     </span>
                   </td>
                   <td style="border: none; padding: 14px 8px;">
-                    <span style="background: #f1f5f9; color: #64748b; padding: 4px 10px;
+                    <span style="background: #EAF3F5; color: #5C7184; padding: 4px 10px;
                       border-radius: 20px; font-size: 11px; font-weight: 600;">
                       {{ result.attempts }}x
                     </span>
                   </td>
                   <td style="border: none; padding: 14px 8px;">
-                    <span style="font-size: 12px; color: #94a3b8;">
+                    <span style="font-size: 12px; color: #7E93A3;">
                       {{ result.completedAt | date:'dd/MM/yyyy HH:mm' }}
                     </span>
                   </td>

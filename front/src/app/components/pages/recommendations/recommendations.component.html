@@ -18,8 +18,8 @@
 
     <!-- User Profile Summary -->
     <div *ngIf="userProfile" class="card p-4 mb-4 shadow-sm"
-      style="background: linear-gradient(135deg, #667eea15, #764ba215);
-        border-left: 4px solid #667eea;">
+      style="background: linear-gradient(135deg, #457B9D15, #1D355715);
+        border-left: 4px solid #457B9D;">
       <h5 class="mb-3">👤 Your Profile Analysis</h5>
       <div class="row">
         <div class="col-md-4 mb-2" *ngIf="userProfile.skills?.length > 0">
@@ -27,7 +27,7 @@
           <div>
             <span *ngFor="let skill of userProfile.skills"
               class="badge me-1 mb-1"
-              style="background: linear-gradient(135deg, #667eea, #764ba2);
+              style="background: linear-gradient(135deg, #457B9D, #1D3557);
                 padding: 6px 12px; border-radius: 20px;">
               {{ skill }}
             </span>
@@ -94,7 +94,7 @@
                 <div style="position: absolute; top: 10px; left: 10px;
                     background: rgba(255,255,255,0.9); border-radius: 20px;
                     padding: 4px 10px; font-size: 12px; font-weight: 700;
-                    color: #667eea;">
+                    color: #457B9D;">
                     #{{ i + 1 }} Match
                 </div>
                 <!-- Score badge -->
@@ -133,7 +133,7 @@
                 <div class="mt-2">
                 <div class="d-flex gap-1 flex-wrap">
                     <small class="badge"
-                    style="background: #667eea20; color: #667eea; font-size: 10px;">
+                    style="background: #457B9D20; color: #457B9D; font-size: 10px;">
                     🛠️ CV {{ (course.scores.cv_score * 100).toFixed(0) }}%
                     </small>
                     <small class="badge"

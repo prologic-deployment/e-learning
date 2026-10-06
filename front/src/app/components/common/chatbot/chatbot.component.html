@@ -52,7 +52,7 @@
 
           <!-- Sources / Course links -->
           <div *ngIf="msg.sources && msg.sources.length > 0" class="sources-section">
-            <div style="font-size: 11px; font-weight: 700; color: #667eea; margin-bottom: 6px;">
+            <div style="font-size: 11px; font-weight: 700; color: #457B9D; margin-bottom: 6px;">
               📚 Cours mentionnés :
             </div>
             <div *ngFor="let source of msg.sources" class="source-chip">
@@ -82,7 +82,7 @@
 
     <!-- Suggested Questions (show only at start) -->
     <div *ngIf="messages.length <= 2 && !loading" class="suggestions-bar">
-      <div style="font-size: 11px; color: #94a3b8; margin-bottom: 6px; padding: 0 8px;">
+      <div style="font-size: 11px; color: #7E93A3; margin-bottom: 6px; padding: 0 8px;">
         Questions fréquentes :
       </div>
       <div class="suggestions-scroll">

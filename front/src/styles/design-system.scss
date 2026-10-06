@@ -1,0 +1,346 @@
+/* =====================================================================
+   E-Learning — Design System & Motion
+   Built on the brand palette (coolors.co/palette/e63946-f1faee-a8dadc-457b9d-1d3557)
+   and shadcn/ui design philosophy: clean, accessible, composable, minimal.
+   Tokens are defined in styles.scss :root and referenced here.
+   ===================================================================== */
+
+/* ---------- Accessibility: focus & reduced motion ---------- */
+:focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* =====================================================================
+   Buttons  (shadcn-inspired)
+   ===================================================================== */
+.app-btn {
+    --btn-bg: var(--color-surface);
+    --btn-fg: var(--color-text);
+    --btn-bd: var(--color-border-strong);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: var(--fontFamily);
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1;
+    padding: 11px 20px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--btn-bd);
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease,
+        box-shadow .2s ease, transform .12s ease;
+    user-select: none;
+
+    i,
+    .bx {
+        font-size: 1.05em;
+        line-height: 1;
+    }
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+
+    &:disabled,
+    &[disabled],
+    &.is-loading {
+        opacity: .6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+.app-btn--primary {
+    --btn-bg: var(--color-primary);
+    --btn-fg: #fff;
+    --btn-bd: var(--color-primary);
+    &:hover { --btn-bg: var(--color-primary-dark); --btn-bd: var(--color-primary-dark); }
+}
+
+.app-btn--secondary {
+    --btn-bg: var(--color-secondary);
+    --btn-fg: #fff;
+    --btn-bd: var(--color-secondary);
+    &:hover { --btn-bg: var(--color-secondary-dark); --btn-bd: var(--color-secondary-dark); }
+}
+
+.app-btn--outline {
+    --btn-bg: transparent;
+    --btn-fg: var(--color-text);
+    --btn-bd: var(--color-border-strong);
+    &:hover { --btn-bg: var(--color-hover); }
+}
+
+.app-btn--ghost {
+    --btn-bg: transparent;
+    --btn-fg: var(--color-text);
+    --btn-bd: transparent;
+    &:hover { --btn-bg: var(--color-hover); }
+}
+
+.app-btn--danger {
+    --btn-bg: var(--color-error);
+    --btn-fg: #fff;
+    --btn-bd: var(--color-error);
+    &:hover { --btn-bg: #c92e3b; --btn-bd: #c92e3b; }
+}
+
+.app-btn--sm { padding: 7px 14px; font-size: 13px; border-radius: var(--radius-sm); }
+.app-btn--lg { padding: 14px 28px; font-size: 16px; border-radius: var(--radius-lg); }
+.app-btn--block { display: flex; width: 100%; }
+
+/* =====================================================================
+   Badges / Status pills
+   ===================================================================== */
+.app-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-alt);
+    color: var(--color-muted);
+    border: 1px solid transparent;
+    white-space: nowrap;
+}
+.app-badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+.app-badge--primary { background: rgba(var(--color-primary-rgb), .12); color: var(--color-primary); }
+.app-badge--secondary { background: rgba(var(--color-secondary-rgb), .14); color: var(--color-secondary-dark); }
+.app-badge--success { background: var(--color-success-light); color: var(--color-success); }
+.app-badge--warning { background: var(--color-warning-light); color: #9a7b1e; }
+.app-badge--danger { background: var(--color-error-light); color: var(--color-error); }
+.app-badge--info { background: var(--color-info-light); color: var(--color-info); }
+.app-badge--neutral { background: var(--color-surface-alt); color: var(--color-muted); }
+.app-badge--solid-primary { background: var(--color-primary); color: #fff; }
+.app-badge--solid-secondary { background: var(--color-secondary); color: #fff; }
+
+/* =====================================================================
+   Alerts
+   ===================================================================== */
+.app-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    font-size: 14px;
+    line-height: 1.5;
+    background: var(--color-surface-alt);
+    color: var(--color-text);
+}
+.app-alert i { font-size: 18px; line-height: 1.4; flex-shrink: 0; margin-top: 1px; }
+.app-alert__body { flex: 1; }
+.app-alert--success { background: var(--color-success-light); color: #1d6b60; border-color: rgba(var(--color-success-rgb), .25); }
+.app-alert--warning { background: var(--color-warning-light); color: #8a6d1c; border-color: rgba(var(--color-warning-rgb), .3); }
+.app-alert--danger { background: var(--color-error-light); color: var(--color-primary-dark); border-color: rgba(var(--color-error-rgb), .25); }
+.app-alert--info { background: var(--color-info-light); color: var(--color-secondary-dark); border-color: rgba(var(--color-info-rgb), .25); }
+
+/* =====================================================================
+   Cards
+   ===================================================================== */
+.app-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    padding: 22px;
+    transition: box-shadow .25s ease, transform .25s ease, border-color .25s ease;
+}
+.app-card--hover:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+    border-color: var(--color-border-strong);
+}
+.app-card__title { font-size: 17px; font-weight: 700; color: var(--color-text); margin: 0 0 6px; }
+.app-card__subtitle { font-size: 13px; color: var(--color-muted); margin: 0; }
+
+/* =====================================================================
+   Form fields
+   ===================================================================== */
+.app-field { display: block; margin-bottom: 16px; }
+.app-field__label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 6px;
+}
+.app-input,
+.app-select,
+.app-textarea {
+    width: 100%;
+    font-family: var(--fontFamily);
+    font-size: 15px;
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    padding: 11px 14px;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+.app-textarea { resize: vertical; min-height: 96px; }
+.app-input:focus,
+.app-select:focus,
+.app-textarea:focus {
+    outline: 0;
+    border-color: var(--color-secondary);
+    box-shadow: var(--shadow-focus);
+}
+.app-input::placeholder,
+.app-textarea::placeholder { color: var(--color-muted); opacity: .8; }
+.app-input:disabled { background: var(--color-surface-alt); cursor: not-allowed; }
+
+/* =====================================================================
+   Progress
+   ===================================================================== */
+.app-progress {
+    width: 100%;
+    height: 8px;
+    background: var(--color-surface-alt);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+}
+.app-progress__bar {
+    height: 100%;
+    border-radius: var(--radius-pill);
+    background: var(--gradient-brand);
+    transition: width .6s cubic-bezier(.22, 1, .36, 1);
+}
+.app-progress--primary .app-progress__bar { background: var(--gradient-primary); }
+
+/* =====================================================================
+   Spinner & skeleton
+   ===================================================================== */
+.app-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, .45);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: app-spin .7s linear infinite;
+    display: inline-block;
+}
+.app-spinner--dark { border-color: rgba(var(--color-text-rgb), .25); border-top-color: var(--color-text); }
+
+.app-skeleton {
+    background: linear-gradient(90deg, var(--color-surface-alt) 25%, #f3f7f8 37%, var(--color-surface-alt) 63%);
+    background-size: 400% 100%;
+    animation: app-shimmer 1.4s ease infinite;
+    border-radius: var(--radius-sm);
+}
+
+/* =====================================================================
+   Layout helpers
+   ===================================================================== */
+.app-stack { display: flex; flex-direction: column; }
+.app-row { display: flex; flex-wrap: wrap; gap: 16px; }
+.app-muted { color: var(--color-muted) !important; }
+.app-surface { background: var(--color-surface); }
+.app-surface-alt { background: var(--color-surface-alt); }
+.app-text-gradient {
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+}
+.app-divider { height: 1px; background: var(--color-border); border: 0; margin: 16px 0; }
+
+/* =====================================================================
+   Motion system
+   ===================================================================== */
+@keyframes app-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes app-slide-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes app-slide-down {
+    from { opacity: 0; transform: translateY(-12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes app-slide-in-right {
+    from { opacity: 0; transform: translateX(24px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+@keyframes app-scale-in {
+    from { opacity: 0; transform: scale(.96); }
+    to { opacity: 1; transform: scale(1); }
+}
+@keyframes app-pop {
+    0% { opacity: 0; transform: scale(.8); }
+    60% { opacity: 1; transform: scale(1.06); }
+    100% { transform: scale(1); }
+}
+@keyframes app-spin { to { transform: rotate(360deg); } }
+@keyframes app-shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+@keyframes app-draw-check {
+    to { stroke-dashoffset: 0; }
+}
+
+/* Utility animation classes (respect reduced motion globally) */
+.anim-fade-in { animation: app-fade-in .4s ease both; }
+.anim-slide-up { animation: app-slide-up .45s cubic-bezier(.22, 1, .36, 1) both; }
+.anim-slide-down { animation: app-slide-down .35s ease both; }
+.anim-slide-in-right { animation: app-slide-in-right .45s cubic-bezier(.22, 1, .36, 1) both; }
+.anim-scale-in { animation: app-scale-in .35s cubic-bezier(.22, 1, .36, 1) both; }
+.anim-pop { animation: app-pop .4s cubic-bezier(.22, 1, .36, 1) both; }
+
+/* Staggered entrance — set --i on each child */
+.anim-stagger > * {
+    animation: app-slide-up .5s cubic-bezier(.22, 1, .36, 1) both;
+    animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+/* Route transition wrapper */
+.route-enter { animation: app-fade-in .35s ease both; }
+
+/* Card hover lift (subtle, paired with shadow) */
+.lift { transition: transform .25s ease, box-shadow .25s ease; }
+.lift:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }

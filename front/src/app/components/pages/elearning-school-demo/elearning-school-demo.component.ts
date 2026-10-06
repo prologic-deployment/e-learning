@@ -50,7 +50,7 @@ export class ElearningSchoolDemoComponent implements OnInit {
 
   getCourseColor(category: string): string {
     const colors: any = {
-      'Development': 'linear-gradient(135deg, #667eea, #764ba2)',
+      'Development': 'linear-gradient(135deg, #457B9D, #1D3557)',
       'Business': 'linear-gradient(135deg, #f093fb, #f5576c)',
       'Finance': 'linear-gradient(135deg, #4facfe, #00f2fe)',
       'IT & Software': 'linear-gradient(135deg, #43e97b, #38f9d7)',
@@ -58,7 +58,7 @@ export class ElearningSchoolDemoComponent implements OnInit {
       'Marketing': 'linear-gradient(135deg, #a18cd1, #fbc2eb)',
       'Data Science': 'linear-gradient(135deg, #ffecd2, #fcb69f)'
     };
-    return colors[category] || 'linear-gradient(135deg, #667eea, #764ba2)';
+    return colors[category] || 'linear-gradient(135deg, #457B9D, #1D3557)';
   }
 
 

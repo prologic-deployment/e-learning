@@ -246,7 +246,7 @@ export class ProfileAuthenticationPageComponent implements OnInit {
     const s = this.getPasswordStrength();
     if (s <= 1) return '#ef4444';
     if (s === 2) return '#f59e0b';
-    if (s === 3) return '#3b82f6';
+    if (s === 3) return '#457B9D';
     return '#10b981';
   }
 

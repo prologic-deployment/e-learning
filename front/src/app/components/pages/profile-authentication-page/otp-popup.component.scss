@@ -1,6 +1,6 @@
 /* ==================== COPY POPUP ==================== */
 
-$purple: #667eea;
+$purple: #457B9D;
 $purple-dark: #5a6fd6;
 
 .otp-popup-overlay {
@@ -53,14 +53,14 @@ $purple-dark: #5a6fd6;
   .otp-popup-title {
     font-weight: 700;
     font-size: 18px;
-    color: #1e293b;
+    color: #1D3557;
   }
 
   .otp-popup-close {
     background: transparent;
     border: none;
     font-size: 24px;
-    color: #94a3b8;
+    color: #7E93A3;
     cursor: pointer;
     line-height: 1;
     padding: 0;
@@ -70,8 +70,8 @@ $purple-dark: #5a6fd6;
     transition: background 0.15s, color 0.15s;
 
     &:hover {
-      background: #f1f5f9;
-      color: #1e293b;
+      background: #EAF3F5;
+      color: #1D3557;
     }
   }
 }
@@ -91,15 +91,15 @@ $purple-dark: #5a6fd6;
     text-align: center;
     width: 160px;
     padding: 10px 8px;
-    border: 2px solid #e2e8f0;
+    border: 2px solid #D7E3E7;
     border-radius: 10px;
-    color: #1e293b;
-    background: #f8fafc;
+    color: #1D3557;
+    background: #F4F8F9;
     transition: border-color 0.2s, box-shadow 0.2s;
 
     &::selection {
-      background: #e0e7ff;
-      color: #1e293b;
+      background: #EAF3F5;
+      color: #1D3557;
     }
   }
 
@@ -154,7 +154,7 @@ $purple-dark: #5a6fd6;
 .otp-popup-hint {
   margin: 14px 0 0;
   text-align: center;
-  color: #94a3b8;
+  color: #7E93A3;
   font-size: 12px;
 }
 
