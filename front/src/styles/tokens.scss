@@ -1,0 +1,87 @@
+/* =====================================================================
+   E-Learning — shadcn/ui design tokens
+   Maps the brand palette (coolors E63946 / F1FAEE / A8DADC / 457B9D / 1D3557)
+   onto the canonical shadcn token set, with Light + Dark mode.
+   ===================================================================== */
+
+:root {
+  --background: 105 54.5% 95.7%;          /* #F1FAEE */
+  --foreground: 215.2 50% 22.7%;          /* #1D3557 */
+
+  --card: 0 0% 100%;
+  --card-foreground: 215.2 50% 22.7%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 215.2 50% 22.7%;
+
+  --primary: 355.5 77.6% 56.3%;          /* #E63946 */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 203.2 38.9% 44.3%;        /* #457B9D */
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 190.9 35.5% 93.9%;            /* #EAF3F5 */
+  --muted-foreground: 208.5 17.9% 43.9%;  /* #5C7184 */
+
+  --accent: 182.3 42.6% 76.1%;           /* #A8DADC */
+  --accent-foreground: 215.2 50% 22.7%;
+
+  --destructive: 355.5 77.6% 56.3%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 195 25% 87.5%;               /* #D7E3E7 */
+  --input: 195 25% 87.5%;
+  --ring: 203.2 38.9% 44.3%;             /* #457B9D */
+
+  --radius: 0.75rem;
+
+  /* Brand aliases (for gradients / illustrations) */
+  --brand-red: #E63946;
+  --brand-navy: #1D3557;
+  --brand-steel: #457B9D;
+  --brand-sky: #A8DADC;
+  --brand-mist: #F1FAEE;
+}
+
+.dark {
+  --background: 217 47% 9%;               /* deep navy */
+  --foreground: 105 54.5% 95.7%;          /* #F1FAEE */
+
+  --card: 213 44% 13%;
+  --card-foreground: 105 54.5% 95.7%;
+
+  --popover: 213 44% 13%;
+  --popover-foreground: 105 54.5% 95.7%;
+
+  --primary: 355.5 77.6% 56.3%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 203 40% 52%;
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 214 32% 19%;
+  --muted-foreground: 200 24% 72%;
+
+  --accent: 205 30% 26%;
+  --accent-foreground: 105 54.5% 95.7%;
+
+  --destructive: 355.5 77.6% 56.3%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 214 30% 24%;
+  --input: 214 30% 24%;
+  --ring: 203 40% 52%;
+}
+
+/* Minimal base: keep shadcn components visually correct without a global
+   preflight that would disturb the existing Bootstrap/MDB pages. */
+@layer base {
+  [data-shadcn],
+  .shadcn-root {
+    *,
+    ::before,
+    ::after {
+      border-color: hsl(var(--border));
+    }
+  }
+}
