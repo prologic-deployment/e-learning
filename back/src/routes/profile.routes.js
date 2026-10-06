@@ -10,6 +10,8 @@ const {
 
 router.get("/", protect, getUserProfile);
 router.put("/", protect, updateProfile);
+// ✅ Alias matching the frontend (trainer-dashboard calls PUT /profile/update)
+router.put("/update", protect, updateProfile);
 router.put("/avatar", protect, upload.single("avatar"), updateAvatar);
 
 module.exports = router;

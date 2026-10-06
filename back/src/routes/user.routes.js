@@ -24,7 +24,7 @@ router.get("/me", protect, (req, res) => {
 router.put("/:id/role", protect, authorize("admin"), updateUserRole);
 router.delete("/:id", protect, authorize("admin"), deleteUser);
 
-router.post("/create-trainer", protect, createTrainer);
+router.post("/create-trainer", protect, authorize("admin"), createTrainer);
 router.post("/managers", protect, authorize("admin"), createManager);
 
 

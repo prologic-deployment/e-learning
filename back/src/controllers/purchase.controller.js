@@ -63,3 +63,15 @@ exports.getMyPurchases = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+// ✅ Shape matching the frontend user-dashboard (expects a raw array)
+exports.getMyPurchasesArray = async (req, res) => {
+  try {
+    const purchases = await Purchase.find({ user: req.user._id })
+      .populate("course", "title description price image");
+
+    res.status(200).json(purchases);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};

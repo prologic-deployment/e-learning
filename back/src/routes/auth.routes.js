@@ -20,5 +20,8 @@ router.post('/forgot-password', loginLimiter, forgotPassword);
 router.post('/reset-password/:token', loginLimiter, resetPassword);
 
 router.post("/change-password", protect, changePassword);
+// ✅ Alias matching the frontend (trainer/manager dashboards call PUT) —
+// same credential-checked handler, no security downgrade.
+router.put("/change-password", protect, changePassword);
 
 module.exports = router;

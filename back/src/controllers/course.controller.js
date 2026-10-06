@@ -138,6 +138,15 @@ exports.getCourseById = async (req, res) => {
     // Anonymous visitor — public storefront sheet
     if (!req.user) {
       delete plain.contentFile;
+      if (plain.finalExam) {
+        // ✅ LEAK FIX: exam paper (questions) is course content — anonymous
+        // visitors only get existence metadata, never the questions.
+        plain.finalExam = {
+          questionsCount: Array.isArray(plain.finalExam.questions)
+            ? plain.finalExam.questions.length : 0,
+          noteMinimale: plain.finalExam.noteMinimale
+        };
+      }
       return res.status(200).json({ ...plain, isPurchased: false, isEnrolled: false });
     }
 
@@ -149,6 +158,18 @@ exports.getCourseById = async (req, res) => {
       return res.status(200).json({ ...plain, isPurchased: true, isEnrolled: true });
     }
 
+    const enrolled = !!(await Enrollment.findOne({ user: req.user._id, course: course._id }));
+
+    // ✅ LEAK FIX: unenrolled users must not receive the exam paper either.
+    // Enrolled learners keep the questions (answer key already stripped above).
+    if (!enrolled && plain.finalExam) {
+      plain.finalExam = {
+        questionsCount: Array.isArray(plain.finalExam.questions)
+          ? plain.finalExam.questions.length : 0,
+        noteMinimale: plain.finalExam.noteMinimale
+      };
+    }
+
     // Si cours payant → vérifier l'achat
     if (course.price > 0) {
       const purchase = await Purchase.findOne({
@@ -157,25 +178,23 @@ exports.getCourseById = async (req, res) => {
         paymentStatus: "paid"
       });
 
-      const enrollment = await Enrollment.findOne({ user: req.user._id, course: course._id });
-
       if (!purchase) {
         return res.status(200).json({
           ...plain,
           contentFile: null,
           isPurchased: false,
-          isEnrolled: !!enrollment
+          isEnrolled: enrolled
         });
       }
 
-      return res.status(200).json({ ...plain, isPurchased: true, isEnrolled: !!enrollment });
+      return res.status(200).json({ ...plain, isPurchased: true, isEnrolled: enrolled });
     }
 
     res.status(200).json({
       ...plain,
       contentFile: plain.price > 0 ? plain.contentFile : null,
       isPurchased: true,
-      isEnrolled: !!(await Enrollment.findOne({ user: req.user._id, course: course._id }))
+      isEnrolled: enrolled
     });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
@@ -229,9 +248,22 @@ exports.deleteCourse = async (req, res) => {
     const course = await Course.findById(id);
     if (!course) return res.status(404).json({ message: "Course not found" });
 
-    if (req.user.role !== "admin" && req.user._id.toString() !== course.trainer.toString()) {
+    const userRole = Array.isArray(req.user.role) ? req.user.role[0] : req.user.role;
+    if (userRole !== "admin" && req.user._id.toString() !== course.trainer.toString()) {
       return res.status(403).json({ message: "Access denied" });
     }
+
+    // ✅ DATA INTEGRITY: cascade-delete dependent records so the platform
+    // never keeps orphaned lessons/enrollments/purchases/reviews/certificates.
+    const Lesson = require("../models/Lesson");
+    const Review = require("../models/Review");
+    const Certificate = require("../models/Certificate");
+
+    await Lesson.deleteMany({ course: id });
+    await Enrollment.deleteMany({ course: id });
+    await Purchase.deleteMany({ course: id });
+    await Review.deleteMany({ course: id });
+    await Certificate.deleteMany({ course: id });
 
     await Course.findByIdAndDelete(id);
 

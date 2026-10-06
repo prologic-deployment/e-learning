@@ -18,6 +18,10 @@ router.post("/lesson/:lessonId", protect, authorize("trainer", "admin"), addQuiz
 router.post("/lesson/:lessonId/submit", protect, aiLimiter, submitLessonQuiz);
 router.post("/lesson/:lessonId/submit/quiz2", protect, aiLimiter, submitLessonQuiz2);
 router.post("/final/:courseId/submit", protect, aiLimiter, submitFinalExam);
+// ✅ MISSING ROUTE FIX: trainer & admin dashboards call POST /quiz/final/:courseId
+// to create/save the final exam — previously only the submit route existed,
+// so exam creation from the UI 404'd.
+router.post("/final/:courseId", protect, authorize("trainer", "admin"), addFinalExam);
 router.get("/results/all", protect, authorize("admin", "trainer"), getAllQuizResults);
 router.delete("/lesson/:lessonId/delete", protect, authorize("trainer", "admin"), deleteQuizFromLesson);
 router.delete("/lesson/:lessonId/quiz2/delete", protect, authorize("trainer", "admin"), deleteQuiz2FromLesson);

@@ -114,7 +114,7 @@ const isCourseOwnerOrAdmin = (getCourse) => {
 
 // ===== PAID-CONTENT ACCESS — enrolled OR purchased OR free-preview OR staff =====
 const requireCourseAccess = (options = {}) => {
-  const { allowFreePreview = true, allowStaff = true } = options;
+  const { allowFreePreview = true, allowStaff = true, lessonIdParam = null } = options;
   const Course = require("../models/Course");
   const Enrollment = require("../models/Enrollment");
   const Purchase = require("../models/Purchase");
@@ -124,11 +124,13 @@ const requireCourseAccess = (options = {}) => {
     try {
       const userRole = Array.isArray(req.user.role) ? req.user.role[0] : req.user.role;
 
-      // Resolve the course from a course or lesson param
+      // Resolve the course from a course, lesson (:lessonId), or explicit
+      // lesson-id param (used by GET /api/lessons/:id where :id IS a lesson).
       let courseId = req.params.courseId || req.params.id;
       let lesson = null;
-      if (req.params.lessonId) {
-        lesson = await Lesson.findById(req.params.lessonId);
+      const lessonParam = req.params.lessonId || (lessonIdParam ? req.params[lessonIdParam] : null);
+      if (lessonParam) {
+        lesson = await Lesson.findById(lessonParam);
         if (!lesson) return res.status(404).json({ success: false, message: "Lesson not found" });
         req.lesson = lesson;
         courseId = lesson.course.toString();
@@ -188,10 +190,29 @@ const stripAnswers = (obj) => {
   return o;
 };
 
+// ✅ Express middleware wrapper — usable directly in a route chain
+// (the previous raw function crashed as middleware: as (req,res,next) it
+// tried to JSON.stringify(req) which contains a circular Socket −> 500).
+const wrapStripAnswers = (req, res, next) => {
+  const json = res.json.bind(res);
+  res.json = (data) => {
+    res.json = json;
+    try {
+      const o = JSON.parse(JSON.stringify(data));
+      stripAnswers(o);
+      return json(o);
+    } catch {
+      return json(data);
+    }
+  };
+  next();
+};
+
 module.exports = {
   protect,
   authorize,
   isCourseOwnerOrAdmin,
   requireCourseAccess,
-  stripAnswers
+  stripAnswers,
+  wrapStripAnswers
 };

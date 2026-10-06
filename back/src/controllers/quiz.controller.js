@@ -203,7 +203,12 @@ exports.submitLessonQuiz = async (req, res) => {
     const { answers } = req.body;
     const lessonId = req.params.lessonId;
 
-    const lesson = await Lesson.findById(lessonId);
+    // ✅ GRADING FIX: correctAnswer is select:false (never leave the server —
+    // good) but that also hid it from THIS grading query, making every
+    // submission score 0. Explicitly re-include it for grading only; the
+    // response contains scores, never questions.
+    const lesson = await Lesson.findById(lessonId)
+      .select("+quiz.questions.correctAnswer");
     if (!lesson || !lesson.quiz || !lesson.quiz.questions?.length) {
       return res.status(404).json({ success: false, message: "Quiz not found" });
     }
@@ -288,7 +293,9 @@ exports.submitLessonQuiz2 = async (req, res) => {
     const { answers } = req.body;
     const lessonId = req.params.lessonId;
 
-    const lesson = await Lesson.findById(lessonId);
+    // ✅ Same grading fix as submitLessonQuiz (quiz2 answer key)
+    const lesson = await Lesson.findById(lessonId)
+      .select("+quiz2.questions.correctAnswer");
     if (!lesson || !lesson.quiz2 || !lesson.quiz2.questions?.length) {
       return res.status(404).json({ success: false, message: "Quiz 2 not found" });
     }
@@ -350,7 +357,10 @@ exports.submitFinalExam = async (req, res) => {
     const { answers } = req.body;
     const courseId = req.params.courseId;
 
-    const course = await Course.findById(courseId);
+    // ✅ GRADING FIX: re-include the select:false answer key for grading only
+    // (identical to the lesson-quiz fix — responses carry scores only).
+    const course = await Course.findById(courseId)
+      .select("+finalExam.questions.correctAnswer");
     if (!course || !course.finalExam || !course.finalExam.questions?.length) {
       return res.status(404).json({ success: false, message: "Final exam not found" });
     }
@@ -362,6 +372,23 @@ exports.submitFinalExam = async (req, res) => {
 
     if (!enrollment) {
       return res.status(403).json({ success: false, message: "You are not enrolled in this course" });
+    }
+
+    // ✅ ELIGIBILITY GATE: the final exam unlocks only when every lesson of the
+    // course is completed — i.e. every quiz-bearing lesson has been PASSED
+    // (lessonsCompleted is pushed only on a passing quiz score server-side).
+    // The client-side lock is never trusted; this is the authoritative check.
+    const courseLessons = await Lesson.find({ course: courseId }).select("_id quiz quiz2").lean();
+    const completedIds = (enrollment.lessonsCompleted || []).map(l => l.toString());
+    const requiredLessons = courseLessons.filter(
+      l => (l.quiz?.questions?.length || 0) > 0 || (l.quiz2?.questions?.length || 0) > 0
+    );
+    const missing = requiredLessons.filter(l => !completedIds.includes(l._id.toString()));
+    if (requiredLessons.length === 0 || missing.length > 0) {
+      return res.status(403).json({
+        success: false,
+        message: "Complete all lesson quizzes before taking the final exam."
+      });
     }
 
     // ✅ Attempt limit

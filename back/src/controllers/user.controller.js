@@ -44,10 +44,27 @@ exports.updateProfile = async (req, res) => {
 };
 
 // ================= UPDATE ROLE / STATUS (admin only) =================
+const ALLOWED_ROLES = ["user", "trainer", "manager", "admin"];
+
 exports.updateUserRole = async (req, res) => {
   try {
     const { id } = req.params;
     const { role, isActive } = req.body;
+
+    // ✅ SECURITY: validate the role against the platform enum — an invalid
+    // value would otherwise be stored and poison every role check.
+    if (role !== undefined && !ALLOWED_ROLES.includes(role)) {
+      return res.status(400).json({
+        message: `Invalid role. Allowed values: ${ALLOWED_ROLES.join(", ")}`
+      });
+    }
+
+    // ✅ SAFETY: an admin cannot demote/lock their own account (would lock
+    // the whole platform out of the admin backoffice).
+    if (req.user._id.toString() === id &&
+        ((role !== undefined && role !== "admin") || isActive === false)) {
+      return res.status(400).json({ message: "Admins cannot change their own role or lock their own account" });
+    }
 
     const user = await User.findById(id);
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -76,8 +93,47 @@ exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
 
+    if (req.user._id.toString() === id) {
+      return res.status(400).json({ message: "Admins cannot delete their own account" });
+    }
+
     const user = await User.findById(id);
     if (!user) return res.status(404).json({ message: "User not found" });
+
+    const role = Array.isArray(user.role) ? user.role[0] : user.role;
+
+    // ✅ DATA INTEGRITY: cascade-delete everything owned by this user so no
+    // orphaned enrollments/purchases/reviews/certificates remain.
+    const Enrollment = require("../models/Enrollment");
+    const Purchase = require("../models/Purchase");
+    const Review = require("../models/Review");
+    const Certificate = require("../models/Certificate");
+    const Cart = require("../models/Cart");
+    const Notification = require("../models/Notification");
+
+    if (role === "trainer") {
+      // Deleting a trainer removes their courses and all dependent records.
+      const Course = require("../models/Course");
+      const Lesson = require("../models/Lesson");
+      const ownCourses = await Course.find({ trainer: id }).select("_id");
+      const courseIds = ownCourses.map(c => c._id);
+
+      await Lesson.deleteMany({ course: { $in: courseIds } });
+      await Enrollment.deleteMany({ course: { $in: courseIds } });
+      await Purchase.deleteMany({ course: { $in: courseIds } });
+      await Review.deleteMany({ course: { $in: courseIds } });
+      await Certificate.deleteMany({ course: { $in: courseIds } });
+      await Course.deleteMany({ _id: { $in: courseIds } });
+    }
+
+    await Promise.all([
+      Enrollment.deleteMany({ user: id }),
+      Purchase.deleteMany({ user: id }),
+      Review.deleteMany({ user: id }),
+      Certificate.deleteMany({ user: id }),
+      Cart.deleteMany({ user: id }),
+      Notification.deleteMany({ user: id }).catch(() => {})
+    ]);
 
     await User.findByIdAndDelete(id);
 
