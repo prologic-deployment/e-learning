@@ -3,9 +3,14 @@
   <div class="container-fluid">
     <nav class="navbar navbar-expand-lg navbar-light bg-light" [class.active]="classApplied">
 
-      <!-- Logo -->
-      <a class="navbar-brand" routerLink="/">
-        <img src="assets/img/about/about1.png" alt="logo" style="height: 70px; width: auto;margin-top:10px;">
+      <!-- Logo (dark on light nav, white on dark nav) -->
+      <a class="navbar-brand d-inline-flex align-items-center" routerLink="/" aria-label="Accueil — E-Learning">
+        <img *ngIf="!(router.url === '/online-education-courses' || router.url === '/online-art-learning')"
+          src="assets/img/logo.png" alt="E-Learning"
+          style="height: 56px; width: auto;">
+        <img *ngIf="router.url === '/online-education-courses' || router.url === '/online-art-learning'"
+          src="assets/img/logo-white.png" alt="E-Learning"
+          style="height: 56px; width: auto;">
       </a>
 
       <!-- Burger mobile -->
