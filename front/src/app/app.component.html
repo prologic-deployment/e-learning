@@ -1,8 +1,8 @@
-<app-navbar *ngIf="!(location == '/thank-you' || location == '/coming-soon')"></app-navbar>
+<app-navbar *ngIf="!isAuthPage && !workspaceEnabled && !(location == '/thank-you' || location == '/coming-soon')"></app-navbar>
 
-<router-outlet></router-outlet>
+<app-workspace-shell><router-outlet></router-outlet></app-workspace-shell>
 
-<app-footer *ngIf="!(location == '/thank-you' || location == '/coming-soon')"></app-footer>
+<app-footer *ngIf="!isAuthPage && !workspaceEnabled && !(location == '/thank-you' || location == '/coming-soon')"></app-footer>
 
 <!-- ✅ Toast Notifications -->
 <div style="position: fixed; top: 24px; right: 24px; z-index: 999999;

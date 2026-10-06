@@ -94,6 +94,7 @@ export class AuthService {
 
   getRole(): string {
     const user = this.getCurrentUser();
-    return user ? user.role : '';
+    const role = Array.isArray(user?.role) ? user.role[0] : user?.role;
+    return typeof role === 'string' ? role.toLowerCase() : '';
   }
 }

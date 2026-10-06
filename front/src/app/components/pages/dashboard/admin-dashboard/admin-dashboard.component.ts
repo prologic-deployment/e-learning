@@ -183,7 +183,7 @@ export class AdminDashboardComponent implements OnInit {
 
   setTab(tab: string): void {
     this.activeTab = tab;
-    this.router.navigate([], {
+    if (this.route.snapshot.queryParams['tab'] !== tab) this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { tab },
       queryParamsHandling: 'merge',
@@ -256,6 +256,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   loadUsers(): void {
+    this.usersError = '';
     this.usersLoading = true;
     this.userService.getAllUsers().subscribe({
       next: (data) => { this.users = data; this.usersLoading = false; },
@@ -263,20 +264,22 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
+  userActionLoading = false;
   changeRole(userId: string, role: string): void {
+    if (this.userActionLoading) return;
+    this.userActionLoading = true; this.usersError = '';
     this.userService.updateUserRole(userId, role).subscribe({
-      next: () => { this.loadUsers(); },
-      error: (err) => alert(err.error?.message || 'Error changing role')
+      next: () => { this.userActionLoading = false; this.loadUsers(); },
+      error: err => { this.userActionLoading = false; this.usersError = err.error?.message || 'Unable to update this role.'; }
     });
   }
-
   deleteUser(userId: string): void {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.userService.deleteUser(userId).subscribe({
-        next: () => { this.loadUsers(); },
-        error: (err) => alert(err.error?.message || 'Error deleting user')
-      });
-    }
+    if (this.userActionLoading) return;
+    this.userActionLoading = true; this.usersError = '';
+    this.userService.deleteUser(userId).subscribe({
+      next: () => { this.userActionLoading = false; this.loadUsers(); },
+      error: err => { this.userActionLoading = false; this.usersError = err.error?.message || 'Unable to delete this account.'; }
+    });
   }
 
   loadCourses(): void {

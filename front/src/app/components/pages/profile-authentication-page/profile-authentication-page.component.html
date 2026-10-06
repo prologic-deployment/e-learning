@@ -1,459 +1,270 @@
-
-<!-- <div class="page-title-area">
-  <div class="container">
-    <div class="page-title-content">
-      <ul>
-        <li><a routerLink="/">Home</a></li>
-        <li>{{ activeTab === 'login' ? 'Login' : 'Register' }}</li>
-      </ul>
-      <h1>{{ activeTab === 'login' ? 'Sign In' : 'Create Account' }}</h1>
-    </div>
-  </div>
-</div> -->
-
-
-<div class="profile-authentication-area ptb-100 route-enter">
-  <div class="container">
-
-    <!-- ✅ Toggle Tabs -->
-    <div class="row justify-content-center mb-4" *ngIf="!showOTP">
-      <div class="col-lg-5 col-md-8">
-        <div class="d-flex rounded-pill overflow-hidden"
-          style="background: #EAF3F5; padding: 4px;">
-          <button
-            (click)="activeTab = 'login'"
-            style="flex: 1; padding: 10px 20px; border: none; border-radius: 50px;
-              font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;"
-            [style.background]="activeTab === 'login' ? 'linear-gradient(135deg, #457B9D, #1D3557)' : 'transparent'"
-            [style.color]="activeTab === 'login' ? 'white' : '#5C7184'">
-            🔑 Login
-          </button>
-          <button
-            (click)="activeTab = 'register'"
-            style="flex: 1; padding: 10px 20px; border: none; border-radius: 50px;
-              font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;"
-            [style.background]="activeTab === 'register' ? 'linear-gradient(135deg, #457B9D, #1D3557)' : 'transparent'"
-            [style.color]="activeTab === 'register' ? 'white' : '#5C7184'">
-            📝 Register
-          </button>
+<div class="auth-experience product-page">
+    <section class="auth-story">
+        <a routerLink="/" class="auth-brand"><span>e.</span>edla.</a>
+        <div class="auth-story-copy">
+            <span class="eyebrow">MAKE SPACE FOR POSSIBILITY</span>
+            <h1>Your next chapter<br />starts with<br /><em>curiosity.</em></h1>
+            <p>A place to explore new ideas, build meaningful skills, and keep moving forward.</p>
+            <div class="auth-art" aria-hidden="true">
+                <div class="auth-orbit"></div>
+                <div class="auth-book">
+                    <span>NEVER<br />STOP<br />LEARNING.</span><i class="bx bx-book-open"></i>
+                </div>
+                <span class="auth-spark">✳</span
+                ><span class="auth-note">ONE LESSON AT A TIME ↗</span>
+            </div>
         </div>
-      </div>
-    </div>
-
-    <div class="row justify-content-center">
-      <div class="col-lg-5 col-md-8">
-
-        <!-- ========== LOGIN TAB ========== -->
-        <div *ngIf="activeTab === 'login'">
-
-          <!-- ✅ Login Form -->
-          <div *ngIf="!showOTP"
-            style="background: white; border-radius: 20px;
-              box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-              padding: 40px; border: 1px solid #D7E3E7;">
-
-            <!-- Header -->
-            <div class="text-center mb-4">
-              <img src="assets/img/logo.png" alt="E-Learning"
-                style="height: 44px; width: auto; margin: 0 auto 18px; display: block;"
-                class="anim-pop">
-              <h2 style="font-weight: 700; color: #1D3557; font-size: 24px;">
-                Sign in to your account
-              </h2>
-              <p class="text-muted" style="font-size: 14px;">
-                Welcome back ! Enter your credentials
-              </p>
-            </div>
-
-            <div *ngIf="loginError" class="alert alert-danger">{{ loginError }}</div>
-            <div *ngIf="loginSuccess" class="alert alert-success">
-              {{ loginSuccess }}
-              <strong *ngIf="devOtp" style="letter-spacing: 4px; font-size: 18px;">{{ devOtp }}</strong>
-            </div>
-
-            <form (ngSubmit)="onLogin()">
-
-              <!-- Email -->
-              <div class="mb-3">
-                <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                  Email address
-                </label>
-                <div class="mt-1">
-                  <input type="email"
-                    class="form-control"
-                    placeholder=""
-                    [(ngModel)]="loginData.email"
-                    name="email"
-                    required
-                    style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                      padding: 12px 15px; font-size: 14px;
-                      transition: border 0.2s;">
+        <footer>LEARN WITH PURPOSE. GROW AT YOUR PACE.</footer>
+    </section>
+    <section class="auth-form-area">
+        <nav>
+            <a routerLink="/courses-grid">Explore the library ↗</a
+            ><button
+                hlmBtn
+                variant="ghost"
+                size="icon"
+                (click)="toggleTheme()"
+                aria-label="Switch color theme"
+            >
+                <i class="bx bx-adjust"></i>
+            </button>
+        </nav>
+        <div class="auth-form-inner">
+            <ng-container *ngIf="activeTab === 'login' && !showOTP"
+                ><span class="eyebrow">GOOD TO SEE YOU AGAIN</span>
+                <h2>Welcome back.</h2>
+                <p>Sign in to pick up where you left off.</p>
+                <div *ngIf="loginError" class="product-alert" role="alert">{{ loginError }}</div>
+                <form #loginForm="ngForm" (ngSubmit)="loginForm.valid && onLogin()">
+                    <label hlmLabel for="login-email">Email address</label
+                    ><input
+                        hlmInput
+                        id="login-email"
+                        type="email"
+                        email
+                        name="email"
+                        autocomplete="username"
+                        placeholder="you@example.com"
+                        [(ngModel)]="loginData.email"
+                        required
+                    />
+                    <div class="section-row password-label">
+                        <label hlmLabel for="login-password">Password</label
+                        ><a routerLink="/forgot-password">Forgot password?</a>
+                    </div>
+                    <div class="password-field">
+                        <input
+                            hlmInput
+                            id="login-password"
+                            [type]="passwordVisible ? 'text' : 'password'"
+                            name="password"
+                            autocomplete="current-password"
+                            [(ngModel)]="loginData.password"
+                            required
+                        /><button
+                            hlmBtn
+                            variant="ghost"
+                            size="icon"
+                            type="button"
+                            (click)="passwordVisible = !passwordVisible"
+                            [attr.aria-label]="passwordVisible ? 'Hide password' : 'Show password'"
+                        >
+                            <i [class]="passwordVisible ? 'bx bx-hide' : 'bx bx-show'"></i>
+                        </button>
+                    </div>
+                    <button
+                        hlmBtn
+                        type="submit"
+                        class="auth-submit"
+                        [disabled]="loginLoading || loginForm.invalid"
+                    >
+                        {{ loginLoading ? 'Signing in…' : 'Sign in' }} <span>→</span>
+                    </button>
+                </form>
+                <p class="auth-switch">
+                    New to Edla?
+                    <button hlmBtn variant="link" (click)="activeTab = 'register'">
+                        Create an account
+                    </button>
+                </p>
+                <div class="auth-security">
+                    <i class="bx bx-shield-quarter"></i
+                    ><span>Your learning. Your secure workspace.</span>
+                </div></ng-container
+            >
+            <ng-container *ngIf="showOTP"
+                ><span class="eyebrow">ONE MORE STEP</span>
+                <h2>Check your inbox.</h2>
+                <p>
+                    Enter the six-digit verification code sent to <strong>{{ tempEmail }}</strong
+                    >.
+                </p>
+                <div *ngIf="loginError" class="product-alert" role="alert">{{ loginError }}</div>
+                <form #otpForm="ngForm" (ngSubmit)="otpForm.valid && onVerifyOTP()">
+                    <label hlmLabel for="otp">Verification code</label
+                    ><input
+                        hlmInput
+                        id="otp"
+                        name="otp"
+                        class="otp-input"
+                        inputmode="numeric"
+                        autocomplete="one-time-code"
+                        pattern="[0-9]{6}"
+                        maxlength="6"
+                        [(ngModel)]="otpCode"
+                        required
+                    /><button
+                        hlmBtn
+                        class="auth-submit"
+                        type="submit"
+                        [disabled]="otpLoading || otpForm.invalid"
+                    >
+                        {{ otpLoading ? 'Verifying…' : 'Verify & continue' }} →
+                    </button>
+                </form>
+                <div class="auth-switch">
+                    <button
+                        hlmBtn
+                        variant="link"
+                        (click)="onResendOTP()"
+                        [disabled]="resendCooldown > 0 || loginLoading"
+                    >
+                        {{
+                            resendCooldown > 0
+                                ? 'Resend in ' + resendCooldown + 's'
+                                : 'Send a new code'
+                        }}</button
+                    ><button hlmBtn variant="ghost" (click)="showOTP = false; loginError = ''">
+                        Back to sign in
+                    </button>
                 </div>
-              </div>
-
-              <!-- Password -->
-              <div class="mb-3">
-                <div class="d-flex justify-content-between align-items-center">
-                  <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                    Password
-                  </label>
-                  <a routerLink="/forgot-password"
-                    style="font-size: 12px; color: #457B9D;
-                      font-weight: 600; text-decoration: none;">
-                    Forgot password?
-                  </a>
+                <details *ngIf="devOtp" class="development-code">
+                    <summary>Development verification code</summary>
+                    <code>{{ devOtp }}</code>
+                    <p>Provided by the development server only.</p>
+                </details></ng-container
+            >
+            <ng-container *ngIf="activeTab === 'register' && !showOTP"
+                ><span class="eyebrow">BEGIN SOMETHING GOOD</span>
+                <h2>Make room for growth.</h2>
+                <p>Create your learner account. Your next chapter awaits.</p>
+                <div
+                    *ngIf="registerError || registerSuccess"
+                    class="product-alert"
+                    aria-live="polite"
+                >
+                    {{ registerError || registerSuccess }}
                 </div>
-                <div class="mt-1">
-                  <input type="password"
-                    class="form-control"
-                    placeholder=""
-                    [(ngModel)]="loginData.password"
-                    name="password"
-                    required
-                    style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                      padding: 12px 15px; font-size: 14px;">
-                </div>
-              </div>
-
-              <!-- Submit -->
-              <button type="submit"
-                [disabled]="loginLoading"
-                style="width: 100%; padding: 13px; border: none;
-                  border-radius: 10px; font-size: 15px; font-weight: 600;
-                  color: white; cursor: pointer; margin-top: 8px;
-                  background: linear-gradient(135deg, #457B9D, #1D3557);
-                  box-shadow: 0 6px 18px rgba(29,53,87,0.22);
-                  transition: opacity 0.2s;"
-                [style.opacity]="loginLoading ? '0.7' : '1'">
-                <span *ngIf="!loginLoading">🔑 Sign In</span>
-                <span *ngIf="loginLoading">
-                  <span class="spinner-border spinner-border-sm me-2"></span>
-                  Signing in...
-                </span>
-              </button>
-
-            </form>
-
-            <!-- Link to register -->
-            <p class="text-center mt-4 mb-0" style="font-size: 13px; color: #5C7184;">
-              Not a member ?
-              <a (click)="activeTab = 'register'"
-                style="color: #457B9D; font-weight: 600;
-                  text-decoration: none; cursor: pointer;">
-                Create an account
-              </a>
-            </p>
-
-          </div>
-
-          <!-- ✅ OTP Form -->
-          <div *ngIf="showOTP"
-            style="background: white; border-radius: 20px;
-              box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-              padding: 40px; border: 1px solid #D7E3E7;">
-
-            <div class="text-center mb-4">
-              <img src="assets/img/logo.png" alt="E-Learning"
-                style="height: 44px; width: auto; margin: 0 auto 18px; display: block;"
-                class="anim-pop">
-              <h4 style="font-weight: 700; color: #2d3748;">Verification Code</h4>
-              <p class="text-muted" style="font-size: 13px;">
-                We sent a 6-digit code to<br>
-                <strong>{{ tempEmail }}</strong><br>
-                This code will expire in 5 minutes
-              </p>
-            </div>
-
-            <!-- ✅ DEV-ONLY: OTP shown on screen when DEV_EXPOSE_OTP=true (fake inboxes can't receive email) -->
-            <div *ngIf="devOtp" class="alert alert-info text-center" style="border: 2px dashed #4f8cff;">
-              🔧 Dev code: <strong style="letter-spacing: 4px; font-size: 18px;">{{ devOtp }}</strong>
-            </div>
-
-            <!-- ✅ Why the dev code is missing (production builds) -->
-            <div *ngIf="!devOtp && otpHint" class="alert alert-warning text-center" style="font-size: 13px;">
-              ⚠️ {{ otpHint }}
-            </div>
-
-            <div *ngIf="loginError" class="alert alert-danger text-center">
-              {{ loginError }}
-            </div>
-
-            <!-- ✅ Copy-Popup: click to show the 6-digit code and copy it -->
-            <div class="mb-4">
-              <button
-                class="otp-popup-button"
-                (click)="showOtpPopup = true">
-                <span *ngIf="!showOtpPopup">🔑 Click to see your OTP code</span>
-                <span *ngIf="showOtpPopup">📋 6-digit code — click to copy</span>
-              </button>
-            </div>
-
-            <app-otp-popup
-              *ngIf="showOtpPopup"
-              [devOtp]="devOtp"
-              (verified)="onVerifyOTPFromPopup($event)"
-              (closed)="showOtpPopup = false">
-            </app-otp-popup>
-
-            <div class="text-center mt-3">
-              <p class="text-muted" style="font-size: 13px;">
-                Didn't receive the code ?
-                <a *ngIf="resendCooldown <= 0"
-                  (click)="onResendOTP()"
-                  style="color: #457B9D; font-weight: 600;
-                    text-decoration: none; cursor: pointer;">
-                  Resend Code
-                </a>
-                <span *ngIf="resendCooldown > 0"
-                  style="color: #999; font-weight: 600;">
-                  Resend available in {{ resendCooldown }}s
-                </span>
-              </p>
-              <a (click)="showOTP = false; otpCode = ''"
-                style="color: #999; font-size: 13px;
-                  text-decoration: none; cursor: pointer;">
-                ← Back to Login
-              </a>
-            </div>
-
-          </div>
+                <form #registerForm="ngForm" (ngSubmit)="registerForm.valid && onRegister()">
+                    <div class="form-grid">
+                        <div>
+                            <label hlmLabel for="reg-first">First name *</label
+                            ><input
+                                hlmInput
+                                id="reg-first"
+                                name="firstname"
+                                autocomplete="given-name"
+                                [(ngModel)]="registerData.firstname"
+                                required
+                                (blur)="touch('firstname')"
+                            /><small class="field-error" *ngIf="isInvalid('firstname')"
+                                >Enter your first name.</small
+                            >
+                        </div>
+                        <div>
+                            <label hlmLabel for="reg-last">Last name *</label
+                            ><input
+                                hlmInput
+                                id="reg-last"
+                                name="lastname"
+                                autocomplete="family-name"
+                                [(ngModel)]="registerData.lastname"
+                                required
+                                (blur)="touch('lastname')"
+                            /><small class="field-error" *ngIf="isInvalid('lastname')"
+                                >Enter your last name.</small
+                            >
+                        </div>
+                        <div class="full-width">
+                            <label hlmLabel for="reg-email">Email address *</label
+                            ><input
+                                hlmInput
+                                id="reg-email"
+                                name="regEmail"
+                                type="email"
+                                email
+                                autocomplete="email"
+                                [(ngModel)]="registerData.email"
+                                required
+                                (blur)="touch('email')"
+                            /><small class="field-error" *ngIf="isInvalid('email')"
+                                >Enter a valid email address.</small
+                            >
+                        </div>
+                        <div>
+                            <label hlmLabel for="reg-birth">Date of birth *</label
+                            ><input
+                                hlmInput
+                                id="reg-birth"
+                                name="birth"
+                                type="date"
+                                [(ngModel)]="registerData.dateOfBirth"
+                                required
+                            />
+                        </div>
+                        <div>
+                            <label hlmLabel for="reg-phone">Phone *</label
+                            ><input
+                                hlmInput
+                                id="reg-phone"
+                                name="phone"
+                                type="tel"
+                                autocomplete="tel"
+                                [(ngModel)]="registerData.phone"
+                                required
+                                minlength="8"
+                                (blur)="touch('phone')"
+                            /><small class="field-error" *ngIf="isInvalid('phone')"
+                                >Enter at least 8 digits.</small
+                            >
+                        </div>
+                        <div class="full-width">
+                            <label hlmLabel for="reg-password">Password *</label
+                            ><input
+                                hlmInput
+                                id="reg-password"
+                                name="regPassword"
+                                type="password"
+                                autocomplete="new-password"
+                                [(ngModel)]="registerData.password"
+                                required
+                                minlength="8"
+                                (blur)="touch('password')"
+                            /><small class="field-help"
+                                >Use at least 8 characters. Add uppercase letters, numbers and
+                                symbols.</small
+                            ><app-learning-progress
+                                *ngIf="registerData.password"
+                                [value]="getPasswordStrength() * 25"
+                                label="Password strength"
+                            />
+                        </div>
+                    </div>
+                    <button
+                        hlmBtn
+                        class="auth-submit"
+                        type="submit"
+                        [disabled]="registerLoading || registerForm.invalid"
+                    >
+                        {{ registerLoading ? 'Creating account…' : 'Create learner account' }} →
+                    </button>
+                </form>
+                <p class="auth-switch">
+                    Already learning with us?
+                    <button hlmBtn variant="link" (click)="activeTab = 'login'">Sign in</button>
+                </p></ng-container
+            >
         </div>
-
-        <!-- ========== REGISTER TAB ========== -->
-        <div *ngIf="activeTab === 'register'">
-          <div style="background: white; border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            padding: 40px; border: 1px solid #D7E3E7;">
-
-            <!-- Header -->
-            <div class="text-center mb-4">
-              <img src="assets/img/logo.png" alt="E-Learning"
-                style="height: 44px; width: auto; margin: 0 auto 18px; display: block;"
-                class="anim-pop">
-              <h2 style="font-weight: 700; color: #1D3557; font-size: 24px;">
-                Create your account
-              </h2>
-              <p class="text-muted" style="font-size: 14px;">Join us today !</p>
-            </div>
-
-            <div *ngIf="registerError" class="alert alert-danger">{{ registerError }}</div>
-            <div *ngIf="registerSuccess" class="alert alert-success">{{ registerSuccess }}</div>
-
-            <form (ngSubmit)="onRegister()">
-
-              <!-- First + Last Name -->
-              <div class="row">
-                <div class="col-6">
-                  <div class="mb-3">
-                    <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                      First Name *
-                    </label>
-                    <input type="text" class="form-control mt-1"
-                      placeholder="John..."
-                      [(ngModel)]="registerData.firstname"
-                      name="firstname"
-                      (blur)="touch('firstname')"
-                      style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
-                      [style.border]="isInvalid('firstname') ?
-                        '1.5px solid #E63946' : '1.5px solid #D7E3E7'">
-                    <small *ngIf="isInvalid('firstname')"
-                      style="color: #E63946; font-size: 11px; margin-top: 4px; display: block;">
-                      ⚠️ Le prénom est obligatoire
-                    </small>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="mb-3">
-                    <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                      Last Name *
-                    </label>
-                    <input type="text" class="form-control mt-1"
-                      placeholder="Doe..."
-                      [(ngModel)]="registerData.lastname"
-                      name="lastname"
-                      (blur)="touch('lastname')"
-                      style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
-                      [style.border]="isInvalid('lastname') ?
-                        '1.5px solid #E63946' : '1.5px solid #D7E3E7'">
-                    <small *ngIf="isInvalid('lastname')"
-                      style="color: #E63946; font-size: 11px; margin-top: 4px; display: block;">
-                      ⚠️ Le nom est obligatoire
-                    </small>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Email -->
-              <div class="mb-3">
-                <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                  Email address *
-                </label>
-                <input type="email" class="form-control mt-1"
-                  placeholder="you@example.com"
-                  [(ngModel)]="registerData.email"
-                  name="email"
-                  (blur)="touch('email')"
-                  style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
-                  [style.border]="isInvalid('email') ?
-                    '1.5px solid #E63946' : '1.5px solid #D7E3E7'">
-                <small *ngIf="isInvalid('email')"
-                  style="color: #E63946; font-size: 11px; margin-top: 4px; display: block;">
-                  ⚠️ Veuillez entrer une adresse email valide
-                </small>
-              </div>
-
-              <!-- Date of Birth -->
-              <div class="mb-3">
-                <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                  Date of Birth *
-                </label>
-                <input type="date" class="form-control mt-1"
-                  [(ngModel)]="registerData.dateOfBirth"
-                  name="dateOfBirth"
-                  (blur)="touch('dateOfBirth')"
-                  style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
-                  [style.border]="isInvalid('dateOfBirth') ?
-                    '1.5px solid #E63946' : '1.5px solid #D7E3E7'">
-                <small *ngIf="isInvalid('dateOfBirth')"
-                  style="color: #E63946; font-size: 11px; margin-top: 4px; display: block;">
-                  ⚠️ La date de naissance est obligatoire
-                </small>
-              </div>
-
-              <!-- Phone -->
-              <div class="mb-3">
-                <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                  Phone Number *
-                </label>
-                <div class="input-group mt-1">
-                  <span class="input-group-text"
-                    style="border-radius: 10px 0 0 10px; border: 1.5px solid #D7E3E7;
-                      background: #f8f9fa; font-weight: 600; color: #374151; font-size: 13px;"
-                    [style.borderColor]="isInvalid('phone') ? '#E63946' : '#D7E3E7'">
-                    🇹🇳 +216
-                  </span>
-                  <input type="tel" class="form-control"
-                    placeholder="XX XXX XXX"
-                    [(ngModel)]="registerData.phone"
-                    name="phone"
-                    maxlength="8"
-                    (blur)="touch('phone')"
-                    style="border-radius: 0 10px 10px 0; border-left: none;
-                      padding: 12px 15px; font-size: 14px;"
-                    [style.border]="isInvalid('phone') ? '1.5px solid #E63946' : '1.5px solid #D7E3E7'">
-                </div>
-                <small *ngIf="isInvalid('phone')"
-                  style="color: #E63946; font-size: 11px; margin-top: 4px; display: block;">
-                  ⚠️ Veuillez entrer un numéro valide (8 chiffres)
-                </small>
-              </div>
-
-              <!-- Password -->
-              <div class="mb-4">
-                <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                  Password *
-                </label>
-                <input type="password" class="form-control mt-1"
-                  placeholder="Min 8 chars, 1 uppercase, 1 number"
-                  [(ngModel)]="registerData.password"
-                  name="password"
-                  (blur)="touch('password')"
-                  style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
-                  [style.border]="isInvalid('password') ?
-                    '1.5px solid #E63946' : '1.5px solid #D7E3E7'">
-
-                <!-- ✅ Indicateur de force du mot de passe -->
-                <div *ngIf="registerTouched.password && registerData.password"
-                  class="mt-2">
-                  <div style="display: flex; gap: 4px; margin-bottom: 4px;">
-                    <div style="flex: 1; height: 3px; border-radius: 99px; transition: background 0.3s;"
-                      [style.background]="getPasswordStrength() >= 1 ? getPasswordColor() : '#D7E3E7'">
-                    </div>
-                    <div style="flex: 1; height: 3px; border-radius: 99px; transition: background 0.3s;"
-                      [style.background]="getPasswordStrength() >= 2 ? getPasswordColor() : '#D7E3E7'">
-                    </div>
-                    <div style="flex: 1; height: 3px; border-radius: 99px; transition: background 0.3s;"
-                      [style.background]="getPasswordStrength() >= 3 ? getPasswordColor() : '#D7E3E7'">
-                    </div>
-                    <div style="flex: 1; height: 3px; border-radius: 99px; transition: background 0.3s;"
-                      [style.background]="getPasswordStrength() >= 4 ? getPasswordColor() : '#D7E3E7'">
-                    </div>
-                  </div>
-                  <small style="font-size: 11px;" [style.color]="getPasswordColor()">
-                    {{ getPasswordLabel() }}
-                  </small>
-                </div>
-
-                <small *ngIf="isInvalid('password')"
-                  style="color: #E63946; font-size: 11px; margin-top: 4px; display: block;">
-                  ⚠️ Le mot de passe doit contenir au moins 8 caractères
-                </small>
-              </div>
-
-              <!-- Role -->
-              <div class="mb-4">
-                <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                  I want to join as
-                </label>
-                <div class="d-flex gap-3 mt-2">
-                  <div (click)="registerData.role = 'user'"
-                    style="flex: 1; padding: 12px; border-radius: 10px;
-                      border: 2px solid; cursor: pointer; text-align: center;
-                      transition: all 0.2s;"
-                    [style.borderColor]="registerData.role === 'user' ? '#457B9D' : '#D7E3E7'"
-                    [style.background]="registerData.role === 'user' ? '#EAF3F5' : 'white'">
-                    <div style="font-size: 24px;">👤</div>
-                    <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
-                      [style.color]="registerData.role === 'user' ? '#457B9D' : '#5C7184'">
-                      Student
-                    </div>
-                  </div>
-                  <div (click)="registerData.role = 'trainer'"
-                    style="flex: 1; padding: 12px; border-radius: 10px;
-                      border: 2px solid; cursor: pointer; text-align: center;
-                      transition: all 0.2s;"
-                    [style.borderColor]="registerData.role === 'trainer' ? '#457B9D' : '#D7E3E7'"
-                    [style.background]="registerData.role === 'trainer' ? '#EAF3F5' : 'white'">
-                    <div style="font-size: 24px;">🎓</div>
-                    <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
-                      [style.color]="registerData.role === 'trainer' ? '#457B9D' : '#5C7184'">
-                      Trainer
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Submit -->
-              <button type="submit"
-                [disabled]="registerLoading"
-                style="width: 100%; padding: 13px; border: none;
-                  border-radius: 10px; font-size: 15px; font-weight: 600;
-                  color: white; cursor: pointer;
-                  background: linear-gradient(135deg, #457B9D, #1D3557);
-                  box-shadow: 0 6px 18px rgba(29,53,87,0.22);"
-                [style.opacity]="registerLoading ? '0.7' : '1'">
-                <span *ngIf="!registerLoading">📝 Create Account</span>
-                <span *ngIf="registerLoading">
-                  <span class="spinner-border spinner-border-sm me-2"></span>
-                  Creating...
-                </span>
-              </button>
-
-            </form>
-
-            <p class="text-center mt-4 mb-0" style="font-size: 13px; color: #5C7184;">
-              Already have an account ?
-              <a (click)="activeTab = 'login'"
-                style="color: #457B9D; font-weight: 600;
-                  text-decoration: none; cursor: pointer;">
-                Sign in
-              </a>
-            </p>
-          </div>
-        </div>
-        </div>
-
-      </div>
-    </div>
+        <footer>Designed for lifelong learning.</footer>
+    </section>
 </div>
-

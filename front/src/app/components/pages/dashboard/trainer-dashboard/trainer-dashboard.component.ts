@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, OnInit, DestroyRef, inject } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { StatsService } from '../../../../services/stats.service';
 import { CourseService } from '../../../../services/course.service';
@@ -16,6 +17,8 @@ import autoTable from 'jspdf-autotable';
 })
 export class TrainerDashboardComponent implements OnInit {
 
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly route = inject(ActivatedRoute);
   activeTab: string = 'stats';
   currentUser: any;
   apiUrl = environment.apiUrl;
@@ -114,10 +117,12 @@ export class TrainerDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
     this.loadStats();
+    this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => this.setTab(params['tab'] || 'stats'));
   }
 
   setTab(tab: string): void {
     this.activeTab = tab;
+    if (this.route.snapshot.queryParams['tab'] !== tab) this.router.navigate([], { relativeTo: this.route, queryParams: {tab}, queryParamsHandling: 'merge', replaceUrl: true });
     if (tab === 'create' && !this.createdCourse) {
       this.createCourseSuccess = '';
       this.createCourseError = '';
@@ -138,6 +143,7 @@ export class TrainerDashboardComponent implements OnInit {
 
   // ✅ ========== ALL COURSES ==========
   loadAllCourses(): void {
+    this.courseTableError = '';
     this.allCoursesLoading = true;
     this.http.get(`${this.apiUrl}/courses/trainer/all`).subscribe({
       next: (data: any) => {
@@ -151,7 +157,7 @@ export class TrainerDashboardComponent implements OnInit {
             this.allCourses = data.courses || [];
             this.allCoursesLoading = false;
           },
-          error: () => { this.allCoursesLoading = false; }
+          error: () => { this.courseTableError = 'Unable to retrieve the course library.'; this.allCoursesLoading = false; }
         });
       }
     });
@@ -166,6 +172,8 @@ export class TrainerDashboardComponent implements OnInit {
     );
   }
 
+  startNewCourse() { this.createdCourse = null; this.newCourse = {title:'',description:'',tags:'',price:0,category:''}; this.createCourseSuccess = ''; this.createCourseError = ''; this.lessons = []; this.showQuizForm = false; this.showQuizForm2 = false; this.showFinalExamForm = false; }
+
   editCourse(course: any): void {
     this.createdCourse = course;
     this.newCourse = {
@@ -179,11 +187,14 @@ export class TrainerDashboardComponent implements OnInit {
     this.setTab('create');
   }
 
+  courseTableError = '';
+  courseActionLoading = false;
   deleteCourse(courseId: string): void {
-    if (!confirm('Delete this course ?')) return;
+    if(this.courseActionLoading) return;
+    this.courseActionLoading = true; this.courseTableError = '';
     this.http.delete(`${this.apiUrl}/courses/${courseId}`).subscribe({
-      next: () => { this.loadAllCourses(); },
-      error: (err) => alert(err.error?.message || 'Error deleting course')
+      next: () => { this.courseActionLoading = false; this.loadAllCourses(); },
+      error: err => { this.courseActionLoading = false; this.courseTableError = err.error?.message || 'Unable to delete this course.'; }
     });
   }
 

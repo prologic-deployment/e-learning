@@ -1,0 +1,181 @@
+<app-learning-skeleton *ngIf="loading" />
+<div *ngIf="error" class="product-alert" role="alert">
+    {{ error }} <button hlmBtn variant="outline" (click)="refresh.emit()">Try again</button>
+</div>
+<section hlmCard class="surface" *ngIf="!loading">
+    <div class="section-row">
+        <div>
+            <h2>{{ kind === 'people' ? 'Your learning community' : 'Course management' }}</h2>
+            <p>
+                Search, review, and manage
+                {{ kind === 'people' ? 'platform access' : 'your course library' }}.
+            </p>
+        </div>
+        <button hlmBtn variant="outline" size="sm" (click)="refresh.emit()" [disabled]="busy">
+            Refresh
+        </button>
+    </div>
+    <div class="filter-bar">
+        <input
+            hlmInput
+            aria-label="Search records"
+            [(ngModel)]="query"
+            (ngModelChange)="page = 1"
+            placeholder="Search by name…"
+        /><select
+            hlmInput
+            aria-label="Filter records"
+            [(ngModel)]="filter"
+            (ngModelChange)="page = 1"
+        >
+            <option value="all">All {{ kind === 'people' ? 'roles' : 'statuses' }}</option>
+            <ng-container *ngIf="kind === 'people'"
+                ><option *ngFor="let r of ['user', 'trainer', 'manager', 'admin']" [value]="r">
+                    {{ r | titlecase }}
+                </option></ng-container
+            ><ng-container *ngIf="kind === 'courses'"
+                ><option value="Published">Published</option>
+                <option value="Pending">Pending</option></ng-container
+            ></select
+        ><select hlmInput aria-label="Sort records" [(ngModel)]="sort">
+            <option value="name">Name A–Z</option>
+            <option value="reverse">Name Z–A</option>
+            <option value="updated">Recently updated</option>
+        </select>
+    </div>
+    <hlm-table class="record-table"
+        ><hlm-trow class="table-heading"
+            ><hlm-th class="name-cell">{{ kind === 'people' ? 'Person' : 'Course' }}</hlm-th
+            ><hlm-th class="status-cell">{{ kind === 'people' ? 'Role' : 'Status' }}</hlm-th
+            ><hlm-th class="detail-cell">{{ kind === 'people' ? 'Account' : 'Price' }}</hlm-th
+            ><hlm-th class="actions-cell">Actions</hlm-th></hlm-trow
+        ><hlm-trow *ngFor="let r of rows"
+            ><hlm-td class="name-cell"
+                ><span class="record-avatar"
+                    ><i [class]="kind === 'people' ? 'bx bx-user' : 'bx bx-book-open'"></i
+                ></span>
+                <div>
+                    <strong>{{ name(r) }}</strong
+                    ><small>{{ kind === 'people' ? r.email : r.category }}</small>
+                </div></hlm-td
+            ><hlm-td class="status-cell"
+                ><span hlmBadge variant="secondary">{{ status(r) | titlecase }}</span></hlm-td
+            ><hlm-td class="detail-cell"
+                ><span *ngIf="kind === 'people'">{{ r.isActive ? 'Active' : 'Inactive' }}</span
+                ><span *ngIf="kind === 'courses'">{{
+                    r.price === 0 ? 'Free' : (r.price | currency: 'TND' : 'code')
+                }}</span></hlm-td
+            ><hlm-td class="actions-cell"
+                ><ng-container *ngIf="canManage(r)"
+                    ><button
+                        hlmBtn
+                        variant="ghost"
+                        size="sm"
+                        *ngIf="kind === 'courses'"
+                        (click)="edit.emit(r)"
+                    >
+                        Edit</button
+                    ><hlm-dialog *ngIf="kind === 'people'"
+                        ><button
+                            hlmBtn
+                            variant="ghost"
+                            size="sm"
+                            brnDialogTrigger
+                            [disabled]="busy"
+                            (click)="proposedRole = status(r)"
+                        >
+                            Change role</button
+                        ><hlm-dialog-content *brnDialogContent="let ctx"
+                            ><h2 hlmDialogTitle>Update access for {{ name(r) }}?</h2>
+                            <p hlmDialogDescription>
+                                This changes the areas and actions this person can access. Choose
+                                carefully.
+                            </p>
+                            <label hlmLabel [for]="'role-' + r._id">Platform role</label
+                            ><select hlmInput [id]="'role-' + r._id" [(ngModel)]="proposedRole">
+                                <option
+                                    *ngFor="let role of ['user', 'trainer', 'manager', 'admin']"
+                                    [value]="role"
+                                >
+                                    {{ role | titlecase }}
+                                </option>
+                            </select>
+                            <div class="action-row">
+                                <button hlmBtn variant="outline" (click)="ctx.close()">
+                                    Cancel</button
+                                ><button
+                                    hlmBtn
+                                    [disabled]="proposedRole === status(r) || busy"
+                                    (click)="
+                                        roleChange.emit({ id: r._id, role: proposedRole });
+                                        ctx.close()
+                                    "
+                                >
+                                    Confirm role change
+                                </button>
+                            </div></hlm-dialog-content
+                        ></hlm-dialog
+                    ><hlm-dialog
+                        ><button
+                            hlmBtn
+                            variant="ghost"
+                            size="icon"
+                            brnDialogTrigger
+                            [disabled]="busy"
+                            [attr.aria-label]="'Delete ' + name(r)"
+                        >
+                            <i class="bx bx-trash"></i></button
+                        ><hlm-dialog-content *brnDialogContent="let ctx"
+                            ><h2 hlmDialogTitle>Delete {{ name(r) }}?</h2>
+                            <p hlmDialogDescription>
+                                This action removes this
+                                {{ kind === 'people' ? 'account' : 'course' }}. Review carefully
+                                before continuing.
+                            </p>
+                            <div class="action-row">
+                                <button hlmBtn variant="outline" (click)="ctx.close()">
+                                    Cancel</button
+                                ><button
+                                    hlmBtn
+                                    variant="destructive"
+                                    [disabled]="busy"
+                                    (click)="remove.emit(r._id); ctx.close()"
+                                >
+                                    Delete permanently
+                                </button>
+                            </div></hlm-dialog-content
+                        ></hlm-dialog
+                    ></ng-container
+                ><span class="small-muted" *ngIf="!canManage(r)">Read only</span></hlm-td
+            ></hlm-trow
+        ></hlm-table
+    >
+    <app-empty-state
+        *ngIf="!filtered.length && !error"
+        [title]="query || filter !== 'all' ? 'No matching records' : 'Ready for a fresh start'"
+        description="Records will appear here when they are available. Try refreshing or adjusting your filters."
+        icon="search"
+    />
+    <div class="pagination-row" *ngIf="filtered.length">
+        <span>{{ filtered.length }} records · {{ currentPage }} / {{ pages }}</span>
+        <div class="action-row">
+            <button
+                hlmBtn
+                variant="outline"
+                size="sm"
+                [disabled]="currentPage === 1"
+                (click)="page = currentPage - 1"
+            >
+                Previous</button
+            ><button
+                hlmBtn
+                variant="outline"
+                size="sm"
+                [disabled]="currentPage === pages"
+                (click)="page = currentPage + 1"
+            >
+                Next
+            </button>
+        </div>
+    </div>
+</section>

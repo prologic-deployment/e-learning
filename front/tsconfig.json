@@ -22,7 +22,90 @@
       "es2020",
       "dom"
     ],
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "paths": {
+      "@spartan-ng/ui-core": [
+        "src/app/components/ui/core/index.ts"
+      ],
+      "@spartan-ng/ui-button-helm": [
+        "src/app/components/ui/button/helm/index.ts"
+      ],
+      "@spartan-ng/ui-card-helm": [
+        "src/app/components/ui/card/helm/index.ts"
+      ],
+      "@spartan-ng/ui-badge-helm": [
+        "src/app/components/ui/badge/helm/index.ts"
+      ],
+      "@spartan-ng/ui-input-helm": [
+        "src/app/components/ui/input/helm/index.ts"
+      ],
+      "@spartan-ng/ui-skeleton-helm": [
+        "src/app/components/ui/skeleton/helm/index.ts"
+      ],
+      "@spartan-ng/ui-progress-brain": [
+        "src/app/components/ui/progress/brain/index.ts"
+      ],
+      "@spartan-ng/ui-progress-helm": [
+        "src/app/components/ui/progress/helm/index.ts"
+      ],
+      "@spartan-ng/ui-separator-brain": [
+        "src/app/components/ui/separator/brain/index.ts"
+      ],
+      "@spartan-ng/ui-separator-helm": [
+        "src/app/components/ui/separator/helm/index.ts"
+      ],
+      "@spartan-ng/ui-accordion-brain": [
+        "src/app/components/ui/accordion/brain/index.ts"
+      ],
+      "@spartan-ng/ui-accordion-helm": [
+        "src/app/components/ui/accordion/helm/index.ts"
+      ],
+      "@spartan-ng/ui-radio-group-brain": [
+        "src/app/components/ui/radio-group/brain/index.ts"
+      ],
+      "@spartan-ng/ui-radio-group-helm": [
+        "src/app/components/ui/radio-group/helm/index.ts"
+      ],
+      "@spartan-ng/ui-tabs-brain": [
+        "src/app/components/ui/tabs/brain/index.ts"
+      ],
+      "@spartan-ng/ui-tabs-helm": [
+        "src/app/components/ui/tabs/helm/index.ts"
+      ],
+      "@spartan-ng/ui-dialog-brain": [
+        "src/app/components/ui/dialog/brain/index.ts"
+      ],
+      "@spartan-ng/ui-dialog-helm": [
+        "src/app/components/ui/dialog/helm/index.ts"
+      ],
+      "@spartan-ng/ui-sheet-brain": [
+        "src/app/components/ui/sheet/brain/index.ts"
+      ],
+      "@spartan-ng/ui-sheet-helm": [
+        "src/app/components/ui/sheet/helm/index.ts"
+      ],
+      "@spartan-ng/ui-menu-brain": [
+        "src/app/components/ui/menu/brain/index.ts"
+      ],
+      "@spartan-ng/ui-menu-helm": [
+        "src/app/components/ui/menu/helm/index.ts"
+      ],
+      "@spartan-ng/ui-table-brain": [
+        "src/app/components/ui/table/brain/index.ts"
+      ],
+      "@spartan-ng/ui-table-helm": [
+        "src/app/components/ui/table/helm/index.ts"
+      ],
+      "@spartan-ng/ui-label-brain": [
+        "src/app/components/ui/label/brain/index.ts"
+      ],
+      "@spartan-ng/ui-label-helm": [
+        "src/app/components/ui/label/helm/index.ts"
+      ],
+      "@spartan-ng/ui-icon-helm": [
+        "src/app/components/ui/icon/helm/index.ts"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

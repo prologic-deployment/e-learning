@@ -59,7 +59,7 @@ app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 // Only avatars remain public (they are meant to be visible).
 app.use(
   "/uploads/avatars",
-  express.static(path.join(__dirname, "uploads/avatars"), {
+  express.static(path.join(__dirname, "../uploads/avatars"), {
     maxAge: "7d",
     index: false
   })

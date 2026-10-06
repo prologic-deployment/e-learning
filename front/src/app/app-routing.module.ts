@@ -34,7 +34,8 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
 const routes: Routes = [
 
   // ✅ Page d'accueil — staff redirigé vers dashboard
-  { path: '', component: ElearningSchoolDemoComponent, canActivate: [StaffRedirectGuard] },
+  { path: '', pathMatch: 'full', redirectTo: 'profile-authentication' },
+  { path: 'welcome', component: ElearningSchoolDemoComponent, canActivate: [StaffRedirectGuard] },
 
   // ✅ Cours — staff bloqué
   { path: 'courses-grid', component: CoursesBasicGridPageComponent, canActivate: [StaffRedirectGuard] },

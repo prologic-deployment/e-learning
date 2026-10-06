@@ -17,7 +17,7 @@ export class SocketService {
 
     const user = this.authService.getCurrentUser();
     const token = this.authService.getToken();
-    if (!user?._id || !token) {
+    if (!(user?._id || user?.id) || !token) {
       return;
     }
 
@@ -33,8 +33,8 @@ export class SocketService {
 
     this.socket.on('connect', () => {
       const currentUser = this.authService.getCurrentUser();
-      if (currentUser?._id) {
-        this.socket?.emit('register', currentUser._id);
+      if (currentUser?._id || currentUser?.id) {
+        this.socket?.emit('register', currentUser._id || currentUser.id);
       }
     });
 

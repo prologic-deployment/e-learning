@@ -12,7 +12,7 @@ const { checkEnrollmentBadges } = require("../services/badge.service");
 exports.getMyEnrollments = async (req, res) => {
   try {
     const enrollments = await Enrollment.find({ user: req.user._id })
-      .populate("course", "title description")
+      .populate({ path: "course", select: "title description category trainer", populate: { path: "trainer", select: "firstname lastname" } })
       .exec();
 
     res.status(200).json(enrollments);
@@ -39,16 +39,23 @@ exports.updateProgress = async (req, res) => {
     // Client-sent progress values are ignored — certificates can no longer be
     // obtained by sending { progress: 100 }.
     const Lesson = require("../models/Lesson");
-    const totalLessons = await Lesson.countDocuments({ course: enrollment.course });
-
-    if (totalLessons > 0) {
-      enrollment.progress = Math.round(
-        (enrollment.lessonsCompleted.length / totalLessons) * 100
-      );
+    const { hasAssessment, calculateProgress } = require('../utils/learningProgress');
+    const lessons = await Lesson.find({ course: enrollment.course }).select('_id quiz quiz2').lean();
+    // Only non-assessed lessons may be explicitly marked read. Quiz-bearing
+    // lessons are completed exclusively by the server grading endpoints.
+    if (req.body.lessonId) {
+      const lesson = lessons.find(l => String(l._id) === String(req.body.lessonId));
+      if (!lesson) return res.status(404).json({ message: 'Lesson not found in this course' });
+      if (hasAssessment(lesson)) return res.status(403).json({ message: 'Pass the lesson assessment to complete it' });
+      if (!enrollment.lessonsCompleted.some(id => String(id) === String(lesson._id))) {
+        enrollment.lessonsCompleted.push(lesson._id);
+      }
     }
-
-    enrollment.completed = totalLessons > 0 &&
-      enrollment.lessonsCompleted.length >= totalLessons;
+    const course = await Course.findById(enrollment.course).select('finalExam');
+    const state = calculateProgress(lessons, enrollment.lessonsCompleted,
+      Boolean(enrollment.finalExamResult?.passed), Boolean(course?.finalExam?.questions?.length));
+    enrollment.progress = state.progress;
+    enrollment.completed = state.completed;
 
     await enrollment.save();
     checkEnrollmentBadges(req.user._id).catch(console.error);

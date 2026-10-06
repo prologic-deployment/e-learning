@@ -1,0 +1,148 @@
+<section class="assessment" [class.final-exam]="exam">
+    <header class="assessment-header">
+        <span class="assessment-symbol"
+            ><i [class]="exam ? 'bx bx-award' : 'bx bx-check-shield'"></i
+        ></span>
+        <div>
+            <span class="eyebrow">{{ exam ? 'FINAL ASSESSMENT' : 'LESSON KNOWLEDGE CHECK' }}</span>
+            <h2>{{ title }}</h2>
+        </div>
+        <span hlmBadge variant="secondary">{{ passingScore }}% to pass</span>
+    </header>
+    <div *ngIf="error" class="product-alert" role="alert">{{ error }}</div>
+    <ng-container *ngIf="!result">
+        <p class="assessment-instructions">
+            Choose one answer per question. You can review your answers before submitting.
+            {{ exam ? 'This assessment counts towards your course completion.' : '' }}
+        </p>
+        <div class="assessment-layout">
+            <aside *ngIf="exam" class="question-map">
+                <span class="eyebrow">YOUR QUESTIONS</span>
+                <div>
+                    <button
+                        *ngFor="let q of questions; let i = index"
+                        hlmBtn
+                        [variant]="
+                            i === index ? 'default' : answers[i] >= 0 ? 'secondary' : 'outline'
+                        "
+                        size="icon"
+                        [disabled]="busy"
+                        (click)="go(i)"
+                        [attr.aria-label]="
+                            'Question ' +
+                            (i + 1) +
+                            (answers[i] >= 0 ? ', answered' : ', unanswered')
+                        "
+                        [attr.aria-current]="i === index ? 'step' : null"
+                    >
+                        {{ i + 1 }}
+                    </button>
+                </div>
+                <p>{{ answered }} of {{ questions.length }} answered</p>
+            </aside>
+            <div class="question-body">
+                <div class="section-row small-muted">
+                    <span>Question {{ index + 1 }} of {{ questions.length }}</span
+                    ><span>{{ answered }} answered</span>
+                </div>
+                <app-learning-progress
+                    [value]="questions.length ? (answered / questions.length) * 100 : 0"
+                    label="Answered questions"
+                />
+                <div *ngFor="let q of questions; let i = index">
+                    <article *ngIf="i === index" class="question-transition">
+                        <h3 #questionHeading tabindex="-1">{{ q.texte }}</h3>
+                        <brn-radio-group
+                            hlm
+                            [(ngModel)]="answers[index]"
+                            [disabled]="busy"
+                            [attr.aria-label]="q.texte"
+                            ><brn-radio
+                                hlm
+                                *ngFor="let option of q.options; let oi = index"
+                                [value]="oi"
+                                class="answer-option"
+                                [class.answer-selected]="answers[index] === oi"
+                                ><hlm-radio-indicator indicator /><span>{{
+                                    option
+                                }}</span></brn-radio
+                            ></brn-radio-group
+                        >
+                    </article>
+                </div>
+                <footer class="question-footer">
+                    <button
+                        hlmBtn
+                        variant="outline"
+                        [disabled]="index === 0 || busy"
+                        (click)="go(index - 1)"
+                    >
+                        ← Previous</button
+                    ><span class="small-muted">Your answers are not submitted yet.</span
+                    ><button
+                        hlmBtn
+                        *ngIf="index < questions.length - 1"
+                        [disabled]="busy"
+                        (click)="go(index + 1)"
+                    >
+                        Next question →</button
+                    ><hlm-dialog *ngIf="index === questions.length - 1"
+                        ><button
+                            hlmBtn
+                            brnDialogTrigger
+                            [disabled]="answered !== questions.length || busy"
+                        >
+                            {{ busy ? 'Submitting…' : 'Review & submit' }}</button
+                        ><hlm-dialog-content *brnDialogContent="let ctx"
+                            ><h2 hlmDialogTitle>Ready to submit?</h2>
+                            <p hlmDialogDescription>
+                                You've answered {{ answered }} of {{ questions.length }} questions.
+                                Submitting uses one assessment attempt. You cannot change this
+                                attempt afterwards.
+                            </p>
+                            <div class="action-row">
+                                <button hlmBtn variant="outline" (click)="ctx.close()">
+                                    Keep reviewing</button
+                                ><button hlmBtn (click)="ctx.close(); submitAnswers.emit()">
+                                    Submit {{ exam ? 'exam' : 'quiz' }}
+                                </button>
+                            </div></hlm-dialog-content
+                        ></hlm-dialog
+                    >
+                </footer>
+            </div>
+        </div>
+    </ng-container>
+    <section *ngIf="result" class="assessment-result" aria-live="polite">
+        <div class="score-ring" [class.passed]="result.passed">
+            <strong>{{ result.score }}<small>%</small></strong
+            ><span>Your score</span>
+        </div>
+        <span hlmBadge [variant]="result.passed ? 'secondary' : 'outline'">{{
+            result.passed ? 'Passed' : 'Not passed yet'
+        }}</span>
+        <h3>
+            {{
+                result.passed
+                    ? exam
+                        ? 'A milestone worth celebrating.'
+                        : 'One step further. Well done.'
+                    : 'A little more practice. Another step forward.'
+            }}
+        </h3>
+        <p>
+            {{ result.correct }} correct · {{ result.total - result.correct }} incorrect ·
+            {{ result.total }} questions
+        </p>
+        <p class="small-muted">
+            {{ result.attemptsUsed }} of {{ result.maxAttempts }} attempts used
+        </p>
+        <div class="action-row">
+            <button hlmBtn variant="outline" (click)="leave.emit()">Return to lesson</button
+            ><button hlmBtn *ngIf="retryAllowed" (click)="restart()">Try again →</button>
+        </div>
+        <p *ngIf="!result.passed && !retryAllowed">
+            No attempts remain. Contact your trainer for guidance.
+        </p>
+    </section>
+</section>

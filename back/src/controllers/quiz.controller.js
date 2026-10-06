@@ -8,6 +8,17 @@ const generateCertificatePDF = require("../utils/generateCertificatePDF");
 const { checkCompletionBadges, checkQuizBadges, checkCertificateBadges } = require("../services/badge.service");
 const config = require("../config/env");
 
+// Keep lesson-only courses completable, while final exams remain authoritative.
+async function refreshLearningState(enrollment, courseId) {
+  const { calculateProgress } = require('../utils/learningProgress');
+  const lessons = await Lesson.find({ course: courseId }).select('_id').lean();
+  const course = await Course.findById(courseId).select('finalExam');
+  const state = calculateProgress(lessons, enrollment.lessonsCompleted,
+    Boolean(enrollment.finalExamResult?.passed), Boolean(course?.finalExam?.questions?.length));
+  enrollment.progress = state.progress;
+  enrollment.completed = state.completed;
+}
+
 // ============================================================
 // ✅ Unified quiz/exam grading engine (replaces quiz + quiz2 duplication)
 // ============================================================
@@ -259,13 +270,7 @@ exports.submitLessonQuiz = async (req, res) => {
         enrollment.lessonsCompleted.push(lessonId);
       }
 
-      // ✅ Single source of truth: progress is computed server-side
-      const totalLessons = await Lesson.countDocuments({ course: lesson.course });
-      if (totalLessons > 0) {
-        enrollment.progress = Math.round(
-          (enrollment.lessonsCompleted.length / totalLessons) * 100
-        );
-      }
+      await refreshLearningState(enrollment, lesson.course);
 
       checkQuizBadges(req.user._id, score).catch(console.error);
     }
@@ -337,6 +342,12 @@ exports.submitLessonQuiz2 = async (req, res) => {
       });
     }
 
+    // Legacy quiz2-only lessons use the same completion rules as primary quizzes.
+    if (passed && !lesson.quiz?.questions?.length) {
+      if (!enrollment.lessonsCompleted.some(id => String(id) === String(lessonId))) enrollment.lessonsCompleted.push(lessonId);
+      await refreshLearningState(enrollment, lesson.course);
+    }
+
     await enrollment.save();
 
     res.status(200).json({
@@ -384,7 +395,7 @@ exports.submitFinalExam = async (req, res) => {
       l => (l.quiz?.questions?.length || 0) > 0 || (l.quiz2?.questions?.length || 0) > 0
     );
     const missing = requiredLessons.filter(l => !completedIds.includes(l._id.toString()));
-    if (requiredLessons.length === 0 || missing.length > 0) {
+    if (courseLessons.length === 0 || missing.length > 0) {
       return res.status(403).json({
         success: false,
         message: "Complete all lesson quizzes before taking the final exam."

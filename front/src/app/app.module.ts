@@ -1,3 +1,10 @@
+import { CourseDetailsFormComponent } from './components/management/course-details-form.component';
+import { RecordTableComponent } from './components/management/record-table.component';
+import { OperationsOverviewComponent } from './components/analytics/operations-overview.component';
+import { AssessmentPlayerComponent } from './components/assessments/assessment-player.component';
+import { LearningUiModule } from './components/learning/learning-ui.module';
+import { WorkspaceShellComponent } from './components/layout/workspace-shell.component';
+import { UiModule } from './components/ui/ui.module';
 
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -109,6 +116,13 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
         NotFoundPageComponent
     ],
     imports: [
+        UiModule,
+        CourseDetailsFormComponent,
+        RecordTableComponent,
+        OperationsOverviewComponent,
+        AssessmentPlayerComponent,
+        LearningUiModule,
+        WorkspaceShellComponent,
         CommonModule,
         FormsModule,
         RouterModule,

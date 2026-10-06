@@ -1,0 +1,219 @@
+<app-learning-skeleton *ngIf="loading" />
+<div *ngIf="error" class="product-alert" role="alert">
+    {{ error }} <button hlmBtn variant="outline" (click)="refresh.emit()">Retry</button>
+</div>
+<ng-container *ngIf="stats && !loading && !error"
+    ><div class="metric-strip">
+        <div class="metric" *ngFor="let m of metrics">
+            <span>{{ m.label }}</span
+            ><strong
+                >{{ m.value ?? '—' }}<small>{{ m.suffix }}</small></strong
+            >
+        </div>
+    </div>
+    <div class="operations-grid">
+        <section hlmCard class="surface performance-chart">
+            <div class="section-row">
+                <div>
+                    <span class="eyebrow">THE BIGGER PICTURE</span>
+                    <h2>{{ role === 'admin' ? 'Enrollment activity' : 'Learning momentum' }}</h2>
+                </div>
+                <span hlmBadge variant="outline">{{
+                    role === 'admin' ? 'Reported months' : 'Average progress'
+                }}</span>
+            </div>
+            <p>
+                {{
+                    role === 'admin'
+                        ? 'Monthly enrollments reported by the platform.'
+                        : 'A clear view of where learning stands today.'
+                }}
+            </p>
+            <div
+                class="chart-bars"
+                role="img"
+                [attr.aria-label]="
+                    role === 'admin' ? 'Monthly enrollment counts' : 'Average learning progress'
+                "
+            >
+                <div *ngFor="let bar of chart" class="chart-row">
+                    <div class="section-row">
+                        <span>{{ bar.label }}</span
+                        ><strong>{{ bar.value }}{{ role === 'admin' ? '' : '%' }}</strong>
+                    </div>
+                    <div class="bar-track"><span [style.width.%]="barWidth(bar.value)"></span></div>
+                </div>
+                <p *ngIf="!chart.length">
+                    Activity will appear once learning records are available.
+                </p>
+            </div>
+        </section>
+        <aside class="operations-actions" hlmCard>
+            <span class="eyebrow">YOUR NEXT MOVE</span>
+            <h2>
+                {{
+                    role === 'trainer'
+                        ? 'Turn expertise into opportunity.'
+                        : role === 'manager'
+                          ? 'Help your team move forward.'
+                          : 'Keep your platform moving.'
+                }}
+            </h2>
+            <p>
+                {{
+                    role === 'trainer'
+                        ? 'Build a course, shape a lesson, and share what you know.'
+                        : role === 'manager'
+                          ? 'Connect the right people with the right learning.'
+                          : 'Manage access, review content, and support your learning community.'
+                }}
+            </p>
+            <button
+                hlmBtn
+                (click)="
+                    navigate.emit(
+                        role === 'manager' ? 'assign' : role === 'admin' ? 'users' : 'create'
+                    )
+                "
+            >
+                {{
+                    role === 'manager'
+                        ? 'Assign learning'
+                        : role === 'admin'
+                          ? 'Manage people'
+                          : 'Create a course'
+                }}
+                →</button
+            ><button
+                hlmBtn
+                variant="ghost"
+                (click)="
+                    navigate.emit(
+                        role === 'manager'
+                            ? 'overdue'
+                            : role === 'admin'
+                              ? 'courses'
+                              : 'quiz-results'
+                    )
+                "
+            >
+                {{
+                    role === 'manager'
+                        ? 'Review overdue learning'
+                        : role === 'admin'
+                          ? 'Review course library'
+                          : 'View assessment results'
+                }}
+                ↗</button
+            ><span class="attention-note" *ngIf="role === 'admin' && stats.overview.pendingCourses"
+                >{{ stats.overview.pendingCourses }} courses awaiting approval</span
+            ><span
+                class="attention-note"
+                *ngIf="role === 'manager' && stats.overdueEnrollments?.length"
+                >{{ stats.overdueEnrollments.length }} overdue assignments need attention</span
+            >
+        </aside>
+    </div>
+    <section hlmCard class="surface product-section">
+        <div class="section-row">
+            <div>
+                <h2>
+                    {{
+                        role === 'manager'
+                            ? 'Your team, at a glance'
+                            : role === 'admin'
+                              ? 'Most-enrolled courses'
+                              : 'Course performance'
+                    }}
+                </h2>
+                <p>
+                    {{
+                        role === 'admin'
+                            ? 'Top courses returned by platform analytics.'
+                            : 'Make informed decisions from real learning activity.'
+                    }}
+                </p>
+            </div>
+            <button hlmBtn variant="outline" size="sm" (click)="refresh.emit()">Refresh</button>
+        </div>
+        <div class="filter-bar">
+            <input
+                hlmInput
+                aria-label="Search performance records"
+                [(ngModel)]="query"
+                (ngModelChange)="page = 1"
+                placeholder="Find a course or learner…"
+            /><select
+                hlmInput
+                aria-label="Sort performance"
+                [(ngModel)]="sort"
+                (ngModelChange)="page = 1"
+            >
+                <option value="name">Name A–Z</option>
+                <option value="total">
+                    Most {{ role === 'manager' ? 'courses' : 'enrollments' }}
+                </option>
+                <option value="progress" *ngIf="role !== 'admin'">Highest progress</option>
+            </select>
+        </div>
+        <hlm-table class="operations-table"
+            ><hlm-trow class="table-heading"
+                ><hlm-th class="record-name">{{ role === 'manager' ? 'Learner' : 'Course' }}</hlm-th
+                ><hlm-th class="record-status">Status</hlm-th
+                ><hlm-th class="record-count">{{
+                    role === 'manager' ? 'Courses' : 'Enrollments'
+                }}</hlm-th
+                ><hlm-th class="record-progress" *ngIf="role !== 'admin'"
+                    >Progress</hlm-th
+                ></hlm-trow
+            ><hlm-trow *ngFor="let row of pageRows"
+                ><hlm-td class="record-name"
+                    ><div>
+                        <strong>{{ row.name }}</strong
+                        ><span>{{ row.detail }}</span>
+                    </div></hlm-td
+                ><hlm-td class="record-status"
+                    ><span hlmBadge variant="secondary">{{ row.status }}</span></hlm-td
+                ><hlm-td class="record-count"
+                    ><span class="mobile-label"
+                        >{{ role === 'manager' ? 'Courses' : 'Enrollments' }} </span
+                    >{{ row.total }}</hlm-td
+                ><hlm-td class="record-progress" *ngIf="role !== 'admin'"
+                    ><div>
+                        <span>{{ row.progress }}% · {{ row.completed }} completed</span
+                        ><app-learning-progress [value]="row.progress" /></div></hlm-td></hlm-trow
+        ></hlm-table>
+        <app-empty-state
+            *ngIf="!rows.length"
+            [title]="query ? 'No matching records' : 'A clear starting point'"
+            [description]="
+                query
+                    ? 'Try a different search to find the record you need.'
+                    : 'Learning activity will appear here as courses are assigned and learners make progress.'
+            "
+            icon="bar-chart-alt-2"
+        />
+        <div class="pagination-row" *ngIf="rows.length">
+            <span>{{ rows.length }} records · Page {{ currentPage }} of {{ pages }}</span>
+            <div class="action-row">
+                <button
+                    hlmBtn
+                    variant="outline"
+                    size="sm"
+                    [disabled]="currentPage === 1"
+                    (click)="page = currentPage - 1"
+                >
+                    Previous</button
+                ><button
+                    hlmBtn
+                    variant="outline"
+                    size="sm"
+                    [disabled]="currentPage === pages"
+                    (click)="page = currentPage + 1"
+                >
+                    Next
+                </button>
+            </div>
+        </div>
+    </section>
+</ng-container>

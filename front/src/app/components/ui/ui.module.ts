@@ -1,0 +1,30 @@
+import { NgModule } from '@angular/core';
+import { HlmIconModule } from '@spartan-ng/ui-icon-helm';
+import { BrnLabelModule } from '@spartan-ng/ui-label-brain';
+import { HlmLabelModule } from '@spartan-ng/ui-label-helm';
+import { BrnTableModule } from '@spartan-ng/ui-table-brain';
+import { HlmTableModule } from '@spartan-ng/ui-table-helm';
+import { BrnMenuModule } from '@spartan-ng/ui-menu-brain';
+import { HlmMenuModule } from '@spartan-ng/ui-menu-helm';
+import { BrnSheetModule } from '@spartan-ng/ui-sheet-brain';
+import { HlmSheetModule } from '@spartan-ng/ui-sheet-helm';
+import { BrnDialogModule } from '@spartan-ng/ui-dialog-brain';
+import { HlmDialogModule } from '@spartan-ng/ui-dialog-helm';
+import { BrnTabsModule } from '@spartan-ng/ui-tabs-brain';
+import { HlmTabsModule } from '@spartan-ng/ui-tabs-helm';
+import { BrnRadioGroupModule } from '@spartan-ng/ui-radio-group-brain';
+import { HlmRadioGroupModule } from '@spartan-ng/ui-radio-group-helm';
+import { BrnAccordionModule } from '@spartan-ng/ui-accordion-brain';
+import { HlmAccordionModule } from '@spartan-ng/ui-accordion-helm';
+import { BrnSeparatorModule } from '@spartan-ng/ui-separator-brain';
+import { HlmSeparatorModule } from '@spartan-ng/ui-separator-helm';
+import { BrnProgressModule } from '@spartan-ng/ui-progress-brain';
+import { HlmProgressModule } from '@spartan-ng/ui-progress-helm';
+import { HlmSkeletonModule } from '@spartan-ng/ui-skeleton-helm';
+import { HlmInputModule } from '@spartan-ng/ui-input-helm';
+import { HlmBadgeModule } from '@spartan-ng/ui-badge-helm';
+import { HlmCardModule } from '@spartan-ng/ui-card-helm';
+import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
+const modules = [HlmIconModule, BrnLabelModule, HlmLabelModule, BrnTableModule, HlmTableModule, BrnMenuModule, HlmMenuModule, BrnSheetModule, HlmSheetModule, BrnDialogModule, HlmDialogModule, BrnTabsModule, HlmTabsModule, BrnRadioGroupModule, HlmRadioGroupModule, BrnAccordionModule, HlmAccordionModule, BrnSeparatorModule, HlmSeparatorModule, BrnProgressModule, HlmProgressModule, HlmSkeletonModule, HlmInputModule, HlmBadgeModule, HlmCardModule, HlmButtonModule];
+@NgModule({ imports: modules, exports: modules })
+export class UiModule {}

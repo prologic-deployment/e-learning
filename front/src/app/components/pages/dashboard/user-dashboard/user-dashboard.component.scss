@@ -1,15 +1,313 @@
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+.resume-panel {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    background: #1d3557;
+    border-radius: 12px;
+    overflow: hidden;
+    min-height: 310px;
+    color: #f1faee;
 }
-
-@keyframes shrink {
-  from { width: 100%; }
-  to { width: 0%; }
+.resume-copy {
+    padding: 32px 36px;
+    position: relative;
+    z-index: 1;
+}
+.resume-copy .eyebrow {
+    color: #a8dadc;
+    font-size: 9px;
+}
+.resume-category {
+    display: table;
+    margin-top: 20px;
+    background: #ffffff16;
+    color: #cde9e5;
+    font-weight: 400;
+    font-size: 9px;
+    border: 1px solid #ffffff22;
+}
+.resume-copy h2 {
+    font-size: 29px;
+    letter-spacing: -0.8px;
+    line-height: 1.25;
+    margin: 12px 0;
+    color: #f1faee;
+    max-width: 500px;
+}
+.resume-copy p {
+    font-size: 12px;
+    color: #bed0de;
+    max-width: 420px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.resume-progress {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 300px;
+    margin: 22px 0;
+}
+.resume-progress app-learning-progress {
+    flex: 1;
+}
+.resume-progress span {
+    font-size: 10px;
+    color: #a8dadc;
+}
+.resume-copy button {
+    background: #f1faee;
+    color: #1d3557;
+    font-size: 12px;
+    gap: 12px;
+}
+.resume-copy button span {
+    margin-left: 25px;
+}
+.resume-art {
+    position: relative;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    background: #244264;
+}
+.orbit {
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    border: 1px solid #a8dadc33;
+    border-radius: 50%;
+}
+.orbit-two {
+    width: 320px;
+    height: 320px;
+}
+.orbit-three {
+    width: 400px;
+    height: 400px;
+}
+.floating-book {
+    width: 130px;
+    height: 175px;
+    background: #a8dadc;
+    transform: rotate(-12deg);
+    border-radius: 2px 10px 10px 2px;
+    box-shadow:
+        inset 8px 0 #457b9d55,
+        8px 10px #132e4b;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 22px 20px;
+    color: #1d3557;
+    z-index: 1;
+}
+.floating-book > span:first-child {
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.4px;
+}
+.floating-book > span:last-child {
+    font-size: 6px;
+    letter-spacing: 1px;
+}
+.floating-book i {
+    font-size: 38px;
+}
+.art-spark {
+    position: absolute;
+    right: 25%;
+    top: 19%;
+    font-size: 45px;
+    color: #e63946;
+    z-index: 2;
+}
+.art-caption {
+    position: absolute;
+    right: 20px;
+    bottom: 22px;
+    font-size: 8px;
+    letter-spacing: 2px;
+    writing-mode: vertical-rl;
+    color: #a8dadc;
+}
+.learning-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 285px;
+    gap: 28px;
+}
+.learner-course-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.learning-layout:not(:has(.learning-aside)) {
+    grid-template-columns: 1fr;
+}
+.learning-layout:not(:has(.learning-aside)) .learner-course-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.date-tile {
+    text-align: center;
+    min-width: 40px;
+    border: 1px solid hsl(var(--border));
+    border-radius: 6px;
+    padding: 6px;
+}
+.date-tile span {
+    display: block;
+    text-transform: uppercase;
+    font-size: 9px;
+    color: hsl(var(--muted-foreground));
+}
+.date-tile strong {
+    font-size: 19px;
+}
+.quiet-empty {
+    text-align: center;
+    padding: 18px 0;
+}
+.quiet-empty > i {
+    font-size: 28px;
+    color: #457b9d;
+}
+.quiet-empty h3 {
+    font-size: 14px;
+    margin: 15px 0 8px;
+}
+.quiet-empty p {
+    font-size: 12px;
+    margin-bottom: 0;
+    line-height: 1.7;
+}
+.achievement-preview {
+    margin-top: 22px;
+    background: hsl(var(--secondary));
+    border-color: transparent;
+}
+.achievement-preview h2 {
+    font-size: 14px;
+    margin: 0;
+}
+.achievement-preview > .section-row {
+    margin-bottom: 15px;
+}
+.achievement-preview i {
+    font-size: 24px;
+}
+.achievement-preview > button {
+    margin-top: 8px;
+    padding-left: 0;
+}
+.metric small {
+    font-size: 16px;
+}
+.achievement-icon {
+    display: block;
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+.achievement h2 {
+    margin-top: 20px;
+}
+.certificate > i {
+    display: block;
+    font-size: 40px;
+    margin: 25px 0;
+    color: #457b9d;
+}
+.notification-copy {
+    flex: 1;
+}
+.profile-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+}
+.profile-summary {
+    align-self: start;
+    text-align: center;
+}
+.profile-avatar {
+    width: 84px;
+    height: 84px;
+    background: hsl(var(--accent));
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    margin: 8px auto 22px;
+    font-size: 28px;
+    overflow: hidden;
+}
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.profile-summary input {
+    font-size: 11px;
+    margin: 12px 0;
+}
+.profile-summary p {
+    overflow-wrap: anywhere;
+}
+@media (max-width: 1150px) {
+    .learning-layout {
+        grid-template-columns: minmax(0, 1fr) 250px;
+        gap: 20px;
+    }
+    .resume-copy {
+        padding: 28px;
+    }
+    .resume-copy h2 {
+        font-size: 25px;
+    }
+    .learning-layout:not(:has(.learning-aside)) .learner-course-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (max-width: 950px) {
+    .learning-layout {
+        grid-template-columns: 1fr;
+    }
+    .learning-aside {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+    .learning-aside > .section-heading {
+        grid-column: 1/-1;
+        margin-bottom: 0;
+    }
+    .achievement-preview {
+        margin-top: 0;
+    }
+    .profile-layout {
+        grid-template-columns: 1fr;
+    }
+    .resume-art {
+        min-width: 180px;
+    }
+}
+@media (max-width: 600px) {
+    .resume-panel {
+        grid-template-columns: 1fr;
+    }
+    .resume-art {
+        display: none;
+    }
+    .resume-copy {
+        padding: 26px;
+    }
+    .resume-copy h2 {
+        font-size: 25px;
+    }
+    .learner-course-grid,
+    .learning-layout:not(:has(.learning-aside)) .learner-course-grid,
+    .learning-aside {
+        grid-template-columns: 1fr;
+    }
+    .page-heading .action-row a {
+        display: none;
+    }
 }

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, OnInit, DestroyRef, inject } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { StatsService } from '../../../../services/stats.service';
 import { CourseService } from '../../../../services/course.service';
@@ -16,6 +17,8 @@ import * as XLSX from 'xlsx';
 })
 export class ManagerDashboardComponent implements OnInit {
 
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly route = inject(ActivatedRoute);
   activeTab: string = 'stats';
   currentUser: any;
   apiUrl = environment.apiUrl;
@@ -79,10 +82,12 @@ export class ManagerDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
     this.loadStats();
+    this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => this.setTab(params['tab'] || 'stats'));
   }
 
   setTab(tab: string): void {
     this.activeTab = tab;
+    if (this.route.snapshot.queryParams['tab'] !== tab) this.router.navigate([], { relativeTo: this.route, queryParams: {tab}, queryParamsHandling: 'merge', replaceUrl: true });
     if (tab === 'assign' && this.courses.length === 0) {
       this.loadCourses();
       this.loadTeamMembers();

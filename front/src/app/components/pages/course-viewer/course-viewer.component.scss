@@ -1,0 +1,311 @@
+.lesson-breadcrumb {
+    display: flex;
+    gap: 10px;
+    font-size: 11px;
+    color: hsl(var(--muted-foreground));
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+}
+.lesson-breadcrumb a {
+    color: inherit;
+}
+.lesson-breadcrumb strong {
+    font-weight: 500;
+    color: hsl(var(--foreground));
+}
+.lesson-course-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.lesson-course-heading h1 {
+    font-size: 28px;
+    letter-spacing: -1px;
+    margin: 10px 0;
+}
+.lesson-course-heading p {
+    font-size: 12px;
+    margin: 0;
+}
+.lesson-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 285px;
+    gap: 26px;
+    align-items: start;
+}
+.lesson-main {
+    min-width: 0;
+}
+.lesson-surface {
+    overflow: hidden;
+    box-shadow: none;
+}
+.lesson-title {
+    padding: 26px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+}
+.lesson-title h2 {
+    font-size: 21px;
+    margin: 8px 0 0;
+}
+.lesson-title .eyebrow {
+    font-size: 9px;
+}
+.lesson-media {
+    background: #12233b;
+}
+.lesson-media video {
+    width: 100%;
+    aspect-ratio: 16/9;
+    display: block;
+}
+.lesson-media iframe {
+    width: 100%;
+    height: 620px;
+    border: 0;
+    display: block;
+}
+.lesson-text {
+    padding: 26px;
+}
+.lesson-text h3 {
+    font-size: 15px;
+    margin: 0 0 15px;
+}
+.lesson-text p {
+    font-size: 14px;
+    line-height: 1.9;
+    white-space: pre-wrap;
+}
+.lesson-resources {
+    padding: 12px 26px;
+    border-top: 1px solid hsl(var(--border));
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.lesson-resources button {
+    font-size: 11px;
+}
+.lesson-next-step {
+    margin-top: 22px;
+    background: hsl(var(--secondary));
+    border-color: transparent;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+}
+.lesson-next-step h3 {
+    font-size: 16px;
+    margin: 8px 0;
+}
+.lesson-next-step p {
+    font-size: 12px;
+    margin: 0;
+}
+.lesson-next-step button {
+    font-size: 11px;
+    white-space: nowrap;
+}
+.lesson-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 22px 0;
+}
+.lesson-navigation button {
+    font-size: 11px;
+}
+.curriculum-panel {
+    position: sticky;
+    top: 100px;
+}
+.curriculum-surface {
+    overflow: hidden;
+    box-shadow: none;
+}
+.curriculum-heading {
+    padding: 24px;
+}
+.curriculum-heading h2 {
+    font-size: 17px;
+    margin: 8px 0 22px;
+}
+.curriculum-heading .section-row {
+    font-size: 10px;
+    color: hsl(var(--muted-foreground));
+    margin-bottom: 12px;
+}
+.curriculum-surface [hlmAccordion] {
+    padding: 0 12px;
+}
+.curriculum-surface [hlmAccordionTrigger] {
+    width: 100%;
+    font-size: 12px;
+    padding-inline: 12px;
+}
+.curriculum-surface [hlmAccordionItem] {
+    border: 0;
+}
+.curriculum-lesson {
+    display: flex;
+    align-items: center;
+    text-align: left;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: hsl(var(--foreground));
+    gap: 12px;
+    padding: 15px 10px;
+    border-radius: 6px;
+    margin: 4px 0;
+}
+.curriculum-lesson.current {
+    background: hsl(var(--secondary));
+}
+.curriculum-lesson strong {
+    display: block;
+    font-size: 12px;
+    font-weight: 550;
+    line-height: 1.5;
+}
+.curriculum-lesson small {
+    display: block;
+    font-size: 9px;
+    color: hsl(var(--muted-foreground));
+    margin-top: 6px;
+}
+.curriculum-lesson > i {
+    margin-left: auto;
+}
+.lesson-number {
+    width: 26px;
+    height: 26px;
+    display: grid;
+    place-items: center;
+    border: 1px solid hsl(var(--border));
+    border-radius: 50%;
+    font-size: 9px;
+    flex-shrink: 0;
+}
+.curriculum-exam {
+    border-top: 1px solid hsl(var(--border));
+    padding: 24px;
+}
+.curriculum-exam h3 {
+    font-size: 14px;
+    margin: 15px 0 10px;
+}
+.curriculum-exam p {
+    font-size: 11px;
+    line-height: 1.8;
+}
+.curriculum-exam button {
+    font-size: 11px;
+    width: 100%;
+}
+.focus-note {
+    display: flex;
+    gap: 13px;
+    padding: 22px 10px;
+}
+.focus-note > i {
+    font-size: 21px;
+    color: #457b9d;
+}
+.focus-note p {
+    font-size: 12px;
+    line-height: 1.7;
+}
+.focus-note span {
+    font-size: 11px;
+}
+.review-form {
+    display: grid;
+    gap: 12px;
+    margin: 20px 0 30px;
+}
+.review-form select {
+    width: 140px;
+}
+.review-form button {
+    justify-self: start;
+}
+.review-copy {
+    flex: 1;
+}
+.summary-text {
+    font-size: 13px;
+    line-height: 1.9;
+    margin: 20px 0;
+}
+.media-loading {
+    padding: 20px;
+}
+.media-loading p {
+    font-size: 12px;
+    margin-top: 12px;
+}
+@media (max-width: 1000px) {
+    .lesson-layout {
+        grid-template-columns: 1fr;
+    }
+    .curriculum-panel {
+        position: static;
+        grid-row: 1;
+    }
+    .curriculum-surface [hlmAccordion] {
+        max-height: 300px;
+        overflow: auto;
+    }
+    .curriculum-heading {
+        padding: 20px;
+    }
+    .curriculum-exam {
+        padding: 20px;
+    }
+    .focus-note {
+        display: none;
+    }
+    .curriculum-exam button {
+        width: auto;
+    }
+    .curriculum-heading h2 {
+        margin-bottom: 14px;
+    }
+}
+@media (max-width: 600px) {
+    .lesson-course-heading {
+        flex-wrap: wrap;
+    }
+    .lesson-course-heading h1 {
+        font-size: 24px;
+    }
+    .lesson-title {
+        padding: 20px;
+        flex-wrap: wrap;
+    }
+    .lesson-title h2 {
+        font-size: 19px;
+    }
+    .lesson-next-step {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .lesson-navigation button {
+        font-size: 10px;
+        padding-inline: 12px;
+    }
+    .lesson-media iframe {
+        height: 460px;
+    }
+    .reviews-section .product-list-item {
+        flex-wrap: wrap;
+    }
+}

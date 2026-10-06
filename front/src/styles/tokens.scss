@@ -85,3 +85,23 @@
     }
   }
 }
+
+/* Product workspace: navy is the action color; red is reserved for attention. */
+:root {
+  --primary: 215.2 50% 22.7%;
+  --primary-foreground: 105 54.5% 95.7%;
+  --secondary: 182.3 42.6% 90%;
+  --secondary-foreground: 215.2 50% 22.7%;
+  --background: 105 25% 97%;
+  --radius: 0.625rem;
+}
+.dark {
+  --primary: 182.3 42.6% 76.1%;
+  --primary-foreground: 215.2 50% 15%;
+  --secondary: 214 32% 19%;
+  --secondary-foreground: 105 54.5% 95.7%;
+  --background: 217 47% 9%;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}

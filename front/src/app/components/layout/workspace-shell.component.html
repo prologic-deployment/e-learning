@@ -1,0 +1,160 @@
+<div [class.workspace]="enabled" [class.compact]="collapsed">
+    <ng-container *ngIf="enabled">
+        <a class="skip-link" href="#workspace-content">Skip to content</a>
+        <aside class="workspace-rail">
+            <a class="wordmark" [routerLink]="home"
+                ><span class="brand-mark">e.</span
+                ><span class="rail-label">edla<span class="brand-dot">.</span></span></a
+            >
+            <div class="workspace-label rail-label">
+                {{
+                    role === 'user'
+                        ? 'LEARNING WORKSPACE'
+                        : role === 'trainer'
+                          ? 'CONTENT STUDIO'
+                          : 'MANAGEMENT WORKSPACE'
+                }}
+            </div>
+            <nav aria-label="Workspace">
+                <ng-container *ngTemplateOutlet="navigation"></ng-container>
+            </nav>
+            <div class="rail-bottom">
+                <div class="rail-note rail-label">
+                    <span class="eyebrow">A LITTLE, EVERY DAY</span>
+                    <p>Make room for<br />your next big idea.</p>
+                    <span class="note-orbit" aria-hidden="true">↗</span>
+                </div>
+                <button
+                    hlmBtn
+                    variant="ghost"
+                    (click)="collapsed = !collapsed"
+                    [attr.aria-label]="collapsed ? 'Expand navigation' : 'Collapse navigation'"
+                    [attr.aria-expanded]="!collapsed"
+                >
+                    <i class="bx bx-sidebar"></i><span class="rail-label">Collapse sidebar</span>
+                </button>
+            </div>
+        </aside>
+        <header class="workspace-topbar">
+            <hlm-sheet side="left" class="mobile-navigation">
+                <button
+                    hlmBtn
+                    variant="ghost"
+                    size="icon"
+                    brnSheetTrigger
+                    aria-label="Open navigation"
+                >
+                    <i class="bx bx-menu"></i>
+                </button>
+                <hlm-sheet-content *brnSheetContent="let ctx" class="mobile-sheet">
+                    <h2 hlmSheetTitle>Your workspace</h2>
+                    <p hlmSheetDescription>Choose where to go next.</p>
+                    <nav aria-label="Mobile workspace">
+                        <a
+                            *ngFor="let item of items"
+                            hlmBtn
+                            variant="ghost"
+                            class="mobile-nav-link"
+                            [routerLink]="item.path"
+                            [queryParams]="item.tab ? { tab: item.tab } : {}"
+                            (click)="ctx.close()"
+                            >{{ item.label }}</a
+                        >
+                    </nav>
+                </hlm-sheet-content>
+            </hlm-sheet>
+            <span class="top-context"
+                >Workspace <span>/</span>
+                <strong>{{
+                    role === 'user' ? 'Learning' : role === 'trainer' ? 'Studio' : 'Management'
+                }}</strong></span
+            >
+            <div class="top-actions">
+                <hlm-dialog #searchDialog>
+                    <button hlmBtn variant="outline" brnDialogTrigger class="search-launch">
+                        <i class="bx bx-search"></i><span>Find a page</span><kbd>⌘ K</kbd>
+                    </button>
+                    <hlm-dialog-content *brnDialogContent="let ctx" class="search-dialog">
+                        <h2 hlmDialogTitle>Where would you like to go?</h2>
+                        <p hlmDialogDescription>Search the pages available to your role.</p>
+                        <label hlmLabel for="workspace-search">Search navigation</label
+                        ><input
+                            hlmInput
+                            id="workspace-search"
+                            [(ngModel)]="query"
+                            placeholder="Courses, progress, profile…"
+                        />
+                        <nav class="search-results">
+                            <a
+                                *ngFor="let item of filteredItems"
+                                hlmBtn
+                                variant="ghost"
+                                [routerLink]="item.path"
+                                [queryParams]="item.tab ? { tab: item.tab } : {}"
+                                (click)="ctx.close()"
+                                ><i [class]="'bx bx-' + item.icon"></i>{{ item.label
+                                }}<span>↗</span></a
+                            >
+                        </nav>
+                        <p *ngIf="!filteredItems.length">
+                            No matching pages. Try “course” or clear your search.
+                        </p>
+                    </hlm-dialog-content>
+                </hlm-dialog>
+                <button
+                    hlmBtn
+                    variant="ghost"
+                    size="icon"
+                    (click)="toggleTheme()"
+                    [attr.aria-label]="dark ? 'Use light theme' : 'Use dark theme'"
+                >
+                    <i [class]="dark ? 'bx bx-sun' : 'bx bx-moon'"></i>
+                </button>
+                <a
+                    *ngIf="role === 'user'"
+                    hlmBtn
+                    variant="ghost"
+                    size="icon"
+                    routerLink="/dashboard"
+                    [queryParams]="{ tab: 'notifications' }"
+                    aria-label="Notifications"
+                    ><i class="bx bx-bell"></i
+                ></a>
+                <button
+                    hlmBtn
+                    variant="outline"
+                    [brnMenuTriggerFor]="profileMenu"
+                    class="profile-trigger"
+                    aria-label="Open account menu"
+                >
+                    <span class="initials">{{
+                        auth.getCurrentUser()?.firstname?.charAt(0) || '•'
+                    }}</span
+                    ><span class="profile-name">{{ auth.getCurrentUser()?.firstname }}</span
+                    ><i class="bx bx-chevron-down"></i>
+                </button>
+                <ng-template #profileMenu
+                    ><hlm-menu
+                        ><hlm-menu-label>{{ auth.getCurrentUser()?.email }}</hlm-menu-label
+                        ><hlm-menu-separator /><button hlmMenuItem (click)="logout()">
+                            Sign out
+                        </button></hlm-menu
+                    ></ng-template
+                >
+            </div>
+        </header>
+    </ng-container>
+    <main id="workspace-content" [class.workspace-content]="enabled"><ng-content /></main>
+</div>
+<ng-template #navigation
+    ><a
+        *ngFor="let item of items"
+        class="rail-link"
+        [class.selected]="active(item)"
+        [routerLink]="item.path"
+        [queryParams]="item.tab ? { tab: item.tab } : {}"
+        [attr.aria-current]="active(item) ? 'page' : null"
+        [title]="item.label"
+        ><i [class]="'bx bx-' + item.icon"></i><span class="rail-label">{{ item.label }}</span
+        ><span class="active-dot rail-label" *ngIf="active(item)"></span></a
+></ng-template>
