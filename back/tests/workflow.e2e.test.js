@@ -71,9 +71,52 @@ const { login, makeApi, check, summary } = require('./helpers/e2e');
   check('Trainer saves FINAL EXAM (POST /quiz/final/:courseId — previously missing route)', exam.status === 200,
     `status=${exam.status} body=${JSON.stringify(exam.body).slice(0, 160)}`);
 
-  // Ownership guard: trainer2 must not touch trainer1's course
+  // Ownership guard helper: trainer2 must not touch trainer1's course
   const trainer2Tok = await login('trainer2@test.com', 'Trainer123');
   const trainer2 = makeApi(trainer2Tok);
+
+  // ---------- ANSWER-KEY POLICY + QUIZ2 ROUTE (regression batch 2) ----------
+  const ownerLessons = await trainer('GET', `/api/lessons/course/${courseId}`);
+  const ownerHasKey = JSON.stringify(ownerLessons.body).includes('correctAnswer');
+  check('OWNER sees correctAnswer on lesson payloads (edit-quizzes fix)',
+    ownerLessons.status === 200 && ownerHasKey,
+    `status=${ownerLessons.status} hasKey=${ownerHasKey}`);
+
+  const q2 = await trainer('POST', `/api/quiz/lesson/${lessonIds[0]}/quiz2`, {
+    questions: [
+      { texte: 'Q2: 5*5?', options: ['20', '25', '30'], correctAnswer: 1, points: 1 }
+    ],
+    noteMinimale: 70,
+    maxAttempts: 3
+  });
+  check('Trainer saves QUIZ 2 (POST /quiz/lesson/:id/quiz2 — previously missing route)', q2.status === 200,
+    `status=${q2.status} body=${JSON.stringify(q2.body).slice(0, 160)}`);
+
+  const otherStaffLessons = await trainer2('GET', `/api/lessons/course/${courseId}`);
+  const otherHasKey = JSON.stringify(otherStaffLessons.body).includes('correctAnswer');
+  check('Non-owner staff does NOT receive correctAnswer',
+    otherStaffLessons.status === 200 && !otherHasKey,
+    `status=${otherStaffLessons.status} hasKey=${otherHasKey}`);
+
+  // Edit roundtrip exactly as the UI does after the fix: owner GET (key
+  // present) → re-POST the prefilled quiz. Pre-fix, the stripped payload
+  // reset every answer key to 0 on save.
+  const lesson2FromOwner = (ownerLessons.body || []).find(l => l._id === lessonIds[1]);
+  const roundtrip = await trainer('POST', `/api/quiz/lesson/${lessonIds[1]}`, {
+    noteMinimale: 70,
+    questions: (lesson2FromOwner?.quiz?.questions || []).map(q => ({
+      texte: q.texte, options: [...q.options], correctAnswer: q.correctAnswer
+    }))
+  });
+  check('Trainer re-saves quiz from prefilled edit form (roundtrip)', roundtrip.status === 200,
+    `status=${roundtrip.status} body=${JSON.stringify(roundtrip.body).slice(0, 120)}`);
+  const afterRoundtrip = await trainer('GET', `/api/lessons/course/${courseId}`);
+  const l2After = (afterRoundtrip.body || []).find(l => l._id === lessonIds[1]);
+  check('Answer key SURVIVES edit roundtrip (not reset to 0)',
+    l2After?.quiz?.questions?.[0]?.correctAnswer === 1,
+    `key=${l2After?.quiz?.questions?.[0]?.correctAnswer}`);
+
+  // Ownership guard: trainer2 must not touch trainer1's course
   const foreignEdit = await trainer2('PUT', `/api/courses/${courseId}`, { title: 'Hijacked' });
   check('TRAINER2 cannot edit another trainer\'s course (403)', foreignEdit.status === 403,
     `status=${foreignEdit.status}`);
@@ -132,6 +175,16 @@ const { login, makeApi, check, summary } = require('./helpers/e2e');
       check('Progress = 50% after one of two quizzes', midEnrollment?.progress === 50,
         `progress=${midEnrollment?.progress}`);
     }
+  }
+
+  // Quiz 2 (created above on lesson 1) must also be passable and counts as a
+  // prerequisite for the final exam.
+  const quiz2Lesson = lessons.find(l => l.quiz2?.questions?.length);
+  if (quiz2Lesson) {
+    const answers2 = quiz2Lesson.quiz2.questions.map(() => 1);
+    const sub2 = await learner('POST', `/api/quiz/lesson/${quiz2Lesson._id}/submit/quiz2`, { answers: answers2 });
+    check('Quiz 2 passed (100%)', sub2.status === 200 && sub2.body?.passed === true,
+      `status=${sub2.status} body=${JSON.stringify(sub2.body).slice(0, 160)}`);
   }
 
   // Now the exam unlocks

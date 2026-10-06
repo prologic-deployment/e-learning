@@ -4,6 +4,7 @@ const { protect, authorize } = require("../middlewares/auth.middleware");
 const { aiLimiter } = require("../middlewares/rateLimiter");
 const {
   addQuizToLesson,
+  addQuiz2ToLesson,
   submitLessonQuiz,
   addFinalExam,
   submitFinalExam,
@@ -15,6 +16,10 @@ const {
 } = require("../controllers/quiz.controller");
 
 router.post("/lesson/:lessonId", protect, authorize("trainer", "admin"), addQuizToLesson);
+// ✅ MISSING ROUTE FIX: trainer & admin dashboards call POST /quiz/lesson/:id/quiz2
+// to create "Quiz 2" — the controller existed but was never wired to a route,
+// so quiz2 creation from the UI returned 404 ("Route introuvable").
+router.post("/lesson/:lessonId/quiz2", protect, authorize("trainer", "admin"), addQuiz2ToLesson);
 router.post("/lesson/:lessonId/submit", protect, aiLimiter, submitLessonQuiz);
 router.post("/lesson/:lessonId/submit/quiz2", protect, aiLimiter, submitLessonQuiz2);
 router.post("/final/:courseId/submit", protect, aiLimiter, submitFinalExam);

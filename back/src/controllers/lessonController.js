@@ -56,12 +56,19 @@ exports.addLesson = async (req, res) => {
 // Answers stripped via route-level middleware; file paths removed for non-owners.
 exports.getLessonsByCourse = async (req, res) => {
   try {
-    const lessons = await Lesson.find({ course: req.params.courseId })
-      .sort({ order: 1 });
-
     const role = Array.isArray(req.user.role) ? req.user.role[0] : req.user.role;
     const isOwner = req.course && req.course.trainer.toString() === req.user._id.toString();
     const isStaff = role === "admin" || role === "manager" || isOwner;
+
+    // ✅ ANSWER KEY POLICY: only the course OWNER or an admin receives
+    // correctAnswer (needed to edit quizzes). It is select:false in the schema,
+    // so it must be explicitly re-selected here; wrapStripAnswers middleware
+    // re-strips it for everyone else as a second layer.
+    let query = Lesson.find({ course: req.params.courseId });
+    if (role === "admin" || isOwner) {
+      query = query.select("+quiz.questions.correctAnswer +quiz2.questions.correctAnswer");
+    }
+    const lessons = await query.sort({ order: 1 });
 
     // ✅ Non-staff never receive content file paths (delivered via /api/files)
     const safe = lessons.map(l => {
@@ -81,14 +88,19 @@ exports.getLessonsByCourse = async (req, res) => {
 // Obtenir une leçon par ID
 exports.getLessonById = async (req, res) => {
   try {
-    const lesson = await Lesson.findById(req.params.id);
-    if (!lesson) {
-      return res.status(404).json({ message: "Lesson not found" });
-    }
-
     const role = Array.isArray(req.user.role) ? req.user.role[0] : req.user.role;
     const isOwner = req.course && req.course.trainer.toString() === req.user._id.toString();
     const isStaff = role === "admin" || role === "manager" || isOwner;
+
+    // ✅ Same answer-key policy as getLessonsByCourse (owner/admin only)
+    let query = Lesson.findById(req.params.id);
+    if (role === "admin" || isOwner) {
+      query = query.select("+quiz.questions.correctAnswer +quiz2.questions.correctAnswer");
+    }
+    const lesson = await query;
+    if (!lesson) {
+      return res.status(404).json({ message: "Lesson not found" });
+    }
 
     const plain = lesson.toObject();
     if (!isStaff) delete plain.contentFile;

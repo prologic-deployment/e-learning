@@ -52,17 +52,33 @@ const { login, makeApi, check, summary } = require('./helpers/e2e');
   check('Register returns 201', reg.status === 201,
     `status=${reg.status} body=${JSON.stringify(reg.body)}`);
 
+  // Fresh user = guaranteed ZERO enrollments/purchases → deterministic
+  // content-gate checks (seeded user1 may legitimately own seeded courses).
+  let fresh;
+  try {
+    fresh = makeApi(await login(email, 'Probe1234'));
+  } catch {
+    check('Fresh probe user can login', false, 'login failed');
+  }
+
   console.log('\n--- B. Lesson routes (stripAnswers middleware suspect) ---');
   const courses = await user('GET', '/api/courses?limit=5');
   const approved = (courses.body?.courses || []).filter(c => c.isApproved);
   console.log(`   approved courses visible: ${approved.length}`);
   const target = approved[0];
   if (target) {
-    const lessons = await user('GET', `/api/lessons/course/${target._id}`);
-    // ✅ Correct behavior = content gate: an unenrolled user must be blocked
-    // with 403 (the old code 500'd here due to the broken stripAnswers middleware).
-    check('GET /lessons/course/:id unenrolled → content-gate 403', lessons.status === 403,
-      `status=${lessons.status} body=${JSON.stringify(lessons.body).slice(0, 200)}`);
+    const lessons = await (fresh || user)('GET', `/api/lessons/course/${target._id}`);
+    // ✅ Content-gate policy: PAID courses block unenrolled users with 403
+    // (the old code 500'd here due to the broken stripAnswers middleware);
+    // FREE courses allow preview (existing product design) but must never
+    // include the answer key in the payload.
+    const expectedGate = target.price > 0 ? 403 : 200;
+    const gateOk = lessons.status === expectedGate;
+    const noLeak = expectedGate === 200
+      ? !JSON.stringify(lessons.body).includes('correctAnswer')
+      : true;
+    check('GET /lessons/course/:id unenrolled → content-gate enforced', gateOk && noLeak,
+      `price=${target.price} status=${lessons.status} (expected ${expectedGate}) leak=${!noLeak}`);
     if (lessons.status === 200 && Array.isArray(lessons.body) && lessons.body[0]) {
       const one = await user('GET', `/api/lessons/${lessons.body[0]._id}`);
       check('GET /lessons/:id returns 200', one.status === 200,

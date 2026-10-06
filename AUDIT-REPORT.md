@@ -3,7 +3,7 @@
 **Date:** 2026-10-06 · **Scope:** backend (Express 5 / Mongoose 9) + frontend (Angular 17) · branch `main`
 **Strategy:** root-cause fixes, minimum necessary changes, no rewrites — 13 backend files modified, 1 new controller, test suite added (+186 / −20 source lines).
 
-**Verification summary:** `workflow.e2e.test.js` **35/35** · `audit.probe.test.js` **22/22** · `security.helpers.test.js` **11/11** · Angular production build **exit 0**.
+**Verification summary:** `workflow.e2e.test.js` **41/41** · `audit.probe.test.js` **22/22** · `security.helpers.test.js` **11/11** · Angular production build **exit 0**.
 
 ---
 
@@ -25,6 +25,8 @@
 | 🟡 | Courses | `deleteCourse` orphaned lessons, enrollments, purchases, reviews, certificates | No cascade | ✅ Fixed — cascade delete + cache invalidation (verified by E2E) |
 | 🟡 | Users | `POST /users/create-trainer` had no route-level `authorize('admin')` | Guard relied on controller check only | ✅ Fixed — `authorize('admin')` added |
 | 🔵 | Tests | Probes crashed on reruns (rate limit / attempt counters) | Stateful in-memory limiter; server-side attempt counters | ✅ Probe resets dev counters itself; server run with `RATE_LIMIT_LOGIN_MAX` env (default unchanged) |
+| 🔴 | Quiz2 | `POST /api/quiz/lesson/:lessonId/quiz2` → 404 "Route introuvable" — creating "Quiz 2" from trainer/admin dashboards was impossible | Controller `addQuiz2ToLesson` existed but was never wired to a route | ✅ Fixed — route registered, `authorize('trainer','admin')` |
+| 🟠 | Quizzes/Exams | **Editing a quiz via the dashboards reset every answer key to 0** (edit forms prefill from payloads stripped of `correctAnswer`) | Answer key was stripped for everyone — including the authors who need it to edit | ✅ Fixed — answer-key policy: author (course owner) or admin receives the key on management paths (lesson queries + course sheet); all other consumers still stripped, middleware keeps a second layer |
 | 🔵 | Courses | `/courses/archived` listing would hide archived flag (`select:false` fields) | Fields not re-selected | ✅ Handled in new archived-course controller (`.select('+isArchived +archivedAt')`) |
 
 **Frontend audit (no code changes needed):** all routes/guards resolve; 404 page present; auth interceptor 401→logout; storefront, dashboards, viewer render — the four broken calls above were backend contract gaps, now aliased server-side.
@@ -38,6 +40,7 @@
 | `POST /api/auth/register` | 500 → 201 (B1) |
 | `GET /api/lessons/course/:courseId` | 500 → 200 (+ content-gate 403 when unenrolled) |
 | `GET /api/lessons/:id` | 500/404 → 200 (stripAnswers wrapper + lesson-param resolution) |
+| `POST /api/quiz/lesson/:lessonId/quiz2` | **new** — quiz2 creation from trainer/admin UI (was 404 "Route introuvable") |
 | `POST /api/quiz/final/:courseId` | **new** — exam creation from trainer/admin UI (was 404) |
 | `GET /api/courses/archived` | **new** — admin backoffice listing (was 404) |
 | `GET /api/purchases/me` | **new** — array shape for user dashboard (was 404) |
@@ -50,7 +53,8 @@
 
 - Public registration (role-locked to `user`).
 - Lesson content delivery for enrolled learners (list + detail, answers never exposed).
-- Quiz & quiz2 taking, grading, attempt limits, retry, progress updates.
+- Quiz & quiz2 taking, grading, attempt limits, retry, progress updates — **and quiz2 creation** (route was missing).
+- Quiz/exam **editing without corrupting answer keys** (owner receives the key on management payloads; learners never do).
 - Final exam creation (trainer/admin), eligibility gating, submission, scoring, retry.
 - Automatic certificate generation on exam pass (verified E2E).
 - Course completion: progress = 100, `completed = true`, single source of truth server-side.
@@ -134,7 +138,7 @@ No schema changes, no migrations, no production data touched (all runs against l
 | Refresh/navigation (frontend routes, guards, 404 page; prod build exit 0) | **PASS** |
 | `security.helpers.test.js` | **PASS** 11/11 |
 | `audit.probe.test.js` | **PASS** 22/22 |
-| `workflow.e2e.test.js` | **PASS** 35/35 |
+| `workflow.e2e.test.js` | **PASS** 41/41 |
 | Angular production build | **PASS** exit 0 |
 
 ### How to re-verify
@@ -147,4 +151,4 @@ node tests/security.helpers.test.js                            # 11 unit tests, 
 cd ../front && ./node_modules/.bin/ng build --configuration production
 ```
 
-**Files changed:** [auth.controller.js](back/src/controllers/auth.controller.js) · [quiz.controller.js](back/src/controllers/quiz.controller.js) · [course.controller.js](back/src/controllers/course.controller.js) · [user.controller.js](back/src/controllers/user.controller.js) · [purchase.controller.js](back/src/controllers/purchase.controller.js) · [auth.middleware.js](back/src/middlewares/auth.middleware.js) · [auth.routes.js](back/src/routes/auth.routes.js) · [quiz.routes.js](back/src/routes/quiz.routes.js) · [course.routes.js](back/src/routes/course.routes.js) · [lesson.routes.js](back/src/routes/lesson.routes.js) · [purchase.routes.js](back/src/routes/purchase.routes.js) · [profile.routes.js](back/src/routes/profile.routes.js) · [user.routes.js](back/src/routes/user.routes.js) · [archived-course.controller.js](back/src/controllers/archived-course.controller.js) (new) · tests: [workflow.e2e.test.js](back/tests/workflow.e2e.test.js), [audit.probe.test.js](back/tests/audit.probe.test.js), [helpers/e2e.js](back/tests/helpers/e2e.js)
+**Files changed:** [auth.controller.js](back/src/controllers/auth.controller.js) · [quiz.controller.js](back/src/controllers/quiz.controller.js) · [course.controller.js](back/src/controllers/course.controller.js) · [lessonController.js](back/src/controllers/lessonController.js) · [user.controller.js](back/src/controllers/user.controller.js) · [purchase.controller.js](back/src/controllers/purchase.controller.js) · [auth.middleware.js](back/src/middlewares/auth.middleware.js) · [auth.routes.js](back/src/routes/auth.routes.js) · [quiz.routes.js](back/src/routes/quiz.routes.js) · [course.routes.js](back/src/routes/course.routes.js) · [lesson.routes.js](back/src/routes/lesson.routes.js) · [purchase.routes.js](back/src/routes/purchase.routes.js) · [profile.routes.js](back/src/routes/profile.routes.js) · [user.routes.js](back/src/routes/user.routes.js) · [archived-course.controller.js](back/src/controllers/archived-course.controller.js) (new) · tests: [workflow.e2e.test.js](back/tests/workflow.e2e.test.js), [audit.probe.test.js](back/tests/audit.probe.test.js), [helpers/e2e.js](back/tests/helpers/e2e.js), [cleanup.orphans.js](back/tests/cleanup.orphans.js)

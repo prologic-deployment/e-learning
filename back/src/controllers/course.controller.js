@@ -128,12 +128,20 @@ exports.getCourseById = async (req, res) => {
 
     const plain = course.toObject();
 
-    // ✅ Strip correct answers from quiz/exam payloads for EVERYONE
+    const userRole = Array.isArray(req.user?.role) ? req.user.role[0] : req.user?.role;
+    // ✅ ANSWER KEY POLICY: kept ONLY for its author (course owner) or an admin —
+    // they need it to edit the exam from their dashboards. Learners, managers
+    // and anonymous visitors get it stripped.
+    const isOwnerOrAdmin = !!req.user && (
+      userRole === "admin" ||
+      course.trainer._id.toString() === req.user._id.toString()
+    );
+
     const strip = (questions) => {
       if (!Array.isArray(questions)) return;
       questions.forEach(q => { delete q.correctAnswer; });
     };
-    strip(plain.finalExam?.questions);
+    if (!isOwnerOrAdmin) strip(plain.finalExam?.questions);
 
     // Anonymous visitor — public storefront sheet
     if (!req.user) {
@@ -150,7 +158,6 @@ exports.getCourseById = async (req, res) => {
       return res.status(200).json({ ...plain, isPurchased: false, isEnrolled: false });
     }
 
-    const userRole = Array.isArray(req.user.role) ? req.user.role[0] : req.user.role;
     const isStaff = userRole === "admin" || userRole === "manager" ||
       course.trainer._id.toString() === req.user._id.toString();
 

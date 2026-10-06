@@ -193,7 +193,17 @@ const stripAnswers = (obj) => {
 // ✅ Express middleware wrapper — usable directly in a route chain
 // (the previous raw function crashed as middleware: as (req,res,next) it
 // tried to JSON.stringify(req) which contains a circular Socket −> 500).
+// Staff exception: the course OWNER or an admin receives the answer key —
+// they authored it and need it to edit quizzes. Learners/anonymous never do
+// (requireCourseAccess runs first and sets req.course).
 const wrapStripAnswers = (req, res, next) => {
+  const role = Array.isArray(req.user?.role) ? req.user.role[0] : req.user?.role;
+  const isOwnerOrAdmin = req.user && (
+    role === "admin" ||
+    (req.course && req.course.trainer?.toString() === req.user._id.toString())
+  );
+  if (isOwnerOrAdmin) return next();
+
   const json = res.json.bind(res);
   res.json = (data) => {
     res.json = json;
