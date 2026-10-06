@@ -362,6 +362,12 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     return this.enrollments.filter(e => e.completed).length;
   }
 
+  // ✅ The course the learner should resume (first in-progress, else most recent)
+  getContinueCourse(): any {
+    if (!this.enrollments || !this.enrollments.length) return null;
+    return this.enrollments.find(e => !e.completed) || this.enrollments[0];
+  }
+
   exportExcel(): void {
     const data = [
       ['Course', 'Progress', 'Completed'],
