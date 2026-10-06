@@ -9,7 +9,7 @@
 </div>
 
 <!-- Course Viewer -->
-<div *ngIf="course && !loading">
+<div *ngIf="course && !loading" class="route-enter">
   <div class="courses-details-area pb-100 pt-50">
     <div class="container">
 
@@ -96,6 +96,13 @@
                     </p>
                   </div>
                 </div>
+                <!-- Course progress -->
+                <div class="app-progress mb-3" role="progressbar"
+                  [attr.aria-valuenow]="lessons.length ? (completedLessons.length / lessons.length * 100) : 0"
+                  aria-valuemin="0" aria-valuemax="100">
+                  <div class="app-progress__bar"
+                    [style.width.%]="lessons.length ? (completedLessons.length / lessons.length * 100) : 0"></div>
+                </div>
 
                 <!-- ✅ Alertes NLP -->
                 <div *ngIf="nlpSuccess" class="mb-3"
@@ -105,22 +112,22 @@
                 </div>
                 <div *ngIf="nlpError" class="mb-3"
                   style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px;
-                    padding: 12px 16px; font-size: 13px; color: #ef4444; font-weight: 600;">
+                    padding: 12px 16px; font-size: 13px; color: #E63946; font-weight: 600;">
                   ❌ {{ nlpError }}
                 </div>
 
                 <!-- Liste des leçons -->
-                <div *ngFor="let lesson of lessons; let i = index" class="mb-3">
+                <div *ngFor="let lesson of lessons; let i = index" class="mb-3 anim-slide-up">
                   <div style="border: 1px solid; border-radius: 14px; overflow: hidden;
                     transition: all 0.2s;"
                     [style.borderColor]="currentLessonIndex === i ? '#457B9D' : '#D7E3E7'"
                     [style.boxShadow]="currentLessonIndex === i ?
-                      '0 4px 20px rgba(102,126,234,0.15)' : 'none'">
+                      '0 4px 20px rgba(69,123,157,0.15)' : 'none'">
 
                     <!-- Lesson Header -->
                     <div style="display: flex; justify-content: space-between;
                       align-items: center; padding: 14px 16px; cursor: pointer;"
-                      [style.background]="currentLessonIndex === i ? '#f0f4ff' : '#F4F8F9'"
+                      [style.background]="currentLessonIndex === i ? '#EAF3F5' : '#F4F8F9'"
                       (click)="selectLesson(i)">
 
                       <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
@@ -143,7 +150,7 @@
                             <span style="font-size: 10px; font-weight: 600; padding: 2px 8px;
                               border-radius: 20px;"
                               [style.background]="lesson.contentType === 'video' ? '#F4F8F9' : '#EAF3F5'"
-                              [style.color]="lesson.contentType === 'video' ? '#8b5cf6' : '#457B9D'">
+                              [style.color]="lesson.contentType === 'video' ? '#457B9D' : '#457B9D'">
                               {{ lesson.contentType === 'video' ? '🎬 Vidéo' : '📄 PDF' }}
                             </span>
                             <span *ngIf="lesson.quiz?.questions?.length > 0"
@@ -159,7 +166,7 @@
                             <!-- ✅ Badge résumé disponible -->
                             <span *ngIf="lesson.summary || lessonSummaries[lesson._id]"
                               style="font-size: 10px; font-weight: 600; padding: 2px 8px;
-                                border-radius: 20px; background: #faf5ff; color: #8b5cf6;">
+                                border-radius: 20px; background: #faf5ff; color: #457B9D;">
                               🧠 Résumé IA
                             </span>
                           </div>
@@ -180,7 +187,7 @@
                             font-size: 11px; font-weight: 600; color: white; cursor: pointer;
                             white-space: nowrap;"
                           [style.background]="nlpLoading === lesson._id ?
-                            '#7E93A3' : 'linear-gradient(135deg, #8b5cf6, #6d28d9)'"
+                            '#7E93A3' : 'linear-gradient(135deg, #457B9D, #6d28d9)'"
                           [style.opacity]="nlpLoading === lesson._id ? '0.7' : '1'">
                           <span *ngIf="nlpLoading !== lesson._id">🧠 Résumer</span>
                           <span *ngIf="nlpLoading === lesson._id">
@@ -195,9 +202,9 @@
                             style="padding: 6px 12px; border: 1.5px solid; border-radius: 8px;
                               font-size: 11px; font-weight: 600; background: white;
                               cursor: pointer; white-space: nowrap;"
-                            [style.color]="activeSummaryId === lesson._id ? '#8b5cf6' : '#5C7184'"
+                            [style.color]="activeSummaryId === lesson._id ? '#457B9D' : '#5C7184'"
                             [style.borderColor]="activeSummaryId === lesson._id ?
-                              '#8b5cf6' : '#D7E3E7'">
+                              '#457B9D' : '#D7E3E7'">
                             {{ activeSummaryId === lesson._id ? '🙈 Masquer' : '👁️ Voir' }}
                           </button>
                           <button (click)="summarizeLesson(lesson._id, true)"
@@ -219,7 +226,7 @@
                       <!-- Header -->
                       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
                         <div style="width: 36px; height: 36px; border-radius: 10px;
-                          background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+                          background: linear-gradient(135deg, #457B9D, #6d28d9);
                           display: flex; align-items: center; justify-content: center;
                           font-size: 16px;">🧠</div>
                         <div>
@@ -251,11 +258,11 @@
                       <!-- Points clés -->
                       <div *ngIf="(lessonSummaries[lesson._id] || lesson).keyPoints?.length > 0"
                         style="margin-bottom: 16px;">
-                        <div style="font-size: 13px; font-weight: 700; color: #8b5cf6;
+                        <div style="font-size: 13px; font-weight: 700; color: #457B9D;
                           margin-bottom: 10px;">🎯 Points Clés</div>
                         <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                           <span *ngFor="let point of (lessonSummaries[lesson._id] || lesson).keyPoints"
-                            style="background: #f0f4ff; color: #457B9D; padding: 5px 12px;
+                            style="background: #EAF3F5; color: #457B9D; padding: 5px 12px;
                               border-radius: 20px; font-size: 12px; font-weight: 600;
                               border: 1px solid #EAF3F5;">
                             ✓ {{ point }}
@@ -366,7 +373,7 @@
                     <div *ngIf="quizError" class="alert alert-danger"
                       style="border-radius: 10px;">{{ quizError }}</div>
 
-                    <div *ngIf="quizSubmitted" class="text-center py-3">
+                    <div *ngIf="quizSubmitted" class="text-center py-3 anim-pop">
                       <div *ngIf="quizPassed"
                         style="background: #f0fdf4; border-radius: 12px; padding: 20px;
                           border: 1px solid #bbf7d0;">
@@ -378,7 +385,7 @@
                       <div *ngIf="!quizPassed"
                         style="background: #fef2f2; border-radius: 12px; padding: 20px;
                           border: 1px solid #fecaca;">
-                        <h5 style="color: #ef4444;">❌ Failed ! Score: {{ quizScore }}%</h5>
+                        <h5 style="color: #E63946;">❌ Failed ! Score: {{ quizScore }}%</h5>
                         <p style="color: #5C7184; margin-bottom: 16px;">
                           Minimum required: {{ currentLesson.quiz.noteMinimale }}%
                         </p>
@@ -401,7 +408,7 @@
                           <div (click)="quizAnswers[qi] = oi"
                             style="display: flex; align-items: center; gap: 10px; padding: 10px 14px;
                               border-radius: 10px; cursor: pointer; transition: all 0.2s; border: 2px solid;"
-                            [style.background]="quizAnswers[qi] === oi ? '#f0f4ff' : 'white'"
+                            [style.background]="quizAnswers[qi] === oi ? '#EAF3F5' : 'white'"
                             [style.borderColor]="quizAnswers[qi] === oi ? '#457B9D' : '#D7E3E7'">
                             <div style="width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
                               border: 2px solid; display: flex; align-items: center;
@@ -511,7 +518,7 @@
                 <div *ngIf="finalExamError" class="alert alert-danger"
                   style="border-radius: 10px;">{{ finalExamError }}</div>
 
-                <div *ngIf="finalExamSubmitted" class="text-center py-3">
+                <div *ngIf="finalExamSubmitted" class="text-center py-3 anim-pop">
                   <div *ngIf="finalExamPassed"
                     style="background: #f0fdf4; border-radius: 16px; padding: 28px;
                       border: 1px solid #bbf7d0;">
@@ -532,7 +539,7 @@
                   <div *ngIf="!finalExamPassed"
                     style="background: #fef2f2; border-radius: 16px; padding: 28px;
                       border: 1px solid #fecaca;">
-                    <h4 style="color: #ef4444; margin-bottom: 8px;">
+                    <h4 style="color: #E63946; margin-bottom: 8px;">
                       ❌ Failed ! Score: {{ finalExamScore }}%
                     </h4>
                     <p style="color: #5C7184; margin-bottom: 16px;">
@@ -753,7 +760,7 @@
                         font-size: 12px; cursor: pointer;">✏️</button>
                     <button (click)="deleteReview(review._id)"
                       style="padding: 5px 10px; border: 1.5px solid #fecaca;
-                        border-radius: 8px; background: #fef2f2; color: #ef4444;
+                        border-radius: 8px; background: #fef2f2; color: #E63946;
                         font-size: 12px; cursor: pointer;">🗑️</button>
                   </div>
                 </div>
@@ -785,7 +792,7 @@
                 style="display: inline-block; padding: 14px 32px; border: none;
                   border-radius: 14px; background: linear-gradient(135deg, #457B9D, #1D3557);
                   color: white; font-size: 15px; font-weight: 700; text-decoration: none;
-                  box-shadow: 0 4px 15px rgba(102,126,234,0.4);">
+                  box-shadow: 0 4px 15px rgba(69,123,157,0.4);">
                 🛒 Add to Cart
               </a>
             </div>
@@ -800,7 +807,7 @@
               box-shadow: 0 4px 24px rgba(0,0,0,0.08); border: 1px solid #D7E3E7;">
 
               <!-- Progress Header -->
-              <div style="padding: 24px; background: linear-gradient(135deg, #f0f4ff, #faf5ff);
+              <div style="padding: 24px; background: linear-gradient(135deg, #EAF3F5, #faf5ff);
                 border-bottom: 1px solid #D7E3E7;">
                 <div style="font-size: 13px; color: #5C7184; font-weight: 600;
                   margin-bottom: 8px;">Progression</div>
