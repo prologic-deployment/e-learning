@@ -29,7 +29,7 @@
     "clsx": "^1.2.1",
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.7",
-    "mdb-angular-ui-kit": "^5.2.0",
+    "mdb-angular-ui-kit": "6.1.0",
     "ngx-owl-carousel-o": "^17.0.0",
     "ngx-scrolltop": "^7.0.0",
     "rxjs": "~7.8.1",

@@ -268,7 +268,7 @@ No populated-dashboard screenshots are supplied because real authenticated data 
 
 ```bash
 cd front
-npm ci --legacy-peer-deps
+npm ci
 NG_BUILD_MAX_WORKERS=1 NODE_OPTIONS=--max-old-space-size=1024 \
   npm run build -- --configuration development
 npm run preview
@@ -309,3 +309,7 @@ The preview server is local-development tooling, not a hardened production deplo
 - Original feature commit objects are unavailable. Only the authorized consolidated recovery can be pushed; its outcome is verified separately.
 
 **Acceptance conclusion:** Real Angular shadcn implementation and major new experiences are present and compiled; selected browser and backend unit checks pass. The application is **not yet complete against the full requested acceptance checklist**. Remaining panels, authenticated E2E verification, production-build validation and pushes must be completed before sign-off.
+
+## Dependency compatibility correction
+
+MDB 5.2.0 required Angular 16 and blocked a normal npm installation in this Angular 17 project. Upgraded `mdb-angular-ui-kit` to exact version 6.1.0 (Angular/CDK 17 peers) and regenerated the lockfile without peer-dependency bypasses. Verified a clean `npm ci`, resolution of all Spartan runtime dependencies, and the Angular development build. Existing CommonJS/deprecation warnings remain; this does not constitute a full dependency security audit.
