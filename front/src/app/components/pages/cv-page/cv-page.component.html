@@ -145,7 +145,7 @@
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
             background: linear-gradient(135deg, #457B9D, #1D3557);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+            box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
           [style.opacity]="saveLoading ? '0.7' : '1'">
           <span *ngIf="!saveLoading">💾 Sauvegarder</span>
           <span *ngIf="saveLoading">
@@ -237,7 +237,7 @@
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
             background: linear-gradient(135deg, #457B9D, #1D3557);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+            box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
           [style.opacity]="expLoading ? '0.7' : '1'">
           <span *ngIf="!expLoading">➕ Ajouter l'expérience</span>
           <span *ngIf="expLoading">
@@ -282,7 +282,7 @@
           </div>
           <button (click)="deleteExperience(exp._id)"
             style="padding: 6px 12px; border: 1.5px solid #fecaca;
-              border-radius: 8px; background: #fef2f2; color: #ef4444;
+              border-radius: 8px; background: #fef2f2; color: #E63946;
               font-size: 13px; cursor: pointer; flex-shrink: 0; margin-left: 12px;">
             🗑️
           </button>
@@ -357,7 +357,7 @@
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
             background: linear-gradient(135deg, #457B9D, #1D3557);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+            box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
           [style.opacity]="formLoading ? '0.7' : '1'">
           <span *ngIf="!formLoading">➕ Ajouter la formation</span>
           <span *ngIf="formLoading">
@@ -398,7 +398,7 @@
           </div>
           <button (click)="deleteFormation(form._id)"
             style="padding: 6px 12px; border: 1.5px solid #fecaca;
-              border-radius: 8px; background: #fef2f2; color: #ef4444;
+              border-radius: 8px; background: #fef2f2; color: #E63946;
               font-size: 13px; cursor: pointer; flex-shrink: 0; margin-left: 12px;">
             🗑️
           </button>
@@ -455,7 +455,7 @@
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
             background: linear-gradient(135deg, #457B9D, #1D3557);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+            box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
           [style.opacity]="compLoading ? '0.7' : '1'">
           <span *ngIf="!compLoading">➕ Ajouter la compétence</span>
           <span *ngIf="compLoading">
@@ -493,7 +493,7 @@
             </div>
             <button (click)="deleteCompetence(comp._id)"
               style="padding: 6px 10px; border: 1.5px solid #fecaca;
-                border-radius: 8px; background: #fef2f2; color: #ef4444;
+                border-radius: 8px; background: #fef2f2; color: #E63946;
                 font-size: 12px; cursor: pointer;">
               🗑️
             </button>
@@ -552,7 +552,7 @@
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
             background: linear-gradient(135deg, #457B9D, #1D3557);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+            box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
           [style.opacity]="langLoading ? '0.7' : '1'">
           <span *ngIf="!langLoading">➕ Ajouter la langue</span>
           <span *ngIf="langLoading">
@@ -584,7 +584,7 @@
                   lang.niveau === 'Avancé' ? '#EAF3F5' :
                   lang.niveau === 'Intermédiaire' ? '#dcfce7' : '#EAF3F5'"
                 [style.color]="lang.niveau === 'Natif' ? '#f59e0b' :
-                  lang.niveau === 'Bilingue' ? '#8b5cf6' :
+                  lang.niveau === 'Bilingue' ? '#457B9D' :
                   lang.niveau === 'Avancé' ? '#457B9D' :
                   lang.niveau === 'Intermédiaire' ? '#10b981' : '#5C7184'">
                 {{ lang.niveau }}
@@ -592,7 +592,7 @@
             </div>
             <button (click)="deleteLangue(lang._id)"
               style="padding: 6px 10px; border: 1.5px solid #fecaca;
-                border-radius: 8px; background: #fef2f2; color: #ef4444;
+                border-radius: 8px; background: #fef2f2; color: #E63946;
                 font-size: 12px; cursor: pointer;">
               🗑️
             </button>
@@ -664,7 +664,7 @@
             </div>
             <button (click)="deleteHobby(hobby._id)"
               style="padding: 4px 8px; border: 1.5px solid #fecaca;
-                border-radius: 6px; background: #fef2f2; color: #ef4444;
+                border-radius: 6px; background: #fef2f2; color: #E63946;
                 font-size: 11px; cursor: pointer; flex-shrink: 0;">
               🗑️
             </button>

@@ -136,7 +136,7 @@
 
         <div class="row mb-3">
           <div class="col-lg-3 col-md-6 mb-3" *ngFor="let stat of [
-            {label:'Total Users', value: stats.overview.totalUsers, icon:'👥', color:'#457B9D', bg:'#f0f4ff'},
+            {label:'Total Users', value: stats.overview.totalUsers, icon:'👥', color:'#457B9D', bg:'#EAF3F5'},
             {label:'Total Courses', value: stats.overview.totalCourses, icon:'📚', color:'#10b981', bg:'#f0fdf4'},
             {label:'Pending Courses', value: stats.overview.pendingCourses, icon:'⏳', color:'#f59e0b', bg:'#fffbeb'},
             {label:'Revenue (TND)', value: stats.overview.totalRevenue, icon:'💰', color:'#06b6d4', bg:'#f0fdfe'}
@@ -160,7 +160,7 @@
 
         <div class="row mb-4">
           <div class="col-lg-3 col-md-6 mb-3" *ngFor="let stat of [
-            {label:'Trainers', value: stats.overview.totalTrainers, icon:'🎓', color:'#8b5cf6', bg:'#faf5ff'},
+            {label:'Trainers', value: stats.overview.totalTrainers, icon:'🎓', color:'#457B9D', bg:'#faf5ff'},
             {label:'Enrollments', value: stats.overview.totalEnrollments, icon:'📝', color:'#ec4899', bg:'#fdf2f8'},
             {label:'Completion Rate', value: stats.overview.completionRate + '%', icon:'📈', color:'#10b981', bg:'#f0fdf4'},
             {label:'Certificates', value: stats.overview.totalCertificates, icon:'🏅', color:'#f97316', bg:'#fff7ed'}
@@ -218,7 +218,7 @@
                     <span style="font-weight: 600; color: #1D3557;">{{ course.courseTitle }}</span>
                   </td>
                   <td style="border: none; padding: 12px 8px;">
-                    <span style="background: #f0f4ff; color: #457B9D; padding: 4px 12px;
+                    <span style="background: #EAF3F5; color: #457B9D; padding: 4px 12px;
                       border-radius: 20px; font-size: 12px; font-weight: 600;">
                       {{ course.enrollments }} étudiants
                     </span>
@@ -317,17 +317,17 @@
                   <td style="border: none; padding: 14px 8px;">
                     <span style="padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;"
                       [style.background]="user.isActive ? '#f0fdf4' : '#fef2f2'"
-                      [style.color]="user.isActive ? '#10b981' : '#ef4444'">
+                      [style.color]="user.isActive ? '#10b981' : '#E63946'">
                       {{ user.isActive ? 'Actif' : 'Inactif' }}
                     </span>
                   </td>
                   <td style="border: none; padding: 14px 8px;">
                     <button (click)="deleteUser(user._id)" title="Supprimer l'utilisateur"
                       style="padding: 6px 12px; border: 1.5px solid #fecaca; border-radius: 8px;
-                        background: #fef2f2; color: #ef4444; font-size: 12px;
+                        background: #fef2f2; color: #E63946; font-size: 12px;
                         font-weight: 600; cursor: pointer;"
-                      onmouseover="this.style.background='#ef4444'; this.style.color='white'"
-                      onmouseout="this.style.background='#fef2f2'; this.style.color='#ef4444'">
+                      onmouseover="this.style.background='#E63946'; this.style.color='white'"
+                      onmouseout="this.style.background='#fef2f2'; this.style.color='#E63946'">
                       🗑️
                     </button>
                   </td>
@@ -423,7 +423,7 @@
                     </div>
                   </td>
                   <td style="border: none; padding: 14px 8px;">
-                    <span style="background: #f0f4ff; color: #457B9D; padding: 4px 10px;
+                    <span style="background: #EAF3F5; color: #457B9D; padding: 4px 10px;
                       border-radius: 20px; font-size: 11px; font-weight: 600;">
                       {{ course.category }}
                     </span>
@@ -452,10 +452,10 @@
                         onmouseout="this.style.background='#f0fdf4'; this.style.color='#10b981'">✓</button>
                       <button (click)="editExistingCourse(course)" title="Modifier le cours"
                         style="width: 32px; height: 32px; border: 1.5px solid #EAF3F5; border-radius: 8px;
-                          background: #f0f4ff; color: #457B9D; font-size: 14px; cursor: pointer;
+                          background: #EAF3F5; color: #457B9D; font-size: 14px; cursor: pointer;
                           display: flex; align-items: center; justify-content: center;"
                         onmouseover="this.style.background='#457B9D'; this.style.color='white'"
-                        onmouseout="this.style.background='#f0f4ff'; this.style.color='#457B9D'">✏️</button>
+                        onmouseout="this.style.background='#EAF3F5'; this.style.color='#457B9D'">✏️</button>
                       <button (click)="archiveCourse(course)" title="Archiver le cours"
                         style="width: 32px; height: 32px; border: 1.5px solid #fde68a; border-radius: 8px;
                           background: #fffbeb; color: #f59e0b; font-size: 14px; cursor: pointer;
@@ -464,10 +464,10 @@
                         onmouseout="this.style.background='#fffbeb'; this.style.color='#f59e0b'">🗄️</button>
                       <button (click)="deleteCourse(course._id)" title="Supprimer définitivement"
                         style="width: 32px; height: 32px; border: 1.5px solid #fecaca; border-radius: 8px;
-                          background: #fef2f2; color: #ef4444; font-size: 14px; cursor: pointer;
+                          background: #fef2f2; color: #E63946; font-size: 14px; cursor: pointer;
                           display: flex; align-items: center; justify-content: center;"
-                        onmouseover="this.style.background='#ef4444'; this.style.color='white'"
-                        onmouseout="this.style.background='#fef2f2'; this.style.color='#ef4444'">🗑️</button>
+                        onmouseover="this.style.background='#E63946'; this.style.color='white'"
+                        onmouseout="this.style.background='#fef2f2'; this.style.color='#E63946'">🗑️</button>
                     </div>
                   </td>
                 </tr>
@@ -545,10 +545,10 @@
                     </button>
                     <button (click)="deleteCourse(course._id)" title="Supprimer définitivement"
                       style="padding: 6px 14px; border: 1.5px solid #fecaca; border-radius: 8px;
-                        background: #fef2f2; color: #ef4444; font-size: 12px;
+                        background: #fef2f2; color: #E63946; font-size: 12px;
                         font-weight: 600; cursor: pointer;"
-                      onmouseover="this.style.background='#ef4444'; this.style.color='white'"
-                      onmouseout="this.style.background='#fef2f2'; this.style.color='#ef4444'">
+                      onmouseover="this.style.background='#E63946'; this.style.color='white'"
+                      onmouseout="this.style.background='#fef2f2'; this.style.color='#E63946'">
                       🗑️ Supprimer
                     </button>
                   </div>
@@ -685,7 +685,7 @@
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 15px; font-weight: 600; color: white; cursor: pointer;
             background: linear-gradient(135deg, #457B9D, #1D3557);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+            box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
           [style.opacity]="createCourseLoading ? '0.7' : '1'">
           <span *ngIf="!createCourseLoading">
             {{ createdCourse ? '💾 Mettre à jour' : '➕ Créer le cours' }}
@@ -745,7 +745,7 @@
                   <span *ngIf="lesson.contentType"
                     style="font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px;"
                     [style.background]="lesson.contentType === 'video' ? '#F4F8F9' : '#EAF3F5'"
-                    [style.color]="lesson.contentType === 'video' ? '#8b5cf6' : '#457B9D'">
+                    [style.color]="lesson.contentType === 'video' ? '#457B9D' : '#457B9D'">
                     {{ lesson.contentType === 'video' ? '🎬 Video' : '📄 PDF' }}
                   </span>
                   <span *ngIf="lesson.quiz?.questions?.length > 0"
@@ -776,25 +776,25 @@
                 <ng-container *ngIf="lesson.quiz?.questions?.length > 0; else addQuiz1Btn">
                   <button (click)="editQuiz(lesson)" title="Modifier Quiz 1"
                     style="padding: 6px 10px; border: 1.5px solid #EAF3F5; border-radius: 8px;
-                      background: #f0f4ff; color: #457B9D; font-size: 12px;
+                      background: #EAF3F5; color: #457B9D; font-size: 12px;
                       font-weight: 600; cursor: pointer;"
                     onmouseover="this.style.background='#457B9D'; this.style.color='white'"
-                    onmouseout="this.style.background='#f0f4ff'; this.style.color='#457B9D'">
+                    onmouseout="this.style.background='#EAF3F5'; this.style.color='#457B9D'">
                     ✏️ Q1
                   </button>
                   <button (click)="deleteQuiz(lesson._id)" title="Supprimer Quiz 1"
                     style="padding: 6px 10px; border: 1.5px solid #fecaca; border-radius: 8px;
-                      background: #fef2f2; color: #ef4444; font-size: 12px;
+                      background: #fef2f2; color: #E63946; font-size: 12px;
                       font-weight: 600; cursor: pointer;"
-                    onmouseover="this.style.background='#ef4444'; this.style.color='white'"
-                    onmouseout="this.style.background='#fef2f2'; this.style.color='#ef4444'">
+                    onmouseover="this.style.background='#E63946'; this.style.color='white'"
+                    onmouseout="this.style.background='#fef2f2'; this.style.color='#E63946'">
                     🗑️ Q1
                   </button>
                 </ng-container>
                 <ng-template #addQuiz1Btn>
                   <button (click)="openQuizForm(lesson._id)"
                     style="padding: 6px 10px; border: 1.5px solid #EAF3F5; border-radius: 8px;
-                      background: #f0f4ff; color: #457B9D; font-size: 12px;
+                      background: #EAF3F5; color: #457B9D; font-size: 12px;
                       font-weight: 600; cursor: pointer;">
                     ➕ Quiz 1
                   </button>
@@ -812,10 +812,10 @@
                   </button>
                   <button (click)="deleteQuiz2(lesson._id)" title="Supprimer Quiz 2"
                     style="padding: 6px 10px; border: 1.5px solid #fecaca; border-radius: 8px;
-                      background: #fef2f2; color: #ef4444; font-size: 12px;
+                      background: #fef2f2; color: #E63946; font-size: 12px;
                       font-weight: 600; cursor: pointer;"
-                    onmouseover="this.style.background='#ef4444'; this.style.color='white'"
-                    onmouseout="this.style.background='#fef2f2'; this.style.color='#ef4444'">
+                    onmouseover="this.style.background='#E63946'; this.style.color='white'"
+                    onmouseout="this.style.background='#fef2f2'; this.style.color='#E63946'">
                     🗑️ Q2
                   </button>
                 </ng-container>
@@ -831,10 +831,10 @@
                 <!-- Delete lesson -->
                 <button (click)="deleteLesson(lesson._id)" title="Supprimer la leçon"
                   style="padding: 6px 10px; border: 1.5px solid #fecaca; border-radius: 8px;
-                    background: #fef2f2; color: #ef4444; font-size: 12px;
+                    background: #fef2f2; color: #E63946; font-size: 12px;
                     font-weight: 600; cursor: pointer;"
-                  onmouseover="this.style.background='#ef4444'; this.style.color='white'"
-                  onmouseout="this.style.background='#fef2f2'; this.style.color='#ef4444'">
+                  onmouseover="this.style.background='#E63946'; this.style.color='white'"
+                  onmouseout="this.style.background='#fef2f2'; this.style.color='#E63946'">
                   🗑️ Leçon
                 </button>
               </div>
@@ -843,13 +843,13 @@
             <!-- Quiz 1 Form -->
             <div *ngIf="showQuizForm && selectedLessonId === lesson._id"
               style="background: white; border-radius: 16px; padding: 24px; margin-bottom: 12px;
-                border: 2px solid #457B9D; box-shadow: 0 4px 20px rgba(102,126,234,0.15);">
+                border: 2px solid #457B9D; box-shadow: 0 4px 20px rgba(69,123,157,0.15);">
 
               <div class="d-flex justify-content-between align-items-center mb-4">
                 <h6 style="font-weight: 700; color: #1D3557; margin: 0;">
                   📝 Quiz 1 — {{ lesson.title }}
                 </h6>
-                <span style="background: #f0f4ff; color: #457B9D; padding: 4px 12px;
+                <span style="background: #EAF3F5; color: #457B9D; padding: 4px 12px;
                   border-radius: 20px; font-size: 11px; font-weight: 600;">
                   {{ newQuiz.questions.length }} question(s)
                 </span>
@@ -890,7 +890,7 @@
                   </div>
                   <button *ngIf="newQuiz.questions.length > 1" (click)="removeQuizQuestion(qi)"
                     style="padding: 5px 10px; border: 1.5px solid #fecaca; border-radius: 8px;
-                      background: #fef2f2; color: #ef4444; font-size: 12px; cursor: pointer;">
+                      background: #fef2f2; color: #E63946; font-size: 12px; cursor: pointer;">
                     🗑️
                   </button>
                 </div>
@@ -932,7 +932,7 @@
 
               <button (click)="addQuizQuestion()"
                 style="width: 100%; padding: 12px; border: 2px dashed #457B9D; border-radius: 10px;
-                  background: #f0f4ff; color: #457B9D; font-weight: 600; font-size: 14px;
+                  background: #EAF3F5; color: #457B9D; font-weight: 600; font-size: 14px;
                   cursor: pointer; margin-bottom: 16px;">
                 ➕ Ajouter une question
               </button>
@@ -1006,7 +1006,7 @@
                   </div>
                   <button *ngIf="newQuiz2.questions.length > 1" (click)="removeQuizQuestion2(qi)"
                     style="padding: 5px 10px; border: 1.5px solid #fecaca; border-radius: 8px;
-                      background: #fef2f2; color: #ef4444; font-size: 12px; cursor: pointer;">
+                      background: #fef2f2; color: #E63946; font-size: 12px; cursor: pointer;">
                     🗑️
                   </button>
                 </div>
@@ -1133,7 +1133,7 @@
               </button>
               <button (click)="deleteFinalExam()"
                 style="padding: 7px 14px; border: 1.5px solid #fecaca; border-radius: 10px;
-                  background: #fef2f2; color: #ef4444; font-size: 12px; font-weight: 600; cursor: pointer;">
+                  background: #fef2f2; color: #E63946; font-size: 12px; font-weight: 600; cursor: pointer;">
                 🗑️ Supprimer
               </button>
             </div>
@@ -1183,7 +1183,7 @@
                 </div>
                 <button *ngIf="newFinalExam.questions.length > 1" (click)="removeFinalExamQuestion(qi)"
                   style="padding: 5px 10px; border: 1.5px solid #fecaca; border-radius: 8px;
-                    background: #fef2f2; color: #ef4444; font-size: 12px; cursor: pointer;">
+                    background: #fef2f2; color: #E63946; font-size: 12px; cursor: pointer;">
                   🗑️
                 </button>
               </div>
@@ -1264,7 +1264,7 @@
         border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
 
         <div class="d-flex align-items-center gap-3 mb-4">
-          <div style="width: 44px; height: 44px; border-radius: 12px; background: #f0f4ff;
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: #EAF3F5;
             display: flex; align-items: center; justify-content: center; font-size: 20px;">🔗</div>
           <div>
             <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
@@ -1315,7 +1315,7 @@
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
             background: linear-gradient(135deg, #457B9D, #1D3557);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+            box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
           [style.opacity]="assignUserLoading ? '0.7' : '1'">
           <span *ngIf="!assignUserLoading">🔗 Assigner</span>
           <span *ngIf="assignUserLoading">
@@ -1361,7 +1361,7 @@
                     {{ user.email }}
                   </td>
                   <td style="border: none; padding: 12px 8px;">
-                    <span style="background: #f0f4ff; color: #457B9D; padding: 3px 10px;
+                    <span style="background: #EAF3F5; color: #457B9D; padding: 3px 10px;
                       border-radius: 20px; font-size: 11px; font-weight: 600;">
                       {{ user.role }}
                     </span>
@@ -1420,7 +1420,7 @@
               style="flex: 1; padding: 16px; border-radius: 14px; border: 2px solid;
                 cursor: pointer; text-align: center; transition: all 0.2s;"
               [style.borderColor]="newStaff.role === role.id ? '#457B9D' : '#D7E3E7'"
-              [style.background]="newStaff.role === role.id ? '#f0f4ff' : 'white'">
+              [style.background]="newStaff.role === role.id ? '#EAF3F5' : 'white'">
               <div style="font-size: 28px; margin-bottom: 8px;">{{ role.icon }}</div>
               <div style="font-size: 13px; font-weight: 600;"
                 [style.color]="newStaff.role === role.id ? '#457B9D' : '#5C7184'">
@@ -1481,7 +1481,7 @@
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
             background: linear-gradient(135deg, #457B9D, #1D3557);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+            box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
           [style.opacity]="createStaffLoading ? '0.7' : '1'">
           <span *ngIf="!createStaffLoading">➕ Créer le membre</span>
           <span *ngIf="createStaffLoading">
@@ -1592,7 +1592,7 @@
                     <div style="font-weight: 600; color: #1D3557; font-size: 13px; margin-bottom: 4px;">
                       {{ review.course?.title }}
                     </div>
-                    <span style="background: #f0f4ff; color: #457B9D; padding: 2px 8px;
+                    <span style="background: #EAF3F5; color: #457B9D; padding: 2px 8px;
                       border-radius: 20px; font-size: 10px; font-weight: 600;">
                       {{ review.course?.category }}
                     </span>
@@ -1643,10 +1643,10 @@
                       </button>
                       <button (click)="deleteReview(review._id)" title="Supprimer cet avis"
                         style="width: 32px; height: 32px; border: 1.5px solid #fecaca; border-radius: 8px;
-                          background: #fef2f2; color: #ef4444; font-size: 14px; cursor: pointer;
+                          background: #fef2f2; color: #E63946; font-size: 14px; cursor: pointer;
                           display: flex; align-items: center; justify-content: center;"
-                        onmouseover="this.style.background='#ef4444'; this.style.color='white'"
-                        onmouseout="this.style.background='#fef2f2'; this.style.color='#ef4444'">
+                        onmouseover="this.style.background='#E63946'; this.style.color='white'"
+                        onmouseout="this.style.background='#fef2f2'; this.style.color='#E63946'">
                         🗑
                       </button>
                     </div>
@@ -1674,7 +1674,7 @@
               <p style="font-size: 13px; color: #5C7184; margin: 0;">
                 {{ quizResults.length }} résultats ·
                 <span style="color: #10b981; font-weight: 600;">{{ passedCount }} réussis</span> ·
-                <span style="color: #ef4444; font-weight: 600;">{{ failedCount }} échoués</span>
+                <span style="color: #E63946; font-weight: 600;">{{ failedCount }} échoués</span>
               </p>
             </div>
             <button (click)="loadQuizResults()"
@@ -1702,8 +1702,8 @@
             <button (click)="quizResultsFilter = 'failed'"
               style="padding: 7px 16px; border: none; border-radius: 20px; font-size: 12px;
                 font-weight: 600; cursor: pointer; transition: all 0.2s;"
-              [style.background]="quizResultsFilter === 'failed' ? '#ef4444' : '#fef2f2'"
-              [style.color]="quizResultsFilter === 'failed' ? 'white' : '#ef4444'">
+              [style.background]="quizResultsFilter === 'failed' ? '#E63946' : '#fef2f2'"
+              [style.color]="quizResultsFilter === 'failed' ? 'white' : '#E63946'">
               Échoués ({{ failedCount }})
             </button>
           </div>
@@ -1760,7 +1760,7 @@
                     <div style="font-weight: 600; color: #1D3557; font-size: 13px; margin-bottom: 4px;">
                       {{ result.course?.title }}
                     </div>
-                    <span style="background: #f0f4ff; color: #457B9D; padding: 2px 8px;
+                    <span style="background: #EAF3F5; color: #457B9D; padding: 2px 8px;
                       border-radius: 20px; font-size: 10px; font-weight: 600;">
                       {{ result.course?.category }}
                     </span>
@@ -1770,7 +1770,7 @@
                   </td>
                   <td style="border: none; padding: 14px 8px;">
                     <span style="padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;"
-                      [style.background]="result.type === 'lesson_quiz' ? '#f0f4ff' : '#fffbeb'"
+                      [style.background]="result.type === 'lesson_quiz' ? '#EAF3F5' : '#fffbeb'"
                       [style.color]="result.type === 'lesson_quiz' ? '#457B9D' : '#f59e0b'">
                       {{ result.type === 'lesson_quiz' ? '📝 Quiz' : '🎓 Examen Final' }}
                     </span>
@@ -1783,11 +1783,11 @@
                           [style.width.%]="result.score"
                           [style.background]="result.score >= 70 ?
                             'linear-gradient(135deg, #10b981, #059669)' :
-                            'linear-gradient(135deg, #ef4444, #dc2626)'">
+                            'linear-gradient(135deg, #E63946, #dc2626)'">
                         </div>
                       </div>
                       <span style="font-weight: 700; font-size: 13px;"
-                        [style.color]="result.score >= 70 ? '#10b981' : '#ef4444'">
+                        [style.color]="result.score >= 70 ? '#10b981' : '#E63946'">
                         {{ result.score }}%
                       </span>
                     </div>
@@ -1795,7 +1795,7 @@
                   <td style="border: none; padding: 14px 8px;">
                     <span style="padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600;"
                       [style.background]="result.passed ? '#f0fdf4' : '#fef2f2'"
-                      [style.color]="result.passed ? '#10b981' : '#ef4444'">
+                      [style.color]="result.passed ? '#10b981' : '#E63946'">
                       {{ result.passed ? 'Réussi' : 'Échoué' }}
                     </span>
                   </td>

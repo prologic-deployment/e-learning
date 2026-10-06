@@ -118,9 +118,9 @@ declare let $: any;
     const colors: any = {
       'BADGE_EARNED': '#f59e0b',
       'NEW_COURSE': '#457B9D',
-      'DEADLINE_REMINDER': '#ef4444',
+      'DEADLINE_REMINDER': '#E63946',
       'CERTIFICATE': '#10b981',
-      'COURSE_ASSIGNED': '#8b5cf6',
+      'COURSE_ASSIGNED': '#457B9D',
       'QUIZ_PASSED': '#10b981',
       'INFO': '#457B9D'
     };

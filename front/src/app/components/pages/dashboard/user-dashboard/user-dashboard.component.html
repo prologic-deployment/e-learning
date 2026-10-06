@@ -54,7 +54,7 @@
               [style.boxShadow]="activeTab === tab.id ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
               {{ tab.icon }} {{ tab.label }}
               <span *ngIf="tab.id === 'notifications' && unreadCount > 0"
-                style="background: #ef4444; color: white; padding: 1px 7px;
+                style="background: #E63946; color: white; padding: 1px 7px;
                   border-radius: 20px; font-size: 10px; margin-left: 4px;">
                 {{ unreadCount }}
               </span>
@@ -112,7 +112,7 @@
                   background: #F4F8F9; display: flex; align-items: center;
                   justify-content: center; font-size: 20px;">📚</div>
                 <span style="font-size: 11px; font-weight: 600; color: #457B9D;
-                  background: #f0f4ff; padding: 4px 10px; border-radius: 20px;">
+                  background: #EAF3F5; padding: 4px 10px; border-radius: 20px;">
                   Total
                 </span>
               </div>
@@ -238,7 +238,7 @@
               </div>
               <span style="padding: 4px 12px; border-radius: 20px; font-size: 11px;
                 font-weight: 600;"
-                [style.background]="enrollment.completed ? '#f0fdf4' : '#f0f4ff'"
+                [style.background]="enrollment.completed ? '#f0fdf4' : '#EAF3F5'"
                 [style.color]="enrollment.completed ? '#10b981' : '#457B9D'">
                 {{ enrollment.completed ? 'Terminé' : 'En cours' }}
               </span>
@@ -256,7 +256,7 @@
               <span style="font-size: 11px; color: #7E93A3;">
                 {{ enrollment.progress }}% complété
               </span>
-              <span *ngIf="enrollment.deadline" style="font-size: 11px; color: #ef4444;">
+              <span *ngIf="enrollment.deadline" style="font-size: 11px; color: #E63946;">
                 ⏰ {{ enrollment.deadline | date:'dd/MM/yyyy' }}
               </span>
             </div>
@@ -321,7 +321,7 @@
                 </div>
                 <span style="padding: 4px 12px; border-radius: 20px; font-size: 11px;
                   font-weight: 700; margin-left: 12px; flex-shrink: 0;"
-                  [style.background]="enrollment.completed ? '#f0fdf4' : '#f0f4ff'"
+                  [style.background]="enrollment.completed ? '#f0fdf4' : '#EAF3F5'"
                   [style.color]="enrollment.completed ? '#10b981' : '#457B9D'">
                   {{ enrollment.completed ? 'Terminé' : 'En cours' }}
                 </span>
@@ -359,7 +359,7 @@
 
               <!-- Deadline -->
               <div *ngIf="enrollment.deadline" style="margin-bottom: 16px;">
-                <span style="font-size: 12px; color: #ef4444; font-weight: 600;
+                <span style="font-size: 12px; color: #E63946; font-weight: 600;
                   background: #fef2f2; padding: 4px 10px; border-radius: 8px;">
                   ⏰ Deadline : {{ enrollment.deadline | date:'dd/MM/yyyy' }}
                 </span>
@@ -471,7 +471,7 @@
                     <span style="padding: 4px 12px; border-radius: 20px;
                       font-size: 11px; font-weight: 700;"
                       [style.background]="enrollment.completed ? '#f0fdf4' :
-                        enrollment.progress > 0 ? '#f0f4ff' : '#F4F8F9'"
+                        enrollment.progress > 0 ? '#EAF3F5' : '#F4F8F9'"
                       [style.color]="enrollment.completed ? '#10b981' :
                         enrollment.progress > 0 ? '#457B9D' : '#7E93A3'">
                       {{ enrollment.completed ? 'Terminé' :
@@ -553,7 +553,7 @@
                     </span>
                   </td>
                   <td style="padding: 14px 8px; border: none;">
-                    <span style="background: #f0f4ff; color: #457B9D; padding: 4px 10px;
+                    <span style="background: #EAF3F5; color: #457B9D; padding: 4px 10px;
                       border-radius: 8px; font-size: 11px; font-weight: 600;">
                       {{ purchase.paymentMethod || 'Online' }}
                     </span>
@@ -564,7 +564,7 @@
                       [style.background]="purchase.status === 'completed' ? '#f0fdf4' :
                         purchase.status === 'pending' ? '#fffbeb' : '#fef2f2'"
                       [style.color]="purchase.status === 'completed' ? '#10b981' :
-                        purchase.status === 'pending' ? '#f59e0b' : '#ef4444'">
+                        purchase.status === 'pending' ? '#f59e0b' : '#E63946'">
                       {{ purchase.status === 'completed' ? 'Complété' :
                         purchase.status === 'pending' ? 'En attente' : 'Échoué' }}
                     </span>
@@ -628,7 +628,7 @@
 
               <div style="width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 16px;
                 display: flex; align-items: center; justify-content: center; font-size: 36px;"
-                [style.background]="item.badge?.color ? item.badge.color + '22' : '#f0f4ff'">
+                [style.background]="item.badge?.color ? item.badge.color + '22' : '#EAF3F5'">
                 {{ item.badge?.icon || '🏅' }}
               </div>
 
@@ -707,7 +707,7 @@
                     <span style="padding: 4px 12px; border-radius: 20px; font-size: 11px;
                       font-weight: 700;"
                       [style.background]="cert.isValid ? '#f0fdf4' : '#fef2f2'"
-                      [style.color]="cert.isValid ? '#10b981' : '#ef4444'">
+                      [style.color]="cert.isValid ? '#10b981' : '#E63946'">
                       {{ cert.isValid ? 'Valide' : 'Révoqué' }}
                     </span>
                     <a *ngIf="cert.certificateUrl"
@@ -781,7 +781,7 @@
           style="background: white; border-radius: 16px; padding: 20px;
             border: 1px solid; transition: all 0.2s; position: relative; overflow: hidden;"
           [style.borderColor]="!notif.isRead ? '#457B9D' : '#D7E3E7'"
-          [style.boxShadow]="!notif.isRead ? '0 4px 20px rgba(102,126,234,0.1)' : 'none'">
+          [style.boxShadow]="!notif.isRead ? '0 4px 20px rgba(69,123,157,0.1)' : 'none'">
 
           <!-- ✅ Barre colorée à gauche si non lu -->
           <div *ngIf="!notif.isRead"
@@ -797,7 +797,7 @@
               <!-- ✅ Icône dynamique selon le type -->
               <div style="width: 46px; height: 46px; border-radius: 14px; flex-shrink: 0;
                 display: flex; align-items: center; justify-content: center; font-size: 22px;"
-                [style.background]="!notif.isRead ? '#f0f4ff' : '#F4F8F9'">
+                [style.background]="!notif.isRead ? '#EAF3F5' : '#F4F8F9'">
                 {{ getNotifIcon(notif.type) }}
               </div>
 
@@ -822,7 +822,7 @@
                   <!-- ✅ Badge type -->
                   <span *ngIf="notif.type"
                     style="font-size: 10px; font-weight: 600; padding: 2px 8px;
-                      border-radius: 20px; background: #f0f4ff; color: #457B9D;">
+                      border-radius: 20px; background: #EAF3F5; color: #457B9D;">
                     {{ notif.type?.replace('_', ' ') }}
                   </span>
                   <!-- ✅ Badge temps réel -->
@@ -849,7 +849,7 @@
                   border-radius: 8px; background: white; color: #457B9D;
                   font-size: 12px; font-weight: 600; cursor: pointer;
                   white-space: nowrap;"
-                onmouseover="this.style.background='#f0f4ff'"
+                onmouseover="this.style.background='#EAF3F5'"
                 onmouseout="this.style.background='white'">
                 ✓ Lu
               </button>
@@ -1033,7 +1033,7 @@
               style="width: 100%; padding: 13px; border: none; border-radius: 12px;
                 font-size: 14px; font-weight: 600; color: white; cursor: pointer;
                 background: linear-gradient(135deg, #457B9D, #1D3557);
-                box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+                box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
               [style.opacity]="profileUpdateLoading ? '0.7' : '1'">
               <span *ngIf="!profileUpdateLoading">💾 Sauvegarder</span>
               <span *ngIf="profileUpdateLoading">
@@ -1091,7 +1091,7 @@
             <button (click)="changePassword()" [disabled]="passwordLoading"
               style="width: 100%; padding: 13px; border: none; border-radius: 12px;
                 font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-                background: linear-gradient(135deg, #f59e0b, #ef4444);
+                background: linear-gradient(135deg, #f59e0b, #E63946);
                 box-shadow: 0 4px 15px rgba(245,158,11,0.4);"
               [style.opacity]="passwordLoading ? '0.7' : '1'">
               <span *ngIf="!passwordLoading">🔒 Changer le mot de passe</span>

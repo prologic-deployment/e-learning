@@ -111,7 +111,7 @@
 
                 <div *ngIf="showAiSummary && aiSummary && !aiLoading && isEnrolled" class="mt-4">
 
-                  <div style="background: linear-gradient(135deg, #f0f4ff, #faf5ff);
+                  <div style="background: linear-gradient(135deg, #EAF3F5, #faf5ff);
                     border-radius: 14px; padding: 20px; margin-bottom: 20px;
                     border-left: 4px solid #457B9D;">
                     <h6 style="font-weight: 700; color: #457B9D; margin-bottom: 10px;">
@@ -137,7 +137,7 @@
                           [style.background]="aiSummary.level === 'Débutant' ? '#f0fdf4' :
                             aiSummary.level === 'Intermédiaire' ? '#fffbeb' : '#fef2f2'"
                           [style.color]="aiSummary.level === 'Débutant' ? '#10b981' :
-                            aiSummary.level === 'Intermédiaire' ? '#f59e0b' : '#ef4444'">
+                            aiSummary.level === 'Intermédiaire' ? '#f59e0b' : '#E63946'">
                           {{ aiSummary.level }}
                         </span>
                       </div>
@@ -254,7 +254,7 @@
                 </div>
                 <div *ngIf="nlpError" class="mb-3"
                   style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px;
-                    padding: 12px 16px; font-size: 13px; color: #ef4444; font-weight: 600;">
+                    padding: 12px 16px; font-size: 13px; color: #E63946; font-weight: 600;">
                   ❌ {{ nlpError }}
                 </div>
 
@@ -281,12 +281,12 @@
                             <span style="font-size: 10px; font-weight: 600; padding: 2px 8px;
                               border-radius: 20px;"
                               [style.background]="lesson.contentType === 'video' ? '#F4F8F9' : '#EAF3F5'"
-                              [style.color]="lesson.contentType === 'video' ? '#8b5cf6' : '#457B9D'">
+                              [style.color]="lesson.contentType === 'video' ? '#457B9D' : '#457B9D'">
                               {{ lesson.contentType === 'video' ? '🎬 Vidéo' : '📄 PDF' }}
                             </span>
                             <span *ngIf="lesson.summary || lessonSummaries[lesson._id]"
                               style="font-size: 10px; font-weight: 600; padding: 2px 8px;
-                                border-radius: 20px; background: #faf5ff; color: #8b5cf6;">
+                                border-radius: 20px; background: #faf5ff; color: #457B9D;">
                               🧠 Résumé IA disponible
                             </span>
                           </div>
@@ -304,7 +304,7 @@
                             font-size: 12px; font-weight: 600; color: white;
                             cursor: pointer; white-space: nowrap;"
                           [style.background]="nlpLoading === lesson._id ?
-                            '#7E93A3' : 'linear-gradient(135deg, #8b5cf6, #6d28d9)'"
+                            '#7E93A3' : 'linear-gradient(135deg, #457B9D, #6d28d9)'"
                           [style.opacity]="nlpLoading === lesson._id ? '0.7' : '1'">
                           <span *ngIf="nlpLoading !== lesson._id">🧠 Résumer</span>
                           <span *ngIf="nlpLoading === lesson._id">
@@ -318,8 +318,8 @@
                             style="padding: 7px 14px; border: 1.5px solid; border-radius: 10px;
                               font-size: 12px; font-weight: 600; background: white;
                               cursor: pointer; white-space: nowrap;"
-                            [style.color]="activeSummaryId === lesson._id ? '#8b5cf6' : '#5C7184'"
-                            [style.borderColor]="activeSummaryId === lesson._id ? '#8b5cf6' : '#D7E3E7'">
+                            [style.color]="activeSummaryId === lesson._id ? '#457B9D' : '#5C7184'"
+                            [style.borderColor]="activeSummaryId === lesson._id ? '#457B9D' : '#D7E3E7'">
                             {{ activeSummaryId === lesson._id ? '🙈 Masquer' : '👁️ Voir résumé' }}
                           </button>
                           <button (click)="summarizeLesson(lesson._id, true)"
@@ -345,7 +345,7 @@
 
                       <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
                         <div style="width: 36px; height: 36px; border-radius: 10px;
-                          background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+                          background: linear-gradient(135deg, #457B9D, #6d28d9);
                           display: flex; align-items: center; justify-content: center;
                           font-size: 16px;">🧠</div>
                         <div>
@@ -377,11 +377,11 @@
                       <!-- Points clés -->
                       <div *ngIf="(lessonSummaries[lesson._id] || lesson).keyPoints?.length > 0"
                         style="margin-bottom: 16px;">
-                        <div style="font-size: 13px; font-weight: 700; color: #8b5cf6;
+                        <div style="font-size: 13px; font-weight: 700; color: #457B9D;
                           margin-bottom: 10px;">🎯 Points Clés</div>
                         <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                           <span *ngFor="let point of (lessonSummaries[lesson._id] || lesson).keyPoints"
-                            style="background: #f0f4ff; color: #457B9D; padding: 5px 12px;
+                            style="background: #EAF3F5; color: #457B9D; padding: 5px 12px;
                               border-radius: 20px; font-size: 12px; font-weight: 600;
                               border: 1px solid #EAF3F5;">
                             ✓ {{ point }}
@@ -454,7 +454,7 @@
                   margin-bottom: 24px;">
                 <div class="d-flex align-items-center gap-3 mb-4">
                   <div style="width: 44px; height: 44px; border-radius: 12px;
-                    background: #f0f4ff; display: flex; align-items: center;
+                    background: #EAF3F5; display: flex; align-items: center;
                     justify-content: center; font-size: 20px;">🏷️</div>
                   <h5 style="font-weight: 700; color: #1D3557; margin: 0;">Tags</h5>
                 </div>
@@ -672,7 +672,7 @@
                           font-size: 12px; font-weight: 600; cursor: pointer;">✏️</button>
                       <button (click)="deleteReview(review._id)"
                         style="padding: 6px 12px; border: 1.5px solid #fecaca;
-                          border-radius: 8px; background: #fef2f2; color: #ef4444;
+                          border-radius: 8px; background: #fef2f2; color: #E63946;
                           font-size: 12px; font-weight: 600; cursor: pointer;">🗑️</button>
                     </div>
                   </div>
@@ -717,7 +717,7 @@
                         border-radius: 20px; font-size: 12px; font-weight: 600;">
                         🎓 Formateur certifié
                       </span>
-                      <span style="background: #f0f4ff; color: #457B9D; padding: 4px 12px;
+                      <span style="background: #EAF3F5; color: #457B9D; padding: 4px 12px;
                         border-radius: 20px; font-size: 12px; font-weight: 600;">
                         📂 {{ course.category }}
                       </span>
@@ -730,7 +730,7 @@
                 <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px;">
                   <div style="display: flex; align-items: center; gap: 12px;">
                     <div style="width: 38px; height: 38px; border-radius: 10px;
-                      background: #f0f4ff; display: flex; align-items: center;
+                      background: #EAF3F5; display: flex; align-items: center;
                       justify-content: center; font-size: 16px; flex-shrink: 0;">✉️</div>
                     <div>
                       <div style="font-size: 11px; color: #7E93A3; font-weight: 600;
@@ -754,7 +754,7 @@
                   </div>
                 </div>
 
-                <div style="background: linear-gradient(135deg, #f0f4ff, #faf5ff);
+                <div style="background: linear-gradient(135deg, #EAF3F5, #faf5ff);
                   border-radius: 16px; padding: 20px; text-align: center; border: 1px solid #EAF3F5;">
                   <p style="font-size: 13px; color: #5C7184; margin-bottom: 14px;">
                     Vous avez des questions sur ce cours ?
@@ -764,7 +764,7 @@
                       border-radius: 12px; font-size: 13px; font-weight: 600;
                       color: white; text-decoration: none;
                       background: linear-gradient(135deg, #457B9D, #1D3557);
-                      box-shadow: 0 4px 15px rgba(102,126,234,0.3);">
+                      box-shadow: 0 4px 15px rgba(69,123,157,0.3);">
                     📩 Contacter Prologic
                   </a>
                 </div>
@@ -907,7 +907,7 @@
                         border-radius: 14px; font-size: 15px; font-weight: 700;
                         color: white; text-align: center; text-decoration: none; margin-bottom: 10px;
                         background: linear-gradient(135deg, #457B9D, #1D3557);
-                        box-shadow: 0 4px 15px rgba(102,126,234,0.4);">
+                        box-shadow: 0 4px 15px rgba(69,123,157,0.4);">
                       🔑 Se connecter
                     </a>
                     <a routerLink="/profile-authentication" [queryParams]="{tab: 'register'}"
@@ -924,7 +924,7 @@
                     style="width: 100%; padding: 14px; border: none; border-radius: 14px;
                       font-size: 15px; font-weight: 700; color: white; cursor: pointer;
                       background: linear-gradient(135deg, #457B9D, #1D3557);
-                      box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+                      box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
                     [style.opacity]="enrollLoading ? '0.7' : '1'">
                     <span *ngIf="!enrollLoading">🎁 S'inscrire gratuitement</span>
                     <span *ngIf="enrollLoading">
@@ -938,7 +938,7 @@
                     style="width: 100%; padding: 14px; border: none; border-radius: 14px;
                       font-size: 15px; font-weight: 700; color: white; cursor: pointer;
                       background: linear-gradient(135deg, #457B9D, #1D3557);
-                      box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+                      box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
                     [style.opacity]="cartLoading ? '0.7' : '1'">
                     <span *ngIf="!cartLoading">
                       🛒 Ajouter au panier — {{ course.price }} TND

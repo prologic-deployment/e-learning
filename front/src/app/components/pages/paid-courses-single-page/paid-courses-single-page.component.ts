@@ -448,7 +448,7 @@ export class PaidCoursesSinglePageComponent implements OnInit {
     return safe
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/^#{1,3} (.+)$/gm, '<h6 style="font-weight:700;color:#8b5cf6;margin-top:12px;">$1</h6>')
+      .replace(/^#{1,3} (.+)$/gm, '<h6 style="font-weight:700;color:#457B9D;margin-top:12px;">$1</h6>')
       .replace(/^- (.+)$/gm, '<li style="margin:4px 0;">$1</li>')
       .replace(/\n/g, '<br>');
   }

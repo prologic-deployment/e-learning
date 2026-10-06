@@ -255,9 +255,9 @@
                       (blur)="touch('firstname')"
                       style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
                       [style.border]="isInvalid('firstname') ?
-                        '1.5px solid #ef4444' : '1.5px solid #D7E3E7'">
+                        '1.5px solid #E63946' : '1.5px solid #D7E3E7'">
                     <small *ngIf="isInvalid('firstname')"
-                      style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
+                      style="color: #E63946; font-size: 11px; margin-top: 4px; display: block;">
                       ⚠️ Le prénom est obligatoire
                     </small>
                   </div>
@@ -274,9 +274,9 @@
                       (blur)="touch('lastname')"
                       style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
                       [style.border]="isInvalid('lastname') ?
-                        '1.5px solid #ef4444' : '1.5px solid #D7E3E7'">
+                        '1.5px solid #E63946' : '1.5px solid #D7E3E7'">
                     <small *ngIf="isInvalid('lastname')"
-                      style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
+                      style="color: #E63946; font-size: 11px; margin-top: 4px; display: block;">
                       ⚠️ Le nom est obligatoire
                     </small>
                   </div>
@@ -295,9 +295,9 @@
                   (blur)="touch('email')"
                   style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
                   [style.border]="isInvalid('email') ?
-                    '1.5px solid #ef4444' : '1.5px solid #D7E3E7'">
+                    '1.5px solid #E63946' : '1.5px solid #D7E3E7'">
                 <small *ngIf="isInvalid('email')"
-                  style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
+                  style="color: #E63946; font-size: 11px; margin-top: 4px; display: block;">
                   ⚠️ Veuillez entrer une adresse email valide
                 </small>
               </div>
@@ -313,9 +313,9 @@
                   (blur)="touch('dateOfBirth')"
                   style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
                   [style.border]="isInvalid('dateOfBirth') ?
-                    '1.5px solid #ef4444' : '1.5px solid #D7E3E7'">
+                    '1.5px solid #E63946' : '1.5px solid #D7E3E7'">
                 <small *ngIf="isInvalid('dateOfBirth')"
-                  style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
+                  style="color: #E63946; font-size: 11px; margin-top: 4px; display: block;">
                   ⚠️ La date de naissance est obligatoire
                 </small>
               </div>
@@ -329,7 +329,7 @@
                   <span class="input-group-text"
                     style="border-radius: 10px 0 0 10px; border: 1.5px solid #D7E3E7;
                       background: #f8f9fa; font-weight: 600; color: #374151; font-size: 13px;"
-                    [style.borderColor]="isInvalid('phone') ? '#ef4444' : '#D7E3E7'">
+                    [style.borderColor]="isInvalid('phone') ? '#E63946' : '#D7E3E7'">
                     🇹🇳 +216
                   </span>
                   <input type="tel" class="form-control"
@@ -340,10 +340,10 @@
                     (blur)="touch('phone')"
                     style="border-radius: 0 10px 10px 0; border-left: none;
                       padding: 12px 15px; font-size: 14px;"
-                    [style.border]="isInvalid('phone') ? '1.5px solid #ef4444' : '1.5px solid #D7E3E7'">
+                    [style.border]="isInvalid('phone') ? '1.5px solid #E63946' : '1.5px solid #D7E3E7'">
                 </div>
                 <small *ngIf="isInvalid('phone')"
-                  style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
+                  style="color: #E63946; font-size: 11px; margin-top: 4px; display: block;">
                   ⚠️ Veuillez entrer un numéro valide (8 chiffres)
                 </small>
               </div>
@@ -360,7 +360,7 @@
                   (blur)="touch('password')"
                   style="border-radius: 10px; padding: 12px 15px; font-size: 14px;"
                   [style.border]="isInvalid('password') ?
-                    '1.5px solid #ef4444' : '1.5px solid #D7E3E7'">
+                    '1.5px solid #E63946' : '1.5px solid #D7E3E7'">
 
                 <!-- ✅ Indicateur de force du mot de passe -->
                 <div *ngIf="registerTouched.password && registerData.password"
@@ -385,7 +385,7 @@
                 </div>
 
                 <small *ngIf="isInvalid('password')"
-                  style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
+                  style="color: #E63946; font-size: 11px; margin-top: 4px; display: block;">
                   ⚠️ Le mot de passe doit contenir au moins 8 caractères
                 </small>
               </div>
@@ -401,7 +401,7 @@
                       border: 2px solid; cursor: pointer; text-align: center;
                       transition: all 0.2s;"
                     [style.borderColor]="registerData.role === 'user' ? '#457B9D' : '#D7E3E7'"
-                    [style.background]="registerData.role === 'user' ? '#f0f4ff' : 'white'">
+                    [style.background]="registerData.role === 'user' ? '#EAF3F5' : 'white'">
                     <div style="font-size: 24px;">👤</div>
                     <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
                       [style.color]="registerData.role === 'user' ? '#457B9D' : '#5C7184'">
@@ -413,7 +413,7 @@
                       border: 2px solid; cursor: pointer; text-align: center;
                       transition: all 0.2s;"
                     [style.borderColor]="registerData.role === 'trainer' ? '#457B9D' : '#D7E3E7'"
-                    [style.background]="registerData.role === 'trainer' ? '#f0f4ff' : 'white'">
+                    [style.background]="registerData.role === 'trainer' ? '#EAF3F5' : 'white'">
                     <div style="font-size: 24px;">🎓</div>
                     <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
                       [style.color]="registerData.role === 'trainer' ? '#457B9D' : '#5C7184'">
