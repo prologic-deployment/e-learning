@@ -20,6 +20,7 @@ declare let $: any;
         ]
     })
   export class AppComponent implements OnInit, OnDestroy {
+    get isLandingPage() { return ['/', '/welcome'].includes(this.router.url.split(/[?#]/)[0]); }
     get isAuthPage() { return /^\/(profile-authentication|forgot-password|reset-password)(\/|\?|$)/.test(this.router.url); }
     get workspaceEnabled() { return this.authService.isLoggedIn() && /\/(dashboard|admin-dashboard|manager-dashboard|trainer-dashboard|account|course|courses|cv|cart|recommendations)/.test(this.router.url); }
     location: any;

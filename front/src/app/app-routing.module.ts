@@ -14,7 +14,6 @@ import { CoursesListSidebarPageComponent } from './components/pages/courses-list
 import { CoursesModernGridPageComponent } from './components/pages/courses-modern-grid-page/courses-modern-grid-page.component';
 import { CoursesRightSidebarPageComponent } from './components/pages/courses-right-sidebar-page/courses-right-sidebar-page.component';
 import { CoursesWideGridPageComponent } from './components/pages/courses-wide-grid-page/courses-wide-grid-page.component';
-import { ElearningSchoolDemoComponent } from './components/pages/elearning-school-demo/elearning-school-demo.component';
 import { ForgotPasswordComponent } from './components/pages/forgot-password-page/forgot-password-page.component';
 import { FreeCoursesSinglePageComponent } from './components/pages/free-courses-single-page/free-courses-single-page.component';
 import { PaidCoursesSinglePageComponent } from './components/pages/paid-courses-single-page/paid-courses-single-page.component';
@@ -35,9 +34,9 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
 const routes: Routes = [
     { path: 'account/security', component: SecurityComponent, canActivate: [AuthGuard] },
 
-  // ✅ Page d'accueil — staff redirigé vers dashboard
-  { path: '', pathMatch: 'full', redirectTo: 'profile-authentication' },
-  { path: 'welcome', component: ElearningSchoolDemoComponent, canActivate: [StaffRedirectGuard] },
+  // Public product landing for guests and every signed-in role.
+  { path: '', pathMatch: 'full', title: 'FormaPath — A clear path to capability', loadComponent: () => import('./components/pages/landing/landing.component').then(m => m.LandingComponent) },
+  { path: 'welcome', pathMatch: 'full', redirectTo: '' },
 
   // ✅ Cours — staff bloqué
   { path: 'courses-grid', component: CoursesBasicGridPageComponent, canActivate: [StaffRedirectGuard] },

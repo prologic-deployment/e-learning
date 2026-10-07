@@ -1,0 +1,455 @@
+<div class="landing product-page">
+    <a class="landing-skip" href="#landing-content">Skip to content</a>
+    <header class="site-header">
+        <a class="brand" routerLink="/" aria-label="FormaPath home"
+            ><span class="brand-symbol" aria-hidden="true"
+                >f<span>↗</span></span
+            >FormaPath<span class="brand-period">.</span></a
+        >
+        <nav class="desktop-nav" aria-label="Main navigation">
+            <a href="#how-it-works">The experience</a
+            ><a href="#for-every-role">For your team</a
+            ><a href="#course-library">Course library</a>
+        </nav>
+        <div class="header-actions">
+            <a
+                *ngIf="!auth.isLoggedIn()"
+                class="sign-in"
+                routerLink="/profile-authentication"
+                >Sign in</a
+            ><a
+                hlmBtn
+                class="small-cta"
+                [routerLink]="
+                    auth.isLoggedIn() ? workspace : '/profile-authentication'
+                "
+                [queryParams]="auth.isLoggedIn() ? {} : { tab: 'register' }"
+                >{{ auth.isLoggedIn() ? "My workspace" : "Get started" }}
+                <span aria-hidden="true">↗</span></a
+            ><button
+                hlmBtn
+                variant="ghost"
+                size="icon"
+                class="mobile-toggle"
+                aria-label="Toggle navigation"
+                aria-controls="landing-mobile-nav"
+                [attr.aria-expanded]="menuOpen"
+                (click)="menuOpen = !menuOpen"
+            >
+                <i
+                    class="bx"
+                    [class.bx-menu]="!menuOpen"
+                    [class.bx-x]="menuOpen"
+                    aria-hidden="true"
+                ></i>
+            </button>
+        </div>
+        <nav
+            *ngIf="menuOpen"
+            id="landing-mobile-nav"
+            class="mobile-nav"
+            aria-label="Mobile navigation"
+            (keydown.escape)="menuOpen = false"
+        >
+            <a href="#how-it-works" (click)="menuOpen = false">The experience</a
+            ><a href="#for-every-role" (click)="menuOpen = false"
+                >For your team</a
+            ><a href="#course-library" (click)="menuOpen = false"
+                >Course library</a
+            ><a routerLink="/profile-authentication" (click)="menuOpen = false"
+                >Sign in</a
+            >
+        </nav>
+    </header>
+    <main id="landing-content">
+        <section class="hero section-wrap">
+            <div class="hero-copy">
+                <div class="eyebrow hero-eyebrow">
+                    <span class="status-dot"></span> BUILT FOR YOUR NEXT CHAPTER
+                </div>
+                <h1>
+                    Curiosity.<br />Meet
+                    <span class="serif-word">direction.</span>
+                </h1>
+                <p class="hero-description">
+                    A clearer path from “I want to learn” to<br
+                        class="desktop-break"
+                    />
+                    “look what I can do.” Courses, practice and<br
+                        class="desktop-break"
+                    />
+                    progress—all in one learning workspace.
+                </p>
+                <div class="hero-actions">
+                    <a hlmBtn class="primary-cta" routerLink="/courses-grid"
+                        >Find your next course
+                        <span aria-hidden="true">↗</span></a
+                    ><a class="text-cta" href="#how-it-works"
+                        ><span class="play-icon" aria-hidden="true">↓</span> See
+                        how it works</a
+                    >
+                </div>
+                <div class="hero-footnote">
+                    <span class="mini-mark" aria-hidden="true">✳</span>
+                    <p>
+                        For curious people.<br /><strong
+                            >And the teams helping them grow.</strong
+                        >
+                    </p>
+                </div>
+            </div>
+            <div
+                class="hero-visual"
+                aria-label="Illustration of the learning journey: learn, practise, progress"
+            >
+                <div class="orbit orbit-one"></div>
+                <div class="orbit orbit-two"></div>
+                <div class="orbit orbit-three"></div>
+                <span class="visual-label">YOUR PATH TO WHAT’S NEXT</span
+                ><span class="visual-star" aria-hidden="true">✳</span>
+                <div class="path-card card-learn">
+                    <div class="path-card-top">
+                        <span>01 / EXPLORE</span
+                        ><i class="bx bx-book-open" aria-hidden="true"></i>
+                    </div>
+                    <strong>Make room<br />for new ideas.</strong
+                    ><span class="card-caption">LESSON BY LESSON</span
+                    ><span class="card-arrow" aria-hidden="true">↗</span>
+                </div>
+                <div class="path-card card-practise">
+                    <div class="path-card-top">
+                        <span>02 / PRACTISE</span
+                        ><i class="bx bx-check-square" aria-hidden="true"></i>
+                    </div>
+                    <strong>Put knowledge<br />into motion.</strong>
+                    <div class="practice-marks" aria-hidden="true">
+                        <span>✓</span><span>✓</span><span>→</span>
+                    </div>
+                </div>
+                <div class="path-card card-progress">
+                    <div class="path-card-top">
+                        <span>03 / GROW</span
+                        ><i class="bx bx-award" aria-hidden="true"></i>
+                    </div>
+                    <strong>Keep moving<br />forward.</strong
+                    ><span class="card-caption">ONE STEP AT A TIME</span>
+                </div>
+                <span class="visual-caption"
+                    >A little curiosity goes a long way.</span
+                >
+            </div>
+        </section>
+        <div class="principles-strip">
+            <span>Intentional learning</span><span aria-hidden="true">✳</span
+            ><span>Meaningful practice</span><span aria-hidden="true">✳</span
+            ><span>Visible progress</span><span aria-hidden="true">✳</span
+            ><span>Shared possibility</span>
+        </div>
+        <section id="how-it-works" class="journey-section section-wrap">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">THE FORMAPATH EXPERIENCE</span>
+                    <h2>Not just content.<br />A way <em>forward.</em></h2>
+                </div>
+                <p>
+                    Every part of the experience has a purpose: help you learn
+                    something, practise it, and see how far you have come.
+                </p>
+            </div>
+            <ol class="journey">
+                <li *ngFor="let step of journey; let i = index">
+                    <div class="step-top">
+                        <span class="step-number">0{{ i + 1 }}</span
+                        ><i
+                            [class]="'bx bx-' + step.icon"
+                            aria-hidden="true"
+                        ></i>
+                    </div>
+                    <h3>{{ step.title }}</h3>
+                    <p>{{ step.copy }}</p>
+                </li>
+            </ol>
+        </section>
+        <section id="for-every-role" class="roles-section">
+            <div class="section-wrap">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow"
+                            >ONE PLATFORM. SHARED DIRECTION.</span
+                        >
+                        <h2>
+                            Personal growth.<br /><em
+                                >Collective possibility.</em
+                            >
+                        </h2>
+                    </div>
+                    <p>
+                        Different responsibilities. One connected learning
+                        experience for the people learning, teaching and
+                        leading.
+                    </p>
+                </div>
+                <div
+                    class="role-switcher"
+                    role="group"
+                    aria-label="Explore by role"
+                >
+                    <button
+                        *ngFor="let item of roles; let i = index"
+                        hlmBtn
+                        variant="ghost"
+                        [class.active]="selectedRole === i"
+                        [attr.aria-pressed]="selectedRole === i"
+                        aria-controls="role-detail"
+                        (click)="selectedRole = i"
+                    >
+                        {{ item.name }}<span aria-hidden="true">↗</span>
+                    </button>
+                </div>
+                <div class="role-detail" id="role-detail" aria-live="polite">
+                    <div class="role-art" aria-hidden="true">
+                        <span class="role-art-label"
+                            >A SPACE TO
+                            {{
+                                selectedRole === 0
+                                    ? "LEARN"
+                                    : selectedRole === 1
+                                      ? "CREATE"
+                                      : selectedRole === 2
+                                        ? "GUIDE"
+                                        : "CONNECT"
+                            }}</span
+                        ><i [class]="'bx bx-' + role.icon"></i
+                        ><span class="role-art-number">{{ role.number }}</span>
+                        <div class="role-art-circle"></div>
+                    </div>
+                    <div class="role-copy">
+                        <span class="eyebrow"
+                            >FOR {{ role.name | uppercase }}</span
+                        >
+                        <h3>{{ role.title }}</h3>
+                        <p>{{ role.description }}</p>
+                        <ul>
+                            <li *ngFor="let feature of role.features">
+                                <span aria-hidden="true">↗</span>{{ feature }}
+                            </li>
+                        </ul>
+                        <a
+                            class="text-cta"
+                            [routerLink]="
+                                auth.isLoggedIn()
+                                    ? workspace
+                                    : '/profile-authentication'
+                            "
+                            >{{
+                                auth.isLoggedIn()
+                                    ? "Open your workspace"
+                                    : "Sign in to your workspace"
+                            }}
+                            <span aria-hidden="true">→</span></a
+                        ><small *ngIf="selectedRole > 0"
+                            >Staff access is managed by your platform
+                            administrator.</small
+                        >
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="course-library" class="library-section section-wrap">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">FROM THE COURSE LIBRARY</span>
+                    <h2>What will you<br /><em>make room for?</em></h2>
+                </div>
+                <div>
+                    <p>
+                        Explore courses available on FormaPath.<br />Your next
+                        chapter could start right here.
+                    </p>
+                    <a class="text-cta" routerLink="/courses-grid"
+                        >Explore the full library
+                        <span aria-hidden="true">↗</span></a
+                    >
+                </div>
+            </div>
+            <div
+                *ngIf="loading"
+                class="course-preview-grid"
+                role="status"
+                aria-label="Loading course previews"
+                aria-busy="true"
+            >
+                <hlm-skeleton
+                    *ngFor="let i of [1, 2, 3]"
+                    class="course-skeleton"
+                />
+            </div>
+            <div *ngIf="!loading && error" class="library-state" role="alert">
+                <i class="bx bx-cloud" aria-hidden="true"></i>
+                <h3>A brief pause in discovery.</h3>
+                <p>{{ error }}</p>
+                <button hlmBtn variant="outline" (click)="loadCourses()">
+                    Try again
+                </button>
+            </div>
+            <div
+                *ngIf="!loading && !error && !courses.length"
+                class="library-state"
+            >
+                <i class="bx bx-book-open" aria-hidden="true"></i>
+                <h3>Room for what comes next.</h3>
+                <p>
+                    No courses are available in the library yet. Check back as
+                    new courses are published.
+                </p>
+                <a hlmBtn variant="outline" routerLink="/courses-grid"
+                    >Open the library</a
+                >
+            </div>
+            <div
+                *ngIf="!loading && !error && courses.length"
+                class="course-preview-grid"
+            >
+                <article
+                    hlmCard
+                    class="preview-card"
+                    *ngFor="let course of courses; let i = index"
+                >
+                    <a
+                        [routerLink]="['/courses-details', course._id]"
+                        class="preview-card-link"
+                        ><div
+                            class="course-cover"
+                            [class.cover-two]="i === 1"
+                            [class.cover-three]="i === 2"
+                            aria-hidden="true"
+                        >
+                            <span>{{ course.category || "LEARNING" }}</span
+                            ><i class="bx bx-book-open"></i>
+                            <div class="cover-ring"></div>
+                            <span class="cover-arrow">↗</span>
+                        </div>
+                        <div class="preview-body">
+                            <span hlmBadge variant="secondary">{{
+                                course.category || "Course"
+                            }}</span>
+                            <h3>{{ course.title }}</h3>
+                            <p>{{ course.description }}</p>
+                            <div class="preview-footer">
+                                <span *ngIf="course.trainer?.firstname"
+                                    >{{ course.trainer.firstname }}
+                                    {{ course.trainer.lastname }}</span
+                                ><span class="preview-link"
+                                    >View course ↗</span
+                                >
+                            </div>
+                        </div></a
+                    >
+                </article>
+            </div>
+        </section>
+        <section class="care-section section-wrap">
+            <div class="care-header">
+                <span class="eyebrow"
+                    >FOCUS ON GROWTH. WE MAKE ROOM FOR IT.</span
+                >
+                <h2>Thoughtful by <em>design.</em></h2>
+            </div>
+            <div class="care-grid">
+                <article>
+                    <i class="bx bx-line-chart" aria-hidden="true"></i>
+                    <h3>Progress with context.</h3>
+                    <p>
+                        Your workspace brings together learning progress, course
+                        activity and assessment results—so the next step is
+                        easier to see.
+                    </p>
+                </article>
+                <article>
+                    <i class="bx bx-shield-quarter" aria-hidden="true"></i>
+                    <h3>Protection you control.</h3>
+                    <p>
+                        Add authenticator-based two-factor authentication to
+                        your account, with single-use recovery codes when you
+                        need another way in.
+                    </p>
+                    <a
+                        class="text-cta"
+                        [routerLink]="
+                            auth.isLoggedIn()
+                                ? '/account/security'
+                                : '/profile-authentication'
+                        "
+                        >Explore account security ↗</a
+                    >
+                </article>
+                <article>
+                    <i class="bx bx-devices" aria-hidden="true"></i>
+                    <h3>A place for your pace.</h3>
+                    <p>
+                        Move between your learning workspace, course lessons and
+                        assessments. Keep your learning within reach, on desktop
+                        or mobile.
+                    </p>
+                </article>
+            </div>
+        </section>
+        <section class="closing-section">
+            <div class="closing-orbit" aria-hidden="true"></div>
+            <span class="eyebrow">THE NEXT STEP IS YOURS</span>
+            <h2>Big possibilities.<br /><em>One small beginning.</em></h2>
+            <p>Bring your curiosity. Find your direction.</p>
+            <a
+                hlmBtn
+                class="closing-cta"
+                [routerLink]="
+                    auth.isLoggedIn() ? workspace : '/profile-authentication'
+                "
+                [queryParams]="auth.isLoggedIn() ? {} : { tab: 'register' }"
+                >{{
+                    auth.isLoggedIn()
+                        ? "Continue your journey"
+                        : "Start your learning journey"
+                }}
+                <span aria-hidden="true">↗</span></a
+            ><span class="closing-star" aria-hidden="true">✳</span>
+        </section>
+    </main>
+    <footer class="landing-footer section-wrap">
+        <div class="footer-top">
+            <div>
+                <a class="brand" routerLink="/"
+                    ><span class="brand-symbol" aria-hidden="true"
+                        >f<span>↗</span></span
+                    >FormaPath<span class="brand-period">.</span></a
+                >
+                <p>
+                    A clear path to capability.<br />For people. For teams. For
+                    what’s next.
+                </p>
+            </div>
+            <nav aria-label="Explore">
+                <strong>Explore</strong
+                ><a routerLink="/courses-grid">Course library</a
+                ><a href="#how-it-works">The experience</a
+                ><a href="#for-every-role">For every role</a>
+            </nav>
+            <nav aria-label="Your account">
+                <strong>Your account</strong
+                ><a routerLink="/profile-authentication">Sign in</a
+                ><a
+                    routerLink="/profile-authentication"
+                    [queryParams]="{ tab: 'register' }"
+                    >Create an account</a
+                ><a routerLink="/forgot-password">Account recovery</a>
+            </nav>
+        </div>
+        <div class="footer-bottom">
+            <span>© {{ year }} FormaPath.</span
+            ><span
+                >LEARN WITH PURPOSE. GROW AT YOUR PACE.
+                <span aria-hidden="true">↗</span></span
+            ><a href="#landing-content">Back to top ↑</a>
+        </div>
+    </footer>
+</div>
