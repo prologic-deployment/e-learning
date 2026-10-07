@@ -1,4 +1,4 @@
-require('dotenv').config({path:require('node:path').join(__dirname,'../.env'),quiet:true});
+require('dotenv').config({path:process.env.AUTH_ENV_FILE || require('node:path').join(__dirname,'../.env'),quiet:true});
 try {
   require('../src/services/totp.service').key();
   console.log('PASS: TOTP_ENCRYPTION_KEY is a valid 32-byte base64 key in this environment. This does not prove it matches existing enrollments.');

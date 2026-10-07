@@ -38,3 +38,21 @@ suites. Tests cover persistence, no key logging, file permissions, refusal to ov
 invalid or enrolled/pending keys, fail-fast production configuration, all-role setup,
 login challenge gating, recovery, replay protection and disabling. Temporary files and
 isolated databases only. No production environment was inspected or changed.
+
+## Invalid key on Windows (follow-up)
+The original provisioning command repeated the generic API error when a non-empty
+invalid key (for example a placeholder) was present. It now identifies the source
+without printing its value. For an invalid FILE setting, use:
+
+```powershell
+npm run auth:configure -- --replace-invalid
+```
+
+This flag still checks MongoDB and refuses replacement when ANY enabled or pending
+factor exists. A valid existing key is never rotated by the flag. If a PROCESS
+variable overrides the file, the command refuses to edit the file and explains how
+to clear a stale PowerShell override with `Remove-Item Env:TOTP_ENCRYPTION_KEY`.
+Only clear a stale value; restore the original secret for existing factors.
+`AUTH_ENV_FILE` is now honored by the server and the check command as well as the
+provisioner. On Windows, restrict the file using NTFS ACLs; Unix mode 0600 alone is
+not a Windows access-control guarantee. Restart the API after configuration.
