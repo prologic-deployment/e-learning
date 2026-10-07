@@ -99,3 +99,19 @@ endpoint. Existing protected chat/reindex endpoints remain protected. The panel 
 return actual published-course answers and source links even without Gemini, with an
 explicit catalogue-mode label. See `CHATBOT.md` for provider requirements, anonymous
 budgets, private-data boundaries and real HTTP/MongoDB/browser verification.
+
+### Language picker design refinement
+The picker is now a reusable `LanguageSwitcherComponent`, composed from real Spartan
+Menu and MenuItemRadio primitives. The desktop trigger shows the flag and native name;
+compact widths show the language code. A small editorial header, serif welcome line,
+mist/teal selected surface, framed flags, single-choice check indicators and saved-
+preference footer match the landing design. Old native-select/menu styles were removed.
+The menu defines its own light/dark palette because CDK renders it outside the landing
+DOM ancestry; it does not rely on inherited page colors. Language persistence and
+translation behavior are unchanged. No new dependencies or languages were added.
+`tests/language-switcher.cjs` verifies light/dark overlay colors, aria-checked state,
+arrow/Enter/Escape behavior, focus return, persistence, and mobile overlay bounds at
+320/390/768px. Resize checks wait for CDK viewport repositioning to settle rather than
+asserting against an intermediate cached position. Development build and existing
+landing/controls/polish browser regressions passed. Screenshots: language-light.png
+and language-dark.png. No production build or full screen-reader audit is claimed.

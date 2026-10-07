@@ -42,7 +42,7 @@ const { chromium } = require("playwright"),
             .getByRole("button", { name: "Language", exact: true })
             .click();
         await page
-            .getByRole("menuitem", { name: "Français", exact: true })
+            .getByRole("menuitemradio", { name: "Français", exact: true })
             .click();
         await page.getByRole("heading", { name: /La curiosité/ }).waitFor();
         assert.equal(await page.locator("html").getAttribute("lang"), "fr");
@@ -142,7 +142,7 @@ const { chromium } = require("playwright"),
         await page.reload();
         await page.getByRole("button", { name: "Langue", exact: true }).click();
         await page
-            .getByRole("menuitem", { name: "English", exact: true })
+            .getByRole("menuitemradio", { name: "English", exact: true })
             .click();
         let mode = "error",
             calls = 0,

@@ -27,14 +27,7 @@
             >
         </nav>
         <div class="header-actions">
-            <button hlmBtn variant="outline" class="language-trigger" [brnMenuTriggerFor]="languageMenu" [attr.aria-label]="'Language' | t">
-              <img [src]="'assets/flags/' + i18n.language() + '.svg'" alt="" width="24" height="16"><span>{{ i18n.language() | uppercase }}</span><i class="bx bx-chevron-down" aria-hidden="true"></i>
-            </button>
-            <ng-template #languageMenu><hlm-menu class="language-menu">
-              <hlm-menu-label>{{'Language' | t}}</hlm-menu-label><hlm-menu-separator />
-              <button hlmMenuItem class="language-option" (click)="i18n.setLanguage('en')" [attr.aria-current]="i18n.language() === 'en' ? 'true' : null"><img src="assets/flags/en.svg" alt="" width="24" height="16"><span lang="en">English</span><i *ngIf="i18n.language() === 'en'" class="bx bx-check" aria-hidden="true"></i></button>
-              <button hlmMenuItem class="language-option" (click)="i18n.setLanguage('fr')" [attr.aria-current]="i18n.language() === 'fr' ? 'true' : null"><img src="assets/flags/fr.svg" alt="" width="24" height="16"><span lang="fr">Français</span><i *ngIf="i18n.language() === 'fr'" class="bx bx-check" aria-hidden="true"></i></button>
-            </hlm-menu></ng-template>
+            <app-language-switcher />
             <button
                 hlmBtn
                 variant="ghost"

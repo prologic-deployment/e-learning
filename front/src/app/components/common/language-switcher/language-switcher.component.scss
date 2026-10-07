@@ -1,0 +1,312 @@
+:host {
+    display: inline-flex;
+    flex-shrink: 0;
+}
+.locale-trigger {
+    --locale-ink: #1d3557;
+    --locale-line: #d3ded6;
+    --locale-hover: #e8f0e9;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px !important;
+    height: 39px;
+    padding: 0 10px !important;
+    border-radius: 9px !important;
+    border: 1px solid transparent !important;
+    background: transparent !important;
+    color: var(--locale-ink) !important;
+    font-family: Inter, Arial, sans-serif;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+    transition:
+        background 0.16s,
+        border-color 0.16s;
+}
+.locale-trigger:hover,
+.locale-trigger[aria-expanded="true"] {
+    background: var(--locale-hover) !important;
+    border-color: var(--locale-line) !important;
+}
+.locale-trigger:focus-visible {
+    outline: 2px solid #457b9d;
+    outline-offset: 3px;
+}
+.trigger-flag {
+    display: flex;
+    align-items: center;
+    padding: 3px;
+    border: 1px solid var(--locale-line);
+    border-radius: 5px;
+    background: #ffffff09;
+}
+.trigger-flag img {
+    border-radius: 2px;
+    object-fit: cover;
+    display: block;
+}
+.trigger-code {
+    display: none;
+    letter-spacing: 0.5px;
+}
+.trigger-chevron {
+    font-size: 15px;
+    opacity: 0.65;
+    transition: transform 0.18s;
+}
+.locale-trigger[aria-expanded="true"] .trigger-chevron {
+    transform: rotate(180deg);
+}
+.locale-trigger.is-dark {
+    --locale-ink: #eaf4ed;
+    --locale-line: #40586b;
+    --locale-hover: #20374b;
+}
+/* CDK renders this template in the overlay container, outside the landing host.
+   Give the panel its own palette and explicit theme class rather than inherited variables. */
+.locale-panel {
+    --locale-ink: #1d3557;
+    --locale-muted: #63766e;
+    --locale-line: #dce6dc;
+    --locale-surface: #fbfcf8;
+    --locale-tint: #f0f5ee;
+    --locale-selected: #e9f2ed;
+    --locale-accent: #457b9d;
+    display: block;
+    width: 288px;
+    max-width: calc(100vw - 24px);
+    margin: 9px 0 !important;
+    padding: 0 !important;
+    border-radius: 15px !important;
+    border: 1px solid var(--locale-line) !important;
+    background: var(--locale-surface) !important;
+    color: var(--locale-ink) !important;
+    font-family: Inter, Arial, sans-serif;
+    box-shadow:
+        0 18px 55px #102b3b24,
+        0 2px 7px #102b3b08 !important;
+    overflow: hidden;
+    animation: locale-reveal 0.16s ease-out;
+    transform-origin: top right;
+}
+.locale-heading {
+    position: relative;
+    padding: 19px 19px 15px;
+    background: var(--locale-tint);
+    border-bottom: 1px solid var(--locale-line);
+}
+.locale-kicker {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 8px;
+    font-weight: 650;
+    letter-spacing: 1.45px;
+    color: var(--locale-accent);
+    line-height: 1.4;
+}
+.locale-kicker i {
+    font-size: 15px;
+}
+.locale-heading p {
+    margin: 10px 0 0 !important;
+    color: var(--locale-ink) !important;
+    font-size: 20px;
+    font-weight: 400;
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+    line-height: 1.25;
+    letter-spacing: -0.4px;
+}
+.heading-accent {
+    position: absolute;
+    width: 18px;
+    height: 2px;
+    background: #e63946;
+    right: 20px;
+    top: 24px;
+}
+.locale-options {
+    padding: 8px;
+    display: grid;
+    gap: 4px;
+}
+.locale-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 64px;
+    padding: 10px !important;
+    border: 1px solid transparent !important;
+    border-radius: 9px !important;
+    background: transparent !important;
+    color: var(--locale-ink) !important;
+    cursor: pointer !important;
+    text-align: left;
+    transition:
+        background 0.15s,
+        border-color 0.15s;
+}
+.locale-option.checked {
+    background: var(--locale-selected) !important;
+    border-color: var(--locale-line) !important;
+}
+.locale-option:hover,
+.locale-option:focus {
+    background: var(--locale-tint) !important;
+    border-color: var(--locale-accent) !important;
+    outline: none !important;
+}
+.locale-option:focus-visible {
+    box-shadow: inset 0 0 0 1px var(--locale-accent);
+}
+.option-flag {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 39px;
+    height: 36px;
+    border: 1px solid var(--locale-line);
+    border-radius: 8px;
+    background: var(--locale-surface);
+}
+.option-flag img {
+    display: block;
+    border-radius: 2px;
+    object-fit: cover;
+    box-shadow: 0 1px 3px #102b3b14;
+}
+.option-copy {
+    display: grid;
+    gap: 5px;
+    min-width: 0;
+}
+.option-name {
+    font-size: 12px;
+    font-weight: 650;
+    letter-spacing: -0.15px;
+    line-height: 1.2;
+}
+.option-description {
+    font-size: 10px;
+    line-height: 1.4;
+    font-weight: 400;
+    color: var(--locale-muted);
+}
+.option-indicator {
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    border: 1px solid var(--locale-line);
+    margin-left: auto;
+}
+.checked .option-indicator {
+    background: var(--locale-ink);
+    border-color: var(--locale-ink);
+    color: var(--locale-surface);
+}
+.option-indicator i {
+    font-size: 12px;
+}
+.locale-footnote {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 12px 18px;
+    border-top: 1px solid var(--locale-line);
+    color: var(--locale-muted);
+    font-size: 9px;
+    line-height: 1.4;
+}
+.locale-footnote i {
+    color: var(--locale-accent);
+    font-size: 13px;
+}
+.locale-panel.is-dark {
+    --locale-ink: #eaf4ed;
+    --locale-muted: #a1b9bd;
+    --locale-line: #344c5e;
+    --locale-surface: #172a3e;
+    --locale-tint: #1c3144;
+    --locale-selected: #233e4d;
+    --locale-accent: #a8dadc;
+    box-shadow:
+        0 18px 55px #0005,
+        0 2px 7px #0002 !important;
+}
+@keyframes locale-reveal {
+    from {
+        opacity: 0;
+        translate: 0 -5px;
+    }
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+@media (max-width: 1100px) {
+    .trigger-name {
+        display: none;
+    }
+    .trigger-code {
+        display: inline;
+    }
+    .locale-trigger {
+        gap: 6px !important;
+        padding-inline: 7px !important;
+    }
+}
+@media (max-width: 480px) {
+    .locale-panel {
+        width: 224px;
+    }
+    .locale-heading {
+        padding: 16px 15px 13px;
+    }
+    .locale-heading p {
+        font-size: 19px;
+    }
+    .locale-option {
+        gap: 9px;
+        padding: 9px !important;
+    }
+    .option-description {
+        font-size: 9px;
+    }
+    .option-flag {
+        width: 34px;
+        height: 33px;
+    }
+    .locale-footnote {
+        padding: 11px 15px;
+        font-size: 8px;
+    }
+    .locale-trigger {
+        height: 35px;
+        gap: 5px !important;
+        padding-inline: 5px !important;
+    }
+    .trigger-chevron {
+        display: none;
+    }
+    .trigger-flag {
+        padding: 2px;
+    }
+    .trigger-flag img {
+        width: 20px;
+        height: 14px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .locale-panel,
+    .locale-trigger,
+    .trigger-chevron,
+    .locale-option {
+        animation: none !important;
+        transition: none !important;
+    }
+}

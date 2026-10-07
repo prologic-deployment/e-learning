@@ -1,3 +1,4 @@
+import { LanguageSwitcherComponent } from '../../common/language-switcher/language-switcher.component';
 import {
     TranslationModule,
     TranslationService,
@@ -20,6 +21,7 @@ import { AuthService } from '../../../services/auth.service';
         RouterModule,
         UiModule,
         TranslationModule,
+        LanguageSwitcherComponent,
         LandingChatComponent,
     ],
     templateUrl: './landing.component.html',
@@ -127,16 +129,29 @@ export class LandingComponent implements OnInit {
         const header = document.querySelector<HTMLElement>('.site-header');
         const landing = document.querySelector<HTMLElement>('.landing');
         if (header && landing) {
-            const observer = new ResizeObserver(() => landing.style.setProperty('--header-offset', `${header.offsetHeight + 16}px`));
+            const observer = new ResizeObserver(() =>
+                landing.style.setProperty(
+                    '--header-offset',
+                    `${header.offsetHeight + 16}px`,
+                ),
+            );
             observer.observe(header);
             this.destroyRef.onDestroy(() => observer.disconnect());
         }
     }
     ngOnInit() {
-        this.viewportScroller.setOffset(() => [0, (document.querySelector<HTMLElement>('.site-header')?.offsetHeight || 104) + 16]);
-        this.destroyRef.onDestroy(() => this.viewportScroller.setOffset([0, 0]));
+        this.viewportScroller.setOffset(() => [
+            0,
+            (document.querySelector<HTMLElement>('.site-header')
+                ?.offsetHeight || 104) + 16,
+        ]);
+        this.destroyRef.onDestroy(() =>
+            this.viewportScroller.setOffset([0, 0]),
+        );
         document.documentElement.lang = this.i18n.language();
-        this.destroyRef.onDestroy(() => { document.documentElement.lang = 'en'; });
+        this.destroyRef.onDestroy(() => {
+            document.documentElement.lang = 'en';
+        });
         this.loadCourses();
     }
     goToSection(event: Event, id: string) {

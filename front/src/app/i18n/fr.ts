@@ -1,5 +1,11 @@
 // UI copy only. API course content and conversation messages are not machine-translated.
 export const FR: Record<string, string> = {
+    "Choose your language": "Choisissez votre langue",
+    "DISPLAY LANGUAGE": "LANGUE D’AFFICHAGE",
+    "Make yourself at home.": "Faites comme chez vous.",
+    "Interface in English": "Interface en anglais",
+    "Interface in French": "Interface en français",
+    "Saved for your next visit.": "Mémorisé pour votre prochaine visite.",
     "AI unavailable — showing live catalogue results.": "IA indisponible — résultats du catalogue en direct.",
     '01 / EXPLORE': '01 / EXPLORER',
     '02 / PRACTISE': '02 / PRATIQUER',

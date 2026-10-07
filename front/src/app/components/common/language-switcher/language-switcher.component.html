@@ -1,0 +1,72 @@
+<button
+    hlmBtn
+    variant="ghost"
+    class="locale-trigger"
+    [class.is-dark]="theme.dark"
+    [brnMenuTriggerFor]="languagePanel"
+    [attr.aria-label]="'Language' | t"
+    [attr.aria-description]="current.name"
+>
+    <span class="trigger-flag"
+        ><img
+            [src]="'assets/flags/' + current.code + '.svg'"
+            alt=""
+            width="22"
+            height="15"
+    /></span>
+    <span class="trigger-name">{{ current.name }}</span
+    ><span class="trigger-code">{{ current.code | uppercase }}</span>
+    <i class="bx bx-chevron-down trigger-chevron" aria-hidden="true"></i>
+</button>
+<ng-template #languagePanel>
+    <hlm-menu
+        class="locale-panel"
+        [class.is-dark]="theme.dark"
+        [attr.aria-label]="'Choose your language' | t"
+    >
+        <div class="locale-heading">
+            <span class="locale-kicker"
+                ><i class="bx bx-world" aria-hidden="true"></i
+                >{{ "DISPLAY LANGUAGE" | t }}</span
+            >
+            <p>{{ "Make yourself at home." | t }}</p>
+            <span class="heading-accent" aria-hidden="true"></span>
+        </div>
+        <div class="locale-options">
+            <button
+                *ngFor="let language of languages"
+                hlmMenuItemRadio
+                class="locale-option"
+                [checked]="i18n.language() === language.code"
+                (triggered)="i18n.setLanguage(language.code)"
+                [attr.aria-label]="language.name"
+            >
+                <span class="option-flag"
+                    ><img
+                        [src]="'assets/flags/' + language.code + '.svg'"
+                        alt=""
+                        width="27"
+                        height="18"
+                /></span>
+                <span class="option-copy"
+                    ><span class="option-name" [attr.lang]="language.code">{{
+                        language.name
+                    }}</span
+                    ><span class="option-description">{{
+                        language.description | t
+                    }}</span></span
+                >
+                <span class="option-indicator" aria-hidden="true"
+                    ><i
+                        *ngIf="i18n.language() === language.code"
+                        class="bx bx-check"
+                    ></i
+                ></span>
+            </button>
+        </div>
+        <div class="locale-footnote">
+            <i class="bx bx-check-shield" aria-hidden="true"></i
+            ><span>{{ "Saved for your next visit." | t }}</span>
+        </div>
+    </hlm-menu>
+</ng-template>
