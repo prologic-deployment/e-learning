@@ -1,3 +1,4 @@
+import {ToastService} from './services/toast.service';
 import { isWorkspaceRoute } from './services/workspace-route';
 import { Component } from '@angular/core';
 import { Router, NavigationCancel, NavigationEnd } from '@angular/router';
@@ -33,7 +34,7 @@ declare let $: any;
     constructor(
         private router: Router,
         private socketService: SocketService,
-        private authService: AuthService
+        private authService: AuthService, private toast:ToastService
     ) {}
 
     ngOnInit(): void {
@@ -46,7 +47,7 @@ declare let $: any;
     this.notifSub = this.socketService.notification$.subscribe((notif: any) => {
         if (notif) {
         this.showToast(notif);
-        this.playNotificationSound();
+
         }
     });
 
@@ -70,89 +71,5 @@ declare let $: any;
         });
     }
 
-    showToast(notif: any): void {
-    const id = Date.now();
-    const toast = {
-      id,
-      title: notif.title || 'Nouvelle notification',
-      message: notif.message || '',
-      type: notif.type || 'INFO',
-      visible: false
-    };
-
-    this.toasts.push(toast);
-
-    // ✅ Animation entrée après 50ms
-    setTimeout(() => {
-      const t = this.toasts.find(t => t.id === id);
-      if (t) t.visible = true;
-    }, 50);
-
-    // ✅ Auto-fermer après 5 secondes
-    setTimeout(() => {
-      this.closeToast(id);
-    }, 5000);
-    }
-
-      closeToast(id: number): void {
-    const toast = this.toasts.find(t => t.id === id);
-    if (toast) {
-      toast.visible = false;
-      setTimeout(() => {
-        this.toasts = this.toasts.filter(t => t.id !== id);
-      }, 400);
-    }
-  }
-
-  // ✅ Icône selon le type
-  getNotifIcon(type: string): string {
-    const icons: any = {
-      'BADGE_EARNED': '🏅',
-      'NEW_COURSE': '📚',
-      'DEADLINE_REMINDER': '⏰',
-      'CERTIFICATE': '🎓',
-      'COURSE_ASSIGNED': '📋',
-      'QUIZ_PASSED': '✅',
-      'INFO': '🔔'
-    };
-    return icons[type] || '🔔';
-  }
-
-    getNotifColor(type: string): string {
-    const colors: any = {
-      'BADGE_EARNED': '#f59e0b',
-      'NEW_COURSE': '#457B9D',
-      'DEADLINE_REMINDER': '#E63946',
-      'CERTIFICATE': '#10b981',
-      'COURSE_ASSIGNED': '#457B9D',
-      'QUIZ_PASSED': '#10b981',
-      'INFO': '#457B9D'
-    };
-    return colors[type] || '#457B9D';
-  }
-
-    playNotificationSound(): void {
-    try {
-      const audioCtx = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const oscillator = audioCtx.createOscillator();
-      const gainNode = audioCtx.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(audioCtx.destination);
-
-      oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
-      oscillator.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.15);
-
-      gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-
-      oscillator.start(audioCtx.currentTime);
-      oscillator.stop(audioCtx.currentTime + 0.4);
-    } catch (e) {
-      console.log('Audio not supported');
-    }
-  }
-
-
+    showToast(notif:any){this.toast.show(notif.message||'You have a new notification.','info',notif.title||'Notification');}
 }

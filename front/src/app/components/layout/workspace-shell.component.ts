@@ -70,7 +70,7 @@ export class WorkspaceShellComponent implements OnDestroy {
             admin: [
                 ['Platform overview', 'grid-alt', 'stats'],
                 ['People & access', 'group', 'users'],
-                ['Create staff', 'user-plus', 'staff'],
+                ['Staff accounts', 'user-plus', 'staff-list'],
                 ['Course library', 'book-open', 'courses'],
                 ['Create a course', 'plus-circle', 'create'],
                 ['Archived courses', 'archive', 'archived'],

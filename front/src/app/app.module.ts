@@ -1,3 +1,4 @@
+import {ToastOutletComponent,ToastFeedbackDirective} from './components/feedback/toast-outlet.component';
 import { PageHeadingComponent } from './components/layout/page-heading.component';
 import { BrandComponent } from './components/brand/brand.component';
 import { PublicHeaderComponent } from './components/common/public-header/public-header.component';
@@ -120,7 +121,7 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
         ContactPageTwoComponent,
         NotFoundPageComponent
     ],
-    imports: [PageHeadingComponent, BrandComponent,
+    imports: [ToastOutletComponent,ToastFeedbackDirective,PageHeadingComponent, BrandComponent,
         UiModule, PublicHeaderComponent, PublicFooterComponent, LandingChatComponent, TranslationModule,
         FormFieldComponent,
         CourseDetailsFormComponent,

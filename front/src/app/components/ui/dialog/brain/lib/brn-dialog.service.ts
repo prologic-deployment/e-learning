@@ -171,9 +171,9 @@ export class BrnDialogService implements OnDestroy {
 			clearTimeout(this._previousTimeout);
 		}
 
-		this._previousTimeout = setTimeout(() => {
-			this._dialogRef?.close();
-		}, delay);
+		const ref=this._dialogRef;
+        if(delay<=0){ref?.close();return;}
+        this._previousTimeout = setTimeout(() => ref?.close(), delay);
 	}
 
 	public setAriaDescribedBy(ariaDescribedBy: string | null | undefined) {
@@ -192,6 +192,8 @@ export class BrnDialogService implements OnDestroy {
 	}
 
 	public ngOnDestroy(): void {
+        clearTimeout(this._previousTimeout);
+        this._dialogRef?.close();
 		this._destroyed$.next();
 		this._destroyed$.complete();
 	}

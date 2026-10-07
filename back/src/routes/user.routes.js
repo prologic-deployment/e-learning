@@ -21,6 +21,7 @@ router.get("/me", protect, (req, res) => {
 });
 
 // ---------------- ADMIN ONLY ----------------
+router.post('/staff', protect, authorize('admin'), require('../controllers/user.controller').createStaff);
 router.put("/:id/role", protect, authorize("admin"), updateUserRole);
 router.delete("/:id", protect, authorize("admin"), deleteUser);
 

@@ -178,7 +178,7 @@
             </div>
 
             <div class="col-12 mb-3">
-              <div *ngIf="contactSuccess" class="alert alert-success" style="border-radius: 10px;">
+              <div *ngIf="contactSuccess" class="alert alert-success" style="border-radius: 10px;" [appToast]="contactSuccess">
                 ✅ {{ contactSuccess }}
               </div>
               <div *ngIf="contactError" class="alert alert-danger" style="border-radius: 10px;">

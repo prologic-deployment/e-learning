@@ -66,7 +66,7 @@
                     </small>
                 </div>
 
-                <div *ngIf="assignSuccess" class="alert alert-success">
+                <div *ngIf="assignSuccess" class="alert alert-success" [appToast]="assignSuccess">
                     {{ assignSuccess }}
                 </div>
                 <div *ngIf="assignError" class="alert alert-danger">
@@ -348,7 +348,7 @@
                     </span>
                 </div>
 
-                <div *ngIf="deadlineSuccess" class="alert alert-success">
+                <div *ngIf="deadlineSuccess" class="alert alert-success" [appToast]="deadlineSuccess">
                     {{ deadlineSuccess }}
                 </div>
                 <div *ngIf="deadlineError" class="alert alert-danger">
@@ -755,7 +755,7 @@
                     <div
                         *ngIf="profileUpdateSuccess"
                         class="alert alert-success"
-                    >
+                     [appToast]="profileUpdateSuccess">
                         {{ profileUpdateSuccess }}
                     </div>
                     <div *ngIf="profileUpdateError" class="alert alert-danger">
@@ -911,7 +911,7 @@
                         <div
                             *ngIf="passwordSuccess"
                             class="alert alert-success"
-                        >
+                         [appToast]="passwordSuccess">
                             {{ passwordSuccess }}
                         </div>
                         <div *ngIf="passwordError" class="alert alert-danger">

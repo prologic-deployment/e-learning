@@ -2216,7 +2216,7 @@
                     <div
                         *ngIf="profileUpdateSuccess"
                         class="alert alert-success"
-                    >
+                     [appToast]="profileUpdateSuccess">
                         {{ profileUpdateSuccess }}
                     </div>
                     <div *ngIf="profileUpdateError" class="alert alert-danger">
@@ -2365,7 +2365,7 @@
                         <div
                             *ngIf="passwordSuccess"
                             class="alert alert-success"
-                        >
+                         [appToast]="passwordSuccess">
                             {{ passwordSuccess }}
                         </div>
                         <div *ngIf="passwordError" class="alert alert-danger">

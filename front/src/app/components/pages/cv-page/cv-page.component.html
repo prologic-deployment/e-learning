@@ -63,7 +63,7 @@
                         *ngIf="saveSuccess"
                         class="product-alert success"
                         role="status"
-                    >
+                     [appToast]="saveSuccess">
                         {{ saveSuccess }}
                     </div>
                     <div *ngIf="saveError" class="product-alert" role="alert">

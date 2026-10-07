@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {BrnDialogComponent} from '@spartan-ng/ui-dialog-brain';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UiModule } from '../ui/ui.module';
@@ -21,6 +22,13 @@ export class RecordTableComponent {
     @Output() edit = new EventEmitter<any>();
     @Output() remove = new EventEmitter<string>();
     @Output() roleChange = new EventEmitter<{ id: string; role: string }>();
+    @Input() allowApproval=false;
+    @Output() approve=new EventEmitter<string>();
+    @Output() archive=new EventEmitter<any>();
+    @ViewChild('confirmation') confirmation?:BrnDialogComponent;
+    selected:any=null;action:'role'|'delete'|'archive'='delete';confirmed=false;
+    open(record:any,action:'role'|'delete'|'archive'){this.selected=record;this.action=action;this.proposedRole=this.status(record);this.confirmed=false;this.confirmation?.open();}
+    confirm(){if(!this.selected||this.busy||this.confirmed)return;this.confirmed=true;const r=this.selected;this.confirmation?.close(0);if(this.action==='role')this.roleChange.emit({id:r._id,role:this.proposedRole});else if(this.action==='archive')this.archive.emit(r);else this.remove.emit(r._id);}
     query = '';
     filter = 'all';
     sort = 'name';

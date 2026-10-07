@@ -265,3 +265,14 @@ exports.updateAvatar = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+// Unified, admin-only staff creation. Never email or return the password.
+exports.createStaff = async (req,res) => {
+  const {firstname,lastname,password,dateOfBirth,role}=req.body;
+  const email=typeof req.body.email==='string'?req.body.email.trim().toLowerCase():'';
+  if(!['manager','trainer','admin'].includes(role)||!firstname?.trim()||!lastname?.trim()||!email||typeof password!=='string'||password.length<8||!/[A-Z]/.test(password)||!/[0-9]/.test(password)||Buffer.byteLength(password)>72){return res.status(400).json({message:'Provide valid staff details and a strong password.'});}
+  try{
+    const staff=await User.create({firstname:firstname.trim(),lastname:lastname.trim(),email,password,dateOfBirth,role});
+    res.status(201).json({message:'Staff account created.',user:{_id:staff._id,firstname:staff.firstname,lastname:staff.lastname,email:staff.email,role:staff.role}});
+  }catch(error){res.status(error.code===11000?409:400).json({message:error.code===11000?'An account with this email already exists.':'Staff details could not be saved. Check the required fields.'});}
+};

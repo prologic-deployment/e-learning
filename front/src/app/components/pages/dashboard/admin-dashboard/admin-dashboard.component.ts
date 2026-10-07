@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {ToastService} from '../../../../services/toast.service';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { StatsService } from '../../../../services/stats.service';
 import { AuthService } from '../../../../services/auth.service';
@@ -150,6 +151,8 @@ export class AdminDashboardComponent implements OnInit {
     firstname: '', lastname: '', email: '',
     password: '', dateOfBirth: '', role: 'manager'
   };
+  private toast=inject(ToastService);
+  get staffUsers(){return this.users.filter(u=>['admin','trainer','manager'].includes(Array.isArray(u.role)?u.role[0]:u.role));}
   createStaffLoading = false;
   createStaffSuccess = '';
   createStaffError = '';
@@ -190,7 +193,7 @@ export class AdminDashboardComponent implements OnInit {
       replaceUrl: true
     });
 
-    if (tab === 'users' && this.users.length === 0) this.loadUsers();
+    if ((tab === 'users' || tab === 'staff-list') && this.users.length === 0) this.loadUsers();
     if (tab === 'courses' && this.courses.length === 0) this.loadCourses();
 
     // ✅ Fix archived
@@ -269,22 +272,22 @@ export class AdminDashboardComponent implements OnInit {
     if (this.userActionLoading) return;
     this.userActionLoading = true; this.usersError = '';
     this.userService.updateUserRole(userId, role).subscribe({
-      next: () => { this.userActionLoading = false; this.loadUsers(); },
-      error: err => { this.userActionLoading = false; this.usersError = err.error?.message || 'Unable to update this role.'; }
+      next: () => { this.userActionLoading = false; this.toast.show('User access updated.'); this.loadUsers(); },
+      error: err => { this.userActionLoading = false; this.usersError = err.error?.message || 'Unable to update this role.'; this.toast.show(this.usersError,'error'); }
     });
   }
   deleteUser(userId: string): void {
     if (this.userActionLoading) return;
     this.userActionLoading = true; this.usersError = '';
     this.userService.deleteUser(userId).subscribe({
-      next: () => { this.userActionLoading = false; this.loadUsers(); },
-      error: err => { this.userActionLoading = false; this.usersError = err.error?.message || 'Unable to delete this account.'; }
+      next: () => { this.userActionLoading = false; this.toast.show('User deleted.'); this.loadUsers(); },
+      error: err => { this.userActionLoading = false; this.usersError = err.error?.message || 'Unable to delete this account.'; this.toast.show(this.usersError,'error'); }
     });
   }
 
   loadCourses(): void {
     this.coursesLoading = true;
-    this.courseService.getAllCourses().subscribe({
+    this.http.get<any>(`${this.apiUrl}/courses/trainer/all`).subscribe({
       next: (data) => { this.courses = data.courses; this.coursesLoading = false; },
       error: (err) => { this.coursesError = err.error?.message || 'Error'; this.coursesLoading = false; }
     });
@@ -301,15 +304,15 @@ export class AdminDashboardComponent implements OnInit {
   approveCourse(courseId: string): void {
     this.courseService.approveCourse(courseId).subscribe({
       next: () => { this.loadCourses(); },
-      error: (err) => alert(err.error?.message || 'Error approving course')
+      error: (err) => this.toast.show(err.error?.message || 'Unable to publish course.','error')
     });
   }
 
   deleteCourse(courseId: string): void {
-    if (confirm('Are you sure you want to delete this course?')) {
+    {
       this.courseService.deleteCourse(courseId).subscribe({
         next: () => { this.loadCourses(); },
-        error: (err) => alert(err.error?.message || 'Error deleting course')
+        error: (err) => this.toast.show(err.error?.message || 'Unable to delete course.','error')
       });
     }
   }
@@ -771,15 +774,16 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   createStaff(): void {
+    if(this.createStaffLoading)return;
     this.createStaffLoading = true;
     this.createStaffError = '';
     this.createStaffSuccess = '';
-    this.http.post(`${this.apiUrl}/users/managers`, this.newStaff).subscribe({
+    this.http.post(`${this.apiUrl}/users/staff`, this.newStaff).subscribe({
       next: () => {
         this.createStaffLoading = false;
-        this.createStaffSuccess = 'Manager created successfully ! 🎉';
+        this.toast.show('Staff account created.');
         this.newStaff = { firstname: '', lastname: '', email: '', password: '', dateOfBirth: '', role: 'manager' };
-        this.loadUsers();
+        this.setTab('staff-list');this.loadUsers();
       },
       error: (err) => {
         this.createStaffLoading = false;
@@ -901,7 +905,7 @@ export class AdminDashboardComponent implements OnInit {
 
   // ✅ Archiver un cours (au lieu de supprimer)
   archiveCourse(course: any): void {
-    if (!confirm(`Archiver le cours "${course.title}" ? Les utilisateurs inscrits perdront l'accès.`)) return;
+
 
     this.http.patch(`${this.apiUrl}/courses/${course._id}/archive`, {}).subscribe({
       next: () => {
