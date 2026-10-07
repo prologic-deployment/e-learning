@@ -92,7 +92,7 @@ const startServer = async () => {
 
     // 3. Redis (optional — cache degrades gracefully)
     console.log("✅ Connecting to Redis...");
-    await redisClient.connect();
+    void redisClient.connect(); // Optional cache must never gate HTTP startup.
 
     // 4. Cron job
     startDeadlineReminderJob();

@@ -39,14 +39,10 @@ const cache = (ttl = 1800) => {
 
       
       const originalJson = res.json.bind(res);
-      res.json = async (data) => {
+      res.json = (data) => {
         if (res.statusCode >= 200 && res.statusCode < 300) {
-          try {
-            await redis.setex(cacheKey, ttl, JSON.stringify(data));
-            console.log(`💾 Mise en cache: ${cacheKey} (${ttl}s)`);
-          } catch (error) {
-            console.error('⚠️ Erreur mise en cache:', error.message);
-          }
+          // Cache population must not delay a successful application response.
+          Promise.resolve().then(() => redis.setex(cacheKey, ttl, JSON.stringify(data))).catch(() => {});
         }
         return originalJson(data);
       };

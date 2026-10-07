@@ -1,66 +1,36 @@
-
 const Redis = require('ioredis');
-
 class RedisClient {
-  constructor() {
+  constructor(RedisImplementation = Redis) {
+    this.Redis = RedisImplementation;
     this.client = null;
     this.isConnected = false;
   }
-
   async connect() {
-    try {
-      this.client = new Redis({
-        host: process.env.REDIS_HOST || 'localhost',
-        port: process.env.REDIS_PORT || 6379,
-        password: process.env.REDIS_PASSWORD || undefined,
-        retryStrategy: (times) => {
-          const delay = Math.min(times * 50, 2000);
-          return delay;
-        },
-        maxRetriesPerRequest: 3,
-        lazyConnect: true
-      });
-
-      await this.client.connect();
-
-      this.client.on('ready', () => {
-        console.log('✅ Redis connecté');
-        this.isConnected = true;
-      });
-
-      this.client.on('error', (err) => {
-        console.error('❌ Erreur Redis:', err.message);
-        this.isConnected = false;
-      });
-
-      return this.client;
-    } catch (error) {
-      console.warn('⚠️ Redis non disponible, cache désactivé');
-      return null;
-    }
+    if (process.env.CACHE_ENABLED === 'false') return null;
+    if (this.client) return this.getClient();
+    const client = this.client = new this.Redis({
+      host: process.env.REDIS_HOST || 'localhost', port: Number(process.env.REDIS_PORT) || 6379,
+      password: process.env.REDIS_PASSWORD || undefined,
+      lazyConnect: true, enableOfflineQueue: false, maxRetriesPerRequest: 0,
+      connectTimeout: 1000, commandTimeout: 250,
+      retryStrategy: times => times <= 3 ? Math.min(times * 100, 500) : null
+    });
+    // Register before connect: a fast ready event must not be missed.
+    client.on('ready', () => { this.isConnected = true; });
+    for (const event of ['error', 'close', 'end', 'reconnecting']) client.on(event, () => { this.isConnected = false; });
+    try { await client.connect(); return this.getClient(); }
+    catch { this.isConnected = false; return null; }
   }
-
-  getClient() {
-    return this.client;
-  }
-
+  getClient() { return this.isConnected && this.client?.status === 'ready' ? this.client : null; }
   async healthCheck() {
-    try {
-      if (!this.client || !this.isConnected) return false;
-      await this.client.ping();
-      return true;
-    } catch (error) {
-      return false;
-    }
+    const client = this.getClient(); if (!client) return false;
+    try { return await client.ping() === 'PONG'; } catch { return false; }
   }
-
   async disconnect() {
-    if (this.client) {
-      await this.client.quit();
-      console.log('👋 Redis déconnecté');
-    }
+    this.isConnected = false;
+    // No queued QUIT command while disconnected.
+    this.client?.disconnect(); this.client = null;
   }
 }
-
-const redisClient = new RedisClient();
-module.exports = redisClient;
+module.exports = new RedisClient();
+module.exports.RedisClient = RedisClient;
