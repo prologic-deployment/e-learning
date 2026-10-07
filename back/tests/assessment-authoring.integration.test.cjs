@@ -14,5 +14,6 @@ const second=await request(app).post('/quiz/attempts/lesson/'+lesson.id+'/start'
 const e=await Enrollment.findById(enrollment._id);assert.equal(e.quizAttemptCounts[0].count,2);assert.equal(e.quizResults[0].score,0);
 const raceLesson=await Lesson.create({course:course._id,title:'Race fixture',order:2});const race=await Promise.all([1,2].map(()=>request(app).post('/quiz/lesson/'+raceLesson.id).auth(token(owner),{type:'bearer'}).send(paper)));assert.deepEqual(race.map(r=>r.status).sort(),[200,409]);
 await request(app).post('/quiz/final/'+course.id).auth(token(owner),{type:'bearer'}).send(paper).expect(200);await request(app).post('/quiz/attempts/final/'+course.id+'/start').auth(token(learner),{type:'bearer'}).send({}).expect(403);
+const learnerCourse=await request(app).get('/courses/'+course.id+'/learning').auth(token(learner),{type:'bearer'}).expect(200);assert.equal(learnerCourse.body.finalExam.questions.length,20);assert.ok(!JSON.stringify(learnerCourse.body).includes('correctAnswer'));
 const full=await request(app).get('/courses/'+course.id+'/full').auth(token(owner),{type:'bearer'}).expect(200);assert.deepEqual(full.body.finalExam.questions[1].correctAnswers,[0,2]);
 }catch(e){throw e;}finally{await mongoose.disconnect();await db.stop();}});

@@ -234,8 +234,9 @@
                             >
                         </section>
                     </ng-container>
+<app-timed-assessment *ngIf="showQuiz&&timedQuiz" kind="lesson" [targetId]="currentLesson._id" [title]="currentLesson.title" (completed)="timedCompleted($event)" (leave)="showQuiz=false"/><app-timed-assessment *ngIf="showFinalExam&&timedExam" kind="final" [targetId]="course._id" [title]="course.title" (completed)="timedCompleted($event,true)" (leave)="showFinalExam=false"/>
                     <app-assessment-player
-                        *ngIf="showQuiz"
+                        *ngIf="showQuiz && !timedQuiz"
                         [title]="currentLesson.title"
                         [questions]="activeQuiz.questions"
                         [answers]="quizAnswers"
@@ -248,7 +249,7 @@
                         (leave)="showQuiz = false"
                     />
                     <app-assessment-player
-                        *ngIf="showFinalExam"
+                        *ngIf="showFinalExam && !timedExam"
                         [exam]="true"
                         [title]="course.title"
                         [questions]="course.finalExam.questions"

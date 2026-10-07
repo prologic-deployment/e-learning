@@ -137,7 +137,7 @@ export class CourseViewerComponent implements OnInit {
     quizResult: any = null;
     examResult: any = null;
     showQuiz = false;
-    quizAnswers: number[] = [];
+    quizAnswers: any[] = [];
     quizSubmitted = false;
     quizScore = 0;
     quizPassed = false;
@@ -146,7 +146,7 @@ export class CourseViewerComponent implements OnInit {
     completedLessons: string[] = [];
 
     showFinalExam = false;
-    finalExamAnswers: number[] = [];
+    finalExamAnswers: any[] = [];
     finalExamSubmitted = false;
     finalExamScore = 0;
     finalExamPassed = false;
@@ -194,7 +194,7 @@ export class CourseViewerComponent implements OnInit {
     loadCourse(id: string): void {
         this.loading = true;
         this.error = '';
-        this.http.get(`${this.apiUrl}/courses/${id}`).subscribe({
+        this.http.get(`${this.apiUrl}/courses/${id}/learning`).subscribe({
             next: (data: any) => {
                 this.course = data;
                 this.isPurchased = data.isPurchased;
@@ -306,6 +306,9 @@ export class CourseViewerComponent implements OnInit {
         });
     }
 
+    get timedQuiz(){return !!this.activeQuiz?.questions?.some((q:any)=>q.timeLimitSeconds>0);}
+    get timedExam(){return !!this.course?.finalExam?.questions?.some((q:any)=>q.timeLimitSeconds>0);}
+    timedCompleted(result:any,exam=false){if(exam){this.examResult=result;this.finalExamScore=result.score;this.finalExamPassed=result.passed;this.finalExamSubmitted=true;if(result.passed)this.courseCompleted=true;}else{this.quizResult=result;this.quizScore=result.score;this.quizPassed=result.passed;this.quizSubmitted=true;if(result.passed&&!this.completedLessons.includes(this.currentLesson._id))this.completedLessons.push(this.currentLesson._id);}this.checkEnrollment(this.course._id);}
     // ========== QUIZ ==========
     openQuiz(): void {
         this.quizResult = null;
@@ -321,7 +324,7 @@ export class CourseViewerComponent implements OnInit {
 
     submitQuiz(): void {
         if (this.quizLoading || this.quizSubmitted) return;
-        if (this.quizAnswers.includes(-1)) {
+        if (this.quizAnswers.some(a=>Array.isArray(a)?!a.length:a===-1)) {
             this.quizError = 'Please answer all questions !';
             return;
         }
@@ -388,7 +391,7 @@ export class CourseViewerComponent implements OnInit {
 
     submitFinalExam(): void {
         if (this.finalExamLoading || this.finalExamSubmitted) return;
-        if (this.finalExamAnswers.includes(-1)) {
+        if (this.finalExamAnswers.some(a=>Array.isArray(a)?!a.length:a===-1)) {
             this.finalExamError = 'Please answer all questions !';
             return;
         }

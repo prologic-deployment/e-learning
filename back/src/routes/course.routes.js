@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { protect, authorize, stripAnswers } = require("../middlewares/auth.middleware");
+const { protect, authorize, stripAnswers, requireCourseAccess } = require("../middlewares/auth.middleware");
 const { cacheConfig } = require("../middlewares/cache.middleware");
 const upload = require("../config/multer");
 const {
@@ -26,6 +26,7 @@ router.get("/archived", protect, authorize("admin"), getArchivedCourses);
 
 // ✅ PUBLIC course sheet — anonymous storefront works (safe fields only)
 router.get("/:id", cacheConfig.short, getCourseById);
+router.get("/:id/learning", protect, requireCourseAccess(), getCourseById);
 router.get("/:id/full", protect, authorize("trainer", "admin"), getCourseById);
 
 router.post("/", protect, authorize("trainer", "admin"), upload.single("contentFile"), createCourse);

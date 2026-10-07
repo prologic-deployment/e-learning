@@ -109,7 +109,7 @@ const requireCourseAccess = (options = {}) => {
         courseId = lesson.course.toString();
       }
 
-      const course = await Course.findById(courseId);
+      const course = await Course.findById(courseId).select('+isArchived');
       if (!course) return res.status(404).json({ success: false, message: "Course not found" });
       req.course = course;
 
@@ -117,6 +117,8 @@ const requireCourseAccess = (options = {}) => {
       if (allowStaff && (userRole === "admin" || course.trainer.toString() === req.user._id.toString())) {
         return next();
       }
+
+      if(course.isArchived||!course.isApproved)return res.status(404).json({message:'Course not available.'});
 
       // Managers supervise their teams — allow course overview access
       if (userRole === "manager") {

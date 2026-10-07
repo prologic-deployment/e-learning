@@ -174,17 +174,8 @@ export class TrainerDashboardComponent implements OnInit {
 
   startNewCourse() { this.createdCourse = null; this.newCourse = {title:'',description:'',tags:'',price:0,category:''}; this.createCourseSuccess = ''; this.createCourseError = ''; this.lessons = []; this.showQuizForm = false; this.showQuizForm2 = false; this.showFinalExamForm = false; }
 
-  editCourse(course: any): void {
-    this.createdCourse = course;
-    this.newCourse = {
-      title: course.title || '',
-      description: course.description || '',
-      tags: Array.isArray(course.tags) ? course.tags.join(', ') : course.tags || '',
-      price: course.price || 0,
-      category: course.category || ''
-    };
-    this.loadLessons(course._id);
-    this.setTab('create');
+  editCourse(course:any):void {
+    this.router.navigate([],{relativeTo:this.route,queryParams:{tab:'create',courseId:course._id,step:1}});
   }
 
   courseTableError = '';

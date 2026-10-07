@@ -13,7 +13,7 @@
         </h1>
         <p pageDescription>See the progress. Support the people behind it.</p>
         <div pageActions>
-            <div class="action-row">
+            <div class="action-row" *ngIf="activeTab==='stats'">
                 <button
                     hlmBtn
                     variant="outline"

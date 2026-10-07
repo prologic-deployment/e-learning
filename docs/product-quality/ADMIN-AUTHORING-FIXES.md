@@ -43,3 +43,33 @@ exact-set grading and final-exam eligibility; existing ten security helper tests
 No live exam data was migrated. A new partial unique active-attempt index is required;
 normal Mongoose initialization builds it. Interrupted preparing/grading locks can be
 recovered after two minutes; no active timeout is restarted on browser reload.
+
+## Feature 3 — shared course builder and learner assessment UI
+- Replaced both administrator/trainer creation screens with one four-stage CourseBuilder:
+  details → lessons → one quiz per lesson → final exam. Saved course ID/stage live in
+  the URL, so drafts reopen through authenticated author reads. Lessons can be added,
+  edited and removed; optional existing media is preserved when no replacement is uploaded.
+- Topics/tags use a real ControlValueAccessor pill input: Enter/comma, paste, deduplication,
+  keyboard removal, named remove actions and limits. Payload is an array.
+- Shared AssessmentEditor exposes single/multiple responses, answer keys, optional
+  per-question deadlines, points, passing score and attempts. Completeness feedback and
+  question navigation keep 20-question papers manageable. Legacy second quizzes require
+  explicit removal; no stored assessment is silently erased.
+- New courses start as drafts, including admin-created courses. Publication checks a
+  complete curriculum/lesson quizzes/final exam. Library actions remain role scoped.
+- Learner player supports multiple responses and a separate persisted timed-attempt UI.
+  Tested a real expired answer, retake, and exact-set final-exam grading. Discovered the
+  viewer used an anonymous course-sheet endpoint, so final exam questions were absent;
+  added an authenticated learning endpoint with answer-key stripping and draft/archive
+  access checks. Public course sheets remain metadata-only.
+- Save each resource before leaving: in-memory edits survive step changes, not navigation
+  away; refresh/unload warns about unsaved state. This is not offline autosave.
+
+PASS: development build, admin-actions regression, assessment integration tests and
+`course-authoring-live.cjs` against a disposable real MongoDB/Express API. The browser
+created a course and lesson, entered two 20-question papers, reloaded answer keys, published
+as admin, enrolled as learner, received 95% after timed expiry, 100% on a timed retake,
+and 95% for a non-exact multiple-response final answer. 390/768/1440 bounds and dark table
+hover checked. Screenshot is explicitly test content, visually inspected. Test emails
+are diverted to a test sink; SMTP, media upload/streaming and passing-certificate generation
+were not verified by this run. No production data was changed.

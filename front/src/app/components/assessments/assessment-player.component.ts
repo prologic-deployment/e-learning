@@ -14,7 +14,7 @@ export class AssessmentPlayerComponent {
     @Input() title = 'Knowledge check';
     @Input() exam = false;
     @Input() questions: any[] = [];
-    @Input() answers: number[] = [];
+    @Input() answers: any[] = [];
     @Input() passingScore = 70;
     @Input() busy = false;
     @Input() error = '';
@@ -25,8 +25,11 @@ export class AssessmentPlayerComponent {
     @ViewChild('questionHeading') questionHeading?: ElementRef<HTMLElement>;
     index = 0;
     get answered() {
-        return this.answers.filter((a) => a >= 0).length;
+        return this.answers.filter((a) => Array.isArray(a)?a.length>0:Number.isInteger(a)&&a>=0).length;
     }
+    isAnswered(i:number){const a=this.answers[i];return Array.isArray(a)?a.length>0:Number.isInteger(a)&&a>=0;}
+    isSelected(i:number,option:number){return Array.isArray(this.answers[i])&&this.answers[i].includes(option);}
+    toggleAnswer(i:number,option:number){const values=Array.isArray(this.answers[i])?this.answers[i]:[];this.answers[i]=values.includes(option)?values.filter((n:number)=>n!==option):[...values,option];}
     get retryAllowed() {
         return (
             this.result && !this.result.passed && this.result.attemptsUsed < this.result.maxAttempts

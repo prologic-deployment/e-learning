@@ -1,3 +1,4 @@
+import {TagInputComponent} from './tag-input.component';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -5,7 +6,7 @@ import { UiModule } from '../ui/ui.module';
 @Component({
     selector: 'app-course-details-form',
     standalone: true,
-    imports: [CommonModule, FormsModule, UiModule],
+    imports: [CommonModule, FormsModule, UiModule,TagInputComponent],
     template: ` <form (ngSubmit)="save()" class="course-editor">
         <section hlmCard class="surface editor-main">
             <span class="eyebrow">01 / THE LEARNING EXPERIENCE</span>
@@ -38,16 +39,7 @@ import { UiModule } from '../ui/ui.module';
             ><small *ngIf="attempted && !model.description?.trim()" class="field-error"
                 >Describe what this course covers.</small
             >
-            <label hlmLabel for="editor-tags">Topics & tags</label
-            ><input
-                hlmInput
-                id="editor-tags"
-                name="tags"
-                [(ngModel)]="model.tags"
-                placeholder="Separate topics with commas"
-            /><small class="field-help"
-                >Help learners discover your course through relevant topics.</small
-            >
+            <label hlmLabel for="editor-tags">Topics & tags</label><app-tag-input name="tags" [(ngModel)]="model.tags" [disabled]="busy"/>
         </section>
         <aside hlmCard class="surface editor-settings">
             <span class="eyebrow">02 / COURSE SETTINGS</span>
@@ -101,7 +93,7 @@ import { UiModule } from '../ui/ui.module';
             <button hlmBtn type="submit" [disabled]="busy">
                 {{ busy ? 'Saving…' : editing ? 'Save course details' : 'Create course' }} →</button
             ><button
-                *ngIf="editing"
+                *ngIf="editing && allowStartNew"
                 hlmBtn
                 variant="ghost"
                 type="button"
@@ -189,6 +181,7 @@ export class CourseDetailsFormComponent {
     @Input() subcategories: string[] = [];
     @Input() allowSubcategory = false;
     @Input() editing = false;
+    @Input() allowStartNew = false;
     @Input() busy = false;
     @Input() error = '';
     @Input() success = '';

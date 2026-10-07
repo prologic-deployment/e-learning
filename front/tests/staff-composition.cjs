@@ -127,7 +127,7 @@ const { chromium } = require("playwright"),
                     })
                     .click();
                 await p
-                    .getByText("Course created ! Now add lessons", {
+                    .getByText("Course draft created. Add your lessons next.", {
                         exact: false,
                     })
                     .waitFor();

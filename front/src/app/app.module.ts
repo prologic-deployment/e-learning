@@ -1,3 +1,5 @@
+import {TimedAssessmentComponent} from './components/assessments/timed-assessment.component';
+import {CourseBuilderComponent} from './components/management/course-builder.component';
 import {ToastOutletComponent,ToastFeedbackDirective} from './components/feedback/toast-outlet.component';
 import { PageHeadingComponent } from './components/layout/page-heading.component';
 import { BrandComponent } from './components/brand/brand.component';
@@ -121,7 +123,7 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
         ContactPageTwoComponent,
         NotFoundPageComponent
     ],
-    imports: [ToastOutletComponent,ToastFeedbackDirective,PageHeadingComponent, BrandComponent,
+    imports: [TimedAssessmentComponent,CourseBuilderComponent,ToastOutletComponent,ToastFeedbackDirective,PageHeadingComponent, BrandComponent,
         UiModule, PublicHeaderComponent, PublicFooterComponent, LandingChatComponent, TranslationModule,
         FormFieldComponent,
         CourseDetailsFormComponent,

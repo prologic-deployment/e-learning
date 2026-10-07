@@ -12,7 +12,7 @@
     <div *ngIf="error" class="product-alert" role="alert">{{ error }}</div>
     <ng-container *ngIf="!result">
         <p class="assessment-instructions">
-            Choose one answer per question. You can review your answers before submitting.
+            Single-response questions have one answer. For multiple-response questions, select all correct options. You can review your answers before submitting.
             {{ exam ? 'This assessment counts towards your course completion.' : '' }}
         </p>
         <div class="assessment-layout">
@@ -23,7 +23,7 @@
                         *ngFor="let q of questions; let i = index"
                         hlmBtn
                         [variant]="
-                            i === index ? 'default' : answers[i] >= 0 ? 'secondary' : 'outline'
+                            i === index ? 'default' : isAnswered(i) ? 'secondary' : 'outline'
                         "
                         size="icon"
                         [disabled]="busy"
@@ -31,7 +31,7 @@
                         [attr.aria-label]="
                             'Question ' +
                             (i + 1) +
-                            (answers[i] >= 0 ? ', answered' : ', unanswered')
+                            (isAnswered(i) ? ', answered' : ', unanswered')
                         "
                         [attr.aria-current]="i === index ? 'step' : null"
                     >
@@ -52,7 +52,7 @@
                 <div *ngFor="let q of questions; let i = index">
                     <article *ngIf="i === index" class="question-transition">
                         <h3 #questionHeading tabindex="-1">{{ q.texte }}</h3>
-                        <brn-radio-group
+                        <brn-radio-group *ngIf="q.type!=='multiple'"
                             hlm
                             [(ngModel)]="answers[index]"
                             [disabled]="busy"
@@ -68,6 +68,7 @@
                                 }}</span></brn-radio
                             ></brn-radio-group
                         >
+<fieldset *ngIf="q.type==='multiple'" [disabled]="busy"><legend class="small-muted">Select all correct answers.</legend><label class="answer-option" *ngFor="let option of q.options;let oi=index" [class.answer-selected]="isSelected(i,oi)"><input type="checkbox" [checked]="isSelected(i,oi)" (change)="toggleAnswer(i,oi)"><span>{{option}}</span></label></fieldset>
                     </article>
                 </div>
                 <footer class="question-footer">

@@ -343,20 +343,8 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
-  editExistingCourse(course: any): void {
-    this.createCourseSuccess = '';
-    this.createCourseError = '';
-    this.createdCourse = course;
-    this.newCourse = {
-      title: course.title || '',
-      description: course.description || '',
-      tags: Array.isArray(course.tags) ? course.tags.join(', ') : course.tags || '',
-      price: course.price || 0,
-      category: course.category || '',
-      subCategory: course.subCategory || ''
-    };
-    this.loadLessons(course._id);
-    this.setTab('create');
+  editExistingCourse(course:any):void {
+    this.router.navigate([],{relativeTo:this.route,queryParams:{tab:'create',courseId:course._id,step:1}});
   }
 
   updateCourse(): void {

@@ -13,7 +13,7 @@ exports.createCourse = async (req, res) => {
 
     // ✅ Normaliser le role
     const userRole = Array.isArray(req.user.role) ? req.user.role[0] : req.user.role;
-    const isApproved = userRole === "admin";
+    const isApproved = false; // Drafts are published explicitly after curriculum review.
 
     const course = new Course({
       title,
@@ -120,7 +120,7 @@ exports.getAllCourses = async (req, res) => {
 exports.getCourseById = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id)
-      .select(req.user ? "+finalExam.questions.correctAnswer +finalExam.questions.correctAnswers" : "")
+      .select(req.user ? "+isArchived +finalExam.questions.correctAnswer +finalExam.questions.correctAnswers" : "+isArchived")
       .populate("trainer", "firstname lastname"); // ✅ never expose trainer email
 
     if (!course) {
@@ -138,6 +138,8 @@ exports.getCourseById = async (req, res) => {
       course.trainer._id.toString() === req.user._id.toString()
     );
 
+    if((!course.isApproved||course.isArchived)&&!isOwnerOrAdmin)return res.status(404).json({message:'Course not available.'});
+    delete plain.isArchived;
     const strip = (questions) => {
       if (!Array.isArray(questions)) return;
       questions.forEach(q => { delete q.correctAnswer; delete q.correctAnswers; });
@@ -302,6 +304,8 @@ exports.approveCourse = async (req, res) => {
     const course = await Course.findById(id);
     if (!course) return res.status(404).json({ message: "Course not found" });
 
+    const lessons=await require('../models/Lesson').find({course:id}).select('quiz quiz2');
+    if(!lessons.length || lessons.some(l=>(l.quiz?.questions?.length||0)<20 || l.quiz2?.questions?.length) || (course.finalExam?.questions?.length||0)<20)return res.status(400).json({message:'Complete the lessons, one 20-question quiz per lesson, and the final exam before publishing.'});
     course.isApproved = true;
     await course.save();
 
