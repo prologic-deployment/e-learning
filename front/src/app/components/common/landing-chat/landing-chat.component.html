@@ -43,6 +43,13 @@
                 [class.user-message]="message.role === 'user'"
                 class="chat-message"
             >
+                <small
+                    *ngIf="message.mode === 'catalogue'"
+                    class="catalogue-notice"
+                    >{{
+                        "AI unavailable — showing live catalogue results." | t
+                    }}</small
+                >
                 <p>{{ message.content }}</p>
                 <nav
                     *ngIf="message.sources?.length"
@@ -60,16 +67,7 @@
             <p *ngIf="loading" role="status">{{ "Thinking…" | t }}</p>
         </div>
         <div *ngIf="error" class="chat-error" role="alert">{{ error | t }}</div>
-        <div *ngIf="!auth.isLoggedIn()" class="guest-notice">
-            <p>{{ "Chat is available to signed-in accounts." | t }}</p>
-            <a
-                hlmBtn
-                routerLink="/profile-authentication"
-                [queryParams]="{ returnUrl: '/' }"
-                >{{ "Sign in to chat" | t }}</a
-            >
-        </div>
-        <form *ngIf="auth.isLoggedIn()" (ngSubmit)="send()">
+        <form (ngSubmit)="send()">
             <label hlmLabel for="landing-chat-message">{{
                 "Your message" | t
             }}</label>

@@ -106,7 +106,7 @@ export class ChatbotComponent implements OnInit {
     this.loading = true;
 
     // Historique sans le message de bienvenue
-    const history = this.messages.slice(1, -1).map(m => ({
+    const history = this.messages.slice(1, -1).slice(-4).map(m => ({
       role: m.role,
       content: m.content
     }));
@@ -117,10 +117,11 @@ export class ChatbotComponent implements OnInit {
     }).subscribe({
       next: (res: any) => {
         this.loading = false;
+        const content = (res.mode === 'catalogue' ? 'IA indisponible — résultats du catalogue en direct.\n\n' : '') + res.message;
         const botMessage: Message = {
           role: 'model',
-          content: res.message,
-          contentHtml: this.formatMessage(res.message),
+          content,
+          contentHtml: this.formatMessage(content),
           sources: res.sources?.filter((s: any) => s.title && s.url) || [],
           timestamp: new Date()
         };

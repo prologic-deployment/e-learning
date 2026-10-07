@@ -105,7 +105,7 @@ function validateEnv() {
     console.log('✅ Environment validation passed (development)');
   }
   if (!process.env.GEMINI_API_KEY) {
-    console.warn('⚠️  GEMINI_API_KEY not set — chatbot/NLP features will return errors');
+    console.warn('⚠️  GEMINI_API_KEY not set — chat will use the live catalogue fallback; AI/NLP features require configuration');
   }
   if (!process.env.EMAIL_HOST) {
     console.warn('⚠️  EMAIL_* not set — password-reset emails will fail');

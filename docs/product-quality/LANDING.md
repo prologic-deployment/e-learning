@@ -92,3 +92,10 @@ The chat launcher has finite welcome motion, hover feedback and reduced-motion s
 `front/tests/landing-polish.cjs` and Angular development build passed: menu selection,
 Escape, no gutters/overflow at 320/390/768/1440/1920/2560, sticky position and correct
 section offsets. Chat backend functionality is tracked separately below.
+
+### Chat behavior update (supersedes the earlier guest sign-in limitation)
+The landing assistant now accepts guest messages using a new limited public-catalogue
+endpoint. Existing protected chat/reindex endpoints remain protected. The panel can
+return actual published-course answers and source links even without Gemini, with an
+explicit catalogue-mode label. See `CHATBOT.md` for provider requirements, anonymous
+budgets, private-data boundaries and real HTTP/MongoDB/browser verification.

@@ -25,18 +25,25 @@ const { chromium } = require("playwright"),
                 .locator(".desktop-nav")
                 .getByRole("link", { name, exact: true })
                 .click();
-            await page.waitForFunction(
-                (id) =>
-                    Math.abs(
-                        document.getElementById(id).getBoundingClientRect().top,
-                    ) < 100,
-                id,
-            );
+            await page.waitForFunction((id) => {
+                const y = document
+                        .getElementById(id)
+                        .getBoundingClientRect().top,
+                    h = document
+                        .querySelector(".site-header")
+                        .getBoundingClientRect().bottom;
+                return y >= h && y < h + 40;
+            }, id);
             assert.equal(new URL(page.url()).hash, "#" + id);
         }
         await page.getByRole("link", { name: "Back to top ↑" }).click();
         await page.waitForFunction(() => scrollY < 150);
-        await page.getByLabel("Language", { exact: true }).selectOption("fr");
+        await page
+            .getByRole("button", { name: "Language", exact: true })
+            .click();
+        await page
+            .getByRole("menuitem", { name: "Français", exact: true })
+            .click();
         await page.getByRole("heading", { name: /La curiosité/ }).waitFor();
         assert.equal(await page.locator("html").getAttribute("lang"), "fr");
         await page
@@ -66,10 +73,8 @@ const { chromium } = require("playwright"),
             .getByRole("button", { name: "Ouvrir l’assistant pédagogique" })
             .click();
         await page.getByRole("dialog").waitFor();
-        await page
-            .getByRole("link", { name: "Connectez-vous pour discuter" })
-            .waitFor();
-        assert.equal(await page.locator("textarea").count(), 0);
+        await page.getByLabel("Votre message", { exact: true }).waitFor();
+        assert.equal(await page.locator("textarea").count(), 1);
         await page.keyboard.press("Escape");
         assert.equal(await page.getByRole("dialog").count(), 0);
         assert.equal(
@@ -96,14 +101,15 @@ const { chromium } = require("playwright"),
             .locator("#landing-mobile-nav")
             .getByRole("link", { name: "Pour votre équipe" })
             .click();
-        await page.waitForFunction(
-            () =>
-                Math.abs(
-                    document
-                        .getElementById("for-every-role")
-                        .getBoundingClientRect().top,
-                ) < 100,
-        );
+        await page.waitForFunction(() => {
+            const y = document
+                    .getElementById("for-every-role")
+                    .getBoundingClientRect().top,
+                h = document
+                    .querySelector(".site-header")
+                    .getBoundingClientRect().bottom;
+            return y >= h && y < h + 40;
+        });
         const before = await page.locator(".chat-launcher").boundingBox();
         await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
         const after = await page.locator(".chat-launcher").boundingBox();
@@ -134,7 +140,10 @@ const { chromium } = require("playwright"),
             );
         });
         await page.reload();
-        await page.getByLabel("Langue", { exact: true }).selectOption("en");
+        await page.getByRole("button", { name: "Langue", exact: true }).click();
+        await page
+            .getByRole("menuitem", { name: "English", exact: true })
+            .click();
         let mode = "error",
             calls = 0,
             lastBody,
@@ -234,7 +243,7 @@ const { chromium } = require("playwright"),
         );
         assert.deepEqual(errors, []);
         console.log(
-            "PASS: section positions and fragments, EN/FR persistence, light/dark persistence, mobile menu/overflow, fixed chat position, guest sign-in gate, escape/focus, real API request contract with test responses, error retry/history and safe rendering.",
+            "PASS: section positions and fragments, EN/FR persistence, light/dark persistence, mobile menu/overflow, fixed chat position, guest composer, escape/focus, real API request contract with test responses, error retry/history and safe rendering.",
         );
     } finally {
         await browser.close();

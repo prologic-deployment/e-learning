@@ -12,13 +12,17 @@ import { HttpClient } from '@angular/common/http';
 import { Subscription, finalize, timeout } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UiModule } from '../../ui/ui.module';
-import { TranslationModule } from '../../../i18n/translation.module';
+import {
+    TranslationModule,
+    TranslationService,
+} from '../../../i18n/translation.module';
 import { AuthService } from '../../../services/auth.service';
 import { environment } from '../../../../environments/environment';
 interface ChatMessage {
     role: 'user' | 'model';
     content: string;
     sources?: { title: string; url: string }[];
+    mode?: 'ai' | 'catalogue';
 }
 @Component({
     selector: 'app-landing-chat',
@@ -49,6 +53,7 @@ export class LandingChatComponent {
     constructor(
         private http: HttpClient,
         public auth: AuthService,
+        public i18n: TranslationService,
     ) {}
     toggle() {
         this.open ? this.close() : this.show();
@@ -99,13 +104,13 @@ export class LandingChatComponent {
     }
     send() {
         const text = this.draft.trim();
-        if (!text || this.loading || !this.auth.isLoggedIn()) return;
+        if (!text || this.loading) return;
         if (text.length > 2000) {
             this.error = 'Message must be 2,000 characters or fewer.';
             return;
         }
         const history = this.messages
-            .slice(-20)
+            .slice(-4)
             .map(({ role, content }) => ({ role, content }));
         this.error = '';
         this.pending = text;
@@ -114,10 +119,14 @@ export class LandingChatComponent {
         this.loading = true;
         this.scroll();
         this.request = this.http
-            .post<any>(`${environment.apiUrl}/chatbot/chat`, {
-                message: text,
-                history,
-            })
+            .post<any>(
+                `${environment.apiUrl}/chatbot/${this.auth.isLoggedIn() ? 'chat' : 'public-chat'}`,
+                {
+                    message: text,
+                    history,
+                    language: this.i18n.language(),
+                },
+            )
             .pipe(
                 timeout(45000),
                 takeUntilDestroyed(this.destroyRef),
@@ -150,6 +159,7 @@ export class LandingChatComponent {
                         role: 'model',
                         content: response.message,
                         sources,
+                        mode: response.mode,
                     });
                     this.pending = '';
                     this.scroll();

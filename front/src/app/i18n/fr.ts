@@ -1,5 +1,6 @@
 // UI copy only. API course content and conversation messages are not machine-translated.
 export const FR: Record<string, string> = {
+    "AI unavailable — showing live catalogue results.": "IA indisponible — résultats du catalogue en direct.",
     '01 / EXPLORE': '01 / EXPLORER',
     '02 / PRACTISE': '02 / PRATIQUER',
     '03 / GROW': '03 / PROGRESSER',
