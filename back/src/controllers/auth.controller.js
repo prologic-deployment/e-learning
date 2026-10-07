@@ -104,6 +104,7 @@ exports.factorStatus = wrap(async (req, res) => {
 exports.beginSetup = wrap(async (req, res) => {
   const user = await credentials(req);
   if (user.twoFactor.enabled) throw fail(409, 'Authenticator is already enabled.');
+  factor.key(); // Check configuration before creating any pending setup material.
   const secret = factor.createSecret(), setupToken = crypto.randomBytes(32).toString('hex');
   const uri = factor.totp(secret, user.email).toString();
   const qrCode = await QRCode.toDataURL(uri, { errorCorrectionLevel: 'M', margin: 2, width: 256 });

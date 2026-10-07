@@ -95,6 +95,13 @@ const config = {
 };
 
 function validateEnv() {
+  try {
+    require('../services/totp.service').key();
+  } catch {
+    const message = 'TOTP_ENCRYPTION_KEY is missing or invalid. Restore the original key if authenticators exist; otherwise run npm run auth:configure, then restart the API. The key must be 32 random bytes encoded as base64.';
+    if (prodLike) throw new Error(message);
+    console.warn(message);
+  }
   if (prodLike) {
     requireEnv('MONGO_URI');
     console.log(` Environment validation passed (${NODE_ENV})`);

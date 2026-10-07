@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 // Also silence repeated dotenv banners from transitive dependencies.
 process.env.DOTENV_CONFIG_QUIET = 'true';
-dotenv.config({ quiet: true });
+dotenv.config({ path: require('node:path').join(__dirname, '.env'), quiet: true });
 
 const { createServer } = require("http");
 const { Server } = require("socket.io");

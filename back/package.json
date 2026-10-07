@@ -12,7 +12,9 @@
     "test:auth": "node --test tests/totp.integration.test.js",
     "doctor": "node scripts/doctor.cjs",
     "test:startup": "node --test tests/startup.test.cjs",
-    "test:chat": "node --test tests/chatbot.integration.test.cjs"
+    "test:chat": "node --test tests/chatbot.integration.test.cjs",
+    "auth:configure": "node scripts/configure-totp.cjs",
+    "auth:check": "node scripts/check-totp.cjs"
   },
   "keywords": [],
   "author": "",
