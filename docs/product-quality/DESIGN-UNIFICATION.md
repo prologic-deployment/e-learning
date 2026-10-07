@@ -95,3 +95,31 @@ CV multipart save contract, security heading, theme and 320/390/768/1440 bounds.
 use controlled API fixtures, not production mutations. CV and dark catalogue screenshots
 visually inspected. Full live authorization, payment, certificate/exam and every nested
 management-form workflow remain unverified. Nested staff forms retain existing structure.
+
+## 5. Staff editor integration and final route sweep
+Trainer, manager and administrator nested editors now use the existing real Spartan
+button/input/select/textarea/card directives and reusable FormField where simple adjacent
+labels permitted safe migration. Their role-specific lesson/quiz/exam/team/staff/review
+structures, event handlers and conditional rendering are preserved. Hard-coded white,
+gradient and text colors in those panels now resolve through shared theme tokens,
+including selected row/answer surfaces. This is a design/control integration, not a claim
+that every staff form's validation and mutation lifecycle has been rewritten.
+
+Found and fixed a manager assignment checkbox bug: its click stopped bubbling to the
+row but never updated the selected-user list. Added change handling and an accessible
+member-specific label, preserving row click behavior.
+
+PASS: development build and staff-composition browser test. Fifteen staff destinations
+checked at 390/1440, both themes and label/control associations. Trainer course creation
+verified against an explicit mock API contract and its resulting curriculum surface;
+manager checkbox verified checked/unchecked counts. No real courses/accounts were
+created. Full backend authorization and all lesson/assessment mutations remain untested
+in this design pass; existing backend security logic was not modified.
+
+### Final regression result
+At the final source state: development build PASS; all nine browser suites PASS:
+landing-browser, landing-controls, landing-polish, language-switcher, shared-design,
+catalogue-design, app-composition, learner-composition, staff-composition. The landing
+suite also checks 2560px full-bleed behavior. Build retains existing CommonJS warnings.
+Production build, screen-reader audit and a live all-role end-to-end business-workflow
+suite were not run. Screenshots contain labelled test data or explicit test API failures.

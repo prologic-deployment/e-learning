@@ -164,3 +164,48 @@ app-navbar {
     flex-wrap: nowrap;
     font-size: 12px;
 }
+/* Staff editors share actual primitives/fields while retaining business-specific structure. */
+.legacy-management-panels [hlmBtn] {
+    font-size: 12px !important;
+    line-height: 1.35;
+    min-height: 38px;
+    height: auto;
+}
+.legacy-management-panels [hlmInput] {
+    font-size: 12px !important;
+    border-radius: 7px !important;
+    background: hsl(var(--card)) !important;
+    color: hsl(var(--foreground)) !important;
+}
+.legacy-management-panels app-form-field {
+    display: block;
+    margin-bottom: 18px;
+}
+.legacy-management-panels .card {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    border-radius: 12px;
+}
+.legacy-management-panels table {
+    color: hsl(var(--foreground));
+}
+.legacy-management-panels h3,
+.legacy-management-panels h4,
+.legacy-management-panels h5 {
+    font-weight: 550 !important;
+    letter-spacing: -0.4px;
+}
+.legacy-management-panels .text-muted {
+    color: hsl(var(--muted-foreground)) !important;
+}
+.legacy-management-panels [hlmBtn].btn-danger {
+    color: hsl(var(--destructive)) !important;
+}
+.legacy-management-panels .table {
+    --bs-table-color: hsl(var(--foreground));
+    --bs-table-bg: transparent;
+    --bs-table-border-color: hsl(var(--border));
+}
+.legacy-management-panels [hlmCard] {
+    color: hsl(var(--foreground));
+}
