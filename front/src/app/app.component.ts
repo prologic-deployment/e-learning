@@ -20,8 +20,8 @@ declare let $: any;
         ]
     })
   export class AppComponent implements OnInit, OnDestroy {
-    get isAuthPage() { return this.router.url.startsWith('/profile-authentication'); }
-    get workspaceEnabled() { return this.authService.isLoggedIn() && /\/(dashboard|admin-dashboard|manager-dashboard|trainer-dashboard|course|courses|cv|cart|recommendations)/.test(this.router.url); }
+    get isAuthPage() { return /^\/(profile-authentication|forgot-password|reset-password)(\/|\?|$)/.test(this.router.url); }
+    get workspaceEnabled() { return this.authService.isLoggedIn() && /\/(dashboard|admin-dashboard|manager-dashboard|trainer-dashboard|account|course|courses|cv|cart|recommendations)/.test(this.router.url); }
     location: any;
     routerSubscription: any;
     title: any;

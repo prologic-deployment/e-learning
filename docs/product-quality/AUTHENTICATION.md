@@ -106,3 +106,20 @@ course/lesson/quiz/final-exam end-to-end workflow; full assistive-technology tes
 This is the authentication feature, NOT completion of the entire redesign request.
 All other forms, loading findings, premium landing, complete branding rollout, and
 comprehensive role/workflow acceptance remain tracked in `AUDIT.md`.
+
+## Password-recovery form follow-up
+
+Forgot-password and reset-password now use the same actual Spartan primitives and
+reusable field composition, with dedicated recovery cards instead of legacy banners
+and Bootstrap panels. Required/email/password validation, pending disabling, success,
+invalid/expired-link recovery, useful transport errors and retry are implemented.
+Requests finalize on success/error/cancellation; component destruction clears password
+and reset-token memory. Removed automatic delayed navigation so success can be read.
+Public marketing chrome is hidden on all authentication screens and account security
+now correctly uses only the authenticated workspace shell (no duplicate navigation).
+
+`front/tests/recovery-browser.cjs` passed against the disposable real API: required and
+email validation, offline error→retry, non-enumerating response, malformed/expired
+links, password mismatch, loading cleanup and mobile overflow. Authenticator browser
+regressions and Angular development build passed again. Successful reset consumption
+is covered in the backend integration suite; SMTP inbox delivery is not verified here.
