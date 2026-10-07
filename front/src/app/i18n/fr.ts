@@ -1,0 +1,199 @@
+// UI copy only. API course content and conversation messages are not machine-translated.
+export const FR: Record<string, string> = {
+    '01 / EXPLORE': '01 / EXPLORER',
+    '02 / PRACTISE': '02 / PRATIQUER',
+    '03 / GROW': '03 / PROGRESSER',
+    'A SPACE TO': 'UN ESPACE POUR',
+    'A brief pause in discovery.': 'Une courte pause dans votre découverte.',
+    'A clear path to capability.':
+        'Un parcours clair vers de nouvelles compétences.',
+    'A clearer path from “I want to learn” to':
+        'Un parcours plus clair de « je veux apprendre » à',
+    'A little curiosity goes a long way.': 'Un peu de curiosité mène loin.',
+    'A personal learning workspace': 'Un espace personnel d’apprentissage',
+    'A place for your pace.': 'Un espace à votre rythme.',
+    'A way': 'Un chemin',
+    'Account recovery': 'Récupération du compte',
+    'Add authenticator-based two-factor authentication to your account, with single-use recovery codes when you need another way in.':
+        'Activez l’authentification à deux facteurs avec une application et des codes de récupération à usage unique pour retrouver votre accès.',
+    Administrators: 'Administrateurs',
+    'And the teams helping them grow.':
+        'Et pour les équipes qui les accompagnent.',
+    'Assessment results in your studio':
+        'Résultats des évaluations dans votre studio',
+    'Assign learning to your team and follow their progress. See overdue work and identify where a timely conversation can help someone move forward.':
+        'Attribuez des formations à votre équipe et suivez sa progression. Repérez les retards et les occasions d’aider chacun à avancer.',
+    'BUILT FOR YOUR NEXT CHAPTER': 'POUR VOTRE PROCHAIN CHAPITRE',
+    'Back to top ↑': 'Retour en haut ↑',
+    'Big possibilities.': 'De grandes possibilités.',
+    'Bring the whole learning operation together.':
+        'Pilotez toute votre activité de formation.',
+    'Bring your curiosity. Find your direction.':
+        'Apportez votre curiosité. Trouvez votre voie.',
+    'Build courses from lessons, add quizzes and final exams, and review assessment results. Keep your teaching and course authoring in one content studio.':
+        'Créez des cours, des leçons, des quiz et des examens finaux, puis consultez les résultats. Retrouvez tous vos outils pédagogiques dans un même studio.',
+    CONNECT: 'CONNECTER',
+    CREATE: 'CRÉER',
+    'Choose a course that fits what you want to learn.':
+        'Choisissez un cours adapté à vos objectifs.',
+    'Collective possibility.': 'Des possibilités collectives.',
+    'Complete the final assessment for your course.':
+        'Terminez l’évaluation finale de votre cours.',
+    'Continue your journey': 'Poursuivre votre parcours',
+    Course: 'Cours',
+    'Course and lesson authoring': 'Création de cours et de leçons',
+    'Course approvals and archives': 'Validation et archivage des cours',
+    'Course library': 'Catalogue de cours',
+    'Create an account': 'Créer un compte',
+    'Curiosity.': 'La curiosité.',
+    'Deadlines and overdue learning': 'Échéances et formations en retard',
+    Demonstrate: 'Démontrer',
+    'Different responsibilities. One connected learning experience for the people learning, teaching and leading.':
+        'Des responsabilités différentes. Une expérience connectée pour apprendre, enseigner et accompagner.',
+    Discover: 'Découvrir',
+    'Every part of the experience has a purpose: help you learn something, practise it, and see how far you have come.':
+        'Chaque étape a un objectif : apprendre, pratiquer et mesurer le chemin parcouru.',
+    Explore: 'Explorer',
+    'Explore account security ↗': 'Découvrir la sécurité du compte ↗',
+    'Explore by role': 'Explorer par rôle',
+    'Explore courses available on FormaPath.':
+        'Découvrez les cours disponibles sur FormaPath.',
+    'Explore the full library': 'Explorer tout le catalogue',
+    'FOCUS ON GROWTH. WE MAKE ROOM FOR IT.':
+        'CONCENTREZ-VOUS SUR VOTRE PROGRESSION.',
+    FOR: 'POUR',
+    'FROM THE COURSE LIBRARY': 'DANS LE CATALOGUE',
+    'Find a course, work through its lessons, and put your knowledge into practice. Your learning workspace keeps your progress, assessments and earned certificates together.':
+        'Choisissez un cours, avancez dans les leçons et mettez vos connaissances en pratique. Votre espace réunit progression, évaluations et certificats obtenus.',
+    'Find your next course': 'Trouver votre prochain cours',
+    'For curious people.': 'Pour les esprits curieux.',
+    'For every role': 'Pour chaque rôle',
+    'For people. For teams. For what’s next.':
+        'Pour chacun. Pour les équipes. Pour la suite.',
+    'For your team': 'Pour votre équipe',
+    'FormaPath home': 'Accueil FormaPath',
+    GUIDE: 'GUIDER',
+    'Get started': 'Commencer',
+    'Give your team a clear next step.':
+        'Donnez une direction claire à votre équipe.',
+    'Illustration of the learning journey: learn, practise, progress':
+        'Illustration du parcours : apprendre, pratiquer, progresser',
+    'Intentional learning': 'Apprendre avec un objectif',
+    'Keep moving': 'Continuez',
+    LEARN: 'APPRENDRE',
+    'LEARN WITH PURPOSE. GROW AT YOUR PACE.':
+        'APPRENEZ AVEC UN OBJECTIF. AVANCEZ À VOTRE RYTHME.',
+    LEARNING: 'FORMATION',
+    'LESSON BY LESSON': 'LEÇON APRÈS LEÇON',
+    Learn: 'Apprendre',
+    Learners: 'Apprenants',
+    'Less searching. More learning.':
+        'Moins de recherches. Plus d’apprentissage.',
+    'Lesson quizzes and final assessments':
+        'Quiz de leçon et évaluations finales',
+    'Loading course previews': 'Chargement des aperçus de cours',
+    'Main navigation': 'Navigation principale',
+    'Make room': 'Faites place',
+    'Manage people and staff access, oversee the course library, and review platform activity. Keep the right tools available to the right roles.':
+        'Gérez les utilisateurs et les accès du personnel, supervisez le catalogue et consultez l’activité. Donnez à chaque rôle les outils appropriés.',
+    Managers: 'Managers',
+    'Meaningful practice': 'Pratiquer pour progresser',
+    Meet: 'Trouvez votre',
+    'Mobile navigation': 'Navigation mobile',
+    'Move between your learning workspace, course lessons and assessments. Keep your learning within reach, on desktop or mobile.':
+        'Passez de votre espace aux leçons et aux évaluations. Gardez votre apprentissage à portée de main, sur ordinateur ou mobile.',
+    'Move through focused lessons at your own pace.':
+        'Avancez dans des leçons ciblées, à votre rythme.',
+    'My workspace': 'Mon espace',
+    'No courses are available in the library yet. Check back as new courses are published.':
+        'Aucun cours n’est encore disponible. Revenez découvrir les prochaines publications.',
+    'Not just content.': 'Plus que du contenu.',
+    'ONE PLATFORM. SHARED DIRECTION.': 'UNE PLATEFORME. UNE DIRECTION COMMUNE.',
+    'ONE STEP AT A TIME': 'UNE ÉTAPE À LA FOIS',
+    'One small beginning.': 'Un premier petit pas.',
+    'Open the library': 'Ouvrir le catalogue',
+    'Open your workspace': 'Ouvrir votre espace',
+    'People and role management': 'Gestion des utilisateurs et des rôles',
+    'Personal growth.': 'Une progression personnelle.',
+    'Platform reporting and oversight':
+        'Rapports et supervision de la plateforme',
+    Practise: 'Pratiquer',
+    Progress: 'Progresser',
+    'Progress and earned certificates': 'Progression et certificats obtenus',
+    'Progress with context.': 'Une progression en contexte.',
+    'Protection you control.': 'Une protection que vous maîtrisez.',
+    'Put knowledge': 'Mettez le savoir',
+    'Quiz and final-exam creation': 'Création de quiz et d’examens finaux',
+    'Room for what comes next.': 'Place à ce qui vient ensuite.',
+    'See how it works': 'Découvrir le fonctionnement',
+    'Shared possibility': 'Des possibilités partagées',
+    'Sign in': 'Se connecter',
+    'Sign in to your workspace': 'Connectez-vous à votre espace',
+    'Skip to content': 'Aller au contenu',
+    'Staff access is managed by your platform administrator.':
+        'Les accès du personnel sont gérés par votre administrateur.',
+    'Start your learning journey': 'Commencer votre parcours',
+    'THE FORMAPATH EXPERIENCE': 'L’EXPÉRIENCE FORMAPATH',
+    'THE NEXT STEP IS YOURS': 'À VOUS DE FAIRE LE PROCHAIN PAS',
+    'Team course assignments': 'Attribution des cours à l’équipe',
+    'Team progress overview': 'Vue d’ensemble de la progression',
+    'The course library is unavailable right now. Please try again.':
+        'Le catalogue est momentanément indisponible. Veuillez réessayer.',
+    'The experience': 'L’expérience',
+    'Thoughtful by': 'Une conception',
+    'Toggle navigation': 'Ouvrir ou fermer la navigation',
+    'Track completion and view certificates you earn.':
+        'Suivez vos cours terminés et consultez vos certificats.',
+    Trainers: 'Formateurs',
+    'Try again': 'Réessayer',
+    'Turn what you know into what others can do.':
+        'Transformez votre savoir en compétences partagées.',
+    'Use lesson quizzes to check your understanding.':
+        'Vérifiez votre compréhension avec les quiz des leçons.',
+    'View course ↗': 'Voir le cours ↗',
+    'Visible progress': 'Une progression visible',
+    'What will you': 'À quoi allez-vous',
+    'YOUR PATH TO WHAT’S NEXT': 'VOTRE PARCOURS VERS LA SUITE',
+    'Your account': 'Votre compte',
+    'Your next chapter could start right here.':
+        'Votre prochain chapitre pourrait commencer ici.',
+    'Your workspace brings together learning progress, course activity and assessment results—so the next step is easier to see.':
+        'Votre espace réunit progression, activité et résultats des évaluations pour mieux voir la prochaine étape.',
+    'design.': 'réfléchie.',
+    'direction.': 'voie.',
+    'for new ideas.': 'aux nouvelles idées.',
+    'forward.': 'pour avancer.',
+    'into motion.': 'en mouvement.',
+    'make room for?': 'faire place ?',
+    'progress—all in one learning workspace.':
+        'progression, dans un même espace d’apprentissage.',
+    '“look what I can do.” Courses, practice and':
+        '« regardez ce que je sais faire ». Cours, pratique et',
+    Language: 'Langue',
+    'Switch to dark mode': 'Activer le mode sombre',
+    'Switch to light mode': 'Activer le mode clair',
+    'Open learning assistant': 'Ouvrir l’assistant pédagogique',
+    'Close chat': 'Fermer la discussion',
+    'Learning assistant': 'Assistant pédagogique',
+    'Ask about courses and learning.':
+        'Posez vos questions sur les cours et l’apprentissage.',
+    'Sign in to chat': 'Connectez-vous pour discuter',
+    'Chat is available to signed-in accounts.':
+        'La discussion est réservée aux utilisateurs connectés.',
+    'Your message': 'Votre message',
+    Send: 'Envoyer',
+    'Thinking…': 'Réflexion en cours…',
+    'Clear conversation': 'Effacer la conversation',
+    'Hello! Ask me about courses, trainers or learning on FormaPath.':
+        'Bonjour ! Posez-moi vos questions sur les cours, les formateurs ou l’apprentissage sur FormaPath.',
+    'AI answers can be inaccurate. Check important details.':
+        'Les réponses de l’IA peuvent être inexactes. Vérifiez les informations importantes.',
+    'The assistant is unavailable. Your message has been kept; please try again.':
+        'L’assistant est indisponible. Votre message est conservé ; veuillez réessayer.',
+    'Too many requests. Please try again later.':
+        'Trop de demandes. Veuillez réessayer plus tard.',
+    'Course sources': 'Sources des cours',
+    'Message must be 2,000 characters or fewer.':
+        'Le message doit contenir au maximum 2 000 caractères.',
+    'Cancel request': 'Annuler la demande',
+};

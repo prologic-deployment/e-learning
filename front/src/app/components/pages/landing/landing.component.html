@@ -1,22 +1,66 @@
 <div class="landing product-page">
-    <a class="landing-skip" href="#landing-content">Skip to content</a>
+    <a
+        class="landing-skip"
+        href="#landing-content"
+        (click)="goToSection($event, 'landing-content')"
+        >{{ "Skip to content" | t }}</a
+    >
     <header class="site-header">
-        <a class="brand" routerLink="/" aria-label="FormaPath home"
+        <a class="brand" routerLink="/" [attr.aria-label]="'FormaPath home' | t"
             ><span class="brand-symbol" aria-hidden="true"
                 >f<span>↗</span></span
             >FormaPath<span class="brand-period">.</span></a
         >
-        <nav class="desktop-nav" aria-label="Main navigation">
-            <a href="#how-it-works">The experience</a
-            ><a href="#for-every-role">For your team</a
-            ><a href="#course-library">Course library</a>
+        <nav class="desktop-nav" [attr.aria-label]="'Main navigation' | t">
+            <a
+                href="#how-it-works"
+                (click)="goToSection($event, 'how-it-works')"
+                >{{ "The experience" | t }}</a
+            ><a
+                href="#for-every-role"
+                (click)="goToSection($event, 'for-every-role')"
+                >{{ "For your team" | t }}</a
+            ><a
+                href="#course-library"
+                (click)="goToSection($event, 'course-library')"
+                >{{ "Course library" | t }}</a
+            >
         </nav>
         <div class="header-actions">
+            <select
+                class="language-select"
+                [attr.aria-label]="'Language' | t"
+                [value]="i18n.language()"
+                (change)="i18n.setLanguage($any($event.target).value)"
+            >
+                <option value="en" lang="en">EN</option>
+                <option value="fr" lang="fr">FR</option>
+            </select>
+            <button
+                hlmBtn
+                variant="ghost"
+                size="icon"
+                class="theme-toggle"
+                (click)="theme.toggle()"
+                [attr.aria-label]="
+                    (theme.dark
+                        ? 'Switch to light mode'
+                        : 'Switch to dark mode'
+                    ) | t
+                "
+            >
+                <i
+                    class="bx"
+                    [class.bx-sun]="theme.dark"
+                    [class.bx-moon]="!theme.dark"
+                    aria-hidden="true"
+                ></i>
+            </button>
             <a
                 *ngIf="!auth.isLoggedIn()"
                 class="sign-in"
                 routerLink="/profile-authentication"
-                >Sign in</a
+                >{{ "Sign in" | t }}</a
             ><a
                 hlmBtn
                 class="small-cta"
@@ -24,14 +68,14 @@
                     auth.isLoggedIn() ? workspace : '/profile-authentication'
                 "
                 [queryParams]="auth.isLoggedIn() ? {} : { tab: 'register' }"
-                >{{ auth.isLoggedIn() ? "My workspace" : "Get started" }}
+                >{{ (auth.isLoggedIn() ? "My workspace" : "Get started") | t }}
                 <span aria-hidden="true">↗</span></a
             ><button
                 hlmBtn
                 variant="ghost"
                 size="icon"
                 class="mobile-toggle"
-                aria-label="Toggle navigation"
+                [attr.aria-label]="'Toggle navigation' | t"
                 aria-controls="landing-mobile-nav"
                 [attr.aria-expanded]="menuOpen"
                 (click)="menuOpen = !menuOpen"
@@ -48,16 +92,36 @@
             *ngIf="menuOpen"
             id="landing-mobile-nav"
             class="mobile-nav"
-            aria-label="Mobile navigation"
+            [attr.aria-label]="'Mobile navigation' | t"
             (keydown.escape)="menuOpen = false"
         >
-            <a href="#how-it-works" (click)="menuOpen = false">The experience</a
-            ><a href="#for-every-role" (click)="menuOpen = false"
-                >For your team</a
-            ><a href="#course-library" (click)="menuOpen = false"
-                >Course library</a
-            ><a routerLink="/profile-authentication" (click)="menuOpen = false"
-                >Sign in</a
+            <a
+                href="#how-it-works"
+                (click)="goToSection($event, 'how-it-works')"
+                >{{ "The experience" | t }}</a
+            ><a
+                href="#for-every-role"
+                (click)="goToSection($event, 'for-every-role')"
+                >{{ "For your team" | t }}</a
+            ><a
+                href="#course-library"
+                (click)="goToSection($event, 'course-library')"
+                >{{ "Course library" | t }}</a
+            ><a
+                routerLink="/profile-authentication"
+                (click)="menuOpen = false"
+                >{{ "Sign in" | t }}</a
+            >
+            <a
+                [routerLink]="
+                    auth.isLoggedIn() ? workspace : '/profile-authentication'
+                "
+                [queryParams]="auth.isLoggedIn() ? {} : { tab: 'register' }"
+                (click)="menuOpen = false"
+                >{{
+                    (auth.isLoggedIn() ? "My workspace" : "Create an account")
+                        | t
+                }}</a
             >
         </nav>
     </header>
@@ -65,95 +129,126 @@
         <section class="hero section-wrap">
             <div class="hero-copy">
                 <div class="eyebrow hero-eyebrow">
-                    <span class="status-dot"></span> BUILT FOR YOUR NEXT CHAPTER
+                    <span class="status-dot"></span>
+                    {{ "BUILT FOR YOUR NEXT CHAPTER" | t }}
                 </div>
                 <h1>
-                    Curiosity.<br />Meet
-                    <span class="serif-word">direction.</span>
+                    {{ "Curiosity." | t }}<br />{{ "Meet" | t }}
+                    <span class="serif-word">{{ "direction." | t }}</span>
                 </h1>
                 <p class="hero-description">
-                    A clearer path from “I want to learn” to<br
-                        class="desktop-break"
-                    />
-                    “look what I can do.” Courses, practice and<br
-                        class="desktop-break"
-                    />
-                    progress—all in one learning workspace.
+                    {{ "A clearer path from “I want to learn” to" | t
+                    }}<br class="desktop-break" />
+                    {{ "“look what I can do.” Courses, practice and" | t
+                    }}<br class="desktop-break" />
+                    {{ "progress—all in one learning workspace." | t }}
                 </p>
                 <div class="hero-actions">
                     <a hlmBtn class="primary-cta" routerLink="/courses-grid"
-                        >Find your next course
+                        >{{ "Find your next course" | t }}
                         <span aria-hidden="true">↗</span></a
-                    ><a class="text-cta" href="#how-it-works"
-                        ><span class="play-icon" aria-hidden="true">↓</span> See
-                        how it works</a
+                    ><a
+                        class="text-cta"
+                        href="#how-it-works"
+                        (click)="goToSection($event, 'how-it-works')"
+                        ><span class="play-icon" aria-hidden="true">↓</span>
+                        {{ "See how it works" | t }}</a
                     >
                 </div>
                 <div class="hero-footnote">
                     <span class="mini-mark" aria-hidden="true">✳</span>
                     <p>
-                        For curious people.<br /><strong
-                            >And the teams helping them grow.</strong
-                        >
+                        {{ "For curious people." | t }}<br /><strong>{{
+                            "And the teams helping them grow." | t
+                        }}</strong>
                     </p>
                 </div>
             </div>
             <div
                 class="hero-visual"
-                aria-label="Illustration of the learning journey: learn, practise, progress"
+                [attr.aria-label]="
+                    'Illustration of the learning journey: learn, practise, progress'
+                        | t
+                "
             >
                 <div class="orbit orbit-one"></div>
                 <div class="orbit orbit-two"></div>
                 <div class="orbit orbit-three"></div>
-                <span class="visual-label">YOUR PATH TO WHAT’S NEXT</span
+                <span class="visual-label">{{
+                    "YOUR PATH TO WHAT’S NEXT" | t
+                }}</span
                 ><span class="visual-star" aria-hidden="true">✳</span>
                 <div class="path-card card-learn">
                     <div class="path-card-top">
-                        <span>01 / EXPLORE</span
+                        <span>{{ "01 / EXPLORE" | t }}</span
                         ><i class="bx bx-book-open" aria-hidden="true"></i>
                     </div>
-                    <strong>Make room<br />for new ideas.</strong
-                    ><span class="card-caption">LESSON BY LESSON</span
+                    <strong
+                        >{{ "Make room" | t }}<br />{{
+                            "for new ideas." | t
+                        }}</strong
+                    ><span class="card-caption">{{
+                        "LESSON BY LESSON" | t
+                    }}</span
                     ><span class="card-arrow" aria-hidden="true">↗</span>
                 </div>
                 <div class="path-card card-practise">
                     <div class="path-card-top">
-                        <span>02 / PRACTISE</span
+                        <span>{{ "02 / PRACTISE" | t }}</span
                         ><i class="bx bx-check-square" aria-hidden="true"></i>
                     </div>
-                    <strong>Put knowledge<br />into motion.</strong>
+                    <strong
+                        >{{ "Put knowledge" | t }}<br />{{
+                            "into motion." | t
+                        }}</strong
+                    >
                     <div class="practice-marks" aria-hidden="true">
                         <span>✓</span><span>✓</span><span>→</span>
                     </div>
                 </div>
                 <div class="path-card card-progress">
                     <div class="path-card-top">
-                        <span>03 / GROW</span
+                        <span>{{ "03 / GROW" | t }}</span
                         ><i class="bx bx-award" aria-hidden="true"></i>
                     </div>
-                    <strong>Keep moving<br />forward.</strong
-                    ><span class="card-caption">ONE STEP AT A TIME</span>
+                    <strong
+                        >{{ "Keep moving" | t }}<br />{{
+                            "forward." | t
+                        }}</strong
+                    ><span class="card-caption">{{
+                        "ONE STEP AT A TIME" | t
+                    }}</span>
                 </div>
-                <span class="visual-caption"
-                    >A little curiosity goes a long way.</span
-                >
+                <span class="visual-caption">{{
+                    "A little curiosity goes a long way." | t
+                }}</span>
             </div>
         </section>
         <div class="principles-strip">
-            <span>Intentional learning</span><span aria-hidden="true">✳</span
-            ><span>Meaningful practice</span><span aria-hidden="true">✳</span
-            ><span>Visible progress</span><span aria-hidden="true">✳</span
-            ><span>Shared possibility</span>
+            <span>{{ "Intentional learning" | t }}</span
+            ><span aria-hidden="true">✳</span
+            ><span>{{ "Meaningful practice" | t }}</span
+            ><span aria-hidden="true">✳</span
+            ><span>{{ "Visible progress" | t }}</span
+            ><span aria-hidden="true">✳</span
+            ><span>{{ "Shared possibility" | t }}</span>
         </div>
         <section id="how-it-works" class="journey-section section-wrap">
             <div class="section-heading">
                 <div>
-                    <span class="eyebrow">THE FORMAPATH EXPERIENCE</span>
-                    <h2>Not just content.<br />A way <em>forward.</em></h2>
+                    <span class="eyebrow">{{
+                        "THE FORMAPATH EXPERIENCE" | t
+                    }}</span>
+                    <h2>
+                        {{ "Not just content." | t }}<br />{{ "A way" | t }}
+                        <em>{{ "forward." | t }}</em>
+                    </h2>
                 </div>
                 <p>
-                    Every part of the experience has a purpose: help you learn
-                    something, practise it, and see how far you have come.
+                    {{
+                        "Every part of the experience has a purpose: help you learn something, practise it, and see how far you have come."
+                            | t
+                    }}
                 </p>
             </div>
             <ol class="journey">
@@ -165,8 +260,8 @@
                             aria-hidden="true"
                         ></i>
                     </div>
-                    <h3>{{ step.title }}</h3>
-                    <p>{{ step.copy }}</p>
+                    <h3>{{ step.title | t }}</h3>
+                    <p>{{ step.copy | t }}</p>
                 </li>
             </ol>
         </section>
@@ -174,25 +269,26 @@
             <div class="section-wrap">
                 <div class="section-heading">
                     <div>
-                        <span class="eyebrow"
-                            >ONE PLATFORM. SHARED DIRECTION.</span
-                        >
+                        <span class="eyebrow">{{
+                            "ONE PLATFORM. SHARED DIRECTION." | t
+                        }}</span>
                         <h2>
-                            Personal growth.<br /><em
-                                >Collective possibility.</em
-                            >
+                            {{ "Personal growth." | t }}<br /><em>{{
+                                "Collective possibility." | t
+                            }}</em>
                         </h2>
                     </div>
                     <p>
-                        Different responsibilities. One connected learning
-                        experience for the people learning, teaching and
-                        leading.
+                        {{
+                            "Different responsibilities. One connected learning experience for the people learning, teaching and leading."
+                                | t
+                        }}
                     </p>
                 </div>
                 <div
                     class="role-switcher"
                     role="group"
-                    aria-label="Explore by role"
+                    [attr.aria-label]="'Explore by role' | t"
                 >
                     <button
                         *ngFor="let item of roles; let i = index"
@@ -203,35 +299,40 @@
                         aria-controls="role-detail"
                         (click)="selectedRole = i"
                     >
-                        {{ item.name }}<span aria-hidden="true">↗</span>
+                        {{ item.name | t }}<span aria-hidden="true">↗</span>
                     </button>
                 </div>
                 <div class="role-detail" id="role-detail" aria-live="polite">
                     <div class="role-art" aria-hidden="true">
                         <span class="role-art-label"
-                            >A SPACE TO
+                            >{{ "A SPACE TO" | t }}
                             {{
-                                selectedRole === 0
+                                (selectedRole === 0
                                     ? "LEARN"
                                     : selectedRole === 1
                                       ? "CREATE"
                                       : selectedRole === 2
                                         ? "GUIDE"
                                         : "CONNECT"
+                                ) | t
                             }}</span
                         ><i [class]="'bx bx-' + role.icon"></i
-                        ><span class="role-art-number">{{ role.number }}</span>
+                        ><span class="role-art-number">{{
+                            role.number | t
+                        }}</span>
                         <div class="role-art-circle"></div>
                     </div>
                     <div class="role-copy">
                         <span class="eyebrow"
-                            >FOR {{ role.name | uppercase }}</span
+                            >{{ "FOR" | t }}
+                            {{ role.name | t | uppercase }}</span
                         >
-                        <h3>{{ role.title }}</h3>
-                        <p>{{ role.description }}</p>
+                        <h3>{{ role.title | t }}</h3>
+                        <p>{{ role.description | t }}</p>
                         <ul>
                             <li *ngFor="let feature of role.features">
-                                <span aria-hidden="true">↗</span>{{ feature }}
+                                <span aria-hidden="true">↗</span
+                                >{{ feature | t }}
                             </li>
                         </ul>
                         <a
@@ -242,15 +343,16 @@
                                     : '/profile-authentication'
                             "
                             >{{
-                                auth.isLoggedIn()
+                                (auth.isLoggedIn()
                                     ? "Open your workspace"
                                     : "Sign in to your workspace"
+                                ) | t
                             }}
                             <span aria-hidden="true">→</span></a
-                        ><small *ngIf="selectedRole > 0"
-                            >Staff access is managed by your platform
-                            administrator.</small
-                        >
+                        ><small *ngIf="selectedRole > 0">{{
+                            "Staff access is managed by your platform administrator."
+                                | t
+                        }}</small>
                     </div>
                 </div>
             </div>
@@ -258,16 +360,24 @@
         <section id="course-library" class="library-section section-wrap">
             <div class="section-heading">
                 <div>
-                    <span class="eyebrow">FROM THE COURSE LIBRARY</span>
-                    <h2>What will you<br /><em>make room for?</em></h2>
+                    <span class="eyebrow">{{
+                        "FROM THE COURSE LIBRARY" | t
+                    }}</span>
+                    <h2>
+                        {{ "What will you" | t }}<br /><em>{{
+                            "make room for?" | t
+                        }}</em>
+                    </h2>
                 </div>
                 <div>
                     <p>
-                        Explore courses available on FormaPath.<br />Your next
-                        chapter could start right here.
+                        {{ "Explore courses available on FormaPath." | t
+                        }}<br />{{
+                            "Your next chapter could start right here." | t
+                        }}
                     </p>
                     <a class="text-cta" routerLink="/courses-grid"
-                        >Explore the full library
+                        >{{ "Explore the full library" | t }}
                         <span aria-hidden="true">↗</span></a
                     >
                 </div>
@@ -276,7 +386,7 @@
                 *ngIf="loading"
                 class="course-preview-grid"
                 role="status"
-                aria-label="Loading course previews"
+                [attr.aria-label]="'Loading course previews' | t"
                 aria-busy="true"
             >
                 <hlm-skeleton
@@ -286,10 +396,10 @@
             </div>
             <div *ngIf="!loading && error" class="library-state" role="alert">
                 <i class="bx bx-cloud" aria-hidden="true"></i>
-                <h3>A brief pause in discovery.</h3>
-                <p>{{ error }}</p>
+                <h3>{{ "A brief pause in discovery." | t }}</h3>
+                <p>{{ error | t }}</p>
                 <button hlmBtn variant="outline" (click)="loadCourses()">
-                    Try again
+                    {{ "Try again" | t }}
                 </button>
             </div>
             <div
@@ -297,14 +407,16 @@
                 class="library-state"
             >
                 <i class="bx bx-book-open" aria-hidden="true"></i>
-                <h3>Room for what comes next.</h3>
+                <h3>{{ "Room for what comes next." | t }}</h3>
                 <p>
-                    No courses are available in the library yet. Check back as
-                    new courses are published.
+                    {{
+                        "No courses are available in the library yet. Check back as new courses are published."
+                            | t
+                    }}
                 </p>
-                <a hlmBtn variant="outline" routerLink="/courses-grid"
-                    >Open the library</a
-                >
+                <a hlmBtn variant="outline" routerLink="/courses-grid">{{
+                    "Open the library" | t
+                }}</a>
             </div>
             <div
                 *ngIf="!loading && !error && courses.length"
@@ -324,14 +436,14 @@
                             [class.cover-three]="i === 2"
                             aria-hidden="true"
                         >
-                            <span>{{ course.category || "LEARNING" }}</span
+                            <span>{{ course.category || "LEARNING" | t }}</span
                             ><i class="bx bx-book-open"></i>
                             <div class="cover-ring"></div>
                             <span class="cover-arrow">↗</span>
                         </div>
                         <div class="preview-body">
                             <span hlmBadge variant="secondary">{{
-                                course.category || "Course"
+                                course.category || "Course" | t
                             }}</span>
                             <h3>{{ course.title }}</h3>
                             <p>{{ course.description }}</p>
@@ -339,9 +451,9 @@
                                 <span *ngIf="course.trainer?.firstname"
                                     >{{ course.trainer.firstname }}
                                     {{ course.trainer.lastname }}</span
-                                ><span class="preview-link"
-                                    >View course ↗</span
-                                >
+                                ><span class="preview-link">{{
+                                    "View course ↗" | t
+                                }}</span>
                             </div>
                         </div></a
                     >
@@ -350,28 +462,32 @@
         </section>
         <section class="care-section section-wrap">
             <div class="care-header">
-                <span class="eyebrow"
-                    >FOCUS ON GROWTH. WE MAKE ROOM FOR IT.</span
-                >
-                <h2>Thoughtful by <em>design.</em></h2>
+                <span class="eyebrow">{{
+                    "FOCUS ON GROWTH. WE MAKE ROOM FOR IT." | t
+                }}</span>
+                <h2>
+                    {{ "Thoughtful by" | t }} <em>{{ "design." | t }}</em>
+                </h2>
             </div>
             <div class="care-grid">
                 <article>
                     <i class="bx bx-line-chart" aria-hidden="true"></i>
-                    <h3>Progress with context.</h3>
+                    <h3>{{ "Progress with context." | t }}</h3>
                     <p>
-                        Your workspace brings together learning progress, course
-                        activity and assessment results—so the next step is
-                        easier to see.
+                        {{
+                            "Your workspace brings together learning progress, course activity and assessment results—so the next step is easier to see."
+                                | t
+                        }}
                     </p>
                 </article>
                 <article>
                     <i class="bx bx-shield-quarter" aria-hidden="true"></i>
-                    <h3>Protection you control.</h3>
+                    <h3>{{ "Protection you control." | t }}</h3>
                     <p>
-                        Add authenticator-based two-factor authentication to
-                        your account, with single-use recovery codes when you
-                        need another way in.
+                        {{
+                            "Add authenticator-based two-factor authentication to your account, with single-use recovery codes when you need another way in."
+                                | t
+                        }}
                     </p>
                     <a
                         class="text-cta"
@@ -380,25 +496,30 @@
                                 ? '/account/security'
                                 : '/profile-authentication'
                         "
-                        >Explore account security ↗</a
+                        >{{ "Explore account security ↗" | t }}</a
                     >
                 </article>
                 <article>
                     <i class="bx bx-devices" aria-hidden="true"></i>
-                    <h3>A place for your pace.</h3>
+                    <h3>{{ "A place for your pace." | t }}</h3>
                     <p>
-                        Move between your learning workspace, course lessons and
-                        assessments. Keep your learning within reach, on desktop
-                        or mobile.
+                        {{
+                            "Move between your learning workspace, course lessons and assessments. Keep your learning within reach, on desktop or mobile."
+                                | t
+                        }}
                     </p>
                 </article>
             </div>
         </section>
         <section class="closing-section">
             <div class="closing-orbit" aria-hidden="true"></div>
-            <span class="eyebrow">THE NEXT STEP IS YOURS</span>
-            <h2>Big possibilities.<br /><em>One small beginning.</em></h2>
-            <p>Bring your curiosity. Find your direction.</p>
+            <span class="eyebrow">{{ "THE NEXT STEP IS YOURS" | t }}</span>
+            <h2>
+                {{ "Big possibilities." | t }}<br /><em>{{
+                    "One small beginning." | t
+                }}</em>
+            </h2>
+            <p>{{ "Bring your curiosity. Find your direction." | t }}</p>
             <a
                 hlmBtn
                 class="closing-cta"
@@ -407,9 +528,10 @@
                 "
                 [queryParams]="auth.isLoggedIn() ? {} : { tab: 'register' }"
                 >{{
-                    auth.isLoggedIn()
+                    (auth.isLoggedIn()
                         ? "Continue your journey"
                         : "Start your learning journey"
+                    ) | t
                 }}
                 <span aria-hidden="true">↗</span></a
             ><span class="closing-star" aria-hidden="true">✳</span>
@@ -424,32 +546,48 @@
                     >FormaPath<span class="brand-period">.</span></a
                 >
                 <p>
-                    A clear path to capability.<br />For people. For teams. For
-                    what’s next.
+                    {{ "A clear path to capability." | t }}<br />{{
+                        "For people. For teams. For what’s next." | t
+                    }}
                 </p>
             </div>
-            <nav aria-label="Explore">
-                <strong>Explore</strong
-                ><a routerLink="/courses-grid">Course library</a
-                ><a href="#how-it-works">The experience</a
-                ><a href="#for-every-role">For every role</a>
+            <nav [attr.aria-label]="'Explore' | t">
+                <strong>{{ "Explore" | t }}</strong
+                ><a routerLink="/courses-grid">{{ "Course library" | t }}</a
+                ><a
+                    href="#how-it-works"
+                    (click)="goToSection($event, 'how-it-works')"
+                    >{{ "The experience" | t }}</a
+                ><a
+                    href="#for-every-role"
+                    (click)="goToSection($event, 'for-every-role')"
+                    >{{ "For every role" | t }}</a
+                >
             </nav>
-            <nav aria-label="Your account">
-                <strong>Your account</strong
-                ><a routerLink="/profile-authentication">Sign in</a
+            <nav [attr.aria-label]="'Your account' | t">
+                <strong>{{ "Your account" | t }}</strong
+                ><a routerLink="/profile-authentication">{{ "Sign in" | t }}</a
                 ><a
                     routerLink="/profile-authentication"
                     [queryParams]="{ tab: 'register' }"
-                    >Create an account</a
-                ><a routerLink="/forgot-password">Account recovery</a>
+                    >{{ "Create an account" | t }}</a
+                ><a routerLink="/forgot-password">{{
+                    "Account recovery" | t
+                }}</a>
             </nav>
         </div>
         <div class="footer-bottom">
             <span>© {{ year }} FormaPath.</span
             ><span
-                >LEARN WITH PURPOSE. GROW AT YOUR PACE.
+                >{{ "LEARN WITH PURPOSE. GROW AT YOUR PACE." | t }}
                 <span aria-hidden="true">↗</span></span
-            ><a href="#landing-content">Back to top ↑</a>
+            ><a
+                href="#landing-content"
+                (click)="goToSection($event, 'landing-content')"
+                >{{ "Back to top ↑" | t }}</a
+            >
         </div>
     </footer>
 </div>
+
+<app-landing-chat />

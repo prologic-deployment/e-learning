@@ -1,0 +1,136 @@
+<div class="chat-widget product-page">
+    <section
+        *ngIf="open"
+        #panel
+        id="landing-chat-panel"
+        class="chat-panel"
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="landing-chat-title"
+        (keydown.escape)="close(); $event.stopPropagation()"
+    >
+        <header>
+            <div>
+                <h2 id="landing-chat-title">{{ "Learning assistant" | t }}</h2>
+                <p>{{ "Ask about courses and learning." | t }}</p>
+            </div>
+            <button
+                hlmBtn
+                variant="ghost"
+                size="icon"
+                (click)="close()"
+                [attr.aria-label]="'Close chat' | t"
+            >
+                <i class="bx bx-x" aria-hidden="true"></i>
+            </button>
+        </header>
+        <div
+            class="chat-log"
+            #log
+            role="log"
+            aria-live="polite"
+            aria-relevant="additions"
+            [attr.aria-label]="'Learning assistant' | t"
+        >
+            <p class="welcome">
+                {{
+                    "Hello! Ask me about courses, trainers or learning on FormaPath."
+                        | t
+                }}
+            </p>
+            <article
+                *ngFor="let message of messages"
+                [class.user-message]="message.role === 'user'"
+                class="chat-message"
+            >
+                <p>{{ message.content }}</p>
+                <nav
+                    *ngIf="message.sources?.length"
+                    [attr.aria-label]="'Course sources' | t"
+                >
+                    <a
+                        *ngFor="let source of message.sources"
+                        [href]="source.url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >{{ source.title }} ↗</a
+                    >
+                </nav>
+            </article>
+            <p *ngIf="loading" role="status">{{ "Thinking…" | t }}</p>
+        </div>
+        <div *ngIf="error" class="chat-error" role="alert">{{ error | t }}</div>
+        <div *ngIf="!auth.isLoggedIn()" class="guest-notice">
+            <p>{{ "Chat is available to signed-in accounts." | t }}</p>
+            <a
+                hlmBtn
+                routerLink="/profile-authentication"
+                [queryParams]="{ returnUrl: '/' }"
+                >{{ "Sign in to chat" | t }}</a
+            >
+        </div>
+        <form *ngIf="auth.isLoggedIn()" (ngSubmit)="send()">
+            <label hlmLabel for="landing-chat-message">{{
+                "Your message" | t
+            }}</label>
+            <textarea
+                #input
+                hlmInput
+                id="landing-chat-message"
+                name="message"
+                [(ngModel)]="draft"
+                maxlength="2000"
+                rows="2"
+                [disabled]="loading"
+                [attr.aria-label]="'Your message' | t"
+            ></textarea>
+            <div class="chat-actions">
+                <button
+                    hlmBtn
+                    type="button"
+                    variant="ghost"
+                    [disabled]="loading || !messages.length"
+                    (click)="clear()"
+                >
+                    {{ "Clear conversation" | t }}</button
+                ><button
+                    *ngIf="loading"
+                    hlmBtn
+                    type="button"
+                    variant="outline"
+                    (click)="cancel()"
+                >
+                    {{ "Cancel request" | t }}</button
+                ><button
+                    *ngIf="!loading"
+                    hlmBtn
+                    type="submit"
+                    [disabled]="!draft.trim()"
+                >
+                    {{ "Send" | t }} ↗
+                </button>
+            </div>
+        </form>
+        <small>{{
+            "AI answers can be inaccurate. Check important details." | t
+        }}</small>
+    </section>
+    <button
+        #launcher
+        hlmBtn
+        class="chat-launcher"
+        (click)="toggle()"
+        [attr.aria-expanded]="open"
+        aria-controls="landing-chat-panel"
+        [attr.aria-label]="
+            (open ? 'Close chat' : 'Open learning assistant') | t
+        "
+    >
+        <i
+            class="bx"
+            [class.bx-message-rounded-dots]="!open"
+            [class.bx-x]="open"
+            aria-hidden="true"
+        ></i>
+    </button>
+</div>

@@ -65,7 +65,7 @@ declare let $: any;
             if (!(event instanceof NavigationEnd)) {
             return;
             }
-            window.scrollTo(0, 0);
+            // Router scrolling handles fragments and back/forward restoration.
         });
     }
 

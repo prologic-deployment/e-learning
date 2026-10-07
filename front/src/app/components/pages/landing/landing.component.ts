@@ -1,6 +1,12 @@
+import {
+    TranslationModule,
+    TranslationService,
+} from '../../../i18n/translation.module';
+import { ThemeService } from '../../../services/theme.service';
+import { LandingChatComponent } from '../../common/landing-chat/landing-chat.component';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { UiModule } from '../../ui/ui.module';
@@ -9,7 +15,13 @@ import { AuthService } from '../../../services/auth.service';
 @Component({
     selector: 'app-landing',
     standalone: true,
-    imports: [CommonModule, RouterModule, UiModule],
+    imports: [
+        CommonModule,
+        RouterModule,
+        UiModule,
+        TranslationModule,
+        LandingChatComponent,
+    ],
     templateUrl: './landing.component.html',
     styleUrls: ['./landing.component.scss'],
 })
@@ -106,9 +118,30 @@ export class LandingComponent implements OnInit {
     constructor(
         private courseService: CourseService,
         public auth: AuthService,
+        public i18n: TranslationService,
+        public theme: ThemeService,
+        private router: Router,
     ) {}
     ngOnInit() {
+        document.documentElement.lang = this.i18n.language();
+        this.destroyRef.onDestroy(() => { document.documentElement.lang = 'en'; });
         this.loadCourses();
+    }
+    goToSection(event: Event, id: string) {
+        event.preventDefault();
+        this.menuOpen = false;
+        this.router.navigate(['/'], { fragment: id }).then(() => {
+            const section = document.getElementById(id);
+            if (!section) return;
+            section.setAttribute('tabindex', '-1');
+            section.focus({ preventScroll: true });
+            section.scrollIntoView({
+                behavior: matchMedia('(prefers-reduced-motion: reduce)').matches
+                    ? 'auto'
+                    : 'smooth',
+                block: 'start',
+            });
+        });
     }
     get workspace(): string {
         const role = this.auth.getRole();

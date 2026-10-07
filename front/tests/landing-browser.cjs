@@ -71,7 +71,11 @@ const base = process.env.PREVIEW_URL || "http://127.0.0.1:4200";
             fullPage: true,
             animations: "disabled",
         });
-        await page.getByRole("link", { name: /Get started/ }).click();
+        await page.getByRole("button", { name: "Toggle navigation" }).click();
+        await page
+            .locator("#landing-mobile-nav")
+            .getByRole("link", { name: "Create an account" })
+            .click();
         await page.waitForURL("**/profile-authentication?tab=register");
         await page
             .getByRole("heading", { name: "Your path starts here." })
@@ -163,7 +167,7 @@ const base = process.env.PREVIEW_URL || "http://127.0.0.1:4200";
                 .waitFor();
             assert.equal(
                 await page
-                    .getByRole("link", { name: /My workspace/ })
+                    .locator(".header-actions .small-cta")
                     .getAttribute("href"),
                 role === "user" ? "/dashboard" : `/${role}-dashboard`,
             );

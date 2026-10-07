@@ -1171,3 +1171,163 @@ h2 em {
         scroll-behavior: auto !important;
     }
 }
+
+/* Shared preferences: language and theme stay available at mobile widths. */
+.language-select {
+    background: transparent;
+    color: inherit;
+    border: 1px solid #cad8d1;
+    border-radius: 7px;
+    padding: 7px 5px;
+    font-size: 11px;
+    cursor: pointer;
+    max-width: 58px;
+}
+.language-select option {
+    background: #f7faf5;
+    color: #1d3557;
+}
+.theme-toggle {
+    color: inherit;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+.header-actions {
+    gap: 12px;
+}
+.site-header {
+    flex-wrap: wrap;
+}
+.desktop-nav {
+    gap: 20px;
+}
+.landing section[tabindex="-1"]:focus,
+.landing main[tabindex="-1"]:focus {
+    outline: none;
+}
+:host-context(.dark) {
+    .landing {
+        --ink: #edf5ed;
+        --paper: #101d30;
+        --muted-ink: #b5c7d4;
+        background: var(--paper);
+    }
+    .brand-symbol {
+        background: #a8dadc;
+        color: #1d3557;
+    }
+    .brand-symbol > span {
+        color: #1d3557;
+    }
+    .small-cta {
+        background: #a8dadc !important;
+        color: #1d3557 !important;
+    }
+    .roles-section,
+    .library-state {
+        background: #172a40;
+        border-color: #344d60;
+    }
+    .role-art,
+    .closing-section {
+        background: #13233a;
+        color: #f1faee;
+    }
+    .role-switcher,
+    .journey,
+    .journey li,
+    .principles-strip,
+    .footer-bottom {
+        border-color: #344d60;
+    }
+    .role-switcher button {
+        color: #b5c7d4;
+    }
+    .role-switcher button.active {
+        color: #f1faee;
+    }
+    .preview-card,
+    .mobile-nav {
+        background: #172a40;
+        border-color: #344d60;
+        color: #edf5ed;
+    }
+    .preview-footer {
+        border-color: #344d60;
+    }
+    .library-state [hlmBtn] {
+        background: #243e54;
+        color: #edf5ed;
+        border-color: #456276;
+    }
+    .course-skeleton {
+        background: #243e54;
+    }
+    .mobile-toggle {
+        color: #edf5ed;
+    }
+    .serif-word,
+    .section-heading h2 em,
+    .care-header h2 em,
+    .visual-label,
+    .visual-caption,
+    .step-number,
+    .mini-mark,
+    .care-grid > article > i {
+        color: #a8dadc;
+    }
+    .language-select {
+        border-color: #456276;
+    }
+    .language-select option {
+        background: #172a40;
+        color: #edf5ed;
+    }
+    .landing-skip {
+        background: #172a40;
+    }
+    .play-icon {
+        border-color: #456276;
+    }
+    .orbit {
+        border-color: #456276;
+    }
+}
+@media (max-width: 1080px) and (min-width: 781px) {
+    .desktop-nav {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        padding-top: 8px;
+    }
+}
+@media (max-width: 780px) {
+    .site-header {
+        gap: 8px;
+    }
+    .header-actions {
+        gap: 4px;
+    }
+    .header-actions .small-cta {
+        display: none;
+    }
+    .theme-toggle {
+        width: 32px;
+        height: 34px;
+    }
+    .language-select {
+        max-width: 51px;
+    }
+    .mobile-nav {
+        top: 76px;
+    }
+    .brand {
+        font-size: 21px;
+    }
+    .hero h1 {
+        overflow-wrap: normal;
+    }
+    .landing-footer {
+        padding-bottom: 85px;
+    }
+}

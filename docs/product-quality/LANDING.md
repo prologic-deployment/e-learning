@@ -43,3 +43,40 @@ requests canceled before retry; finalize clears pending state.
 ## Local use
 Pull v1.0, run npm ci in front if necessary, and start the backend and frontend in
 separate terminals. Open http://localhost:4200/ to see the landing page first.
+
+## Navigation, translation, theme and assistant follow-up
+
+- Section links now explicitly navigate with an Angular fragment and focus/scroll the
+  matching section. Removed the root component's unconditional scroll-to-top handler,
+  which conflicted with fragment navigation. Router anchor scrolling and back/forward
+  scroll restoration are enabled. Desktop, mobile, hero, skip and footer anchors use
+  the same behavior and respect reduced motion.
+- Added a reusable `TranslationModule`, `TranslationService` and `t` pipe with English
+  fallback and French UI copy. Landing sections, role descriptions, navigation, labels,
+  error/empty states and the assistant UI switch immediately. Locale persists in
+  `formapath-language`; document language follows the landing selection. Course data
+  and conversation content are not falsely presented as translated. Other application
+  pages have not been translated by this feature.
+- Light/dark control persists using the existing `lms-theme` preference. The landing
+  previously used fixed light surfaces; its sections, navigation, cards, typography,
+  controls and chat panel now have appropriate dark surfaces and readable contrast.
+- A standalone, fixed bottom-right assistant opens a nonmodal, named chat dialog.
+  Escape closes it and restores launcher focus. It fits mobile visual layout, uses a
+  scrolling conversation log, and provides clear/send/cancel/error/retry states.
+- Uses the existing protected `POST /api/chatbot/chat` contract (message plus history).
+  Guest visitors see a sign-in CTA with returnUrl=/; no authentication or quota bypass
+  was introduced. No chat contents are written to localStorage. Responses are rendered
+  as text, not trusted HTML; source links only accept HTTP(S), with noopener/noreferrer.
+  Pending requests are bounded and canceled on navigation; cancellation preserves
+  the draft. Backend/provider failure preserves the message for retry.
+
+### Follow-up verification
+`front/tests/landing-controls.cjs` passed: actual section scroll positions/fragments,
+EN/FR persistence, light/dark persistence, French mobile menu, no overflow at
+320/390/768/1440, fixed launcher during scrolling, panel viewport bounds, guest sign-in,
+Escape/focus, request/history format, failure/retry, quota feedback, cancellation,
+unsafe HTML/link handling, and no browser page errors. Chat responses in these tests
+are explicitly isolated fixtures: a live Gemini/RAG answer was NOT verified, and still
+requires the backend's AI configuration and a signed-in account. Existing landing
+browser regressions and the Angular development build also passed. Production build
+and full-screen-reader verification remain outside this test run.
