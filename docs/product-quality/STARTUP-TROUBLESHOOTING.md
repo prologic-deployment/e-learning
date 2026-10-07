@@ -57,7 +57,7 @@ Invoke-RestMethod http://127.0.0.1:5000/
 
 If the backend reports a shutdown signal, restart it and identify what interrupted
 its terminal. If `.env` uses a custom `PORT`, align all API/socket/upload targets in
-`front/proxy.conf.json` and restart Angular. Never share .env or credentials in logs.
+`API_PROXY_TARGET` for `front/proxy.conf.cjs` and restart Angular. Never share .env or credentials in logs.
 The frontend cannot make a stopped backend available.
 
 ## Verification

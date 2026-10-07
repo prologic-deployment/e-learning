@@ -4,7 +4,7 @@ const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
 const proxy = require('http-proxy').createProxyServer({
-    target: process.env.API_TARGET || 'http://127.0.0.1:5000',
+    target: process.env.API_PROXY_TARGET || process.env.API_TARGET || 'http://127.0.0.1:5000',
     changeOrigin: true,
     ws: true,
 });

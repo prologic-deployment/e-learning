@@ -87,6 +87,12 @@ app.use("/api/chatbot", chatbotRoutes);
 app.use("/api/nlp", nlpRoutes);
 app.use("/api/recommendations", recommendationRoutes);
 
+// Readiness, not authentication: no session, secrets or account information exposed.
+app.get('/api/health', (req, res) => {
+  const ready = require('mongoose').connection.readyState === 1;
+  res.set('Cache-Control', 'no-store').status(ready ? 200 : 503).json({ready});
+});
+
 app.get("/", async (req, res) => {
   const mongoose = require("mongoose");
   const mongoHealth = mongoose.connection.readyState === 1;

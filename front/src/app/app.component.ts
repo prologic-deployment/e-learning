@@ -33,7 +33,7 @@ declare let $: any;
 
     constructor(
         private router: Router,
-        private socketService: SocketService,
+        public socketService: SocketService,
         private authService: AuthService, private toast:ToastService
     ) {}
 

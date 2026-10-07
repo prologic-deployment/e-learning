@@ -1,3 +1,7 @@
+<div class="product-alert" role="status" *ngIf="!isAuthPage && (socketService.state$ | async) === 'offline'">
+    Live notifications are disconnected. Check that the backend is running, then retry.
+    <button hlmBtn variant="outline" type="button" (click)="socketService.retry()">Retry notifications</button>
+</div>
 <app-navbar *ngIf="!isLandingPage && !isAuthPage && !workspaceEnabled && !(location == '/thank-you' || location == '/coming-soon')"></app-navbar>
 
 <app-workspace-shell><router-outlet></router-outlet></app-workspace-shell>
