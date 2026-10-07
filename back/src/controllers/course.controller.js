@@ -2,7 +2,7 @@
 const Course = require("../models/Course");
 const Enrollment = require("../models/Enrollment");
 const Purchase = require("../models/Purchase");
-const { invalidateCache } = require("../middlewares/cache.middleware");  
+const { invalidateCache } = require("../middlewares/cache.middleware");
 const { notifyNewCourse } = require("../services/notification.service");
 const config = require("../config/env");
 
@@ -95,7 +95,7 @@ exports.getAllCourses = async (req, res) => {
     const total = await Course.countDocuments(filter);
 
     const courses = await Course.find(filter)
-      .populate("trainer", "firstname lastname") // ✅ no trainer email in listings
+      .populate("trainer", "firstname lastname") //  no trainer email in listings
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 })
@@ -121,7 +121,7 @@ exports.getCourseById = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id)
       .select(req.user ? "+isArchived +finalExam.questions.correctAnswer +finalExam.questions.correctAnswers" : "+isArchived")
-      .populate("trainer", "firstname lastname"); // ✅ never expose trainer email
+      .populate("trainer", "firstname lastname"); //  never expose trainer email
 
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
@@ -233,7 +233,11 @@ exports.updateCourse = async (req, res) => {
     if (price !== undefined) course.price = price;
     if (category) course.category = category;
     // ✅ Only admins flip approval, and non-admin price changes require re-approval
-    if (isApproved !== undefined && userRole === "admin") course.isApproved = isApproved;
+    if (isApproved !== undefined && userRole === "admin") {
+      if (typeof isApproved !== 'boolean') return res.status(400).json({message:'isApproved must be a boolean.'});
+      if (isApproved) return res.status(400).json({message:'Use the course approval action to publish after curriculum validation.'});
+      course.isApproved = false;
+    }
     if (userRole !== "admin" && (title || description || tags || price !== undefined || category)) {
       course.isApproved = false;
     }
@@ -296,7 +300,7 @@ exports.deleteCourse = async (req, res) => {
 exports.approveCourse = async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     // ✅ Normaliser le role
     const userRole = Array.isArray(req.user.role) ? req.user.role[0] : req.user.role;
     if (userRole !== "admin") return res.status(403).json({ message: "Access denied" });

@@ -73,3 +73,27 @@ and 95% for a non-exact multiple-response final answer. 390/768/1440 bounds and 
 hover checked. Screenshot is explicitly test content, visually inspected. Test emails
 are diverted to a test sink; SMTP, media upload/streaming and passing-certificate generation
 were not verified by this run. No production data was changed.
+
+### Publication and dirty-state hardening
+Direct metadata updates can no longer publish a course: admins must use the approval
+endpoint with curriculum validation. Non-boolean approval values are rejected. A real
+API regression confirms an incomplete draft remains unpublished after a bypass attempt.
+Dirty baselines are now per resource; saving metadata, a quiz or an exam no longer clears
+other resources' unsaved warnings. Selected lesson files also trigger unload protection.
+There is still no SPA navigation guard; save before leaving the builder through app links.
+
+Latest hardening regression: 16/16 tests passed across assessment authoring, staff,
+security helpers, learning progress and cache/loading suites. Development compilation
+passed. The production build did NOT complete: the process reported `Killed` during
+bundle setup in this sandbox. No production-build success is claimed.
+Push status: builder feature 2d705a8 reached origin/v1.0; the subsequent hardening push
+failed because HTTPS credentials were unavailable. Emoji/icon cleanup and the remaining
+toast audit are not complete. No SPA leave guard has been implemented.
+
+## Latest continuation — prior open items superseded
+The emoji/contextual-icon and toast passes, authoring navigation/logout protection,
+and optimized production build are now complete locally. See `REMAINING-FIXES.md`
+for the exact test scope, recovery history and publication blocker. Earlier statements
+above about an absent SPA guard and a killed production build describe previous runs,
+not the final state. The remote is currently missing, so the continuation commits
+remain local on v1.0.

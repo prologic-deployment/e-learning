@@ -15,7 +15,7 @@ exports.transcribeVideo = async (videoPath) => {
       throw new Error(`Video file not found: ${fullPath}`);
     }
 
-    console.log(`🎬 Transcribing: ${fullPath}`);
+    console.log(` Transcribing: ${fullPath}`);
 
     const FormData = require('form-data');
     const form = new FormData();
@@ -37,7 +37,7 @@ exports.transcribeVideo = async (videoPath) => {
       segments: response.data.segments || []
     };
   } catch (error) {
-    console.error('❌ Transcription error:', error.message);
+    console.error(' Transcription error:', error.message);
     throw new Error(`Transcription failed: ${error.message}`);
   }
 };

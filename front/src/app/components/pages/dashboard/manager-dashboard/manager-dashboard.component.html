@@ -58,7 +58,7 @@
                         class="mb-1"
                         style="font-weight: 700; color: hsl(var(--foreground))"
                     >
-                        📚 Assign Course to Team Members
+                        <i class="bx bx-book-open" aria-hidden="true"></i> Assign Course to Team Members
                     </h4>
                     <small class="text-muted">
                         Assign a course with an optional deadline — team members
@@ -75,7 +75,7 @@
 
                 <!-- Course Select -->
                 <div class="mb-4">
-                    <app-form-field label="📖 Select Course" [required]="true"
+                    <app-form-field label=" Select Course" [required]="true"
                         ><select
                             hlmInput
                             class="form-select mt-1"
@@ -94,7 +94,7 @@
                             >
                                 {{ course.title }} ({{
                                     course.price === 0
-                                        ? "🎁 Free"
+                                        ? " Free"
                                         : course.price + " TND"
                                 }})
                             </option>
@@ -111,7 +111,7 @@
                             color: hsl(var(--foreground));
                         "
                     >
-                        📅 Deadline
+                         Deadline
                         <small class="text-muted fw-normal">(optional)</small>
                     </label>
                     <input
@@ -131,7 +131,7 @@
                         class="text-muted mt-1 d-block"
                         style="font-size: 11px"
                     >
-                        📧 Team members will receive a notification email when a
+                         Team members will receive a notification email when a
                         deadline is set.
                     </small>
                 </div>
@@ -145,7 +145,7 @@
                             color: hsl(var(--foreground));
                         "
                     >
-                        👥 Select Team Members *
+                         Select Team Members *
                     </label>
                     <small
                         class="text-muted d-block mb-2"
@@ -168,7 +168,7 @@
                             *ngIf="teamMembers.length === 0"
                             class="text-center py-4"
                         >
-                            <div style="font-size: 35px">👥</div>
+                            <div style="font-size: 35px"></div>
                             <p class="text-muted mt-2">No team members found</p>
                         </div>
 
@@ -257,7 +257,7 @@
                                     font-weight: 600;
                                 "
                             >
-                                ✅ Selected
+                                <i class="bx bx-check-circle" aria-hidden="true"></i> Selected
                             </span>
                         </div>
                     </div>
@@ -293,7 +293,7 @@
                     "
                 >
                     <span *ngIf="!assignLoading">
-                        📚 Assign Course to
+                        <i class="bx bx-book-open" aria-hidden="true"></i> Assign Course to
                         {{ selectedUserIds.length }} Member(s)
                     </span>
                     <span *ngIf="assignLoading">
@@ -328,7 +328,7 @@
                                 color: hsl(var(--foreground));
                             "
                         >
-                            ⚠️ Overdue Enrollments
+                             Overdue Enrollments
                         </h5>
                         <small class="text-muted"
                             >Members who haven't completed their courses on
@@ -360,12 +360,12 @@
                     class="text-center py-5"
                     style="background: hsl(var(--card)); border-radius: 10px"
                 >
-                    <div style="font-size: 50px">✅</div>
+                    <div style="font-size: 50px"><i class="bx bx-check-circle" aria-hidden="true"></i></div>
                     <h5 class="text-success mt-3" style="font-weight: 700">
                         No overdue enrollments !
                     </h5>
                     <p class="text-muted">
-                        Your team is on track. Great work ! 🎉
+                        Your team is on track. Great work !
                     </p>
                 </div>
 
@@ -483,7 +483,7 @@
                                             cursor: pointer;
                                         "
                                     >
-                                        ⏰ Set Deadline
+                                        <i class="bx bx-time" aria-hidden="true"></i> Set Deadline
                                     </button>
                                 </td>
                             </tr>
@@ -582,7 +582,7 @@
                                 padding: 6px 14px;
                             "
                         >
-                            👔 Manager
+                             Manager
                         </span>
 
                         <div class="mt-4">
@@ -612,7 +612,7 @@
                                 "
                                 [style.opacity]="!selectedAvatar ? '0.5' : '1'"
                             >
-                                📷 Update Profile Picture
+                                 Update Profile Picture
                             </button>
                         </div>
                     </div>
@@ -635,7 +635,7 @@
                                 margin-bottom: 16px;
                             "
                         >
-                            📊 Team Quick Stats
+                            <i class="bx bx-bar-chart-alt-2" aria-hidden="true"></i> Team Quick Stats
                         </h6>
                         <div class="row">
                             <div class="col-6 mb-3">
@@ -661,7 +661,7 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                        👥 Team
+                                         Team
                                     </div>
                                 </div>
                             </div>
@@ -688,7 +688,7 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                        📝 Enrollments
+                                        <i class="bx bx-edit" aria-hidden="true"></i> Enrollments
                                     </div>
                                 </div>
                             </div>
@@ -715,7 +715,7 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                        ✅ Completion
+                                        <i class="bx bx-check-circle" aria-hidden="true"></i> Completion
                                     </div>
                                 </div>
                             </div>
@@ -742,7 +742,7 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                        📈 Progress
+                                         Progress
                                     </div>
                                 </div>
                             </div>
@@ -779,7 +779,7 @@
                                 color: hsl(var(--foreground));
                             "
                         >
-                            ✏️ Edit Profile
+                             Edit Profile
                         </h5>
 
                         <div class="row">
@@ -877,7 +877,7 @@
                             [style.opacity]="profileUpdateLoading ? '0.7' : '1'"
                         >
                             <span *ngIf="!profileUpdateLoading"
-                                >💾 Save Changes</span
+                                ><i class="bx bx-save" aria-hidden="true"></i> Save Changes</span
                             >
                             <span *ngIf="profileUpdateLoading">
                                 <span
@@ -905,7 +905,7 @@
                                 color: hsl(var(--foreground));
                             "
                         >
-                            🔒 Change Password
+                             Change Password
                         </h5>
 
                         <div
@@ -995,7 +995,7 @@
                             [style.opacity]="passwordLoading ? '0.7' : '1'"
                         >
                             <span *ngIf="!passwordLoading"
-                                >🔒 Change Password</span
+                                > Change Password</span
                             >
                             <span *ngIf="passwordLoading">
                                 <span

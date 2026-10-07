@@ -47,7 +47,7 @@ const sendEmailsInBatches = async (recipients, buildEmail, batchSize = 10) => {
     await Promise.all(
       batch.map(user =>
         sendEmail(buildEmail(user)).catch(err =>
-          console.error(`❌ Email to ${user.email} failed:`, err.message)
+          console.error(` Email to ${user.email} failed:`, err.message)
         )
       )
     );
@@ -65,7 +65,7 @@ exports.notifyNewCourse = async (course) => {
         exports.createNotification(
           user._id,
           "NEW_COURSE",
-          "Nouveau cours disponible ! 🎓",
+          "Nouveau cours disponible ! ",
           `Le cours "${course.title}" est maintenant disponible.`,
           { courseId: course._id }
         )
@@ -75,25 +75,25 @@ exports.notifyNewCourse = async (course) => {
     // Emails in background batches
     sendEmailsInBatches(users, (user) => ({
       to: user.email,
-      subject: "🎓 Nouveau cours disponible !",
+      subject: " Nouveau cours disponible !",
       html: `
-        <h2>Bonjour ${user.firstname} ! 👋</h2>
+        <h2>Bonjour ${user.firstname} ! </h2>
         <p>Un nouveau cours est disponible sur la plateforme :</p>
         <div style="background:#f5f5f5;padding:20px;border-radius:8px;margin:20px 0;">
-          <h3 style="color:#2c3e50;">📚 ${course.title}</h3>
+          <h3 style="color:#2c3e50;"> ${course.title}</h3>
           <p>${course.description || ''}</p>
-          <p><strong>Prix :</strong> ${course.price === 0 ? 'Gratuit 🆓' : course.price + ' TND'}</p>
+          <p><strong>Prix :</strong> ${course.price === 0 ? 'Gratuit ' : course.price + ' TND'}</p>
         </div>
         <a href="${config.frontendUrl}/courses-grid"
            style="background:#2c3e50;color:white;padding:12px 25px;text-decoration:none;border-radius:5px;display:inline-block;">
-          🚀 Voir le cours
+           Voir le cours
         </a>
         <br><br>
         <small style="color:#888;">Plateforme E-Learning — Bonne formation !</small>
       `
     })).catch(err => console.error("notifyNewCourse emails error:", err.message));
 
-    console.log(`✅ ${users.length} users notified for the new course`);
+    console.log(` ${users.length} users notified for the new course`);
   } catch (error) {
     console.error("notifyNewCourse error:", error.message);
   }
@@ -107,14 +107,14 @@ exports.notifyBadgeEarned = async (userId, badge) => {
     await exports.createNotification(
       userId,
       "BADGE_EARNED",
-      "Félicitations ! Badge obtenu 🏅",
+      "Félicitations ! Badge obtenu ",
       `Vous avez obtenu le badge "${badge.name}".`,
       { badgeId: badge._id }
     );
 
     await sendEmail({
       to: user.email,
-      subject: "Félicitations ! Badge obtenu 🏅",
+      subject: "Félicitations ! Badge obtenu ",
       html: `
         <h2>Bravo ${user.firstname} !</h2>
         <p>Vous avez obtenu le badge <strong>${badge.name}</strong> !</p>
@@ -134,14 +134,14 @@ exports.notifyDeadlineReminder = async (userId, course, daysLeft) => {
     await exports.createNotification(
       userId,
       "DEADLINE_REMINDER",
-      `⏰ Rappel : ${daysLeft} jour(s) restant(s)`,
+      ` Rappel : ${daysLeft} jour(s) restant(s)`,
       `Il vous reste ${daysLeft} jour(s) pour terminer le cours "${course.title}".`,
       { courseId: course._id }
     );
 
     await sendEmail({
       to: user.email,
-      subject: `⏰ Rappel délai - ${course.title}`,
+      subject: ` Rappel délai - ${course.title}`,
       html: `
         <h2>Bonjour ${user.firstname} !</h2>
         <p>Il vous reste <strong>${daysLeft} jour(s)</strong> pour terminer le cours

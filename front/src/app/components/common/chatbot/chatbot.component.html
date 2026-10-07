@@ -5,8 +5,8 @@
   <button class="chat-bubble-btn" (click)="toggleChat()"
     [class.open]="isOpen"
     title="Assistant IA">
-    <span *ngIf="!isOpen" style="font-size: 26px;">💬</span>
-    <span *ngIf="isOpen" style="font-size: 20px; font-weight: 700;">✕</span>
+    <span *ngIf="!isOpen" style="font-size: 26px;"><i class="bx bx-message-rounded" aria-hidden="true"></i></span>
+    <span *ngIf="isOpen" style="font-size: 20px; font-weight: 700;"></span>
     <span class="chat-bubble-dot"></span>
   </button>
 
@@ -16,7 +16,7 @@
     <!-- Header -->
     <div class="chat-header">
       <div class="d-flex align-items-center gap-2">
-        <div class="bot-avatar">🤖</div>
+        <div class="bot-avatar"><i class="bx bx-bot" aria-hidden="true"></i></div>
         <div>
           <div style="font-weight: 700; font-size: 14px;">EduBot</div>
           <div style="font-size: 11px; opacity: 0.8;">
@@ -25,8 +25,8 @@
         </div>
       </div>
       <div class="d-flex gap-2">
-        <button class="chat-header-btn" (click)="clearChat()" title="Effacer la conversation">🗑️</button>
-        <button class="chat-header-btn" (click)="toggleChat()" title="Fermer">✕</button>
+        <button class="chat-header-btn" (click)="clearChat()" title="Effacer la conversation"><i class="bx bx-trash" aria-hidden="true"></i></button>
+        <button class="chat-header-btn" (click)="toggleChat()" title="Fermer"></button>
       </div>
     </div>
 
@@ -39,7 +39,7 @@
         [class.bot-wrapper]="msg.role === 'model'">
 
         <!-- Bot avatar -->
-        <div *ngIf="msg.role === 'model'" class="bot-msg-avatar">🤖</div>
+        <div *ngIf="msg.role === 'model'" class="bot-msg-avatar"><i class="bx bx-bot" aria-hidden="true"></i></div>
 
         <!-- Message bubble -->
         <div class="message-bubble"
@@ -53,7 +53,7 @@
           <!-- Sources / Course links -->
           <div *ngIf="msg.sources && msg.sources.length > 0" class="sources-section">
             <div style="font-size: 11px; font-weight: 700; color: #457B9D; margin-bottom: 6px;">
-              📚 Cours mentionnés :
+              <i class="bx bx-book-open" aria-hidden="true"></i> Cours mentionnés :
             </div>
             <div *ngFor="let source of msg.sources" class="source-chip">
               <a [href]="source.url" target="_blank">
@@ -70,7 +70,7 @@
 
       <!-- Loading -->
       <div *ngIf="loading" class="message-wrapper bot-wrapper">
-        <div class="bot-msg-avatar">🤖</div>
+        <div class="bot-msg-avatar"><i class="bx bx-bot" aria-hidden="true"></i></div>
         <div class="bot-bubble message-bubble">
           <div class="typing-dots">
             <span></span><span></span><span></span>
@@ -107,7 +107,7 @@
       <button class="send-btn"
         (click)="sendMessage()"
         [disabled]="!message.trim() || loading">
-        <span *ngIf="!loading">➤</span>
+        <span *ngIf="!loading"></span>
         <span *ngIf="loading" class="spinner-border spinner-border-sm"></span>
       </button>
     </div>

@@ -51,7 +51,7 @@ export class CoursesComponent implements OnInit {
     this.http.post(`${this.apiUrl}/enrollments/${courseId}/enroll`, {}).subscribe({
       next: () => {
         this.enrollingId = '';
-        this.enrollSuccess = 'Enrolled successfully ! 🎉';
+        this.enrollSuccess = 'Enrolled successfully ! ';
         setTimeout(() => this.enrollSuccess = '', 3000);
       },
       error: (err) => {

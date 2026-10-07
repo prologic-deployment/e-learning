@@ -31,7 +31,7 @@ exports.addReview = async (req, res) => {
       course: courseId,
       rating,
       comment,
-      isApproved: false // ✅ en attente d'approbation
+      isApproved: false //  en attente d'approbation
     });
 
     checkReviewBadges(req.user._id).catch(console.error);
@@ -43,13 +43,13 @@ exports.addReview = async (req, res) => {
     await createNotification(
       req.user._id,
       "REVIEW_PENDING",
-      "⏳ Review submitted !",
+      " Review submitted !",
       "Your review is pending admin approval.",
       { courseId }
     );
 
     res.status(201).json({
-      message: "Review submitted and pending approval ! ⏳",
+      message: "Review submitted and pending approval ! ",
       review
     });
   } catch (error) {
@@ -62,7 +62,7 @@ exports.getCourseReviews = async (req, res) => {
   try {
     const reviews = await Review.find({
       course: req.params.courseId,
-      isApproved: true  // ✅ seulement approuvés
+      isApproved: true  //  seulement approuvés
     })
       .populate("user", "firstname lastname avatar")
       .sort({ createdAt: -1 });
@@ -150,7 +150,7 @@ exports.approveReview = async (req, res) => {
     await createNotification(
       review.user,
       "REVIEW_APPROVED",
-      "✅ Your review has been approved !",
+      " Your review has been approved !",
       "Your review is now visible to everyone.",
       { courseId: review.course }
     );

@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
     template: `<header class="page-heading editorial-page-heading">
         <div class="heading-copy">
             <span class="eyebrow"
-                ><span aria-hidden="true">✳</span> {{ eyebrow }}</span
+                ><span aria-hidden="true">◇</span> {{ eyebrow }}</span
             ><ng-content select="[pageTitle]" /><ng-content
                 select="[pageDescription]"
             />

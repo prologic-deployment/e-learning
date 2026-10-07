@@ -32,7 +32,7 @@
             <div [style.background]="getCourseColor(course.category)"
               style="height: 200px; display:flex; align-items:center; justify-content:center; border-radius: 8px;">
               <div class="text-center text-white p-3">
-                <div style="font-size: 50px;">{{ getCategoryIcon(course.category) }}</div>
+                <div style="font-size: 50px;"><i [class]="getCategoryIcon(course.category)" aria-hidden="true"></i></div>
                 <h5 class="mt-2 text-white" style="font-size: 14px;">{{ course.title }}</h5>
               </div>
             </div>

@@ -67,9 +67,9 @@ exports.updateProfile = async (req, res) => {
 // Mettre à jour mon avatar
 exports.updateAvatar = async (req, res) => {
   try {
-    console.log('📸 updateAvatar called');
+    console.log(' updateAvatar called');
     console.log('req.file:', req.file);
-    
+
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
@@ -87,7 +87,7 @@ exports.updateAvatar = async (req, res) => {
 
     res.status(200).json({ message: "Avatar updated", user: updated });
   } catch (error) {
-    console.error('❌ Error:', error.message);
+    console.error(' Error:', error.message);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

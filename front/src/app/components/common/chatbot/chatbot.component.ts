@@ -29,16 +29,16 @@ export class ChatbotComponent implements OnInit {
   messages: Message[] = [
     {
       role: 'model',
-      content: '👋 Bonjour ! Je suis **EduBot**, votre assistant IA pour la plateforme e-learning.\n\nJe peux vous aider à :\n- 🔍 Trouver le cours idéal\n- 💰 Connaître les prix\n- 🔗 Obtenir les liens directs vers les cours\n- 👨‍🏫 Trouver un formateur\n\nComment puis-je vous aider ? 🎓',
+      content: ' Bonjour ! Je suis **EduBot**, votre assistant IA pour la plateforme e-learning.\n\nJe peux vous aider à :\n-  Trouver le cours idéal\n-  Connaître les prix\n-  Obtenir les liens directs vers les cours\n-  Trouver un formateur\n\nComment puis-je vous aider ? ',
       timestamp: new Date()
     }
   ];
 
   suggestedQuestions = [
-    '📚 Quels cours sont disponibles ?',
-    '🆓 Y a-t-il des cours gratuits ?',
-    '🐍 Cours Python disponibles ?',
-    '💰 Quel est le cours le moins cher ?'
+    ' Quels cours sont disponibles ?',
+    ' Y a-t-il des cours gratuits ?',
+    ' Cours Python disponibles ?',
+    ' Quel est le cours le moins cher ?'
   ];
 
   constructor(
@@ -79,7 +79,7 @@ export class ChatbotComponent implements OnInit {
       // URLs cliquables (ne matche plus les &quot; échappés)
       .replace(
         /(https?:\/\/[^\s\)]+)/g,
-        '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #457B9D; text-decoration: underline; font-weight: 600;">🔗 $1</a>'
+        '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #457B9D; text-decoration: underline; font-weight: 600;"> $1</a>'
       )
       // Listes avec tirets
       .replace(/^- (.+)$/gm, '<li style="margin: 4px 0;">$1</li>')
@@ -130,7 +130,7 @@ export class ChatbotComponent implements OnInit {
       },
       error: () => {
         this.loading = false;
-        const errMsg = '❌ Une erreur est survenue. Veuillez réessayer dans quelques instants.';
+        const errMsg = ' Une erreur est survenue. Veuillez réessayer dans quelques instants.';
         this.messages.push({
           role: 'model',
           content: errMsg,

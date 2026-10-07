@@ -66,7 +66,7 @@ exports.getRecommendations = async (req, res) => {
       c => !enrolledCourseIds.includes(c._id)
     );
 
-    console.log(`🔍 Available courses for recommendation: ${available_courses.length}`);
+    console.log(` Available courses for recommendation: ${available_courses.length}`);
 
     // ✅ 7. Appeler l'API Flask (authenticated internal call)
     const response = await axios.post(
@@ -92,7 +92,7 @@ exports.getRecommendations = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("❌ Recommendation error:", error.message);
+    console.error(" Recommendation error:", error.message);
     // ✅ Graceful degradation: the UI keeps working without recommendations
     res.status(200).json({ success: true, recommendations: [], user_profile: null });
   }

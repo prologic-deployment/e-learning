@@ -1,3 +1,4 @@
+import { plainSystemText } from '../../../../services/system-text';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
@@ -13,6 +14,7 @@ import * as XLSX from 'xlsx';
     styleUrls: ['./user-dashboard.component.scss'],
 })
 export class UserDashboardComponent implements OnInit, OnDestroy {
+    readonly systemText = plainSystemText;
     certificateDownloading = '';
     downloadCertificate(c: any) {
         if (!c.isValid || this.certificateDownloading) return;
@@ -115,13 +117,13 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     passwordError = '';
 
     tabs = [
-        { id: 'overview', icon: '📊', label: "Vue d'ensemble" },
-        { id: 'courses', icon: '📚', label: 'Mes cours' },
-        { id: 'history', icon: '📜', label: 'Historique' },
-        { id: 'badges', icon: '🏅', label: 'Badges' },
-        { id: 'certificates', icon: '🎓', label: 'Certificats' },
-        { id: 'notifications', icon: '🔔', label: 'Notifications' },
-        { id: 'profile', icon: '👤', label: 'Profil' },
+        { id: 'overview', icon: 'bx bx-bar-chart-alt-2', label: "Vue d'ensemble" },
+        { id: 'courses', icon: 'bx bx-book-open', label: 'Mes cours' },
+        { id: 'history', icon: 'bx bx-history', label: 'Historique' },
+        { id: 'badges', icon: 'bx bx-medal', label: 'Badges' },
+        { id: 'certificates', icon: 'bx bx-graduation', label: 'Certificats' },
+        { id: 'notifications', icon: 'bx bx-bell', label: 'Notifications' },
+        { id: 'profile', icon: 'bx bx-user', label: 'Profil' },
     ];
 
     constructor(
@@ -153,7 +155,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
                 this.playNotificationSound();
 
                 // ✅ Afficher une toast notification
-                this.showToast(notif);
+                // The root notification outlet owns realtime toasts.
             }
         });
 
@@ -207,18 +209,6 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     }
 
     // ✅ Toast notification
-    toastNotif: any = null;
-    showToastVisible = false;
-
-    showToast(notif: any): void {
-        this.toastNotif = notif;
-        this.showToastVisible = true;
-        setTimeout(() => {
-            this.showToastVisible = false;
-            this.toastNotif = null;
-        }, 4000);
-    }
-
     // ✅ Charger uniquement le count
     loadUnreadCount(): void {
         this.http.get<any>(`${this.apiUrl}/notifications`).subscribe({
@@ -273,7 +263,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         this.http.put(`${this.apiUrl}/profile`, this.profileData).subscribe({
             next: () => {
                 this.profileUpdateLoading = false;
-                this.profileUpdateSuccess = 'Profil mis à jour ! ✅';
+                this.profileUpdateSuccess = 'Profil mis à jour ! ';
                 this.loadProfile();
                 setTimeout(() => (this.profileUpdateSuccess = ''), 3000);
             },
@@ -290,7 +280,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         formData.append('avatar', this.selectedAvatar);
         this.http.put(`${this.apiUrl}/profile/avatar`, formData).subscribe({
             next: (res: any) => {
-                this.profileUpdateSuccess = 'Avatar mis à jour ! ✅';
+                this.profileUpdateSuccess = 'Avatar mis à jour ! ';
                 this.selectedAvatar = null;
                 this.avatarPreview = null;
                 const user = this.authService.getCurrentUser();
@@ -450,14 +440,14 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
 
     getNotifIcon(type: string): string {
         const icons: any = {
-            BADGE_EARNED: '🏅',
-            NEW_COURSE: '📚',
-            DEADLINE_REMINDER: '⏰',
-            CERTIFICATE: '🎓',
-            COURSE_ASSIGNED: '📋',
-            QUIZ_PASSED: '✅',
+            BADGE_EARNED: 'bx bx-medal',
+            NEW_COURSE: 'bx bx-book-open',
+            DEADLINE_REMINDER: 'bx bx-time',
+            CERTIFICATE: 'bx bx-graduation',
+            COURSE_ASSIGNED: 'bx bx-task',
+            QUIZ_PASSED: 'bx bx-check-circle',
         };
-        return icons[type] || '🔔';
+        return icons[type] || 'bx bx-bell';
     }
 
     getAverageProgress(): number {
@@ -523,7 +513,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     this.passwordLoading = false;
-                    this.passwordSuccess = 'Mot de passe changé ! ✅';
+                    this.passwordSuccess = 'Mot de passe changé ! ';
                     this.passwordData = {
                         currentPassword: '',
                         newPassword: '',
@@ -539,7 +529,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     }
 
     logout(): void {
-        this.authService.logout();
+        if (!this.authService.logout()) return;
         this.router.navigate(['/profile-authentication']);
     }
 }

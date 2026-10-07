@@ -197,7 +197,7 @@ export class PaidCoursesSinglePageComponent implements OnInit {
             .subscribe({
                 next: () => {
                     this.reviewLoading = false;
-                    this.reviewSuccess = 'Review submitted and pending approval ! ⏳';
+                    this.reviewSuccess = 'Review submitted and pending approval ! ';
                     this.newReview = { rating: 5, comment: '' };
                     this.loadReviews(this.course._id);
                     setTimeout(() => (this.reviewSuccess = ''), 4000);
@@ -226,7 +226,7 @@ export class PaidCoursesSinglePageComponent implements OnInit {
             .subscribe({
                 next: () => {
                     this.reviewLoading = false;
-                    this.reviewSuccess = 'Review updated ! ✅';
+                    this.reviewSuccess = 'Review updated ! ';
                     this.editingReview = null;
                     this.loadReviews(this.course._id);
                     setTimeout(() => (this.reviewSuccess = ''), 3000);
@@ -248,10 +248,6 @@ export class PaidCoursesSinglePageComponent implements OnInit {
         });
     }
 
-    getStars(rating: number): string {
-        return '⭐'.repeat(Math.round(rating));
-    }
-
     enrollCourse(): void {
         // ✅ Rediriger vers login si non connecté
         if (!this.authService.isLoggedIn()) {
@@ -268,7 +264,7 @@ export class PaidCoursesSinglePageComponent implements OnInit {
         this.http.post(`${this.apiUrl}/enrollments/${this.course._id}/enroll`, {}).subscribe({
             next: () => {
                 this.enrollLoading = false;
-                this.enrollSuccess = 'Enrolled successfully ! 🎉';
+                this.enrollSuccess = 'Enrolled successfully ! ';
                 this.isEnrolled = true;
             },
             error: (err) => {
@@ -294,7 +290,7 @@ export class PaidCoursesSinglePageComponent implements OnInit {
         this.cartService.addToCart(this.course._id).subscribe({
             next: () => {
                 this.cartLoading = false;
-                this.cartSuccess = 'Course added to cart ! 🛒';
+                this.cartSuccess = 'Course added to cart ! ';
                 setTimeout(() => (this.cartSuccess = ''), 3000);
             },
             error: (err) => {
@@ -364,15 +360,15 @@ export class PaidCoursesSinglePageComponent implements OnInit {
 
     getCategoryIcon(category: string): string {
         const icons: any = {
-            Development: '💻',
-            Business: '💼',
-            Finance: '💰',
-            'IT & Software': '🖥️',
-            Design: '🎨',
-            Marketing: '📣',
-            'Data Science': '📊',
+            Development: 'bx bx-code-alt',
+            Business: 'bx bx-briefcase',
+            Finance: 'bx bx-wallet',
+            'IT & Software': 'bx bx-desktop',
+            Design: 'bx bx-palette',
+            Marketing: 'bx bx-megaphone',
+            'Data Science': 'bx bx-bar-chart-alt-2',
         };
-        return icons[category] || '📚';
+        return icons[category] || 'bx bx-book-open';
     }
 
     getCourseColor(category: string): string {
@@ -407,8 +403,8 @@ export class PaidCoursesSinglePageComponent implements OnInit {
             next: (res) => {
                 this.nlpLoading = null;
                 this.nlpSuccess = res.cached
-                    ? '✅ Résumé déjà disponible !'
-                    : '✅ Résumé généré avec succès !';
+                    ? ' Résumé déjà disponible !'
+                    : ' Résumé généré avec succès !';
 
                 // ✅ Sauvegarder dans la map locale
                 this.lessonSummaries[lessonId] = {
@@ -439,7 +435,7 @@ export class PaidCoursesSinglePageComponent implements OnInit {
                 this.nlpLoading = null;
                 if (err.status === 503) {
                     this.nlpError =
-                        '⚠️ Service Whisper non disponible. Lancez Flask sur le port 5001.';
+                        ' Service Whisper non disponible. Lancez Flask sur le port 5001.';
                 } else {
                     this.nlpError = err.error?.message || 'Erreur lors de la génération du résumé';
                 }

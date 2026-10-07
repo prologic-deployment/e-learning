@@ -1,3 +1,4 @@
+import { UnsavedAuthoringService } from '../guards/unsaved-authoring.guard';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -13,7 +14,7 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private unsavedAuthoring: UnsavedAuthoringService, private http: HttpClient) {
     try {
       const user = localStorage.getItem('user');
       if (user && user !== 'undefined') {
@@ -59,17 +60,19 @@ export class AuthService {
 
   // Reset Password
   resetPassword(token: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/reset-password/${token}`, { 
-      newPassword: password  // ✅ doit s'appeler newPassword
+    return this.http.post(`${this.apiUrl}/auth/reset-password/${token}`, {
+      newPassword: password  //  doit s'appeler newPassword
     });
   }
 
   // Logout
-  logout(): void {
+  logout(): boolean {
+    if (!this.unsavedAuthoring.prepareLogout()) return false;
     // Capture the existing bearer token before clearing local state.
     const token = this.getToken();
     if (token) this.http.post(`${this.apiUrl}/auth/logout`, {}, {headers: {Authorization: `Bearer ${token}`}}).subscribe({error: () => {}});
     this.clearSession();
+    return true;
   }
   clearSession(): void {
     localStorage.removeItem('token');

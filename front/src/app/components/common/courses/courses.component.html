@@ -8,7 +8,7 @@
     </div>
 
     <!-- Messages -->
-    <div *ngIf="enrollSuccess" class="alert alert-success mb-3">{{ enrollSuccess }}</div>
+    <div *ngIf="enrollSuccess" [appToast]="enrollSuccess" class="alert alert-success mb-3">{{ enrollSuccess }}</div>
     <div *ngIf="enrollError" class="alert alert-danger mb-3">{{ enrollError }}</div>
 
     <!-- Loading -->

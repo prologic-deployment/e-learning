@@ -56,7 +56,7 @@
                             <span>YOUR NEXT<br />CHAPTER</span><i class="bx bx-book-open"></i
                             ><span>STARTS WITH YOU ↗</span>
                         </div>
-                        <span class="art-spark">✳</span
+                        <span class="art-spark"><i class="bx bx-compass" aria-hidden="true"></i></span
                         ><span class="art-caption">STAY CURIOUS.</span>
                     </div>
                 </section>
@@ -171,8 +171,8 @@
                                 >
                                     <span class="list-icon"><i class="bx bx-bell"></i></span>
                                     <div>
-                                        <h3>{{ n.title }}</h3>
-                                        <p>{{ n.message }}</p>
+                                        <h3>{{ systemText(n.title) }}</h3>
+                                        <p>{{ systemText(n.message) }}</p>
                                         <span class="small-muted">{{
                                             n.createdAt | date: 'MMM d, h:mm a'
                                         }}</span>
@@ -222,9 +222,9 @@
                             step.
                         </p>
                         <div class="product-list-item" *ngFor="let b of badges.slice(0, 2)">
-                            <span class="list-icon">{{ b.badge?.icon || '✧' }}</span>
+                            <span class="list-icon"><i class="bx bx-medal" aria-hidden="true"></i></span>
                             <div>
-                                <h3>{{ b.badge?.name }}</h3>
+                                <h3>{{ systemText(b.badge?.name) }}</h3>
                                 <p>{{ b.earnedAt | date: 'MMM d, y' }}</p>
                             </div>
                         </div>
@@ -248,10 +248,10 @@
         ><app-learning-skeleton *ngIf="badgesLoading" />
         <div class="course-grid" *ngIf="!badgesLoading && !errors['badges']">
             <article hlmCard class="surface achievement" *ngFor="let b of badges">
-                <span class="achievement-icon">{{ b.badge?.icon || '✧' }}</span
+                <span class="achievement-icon"><i class="bx bx-medal" aria-hidden="true"></i></span
                 ><span hlmBadge variant="secondary">Earned</span>
-                <h2>{{ b.badge?.name }}</h2>
-                <p>{{ b.badge?.description }}</p>
+                <h2>{{ systemText(b.badge?.name) }}</h2>
+                <p>{{ systemText(b.badge?.description) }}</p>
                 <span class="small-muted">{{ b.earnedAt | date: 'longDate' }}</span>
             </article>
         </div>
@@ -314,8 +314,8 @@
             <div class="product-list-item" *ngFor="let n of notifications">
                 <span class="list-icon"><i class="bx bx-bell"></i></span>
                 <div class="notification-copy">
-                    <h3>{{ n.title }}</h3>
-                    <p>{{ n.message }}</p>
+                    <h3>{{ systemText(n.title) }}</h3>
+                    <p>{{ systemText(n.message) }}</p>
                     <span class="small-muted">{{ n.createdAt | date: 'medium' }}</span>
                 </div>
                 <button
@@ -435,7 +435,7 @@
                         </div>
                     </div>
                     <p class="form-message" aria-live="polite">
-                        {{ profileUpdateError || profileUpdateSuccess }}
+                        {{ profileUpdateError }}
                     </p>
                     <button
                         hlmBtn
@@ -489,7 +489,7 @@
                         </div>
                     </div>
                     <p class="form-message" aria-live="polite">
-                        {{ passwordError || passwordSuccess }}
+                        {{ passwordError }}
                     </p>
                     <button
                         hlmBtn
@@ -508,3 +508,6 @@
         </div></ng-container
     >
 </div>
+
+<span [appToast]="profileUpdateSuccess"></span>
+<span [appToast]="passwordSuccess"></span>

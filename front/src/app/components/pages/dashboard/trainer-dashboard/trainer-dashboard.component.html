@@ -86,7 +86,7 @@
                                     color: hsl(var(--foreground));
                                 "
                             >
-                                📝 Quiz Results
+                                <i class="bx bx-edit" aria-hidden="true"></i> Quiz Results
                             </h4>
                             <small class="text-muted">
                                 {{ quizResults.length }} total |
@@ -106,7 +106,7 @@
                             style="border-radius: 10px"
                             (click)="loadQuizResults()"
                         >
-                            🔄 Refresh
+                             Refresh
                         </button>
                     </div>
 
@@ -133,7 +133,7 @@
                             "
                             (click)="quizResultsFilter = 'passed'"
                         >
-                            ✅ Passed ({{ passedCount }})
+                            <i class="bx bx-check-circle" aria-hidden="true"></i> Passed ({{ passedCount }})
                         </button>
                         <button
                             hlmBtn
@@ -145,7 +145,7 @@
                             "
                             (click)="quizResultsFilter = 'failed'"
                         >
-                            ❌ Failed ({{ failedCount }})
+                            <i class="bx bx-error-circle" aria-hidden="true"></i> Failed ({{ failedCount }})
                         </button>
                     </div>
 
@@ -153,7 +153,7 @@
                         *ngIf="filteredQuizResults.length === 0"
                         class="text-center py-5"
                     >
-                        <div style="font-size: 50px">📝</div>
+                        <div style="font-size: 50px"><i class="bx bx-edit" aria-hidden="true"></i></div>
                         <p class="text-muted mt-2">No quiz results found !</p>
                     </div>
 
@@ -245,8 +245,8 @@
                                         >
                                             {{
                                                 result.type === "lesson_quiz"
-                                                    ? "📝 Lesson Quiz"
-                                                    : "🎓 Final Exam"
+                                                    ? "Lesson Quiz"
+                                                    : "Final Exam"
                                             }}
                                         </span>
                                     </td>
@@ -291,8 +291,8 @@
                                         >
                                             {{
                                                 result.passed
-                                                    ? "✅ Passed"
-                                                    : "❌ Failed"
+                                                    ? "Passed"
+                                                    : "Failed"
                                             }}
                                         </span>
                                     </td>
@@ -402,7 +402,7 @@
                                 padding: 6px 14px;
                             "
                         >
-                            🎓 Trainer
+                            <i class="bx bx-graduation" aria-hidden="true"></i> Trainer
                         </span>
                         <div class="mt-4">
                             <input
@@ -431,7 +431,7 @@
                                 "
                                 [style.opacity]="!selectedAvatar ? '0.5' : '1'"
                             >
-                                📷 Update Profile Picture
+                                 Update Profile Picture
                             </button>
                         </div>
                     </div>
@@ -453,7 +453,7 @@
                                 margin-bottom: 16px;
                             "
                         >
-                            📊 Quick Stats
+                            <i class="bx bx-bar-chart-alt-2" aria-hidden="true"></i> Quick Stats
                         </h6>
                         <div class="row">
                             <div class="col-6 mb-3">
@@ -479,7 +479,7 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                        📚 Courses
+                                        <i class="bx bx-book-open" aria-hidden="true"></i> Courses
                                     </div>
                                 </div>
                             </div>
@@ -506,7 +506,7 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                        ✅ Approved
+                                        <i class="bx bx-check-circle" aria-hidden="true"></i> Approved
                                     </div>
                                 </div>
                             </div>
@@ -533,7 +533,7 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                        👥 Students
+                                         Students
                                     </div>
                                 </div>
                             </div>
@@ -560,7 +560,7 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                        🏆 Rate
+                                        <i class="bx bx-trophy" aria-hidden="true"></i> Rate
                                     </div>
                                 </div>
                             </div>
@@ -595,7 +595,7 @@
                                 color: hsl(var(--foreground));
                             "
                         >
-                            ✏️ Edit Profile
+                             Edit Profile
                         </h5>
                         <div class="row">
                             <div class="col-lg-6">
@@ -689,7 +689,7 @@
                             [style.opacity]="profileUpdateLoading ? '0.7' : '1'"
                         >
                             <span *ngIf="!profileUpdateLoading"
-                                >💾 Save Changes</span
+                                ><i class="bx bx-save" aria-hidden="true"></i> Save Changes</span
                             >
                             <span *ngIf="profileUpdateLoading">
                                 <span
@@ -716,7 +716,7 @@
                                 color: hsl(var(--foreground));
                             "
                         >
-                            🔒 Change Password
+                             Change Password
                         </h5>
                         <div
                             *ngIf="passwordSuccess"
@@ -801,7 +801,7 @@
                             [style.opacity]="passwordLoading ? '0.7' : '1'"
                         >
                             <span *ngIf="!passwordLoading"
-                                >🔒 Change Password</span
+                                > Change Password</span
                             >
                             <span *ngIf="passwordLoading">
                                 <span

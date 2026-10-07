@@ -64,15 +64,15 @@ export class ElearningSchoolDemoComponent implements OnInit {
 
     getCategoryIcon(category: string): string {
       const icons: any = {
-        'Development': '💻',
-        'Business': '💼',
-        'Finance': '💰',
-        'IT & Software': '🖥️',
-        'Design': '🎨',
-        'Marketing': '📣',
-        'Data Science': '📊'
+        'Development': 'bx bx-code-alt',
+        'Business': 'bx bx-briefcase',
+        'Finance': 'bx bx-wallet',
+        'IT & Software': 'bx bx-desktop',
+        'Design': 'bx bx-palette',
+        'Marketing': 'bx bx-megaphone',
+        'Data Science': 'bx bx-bar-chart-alt-2'
       };
-      return icons[category] || '📚';
+      return icons[category] || 'bx bx-book-open';
     }
 
 

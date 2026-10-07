@@ -93,7 +93,7 @@ router.delete("/cache", protect, authorize("admin"), async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "✅ Cache entièrement vidé",
+      message: " Cache entièrement vidé",
       timestamp: new Date().toISOString()
     });
   } catch (error) {
@@ -118,7 +118,7 @@ router.delete("/cache/:pattern", protect, authorize("admin"), async (req, res) =
 
     res.status(200).json({
       success: true,
-      message: `✅ ${count} clé(s) invalidée(s)`,
+      message: ` ${count} clé(s) invalidée(s)`,
       pattern,
       count,
       timestamp: new Date().toISOString()
@@ -135,16 +135,16 @@ router.delete("/cache/:pattern", protect, authorize("admin"), async (req, res) =
 
 router.get("/users", protect, authorize("admin"), async (req, res) => {
   try {
-    console.log("📋 GET /admin/users called");
-    
+    console.log(" GET /admin/users called");
+
     const users = await User.find()
       .select("firstname lastname email role isActive createdAt avatar")
       .sort({ createdAt: -1 });
 
-    console.log("✅ Users found:", users.length);
+    console.log(" Users found:", users.length);
     res.status(200).json(users);
   } catch (error) {
-    console.error("❌ Error:", error.message);
+    console.error(" Error:", error.message);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });

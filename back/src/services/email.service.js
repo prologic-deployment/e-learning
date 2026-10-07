@@ -20,7 +20,7 @@ exports.sendEmail = async ({ to, subject, html }) => {
       subject,
       html
     });
-    console.log(`✅ Email envoyé à ${to}`);
+    console.log(` Email envoyé à ${to}`);
   } catch (error) {
     console.error("Email delivery failed");
     throw error;

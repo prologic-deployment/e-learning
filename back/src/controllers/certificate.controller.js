@@ -66,7 +66,7 @@ exports.generateCertificate = async (req, res) => {
     await createNotification(
       req.user._id,
       "BADGE_EARNED",
-      "🎓 Félicitations ! Certificat obtenu !",
+      " Félicitations ! Certificat obtenu !",
       `Vous avez complété le cours "${courseName}" et obtenu votre certificat !`,
       { courseId }
     );
@@ -74,9 +74,9 @@ exports.generateCertificate = async (req, res) => {
     // 📧 Email
     await sendEmail({
       to: user.email,
-      subject: "🎓 Félicitations ! Certificat obtenu !",
+      subject: " Félicitations ! Certificat obtenu !",
       html: `
-        <h2>Félicitations ${user.firstname} ! 🎓</h2>
+        <h2>Félicitations ${user.firstname} ! </h2>
         <p>Vous avez complété avec succès le cours <strong>${courseName}</strong>.</p>
         <p>Votre certificat est maintenant disponible dans votre dashboard.</p>
         <br>
@@ -88,7 +88,7 @@ exports.generateCertificate = async (req, res) => {
     });
 
     res.status(201).json({
-      message: "Certificate generated successfully 🎓",
+      message: "Certificate generated successfully ",
       certificate,
       downloadUrl: certificateUrl
     });
@@ -128,7 +128,7 @@ exports.verifyCertificate = async (req, res) => {
   try {
     const crypto = require("crypto");
     const certificate = await Certificate.findById(req.params.id)
-      .populate("user", "firstname lastname") // ✅ NO email exposed publicly
+      .populate("user", "firstname lastname") //  NO email exposed publicly
       .populate("course", "title");
 
     if (!certificate) {

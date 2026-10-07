@@ -9,93 +9,93 @@ const { notifyBadgeEarned } = require("./notification.service");
 const BADGE_DEFINITIONS = [
   {
     condition: "first_course",
-    name: "First Step 🎯",
+    name: "First Step ",
     description: "Enrolled in your first course !",
-    icon: "🎯",
+    icon: "bx bx-target-lock",
     color: "#43e97b"
   },
   {
     condition: "courses_3",
-    name: "Curious 📚",
+    name: "Curious ",
     description: "Enrolled in 3 courses !",
-    icon: "📚",
+    icon: "bx bx-book-open",
     color: "#667eea"
   },
   {
     condition: "courses_5",
-    name: "Dedicated 🚀",
+    name: "Dedicated ",
     description: "Enrolled in 5 courses !",
-    icon: "🚀",
+    icon: "bx bx-trending-up",
     color: "#f093fb"
   },
   {
     condition: "courses_10",
-    name: "Expert ⭐",
+    name: "Expert ",
     description: "Enrolled in 10 courses !",
-    icon: "⭐",
+    icon: "bx bx-star",
     color: "#f5a623"
   },
   {
     condition: "first_completed",
-    name: "Achiever ✅",
+    name: "Achiever ",
     description: "Completed your first course !",
-    icon: "✅",
+    icon: "bx bx-check-circle",
     color: "#43e97b"
   },
   {
     condition: "completed_5",
-    name: "Champion 🏆",
+    name: "Champion ",
     description: "Completed 5 courses !",
-    icon: "🏆",
+    icon: "bx bx-trophy",
     color: "#f5a623"
   },
   {
     condition: "completed_10",
-    name: "Master 💎",
+    name: "Master ",
     description: "Completed 10 courses !",
-    icon: "💎",
+    icon: "bx bx-diamond",
     color: "#764ba2"
   },
   {
     condition: "quiz_perfect",
-    name: "Perfectionist 💯",
+    name: "Perfectionist ",
     description: "Got 100% on a quiz !",
-    icon: "💯",
+    icon: "bx bx-check-double",
     color: "#f093fb"
   },
   {
     condition: "fast_learner",
-    name: "Fast Learner ⚡",
+    name: "Fast Learner ",
     description: "Completed a course in less than 7 days !",
-    icon: "⚡",
+    icon: "bx bx-bolt-circle",
     color: "#4facfe"
   },
   {
     condition: "first_review",
-    name: "Reviewer 📝",
+    name: "Reviewer ",
     description: "Left your first review !",
-    icon: "📝",
+    icon: "bx bx-edit",
     color: "#43e97b"
   },
   {
     condition: "reviews_5",
-    name: "Top Reviewer ⭐",
+    name: "Top Reviewer ",
     description: "Left 5 reviews !",
-    icon: "⭐",
+    icon: "bx bx-star",
     color: "#f5a623"
   },
   {
     condition: "first_certificate",
-    name: "Scholar 🎓",
+    name: "Scholar ",
     description: "Earned your first certificate !",
-    icon: "🎓",
+    icon: "bx bx-graduation",
     color: "#667eea"
   },
   {
     condition: "streak_month",
-    name: "On Fire 🔥",
+    name: "On Fire ",
     description: "Completed 3 courses in 1 month !",
-    icon: "🔥",
+    icon: "bx bx-trending-up",
     color: "#f5576c"
   }
 ];
@@ -110,9 +110,9 @@ async function initBadges() {
         { upsert: true, returnDocument: 'after' }
       );
     }
-    console.log("✅ Badges initialized !");
+    console.log(" Badges initialized !");
   } catch (error) {
-    console.log("❌ Badge init error:", error.message);
+    console.log(" Badge init error:", error.message);
   }
 }
 
@@ -134,10 +134,10 @@ async function awardBadgeIfEligible(userId, condition) {
       user.badges.push({ badge: badge._id, earnedAt: new Date() });
       await user.save();
       notifyBadgeEarned(userId, badge);
-      console.log(`🏅 Badge "${badge.name}" awarded to user ${userId}`);
+      console.log(` Badge "${badge.name}" awarded to user ${userId}`);
     }
   } catch (error) {
-    console.log("❌ Badge award error:", error.message);
+    console.log(" Badge award error:", error.message);
   }
 }
 
@@ -152,7 +152,7 @@ async function checkEnrollmentBadges(userId) {
     if (count >= 5) await awardBadgeIfEligible(userId, "courses_5");
     if (count >= 10) await awardBadgeIfEligible(userId, "courses_10");
   } catch (error) {
-    console.log("❌ Enrollment badge check error:", error.message);
+    console.log(" Enrollment badge check error:", error.message);
   }
 }
 
@@ -182,7 +182,7 @@ async function checkCompletionBadges(userId, enrollment) {
     if (thisMonth.length >= 3) await awardBadgeIfEligible(userId, "streak_month");
 
   } catch (error) {
-    console.log("❌ Completion badge check error:", error.message);
+    console.log(" Completion badge check error:", error.message);
   }
 }
 
@@ -195,7 +195,7 @@ async function checkReviewBadges(userId) {
     if (count >= 1) await awardBadgeIfEligible(userId, "first_review");
     if (count >= 5) await awardBadgeIfEligible(userId, "reviews_5");
   } catch (error) {
-    console.log("❌ Review badge check error:", error.message);
+    console.log(" Review badge check error:", error.message);
   }
 }
 
@@ -205,7 +205,7 @@ async function checkCertificateBadges(userId) {
     const certs = await Certificate.find({ user: userId });
     if (certs.length >= 1) await awardBadgeIfEligible(userId, "first_certificate");
   } catch (error) {
-    console.log("❌ Certificate badge check error:", error.message);
+    console.log(" Certificate badge check error:", error.message);
   }
 }
 
@@ -214,7 +214,7 @@ async function checkQuizBadges(userId, score) {
   try {
     if (score === 100) await awardBadgeIfEligible(userId, "quiz_perfect");
   } catch (error) {
-    console.log("❌ Quiz badge check error:", error.message);
+    console.log(" Quiz badge check error:", error.message);
   }
 }
 

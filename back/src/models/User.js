@@ -79,7 +79,7 @@ validate: {
       }
     },
 
-  
+
     loginAttempts: { type: Number, default: 0, select: false },
     loginBlockedUntil: { type: Date, default: null, select: false },
     twoFactor: {
@@ -94,7 +94,7 @@ validate: {
     },
 
     resetPasswordToken: {
-      type: String,  // ✅ Stocké HACHÉ (SHA-256) — le token en clair n'est jamais persisté
+      type: String,  //  Stocké HACHÉ (SHA-256) — le token en clair n'est jamais persisté
       default: null,
       select: false
     },
@@ -115,7 +115,7 @@ validate: {
       select: false
     },
 
-   
+
     trainerProfile: {
       biographie: { type: String },
       specialite: { type: String },
@@ -123,7 +123,7 @@ validate: {
       disponibilite: { type: Boolean, default: true }
     },
 
-    
+
     apprenantProfile: {
       niveauEducation: {
         type: String,
@@ -149,7 +149,7 @@ validate: {
   },
   {
     timestamps: true,
-    toJSON: { getters: true },   // ✅ Activer les getters pour déchiffrer
+    toJSON: { getters: true },   //  Activer les getters pour déchiffrer
     toObject: { getters: true }
   }
 );

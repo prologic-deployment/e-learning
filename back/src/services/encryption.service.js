@@ -34,7 +34,7 @@ function encryptAES(data) {
     const tag = cipher.getAuthTag().toString('hex');
     return `v2:${iv.toString('hex')}:${tag}:${encrypted}`;
   } catch (error) {
-    console.error('❌ Encryption error:', error.message);
+    console.error(' Encryption error:', error.message);
     throw new Error('Encryption failed');
   }
 }
@@ -65,7 +65,7 @@ function decryptAES(encryptedData) {
 
     throw new Error('Unknown ciphertext format');
   } catch (error) {
-    console.error('❌ Decryption error:', error.message);
+    console.error(' Decryption error:', error.message);
     return null; // fail closed but do not crash reads
   }
 }

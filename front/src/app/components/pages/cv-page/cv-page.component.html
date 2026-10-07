@@ -52,7 +52,7 @@
                     [attr.aria-busy]="saveLoading"
                 >
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <div>👤</div>
+                        <div><i class="bx bx-user" aria-hidden="true"></i></div>
                         <div>
                             <h5>Informations Personnelles</h5>
                             <p>Vos coordonnées de base</p>
@@ -159,7 +159,7 @@
                         [disabled]="saveLoading"
                         [style.opacity]="saveLoading ? '0.7' : '1'"
                     >
-                        <span *ngIf="!saveLoading">💾 Sauvegarder</span>
+                        <span *ngIf="!saveLoading"><i class="bx bx-save" aria-hidden="true"></i> Sauvegarder</span>
                         <span *ngIf="saveLoading">
                             <span
                                 class="spinner-border spinner-border-sm me-2"
@@ -181,7 +181,7 @@
                     [attr.aria-busy]="expLoading"
                 >
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <div>💼</div>
+                        <div><i class="bx bx-briefcase" aria-hidden="true"></i></div>
                         <h5>Ajouter une Expérience</h5>
                     </div>
 
@@ -267,7 +267,7 @@
                         [disabled]="expLoading"
                         [style.opacity]="expLoading ? '0.7' : '1'"
                     >
-                        <span *ngIf="!expLoading">➕ Ajouter l'expérience</span>
+                        <span *ngIf="!expLoading"><i class="bx bx-plus" aria-hidden="true"></i> Ajouter l'expérience</span>
                         <span *ngIf="expLoading">
                             <span
                                 class="spinner-border spinner-border-sm me-2"
@@ -282,7 +282,7 @@
                     *ngIf="cv?.experiences?.length === 0"
                     class="text-center py-5"
                 >
-                    <div>💼</div>
+                    <div><i class="bx bx-briefcase" aria-hidden="true"></i></div>
                     <p>Aucune expérience ajoutée</p>
                 </div>
 
@@ -291,7 +291,7 @@
                         class="d-flex justify-content-between align-items-start"
                     >
                         <div>
-                            <div>💼</div>
+                            <div><i class="bx bx-briefcase" aria-hidden="true"></i></div>
                             <div>
                                 <div>
                                     {{ exp.titre }}
@@ -319,7 +319,7 @@
                             [disabled]="!!pendingDelete"
                             aria-label="Supprimer cette entrée"
                         >
-                            🗑️
+                            <i class="bx bx-trash" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
@@ -335,7 +335,7 @@
                     [attr.aria-busy]="formLoading"
                 >
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <div>🎓</div>
+                        <div><i class="bx bx-graduation" aria-hidden="true"></i></div>
                         <h5>Ajouter une Formation</h5>
                     </div>
 
@@ -409,7 +409,7 @@
                         [style.opacity]="formLoading ? '0.7' : '1'"
                     >
                         <span *ngIf="!formLoading"
-                            >➕ Ajouter la formation</span
+                            ><i class="bx bx-plus" aria-hidden="true"></i> Ajouter la formation</span
                         >
                         <span *ngIf="formLoading">
                             <span
@@ -424,7 +424,7 @@
                     *ngIf="cv?.formations?.length === 0"
                     class="text-center py-5"
                 >
-                    <div>🎓</div>
+                    <div><i class="bx bx-graduation" aria-hidden="true"></i></div>
                     <p>Aucune formation ajoutée</p>
                 </div>
 
@@ -433,7 +433,7 @@
                         class="d-flex justify-content-between align-items-start"
                     >
                         <div>
-                            <div>🎓</div>
+                            <div><i class="bx bx-graduation" aria-hidden="true"></i></div>
                             <div>
                                 <div>
                                     {{ form.diplome }}
@@ -458,7 +458,7 @@
                             [disabled]="!!pendingDelete"
                             aria-label="Supprimer cette entrée"
                         >
-                            🗑️
+                            <i class="bx bx-trash" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
@@ -474,7 +474,7 @@
                     [attr.aria-busy]="compLoading"
                 >
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <div>⚡</div>
+                        <div><i class="bx bx-bolt-circle" aria-hidden="true"></i></div>
                         <h5>Ajouter une Compétence</h5>
                     </div>
 
@@ -527,7 +527,7 @@
                         [style.opacity]="compLoading ? '0.7' : '1'"
                     >
                         <span *ngIf="!compLoading"
-                            >➕ Ajouter la compétence</span
+                            ><i class="bx bx-plus" aria-hidden="true"></i> Ajouter la compétence</span
                         >
                         <span *ngIf="compLoading">
                             <span
@@ -542,7 +542,7 @@
                     *ngIf="cv?.competences?.length === 0"
                     class="text-center py-5"
                 >
-                    <div>⚡</div>
+                    <div><i class="bx bx-bolt-circle" aria-hidden="true"></i></div>
                     <p>Aucune compétence ajoutée</p>
                 </div>
 
@@ -567,7 +567,7 @@
                                 [disabled]="!!pendingDelete"
                                 aria-label="Supprimer cette entrée"
                             >
-                                🗑️
+                                <i class="bx bx-trash" aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>
@@ -584,7 +584,7 @@
                     [attr.aria-busy]="langLoading"
                 >
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <div>🌍</div>
+                        <div><i class="bx bx-globe" aria-hidden="true"></i></div>
                         <h5>Ajouter une Langue</h5>
                     </div>
 
@@ -637,7 +637,7 @@
                         [disabled]="langLoading"
                         [style.opacity]="langLoading ? '0.7' : '1'"
                     >
-                        <span *ngIf="!langLoading">➕ Ajouter la langue</span>
+                        <span *ngIf="!langLoading"><i class="bx bx-plus" aria-hidden="true"></i> Ajouter la langue</span>
                         <span *ngIf="langLoading">
                             <span
                                 class="spinner-border spinner-border-sm me-2"
@@ -648,7 +648,7 @@
                 </form>
 
                 <div *ngIf="cv?.langues?.length === 0" class="text-center py-5">
-                    <div>🌍</div>
+                    <div><i class="bx bx-globe" aria-hidden="true"></i></div>
                     <p>Aucune langue ajoutée</p>
                 </div>
 
@@ -656,7 +656,7 @@
                     <div class="col-lg-4 mb-3" *ngFor="let lang of cv?.langues">
                         <div hlmCard class="cv-section">
                             <div>
-                                <div>🌍 {{ lang.langue }}</div>
+                                <div><i class="bx bx-globe" aria-hidden="true"></i> {{ lang.langue }}</div>
                                 <span>
                                     {{ lang.niveau }}
                                 </span>
@@ -668,7 +668,7 @@
                                 [disabled]="!!pendingDelete"
                                 aria-label="Supprimer cette entrée"
                             >
-                                🗑️
+                                <i class="bx bx-trash" aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>
@@ -685,7 +685,7 @@
                     [attr.aria-busy]="hobbyLoading"
                 >
                     <div class="d-flex align-items-center gap-3 mb-4">
-                        <div>🎯</div>
+                        <div><i class="bx bx-target-lock" aria-hidden="true"></i></div>
                         <h5>Ajouter un Centre d'Intérêt</h5>
                     </div>
 
@@ -716,7 +716,7 @@
                                     [style.opacity]="hobbyLoading ? '0.7' : '1'"
                                 >
                                     <span *ngIf="!hobbyLoading"
-                                        >➕ Ajouter</span
+                                        ><i class="bx bx-plus" aria-hidden="true"></i> Ajouter</span
                                     >
                                     <span *ngIf="hobbyLoading">
                                         <span
@@ -730,7 +730,7 @@
                 </form>
 
                 <div *ngIf="cv?.hobbies?.length === 0" class="text-center py-5">
-                    <div>🎯</div>
+                    <div><i class="bx bx-target-lock" aria-hidden="true"></i></div>
                     <p>Aucun centre d'intérêt ajouté</p>
                 </div>
 
@@ -740,7 +740,7 @@
                         *ngFor="let hobby of cv?.hobbies"
                     >
                         <div hlmCard class="cv-section">
-                            <div>🎯 {{ hobby.nom }}</div>
+                            <div><i class="bx bx-target-lock" aria-hidden="true"></i> {{ hobby.nom }}</div>
                             <button
                                 hlmBtn
                                 variant="outline"
@@ -748,7 +748,7 @@
                                 [disabled]="!!pendingDelete"
                                 aria-label="Supprimer cette entrée"
                             >
-                                🗑️
+                                <i class="bx bx-trash" aria-hidden="true"></i>
                             </button>
                         </div>
                     </div>

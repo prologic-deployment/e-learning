@@ -104,7 +104,7 @@ async function keywordSearch(query, nResults = 6) {
       };
     });
   } catch (error) {
-    console.log("❌ Keyword search error:", error.message);
+    console.log(" Keyword search error:", error.message);
     return [];
   }
 }
@@ -141,12 +141,12 @@ async function initCollection() {
       await qdrant.createCollection(COLLECTION_NAME, {
         vectors: { size: VECTOR_SIZE, distance: "Cosine" }
       });
-      console.log("✅ Qdrant collection created !");
+      console.log(" Qdrant collection created !");
     } else {
-      console.log("✅ Qdrant collection already exists !");
+      console.log(" Qdrant collection already exists !");
     }
   } catch (error) {
-    console.log("❌ Qdrant init error:", error.message);
+    console.log(" Qdrant init error:", error.message);
   }
 }
 
@@ -209,9 +209,9 @@ Statut: Approuvé et disponible
             content: text
           }
         });
-        console.log(`✅ Indexed course: ${course.title}`);
+        console.log(` Indexed course: ${course.title}`);
       } catch (e) {
-        console.log(`⚠️ Skip course ${course.title}:`, e.message);
+        console.log(` Skip course ${course.title}:`, e.message);
       }
     }
 
@@ -238,9 +238,9 @@ Catégorie: ${lesson.course?.category || ''}
             content: text
           }
         });
-        console.log(`✅ Indexed lesson: ${lesson.title}`);
+        console.log(` Indexed lesson: ${lesson.title}`);
       } catch (e) {
-        console.log(`⚠️ Skip lesson ${lesson.title}:`, e.message);
+        console.log(` Skip lesson ${lesson.title}:`, e.message);
       }
     }
 
@@ -250,13 +250,13 @@ Catégorie: ${lesson.course?.category || ''}
       for (let i = 0; i < points.length; i += batchSize) {
         const batch = points.slice(i, i + batchSize);
         await qdrant.upsert(COLLECTION_NAME, { wait: true, points: batch });
-        console.log(`✅ Batch ${Math.floor(i / batchSize) + 1} upserted (${batch.length} points)`);
+        console.log(` Batch ${Math.floor(i / batchSize) + 1} upserted (${batch.length} points)`);
       }
-      console.log(`✅ Total: ${points.length} documents indexed in Qdrant !`);
+      console.log(` Total: ${points.length} documents indexed in Qdrant !`);
     }
 
   } catch (error) {
-    console.log("❌ Indexing error:", error.message);
+    console.log(" Indexing error:", error.message);
   }
 }
 
@@ -269,7 +269,7 @@ async function ragSearch(query, nResults = 6) {
       vector: queryEmbedding,
       limit: nResults,
       with_payload: true,
-      score_threshold: 0.3  // ✅ filtre les résultats peu pertinents
+      score_threshold: 0.3  //  filtre les résultats peu pertinents
     });
 
     return results.map(r => ({
@@ -291,7 +291,7 @@ async function ragSearch(query, nResults = 6) {
     }));
 
   } catch (error) {
-    console.log("❌ RAG search error:", error.message);
+    console.log(" RAG search error:", error.message);
     return [];
   }
 }

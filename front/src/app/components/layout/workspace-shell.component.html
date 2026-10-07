@@ -48,7 +48,7 @@
                     <p hlmSheetDescription>Choose where to go next.</p>
                     <nav aria-label="Mobile workspace">
                         <a
-                            *ngFor="let item of items"
+                            *ngFor="let item of items; trackBy: destinationKey"
                             hlmBtn
                             variant="ghost"
                             class="mobile-nav-link"
@@ -83,7 +83,7 @@
                         />
                         <nav class="search-results">
                             <a
-                                *ngFor="let item of filteredItems"
+                                *ngFor="let item of filteredItems; trackBy: destinationKey"
                                 hlmBtn
                                 variant="ghost"
                                 [routerLink]="item.path"
@@ -145,7 +145,7 @@
 </div>
 <ng-template #navigation
     ><a
-        *ngFor="let item of items"
+        *ngFor="let item of items; trackBy: destinationKey"
         class="rail-link"
         [class.selected]="active(item)"
         [routerLink]="item.path"

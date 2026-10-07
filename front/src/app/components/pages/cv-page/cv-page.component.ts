@@ -64,12 +64,12 @@ export class CvPageComponent implements OnInit {
     hobbyLoading = false;
 
     cvTabs = [
-        { id: 'info', icon: '👤', label: 'Infos Personnelles' },
-        { id: 'experience', icon: '💼', label: 'Expériences' },
-        { id: 'formation', icon: '🎓', label: 'Formation' },
-        { id: 'competence', icon: '⚡', label: 'Compétences' },
-        { id: 'langue', icon: '🌍', label: 'Langues' },
-        { id: 'hobby', icon: '🎯', label: "Centres d'intérêt" },
+        { id: 'info', icon: 'bx bx-user', label: 'Infos Personnelles' },
+        { id: 'experience', icon: 'bx bx-briefcase', label: 'Expériences' },
+        { id: 'formation', icon: 'bx bx-graduation', label: 'Formation' },
+        { id: 'competence', icon: 'bx bx-bolt-circle', label: 'Compétences' },
+        { id: 'langue', icon: 'bx bx-globe', label: 'Langues' },
+        { id: 'hobby', icon: 'bx bx-target-lock', label: "Centres d'intérêt" },
     ];
 
     constructor(
@@ -141,7 +141,7 @@ export class CvPageComponent implements OnInit {
             .subscribe({
                 next: () => {
                     this.saveLoading = false;
-                    this.saveSuccess = 'CV info saved successfully ! ✅';
+                    this.saveSuccess = 'CV info saved successfully ! ';
                     this.loadCV();
                 },
                 error: (err) => {

@@ -21,7 +21,7 @@
                 </p>
             </div>
             <div class="catalogue-aside" aria-hidden="true">
-                <span>✳</span>
+                <span><i class="bx bx-compass" aria-hidden="true"></i></span>
                 <p>
                     {{ "A little curiosity" | t }}<br /><em>{{
                         "goes a long way." | t
@@ -255,7 +255,7 @@
                         ><span
                             class="rating"
                             *ngIf="reviewsMap[course._id]?.total"
-                            >★
+                            >
                             {{
                                 reviewsMap[course._id]?.avgRating
                                     | number: "1.1-1"
@@ -319,7 +319,7 @@
             </button>
         </nav>
         <aside class="catalogue-bottom-note">
-            <span aria-hidden="true">✳</span>
+            <span aria-hidden="true"><i class="bx bx-compass" aria-hidden="true"></i></span>
             <p>
                 {{ "Small steps. Lasting possibilities." | t }}<br /><span>{{
                     "Your next chapter starts with something that interests you."

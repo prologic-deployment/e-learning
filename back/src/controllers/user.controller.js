@@ -168,19 +168,19 @@ exports.createTrainer = async (req, res) => {
     // 📧 Email credentials — link instead of raw password when possible
     await sendEmail({
       to: email,
-      subject: "🎓 Bienvenue — Vos identifiants Trainer",
+      subject: " Bienvenue — Vos identifiants Trainer",
       html: `
-        <h2>Bienvenue ${firstname} ${lastname} ! 👋</h2>
+        <h2>Bienvenue ${firstname} ${lastname} ! </h2>
         <p>Votre compte <strong>Trainer</strong> a été créé sur la plateforme E-Learning.</p>
         <div style="background:#f5f5f5;padding:20px;border-radius:8px;margin:20px 0;">
-          <h3>🔐 Vos identifiants de connexion</h3>
+          <h3> Vos identifiants de connexion</h3>
           <p><strong>Email :</strong> ${email}</p>
           <p><strong>Mot de passe temporaire :</strong> ${password}</p>
         </div>
-        <p style="color:red;">⚠️ Ce mot de passe est temporaire — changez-le dès la première connexion !</p>
-        <a href="${config.frontendUrl}/profile-authentication" 
+        <p style="color:red;"> Ce mot de passe est temporaire — changez-le dès la première connexion !</p>
+        <a href="${config.frontendUrl}/profile-authentication"
            style="background:#2c3e50;color:white;padding:12px 25px;text-decoration:none;border-radius:5px;display:inline-block;">
-          🚀 Se connecter
+           Se connecter
         </a>
       `
     });
@@ -221,19 +221,19 @@ exports.createManager = async (req, res) => {
     // 📧 Email credentials — link instead of raw password when possible
     await sendEmail({
       to: email,
-      subject: "🎓 Bienvenue — Vos identifiants Manager",
+      subject: " Bienvenue — Vos identifiants Manager",
       html: `
-        <h2>Bienvenue ${firstname} ${lastname} ! 👋</h2>
+        <h2>Bienvenue ${firstname} ${lastname} ! </h2>
         <p>Votre compte <strong>Manager</strong> a été créé sur la plateforme E-Learning.</p>
         <div style="background:#f5f5f5;padding:20px;border-radius:8px;margin:20px 0;">
-          <h3>🔐 Vos identifiants de connexion</h3>
+          <h3> Vos identifiants de connexion</h3>
           <p><strong>Email :</strong> ${email}</p>
           <p><strong>Mot de passe temporaire :</strong> ${password}</p>
         </div>
-        <p style="color:red;">⚠️ Ce mot de passe est temporaire — changez-le dès la première connexion !</p>
-        <a href="${config.frontendUrl}/profile-authentication" 
+        <p style="color:red;"> Ce mot de passe est temporaire — changez-le dès la première connexion !</p>
+        <a href="${config.frontendUrl}/profile-authentication"
            style="background:#2c3e50;color:white;padding:12px 25px;text-decoration:none;border-radius:5px;display:inline-block;">
-          🚀 Se connecter
+           Se connecter
         </a>
       `
     });

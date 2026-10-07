@@ -5,7 +5,7 @@ const { notifyDeadlineReminder } = require("../services/notification.service");
 const startDeadlineReminderJob = () => {
   // Exécuter tous les jours à 8h00
   const task = cron.schedule("0 8 * * *", async () => {
-    console.log("⏰ Cron Job: Vérification des délais cours...");
+    console.log(" Cron Job: Vérification des délais cours...");
 
     try {
       const now = new Date();
@@ -24,7 +24,7 @@ const startDeadlineReminderJob = () => {
       }).populate("user", "email firstname")
         .populate("course", "title");
 
-      console.log(`📋 ${enrollments.length} rappels à envoyer`);
+      console.log(` ${enrollments.length} rappels à envoyer`);
 
       for (const enrollment of enrollments) {
         const daysLeft = Math.ceil(
@@ -42,15 +42,15 @@ const startDeadlineReminderJob = () => {
         enrollment.reminderSent = true;
         await enrollment.save();
 
-        console.log(`✅ Rappel envoyé à ${enrollment.user.email} pour "${enrollment.course.title}"`);
+        console.log(` Rappel envoyé à ${enrollment.user.email} pour "${enrollment.course.title}"`);
       }
 
     } catch (error) {
-      console.error("❌ Cron Job erreur:", error.message);
+      console.error(" Cron Job erreur:", error.message);
     }
   });
 
-  console.log("✅ Cron Job démarré — Rappels délais actifs");
+  console.log(" Cron Job démarré — Rappels délais actifs");
   return task;
 };
 

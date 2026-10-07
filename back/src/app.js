@@ -93,10 +93,10 @@ app.get("/", async (req, res) => {
 
   res.json({
     success: true,
-    message: "🚀 Backend E-learning API is running",
+    message: " Backend E-learning API is running",
     services: {
-      api: "✅ Online",
-      mongodb: mongoHealth ? "✅ Connected" : "❌ Disconnected"
+      api: " Online",
+      mongodb: mongoHealth ? " Connected" : " Disconnected"
     },
     timestamp: new Date().toISOString()
   });
@@ -123,7 +123,7 @@ app.use((err, req, res, next) => {
           : err.message;
 
   if (!config.prodLike) {
-    console.error("❌ Erreur:", err.message);
+    console.error(" Erreur:", err.message);
   }
 
   res.status(err.statusCode || 500).json({

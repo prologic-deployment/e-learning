@@ -1,3 +1,4 @@
+import { authoringActivateGuard, authoringDeactivateGuard } from './guards/unsaved-authoring.guard';
 import { SecurityComponent } from './components/pages/security/security.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
@@ -77,8 +78,10 @@ const routes: Routes = [
   },
   {
     path: 'admin-dashboard',
+    canDeactivate: [authoringDeactivateGuard],
+    runGuardsAndResolvers: 'always',
     component: AdminDashboardComponent,
-    canActivate: [AuthGuard, RoleGuard],
+    canActivate: [AuthGuard, RoleGuard, authoringActivateGuard],
     data: { roles: ['admin'] }
   },
   {
@@ -89,8 +92,10 @@ const routes: Routes = [
   },
   {
     path: 'trainer-dashboard',
+    canDeactivate: [authoringDeactivateGuard],
+    runGuardsAndResolvers: 'always',
     component: TrainerDashboardComponent,
-    canActivate: [AuthGuard, RoleGuard],
+    canActivate: [AuthGuard, RoleGuard, authoringActivateGuard],
     data: { roles: ['trainer'] }
   },
 

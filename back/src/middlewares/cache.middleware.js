@@ -3,7 +3,7 @@ const redisClient = require('../config/redis.config');
 
 const cache = (ttl = 1800) => {
   return async (req, res, next) => {
-    
+
     if (req.method !== 'GET') {
       return next();
     }
@@ -15,17 +15,17 @@ const cache = (ttl = 1800) => {
 
     try {
       const redis = redisClient.getClient();
-      if (!redis) return next(); 
+      if (!redis) return next();
 
-      
+
       const userId = req.user?.id || req.user?._id || 'guest';
       const cacheKey = `cache:${req.method}:${req.originalUrl || req.url}:user:${userId}`;
 
-      
+
       const cachedData = await redis.get(cacheKey);
 
       if (cachedData) {
-        console.log(`✅ CACHE HIT: ${cacheKey}`);
+        console.log(` CACHE HIT: ${cacheKey}`);
         return res.status(200).json({
           ...JSON.parse(cachedData),
           _cache: {
@@ -35,9 +35,9 @@ const cache = (ttl = 1800) => {
         });
       }
 
-      console.log(`❌ CACHE MISS: ${cacheKey}`);
+      console.log(` CACHE MISS: ${cacheKey}`);
 
-      
+
       const originalJson = res.json.bind(res);
       res.json = (data) => {
         if (res.statusCode >= 200 && res.statusCode < 300) {
@@ -49,7 +49,7 @@ const cache = (ttl = 1800) => {
 
       next();
     } catch (error) {
-      console.error('⚠️ Erreur middleware cache:', error.message);
+      console.error(' Erreur middleware cache:', error.message);
       next();
     }
   };
@@ -71,12 +71,12 @@ const invalidateCache = async (pattern) => {
     const keys = await redis.keys(pattern);
     if (keys.length > 0) {
       await redis.del(...keys);
-      console.log(`🗑️ Cache invalidé: ${keys.length} clé(s) - Pattern: ${pattern}`);
+      console.log(`🗑 Cache invalidé: ${keys.length} clé(s) - Pattern: ${pattern}`);
       return keys.length;
     }
     return 0;
   } catch (error) {
-    console.error('⚠️ Erreur invalidation:', error.message);
+    console.error(' Erreur invalidation:', error.message);
     return 0;
   }
 };
@@ -89,16 +89,16 @@ const flushCache = async () => {
     const redis = redisClient.getClient();
     if (!redis) return;
     await redis.flushall();
-    console.log('🗑️ Tout le cache vidé');
+    console.log('🗑 Tout le cache vidé');
   } catch (error) {
-    console.error('⚠️ Erreur flush cache:', error.message);
+    console.error(' Erreur flush cache:', error.message);
   }
 };
 
 
 module.exports = {
   cache,
-  cacheConfig,        
+  cacheConfig,
   invalidateCache,
-  flushCache          
+  flushCache
 };

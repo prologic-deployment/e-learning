@@ -18,7 +18,7 @@ function requireEnv(name, opts = {}) {
   const value = process.env[name];
   if (!value || (opts.notPlaceholder && isPlaceholder(value))) {
     throw new Error(
-      `❌ Missing/invalid environment variable: ${name}. ` +
+      ` Missing/invalid environment variable: ${name}. ` +
       (opts.help || `Set it in your .env file before starting the server.`)
     );
   }
@@ -50,7 +50,7 @@ function resolveSecret(name, { minLength = 32 } = {}) {
   if (!value || isPlaceholder(value) || value.length < minLength) {
     const generated = crypto.randomBytes(48).toString('hex');
     console.warn(
-      `⚠️  ${name} not set (or too weak) — using an ephemeral dev secret. ` +
+      `  ${name} not set (or too weak) — using an ephemeral dev secret. ` +
       `Sessions/encrypted data will NOT survive restarts. Set a real value before production.`
     );
     return generated;
@@ -97,18 +97,18 @@ const config = {
 function validateEnv() {
   if (prodLike) {
     requireEnv('MONGO_URI');
-    console.log(`✅ Environment validation passed (${NODE_ENV})`);
+    console.log(` Environment validation passed (${NODE_ENV})`);
   } else {
     if (!process.env.MONGO_URI) {
-      console.warn('⚠️  MONGO_URI not set — using default mongodb://127.0.0.1:27017/elearning');
+      console.warn('  MONGO_URI not set — using default mongodb://127.0.0.1:27017/elearning');
     }
-    console.log('✅ Environment validation passed (development)');
+    console.log(' Environment validation passed (development)');
   }
   if (!process.env.GEMINI_API_KEY) {
-    console.warn('⚠️  GEMINI_API_KEY not set — chat will use the live catalogue fallback; AI/NLP features require configuration');
+    console.warn('  GEMINI_API_KEY not set — chat will use the live catalogue fallback; AI/NLP features require configuration');
   }
   if (!process.env.EMAIL_HOST) {
-    console.warn('⚠️  EMAIL_* not set — password-reset emails will fail');
+    console.warn('  EMAIL_* not set — password-reset emails will fail');
   }
   return config;
 }

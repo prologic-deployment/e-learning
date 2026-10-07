@@ -95,6 +95,7 @@ export class WorkspaceShellComponent implements OnDestroy {
         items.push({label: 'Account security', icon: 'shield-quarter', tab: '', path: '/account/security'});
         return items;
     }
+    destinationKey(_: number, item: Destination): string { return item.path + '?' + (item.tab || ''); }
     get filteredItems() {
         return this.items.filter((i) => i.label.toLowerCase().includes(this.query.toLowerCase()));
     }
@@ -115,7 +116,7 @@ export class WorkspaceShellComponent implements OnDestroy {
         }
     }
     logout() {
-        this.auth.logout();
+        if (!this.auth.logout()) return;
         this.router.navigate(['/profile-authentication']);
     }
     ngOnDestroy() {

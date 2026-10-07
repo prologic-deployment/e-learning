@@ -232,7 +232,7 @@ exports.submitLessonQuiz = async (req, res) => {
       attemptsUsed: used + 1,
       maxAttempts,
       noteMinimale: req.assessmentAttempt?.noteMinimale || lesson.quiz.noteMinimale || 70,
-      message: passed ? "✅ Quiz passed !" : "❌ Quiz failed, try again !"
+      message: passed ? " Quiz passed !" : " Quiz failed, try again !"
     });
   } catch (error) {
     console.error('submitLessonQuiz error:', error.message);
@@ -302,7 +302,7 @@ exports.submitLessonQuiz2 = async (req, res) => {
       attemptsUsed: used + 1,
       maxAttempts,
       noteMinimale: lesson.quiz2.noteMinimale || 70,
-      message: passed ? "✅ Quiz 2 passed !" : "❌ Quiz 2 failed, try again !"
+      message: passed ? " Quiz 2 passed !" : " Quiz 2 failed, try again !"
     });
   } catch (error) {
     console.error('submitLessonQuiz2 error:', error.message);
@@ -408,17 +408,17 @@ exports.submitFinalExam = async (req, res) => {
           await createNotification(
             req.user._id,
             "BADGE_EARNED",
-            "🎓 Félicitations ! Certificat obtenu !",
+            " Félicitations ! Certificat obtenu !",
             `Vous avez réussi l'examen final du cours "${course.title}" avec un score de ${score}% !`,
             { courseId }
           );
 
           sendEmail({
             to: user.email,
-            subject: "🎓 Félicitations ! Certificat obtenu !",
+            subject: " Félicitations ! Certificat obtenu !",
             html: `
               <div style="font-family: Arial; max-width: 600px; margin: 0 auto;">
-                <h2>Félicitations ${user.firstname} ! 🎓</h2>
+                <h2>Félicitations ${user.firstname} ! </h2>
                 <p>Vous avez réussi l'examen final du cours <strong>${course.title}</strong>
                 avec un score de <strong>${score}%</strong> !</p>
                 <p>Votre certificat est disponible dans votre dashboard.</p>
@@ -426,13 +426,13 @@ exports.submitFinalExam = async (req, res) => {
                    style="background:#2c3e50; color:white; padding:10px 20px;
                    text-decoration:none; border-radius:5px;
                    display:inline-block; margin-top:15px;">
-                  🏅 Voir mon certificat
+                   Voir mon certificat
                 </a>
               </div>
             `
-          }).catch(err => console.error('❌ Email error:', err.message));
+          }).catch(err => console.error(' Email error:', err.message));
         } catch (certError) {
-          console.error('⚠️ Certificate error:', certError.message);
+          console.error(' Certificate error:', certError.message);
         }
       }
     }
@@ -447,7 +447,7 @@ exports.submitFinalExam = async (req, res) => {
       attemptsUsed: enrollment.finalExamAttempts,
       maxAttempts,
       noteMinimale: req.assessmentAttempt?.noteMinimale || course.finalExam.noteMinimale || 70,
-      message: passed ? "🎓 Exam passed ! Certificate generated !" : "❌ Exam failed, try again !",
+      message: passed ? " Exam passed ! Certificate generated !" : " Exam failed, try again !",
       certificate: passed ? "generated" : null
     });
   } catch (error) {

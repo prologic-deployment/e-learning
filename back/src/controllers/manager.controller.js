@@ -30,7 +30,7 @@ exports.assignUserToManager = async (req, res) => {
 // ================= ASSIGN COURSE TO USERS (Manager only) =================
 exports.assignCourseToUsers = async (req, res) => {
   try {
-    const { courseId, userIds, deadline } = req.body; // 👈 ajoute deadline
+    const { courseId, userIds, deadline } = req.body; //  ajoute deadline
 
     const course = await Course.findById(courseId);
     if (!course) return res.status(404).json({ message: "Course not found" });
@@ -42,12 +42,12 @@ exports.assignCourseToUsers = async (req, res) => {
 
     for (let user of users) {
       let enrollment = await Enrollment.findOne({ user: user._id, course: courseId });
-      
+
       if (!enrollment) {
-        enrollment = await Enrollment.create({ 
-          user: user._id, 
+        enrollment = await Enrollment.create({
+          user: user._id,
           course: courseId,
-          deadline: deadline ? new Date(deadline) : null // 👈 ajoute deadline
+          deadline: deadline ? new Date(deadline) : null //  ajoute deadline
         });
       } else if (deadline) {
         enrollment.deadline = new Date(deadline);
@@ -56,7 +56,7 @@ exports.assignCourseToUsers = async (req, res) => {
       }
 
       // 🔔 Notifier le user
-      await notifyDeadlineReminder(user._id, course, deadline ? 
+      await notifyDeadlineReminder(user._id, course, deadline ?
         Math.ceil((new Date(deadline) - new Date()) / (1000 * 60 * 60 * 24)) : null
       );
     }

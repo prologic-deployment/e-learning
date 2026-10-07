@@ -187,7 +187,7 @@ export class CourseViewerComponent implements OnInit {
         const id = this.route.snapshot.paramMap.get('id');
         const user = this.authService.getCurrentUser();
         this.currentUserId = user?._id?.toString() || user?.id?.toString() || '';
-        console.log('👤 currentUserId from localStorage:', this.currentUserId);
+        console.log(' currentUserId from localStorage:', this.currentUserId);
         if (id) this.loadCourse(id);
     }
 
@@ -207,7 +207,7 @@ export class CourseViewerComponent implements OnInit {
                     this.http.get(`${this.apiUrl}/profile`).subscribe({
                         next: (profileData: any) => {
                             this.currentUserId = profileData.user?._id?.toString() || '';
-                            console.log('✅ currentUserId from profile:', this.currentUserId);
+                            console.log(' currentUserId from profile:', this.currentUserId);
                             this.loadReviews(id);
                             this.cdr.detectChanges();
                         },
@@ -289,7 +289,7 @@ export class CourseViewerComponent implements OnInit {
         this.http.post(`${this.apiUrl}/enrollments/${this.course._id}/enroll`, {}).subscribe({
             next: () => {
                 this.enrollLoading = false;
-                this.enrollSuccess = 'Enrolled successfully ! 🎉';
+                this.enrollSuccess = 'Enrolled successfully ! ';
                 this.isEnrolled = true;
                 this.checkEnrollment(this.course._id);
                 this.loadLessons(this.course._id);
@@ -434,10 +434,10 @@ export class CourseViewerComponent implements OnInit {
                     (r) => r.user?._id?.toString() === this.currentUserId?.toString(),
                 );
 
-                console.log('📝 currentUserId:', this.currentUserId);
-                console.log('📝 hasReviewed:', this.hasReviewed);
+                console.log(' currentUserId:', this.currentUserId);
+                console.log(' hasReviewed:', this.hasReviewed);
                 console.log(
-                    '📝 reviews:',
+                    ' reviews:',
                     this.reviews.map((r) => ({
                         userId: r.user?._id,
                         match: r.user?._id?.toString() === this.currentUserId?.toString(),
@@ -464,7 +464,7 @@ export class CourseViewerComponent implements OnInit {
             .subscribe({
                 next: () => {
                     this.reviewLoading = false;
-                    this.reviewSuccess = 'Review added ! ✅';
+                    this.reviewSuccess = 'Review added ! ';
                     this.newReview = { rating: 5, comment: '' };
                     this.loadReviews(this.course._id);
                     setTimeout(() => (this.reviewSuccess = ''), 3000);
@@ -493,7 +493,7 @@ export class CourseViewerComponent implements OnInit {
             .subscribe({
                 next: () => {
                     this.reviewLoading = false;
-                    this.reviewSuccess = 'Review updated ! ✅';
+                    this.reviewSuccess = 'Review updated ! ';
                     this.editingReview = null;
                     this.loadReviews(this.course._id);
                     setTimeout(() => (this.reviewSuccess = ''), 3000);
@@ -523,10 +523,6 @@ export class CourseViewerComponent implements OnInit {
             review.user?.toString() ||
             '';
         return reviewUserId === this.currentUserId.toString();
-    }
-
-    getStars(rating: number): string {
-        return '⭐'.repeat(Math.round(rating));
     }
 
     downloadContent(): void {
@@ -581,8 +577,8 @@ export class CourseViewerComponent implements OnInit {
             next: (res) => {
                 this.nlpLoading = null;
                 this.nlpSuccess = res.cached
-                    ? '✅ Résumé déjà disponible !'
-                    : '✅ Résumé généré avec succès !';
+                    ? ' Résumé déjà disponible !'
+                    : ' Résumé généré avec succès !';
 
                 this.lessonSummaries[lessonId] = {
                     summary: res.summary,
@@ -608,7 +604,7 @@ export class CourseViewerComponent implements OnInit {
                 this.nlpLoading = null;
                 this.nlpError =
                     err.status === 503
-                        ? '⚠️ Service Whisper non disponible. Lancez Flask sur le port 5001.'
+                        ? ' Service Whisper non disponible. Lancez Flask sur le port 5001.'
                         : err.error?.message || 'Erreur lors de la génération du résumé';
                 setTimeout(() => (this.nlpError = ''), 5000);
             },

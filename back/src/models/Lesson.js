@@ -36,7 +36,7 @@ const lessonSchema = new mongoose.Schema(
     quiz: {
       questions: [questionSchema],
       noteMinimale: { type: Number, default: 70 },
-      maxAttempts: { type: Number, default: 3 } // ✅ anti-bruteforce sur les réponses
+      maxAttempts: { type: Number, default: 3 } //  anti-bruteforce sur les réponses
     },
 
     // ✅ Quiz 2 (deprecated — merged into `quiz`, kept for data compatibility)

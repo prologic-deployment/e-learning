@@ -68,7 +68,7 @@
                                 margin: 0;
                             "
                         >
-                            🗄️ Cours Archivés
+                            🗄 Cours Archivés
                         </h5>
                         <p
                             style="
@@ -85,7 +85,7 @@
                     *ngIf="archivedCourses.length === 0"
                     class="text-center py-5"
                 >
-                    <div style="font-size: 48px; margin-bottom: 12px">🗄️</div>
+                    <div style="font-size: 48px; margin-bottom: 12px">🗄</div>
                     <h6
                         style="
                             font-weight: 700;
@@ -264,7 +264,7 @@
                                                 this.style.color = '#10b981';
                                             "
                                         >
-                                            ♻️ Restaurer
+                                             Restaurer
                                         </button>
                                         <button
                                             hlmBtn
@@ -293,7 +293,7 @@
                                                 this.style.color = '#E63946';
                                             "
                                         >
-                                            🗑️ Supprimer
+                                            <i class="bx bx-trash" aria-hidden="true"></i> Supprimer
                                         </button>
                                     </div>
                                 </td>
@@ -330,7 +330,7 @@
                             font-size: 20px;
                         "
                     >
-                        🔗
+                        <i class="bx bx-link" aria-hidden="true"></i>
                     </div>
                     <div>
                         <h5
@@ -446,7 +446,7 @@
                     "
                     [style.opacity]="assignUserLoading ? '0.7' : '1'"
                 >
-                    <span *ngIf="!assignUserLoading">🔗 Assigner</span>
+                    <span *ngIf="!assignUserLoading"> Assigner</span>
                     <span *ngIf="assignUserLoading">
                         <span
                             class="spinner-border spinner-border-sm me-2"
@@ -464,7 +464,7 @@
                             margin-bottom: 16px;
                         "
                     >
-                        📋 Assignments actuels
+                        <i class="bx bx-task" aria-hidden="true"></i> Assignments actuels
                     </h6>
                     <div class="table-responsive">
                         <table
@@ -714,7 +714,7 @@
                                 cursor: pointer;
                             "
                         >
-                            🔄 Actualiser
+                             Actualiser
                         </button>
                     </div>
 
@@ -813,7 +813,7 @@
                         class="text-center py-5"
                     >
                         <div style="font-size: 48px; margin-bottom: 12px">
-                            💬
+                            <i class="bx bx-message-rounded" aria-hidden="true"></i>
                         </div>
                         <p style="color: hsl(var(--muted-foreground))">
                             Aucun avis trouvé
@@ -1023,7 +1023,7 @@
                                                 font-size: 13px;
                                             "
                                         >
-                                            ★★★★★
+                                            <i class="bx bx-star" aria-hidden="true"></i>
                                         </div>
                                         <div
                                             style="
@@ -1141,7 +1141,7 @@
                                                         '#10b981';
                                                 "
                                             >
-                                                ✓
+                                                <i class="bx bx-check" aria-hidden="true"></i>
                                             </button>
                                             <button
                                                 hlmBtn
@@ -1181,7 +1181,7 @@
                                                         '#f59e0b';
                                                 "
                                             >
-                                                ✕
+                                                <i class="bx bx-x" aria-hidden="true"></i>
                                             </button>
                                             <button
                                                 hlmBtn
@@ -1220,7 +1220,7 @@
                                                         '#E63946';
                                                 "
                                             >
-                                                🗑
+                                                <i class="bx bx-trash" aria-hidden="true"></i>
                                             </button>
                                         </div>
                                     </td>
@@ -1303,7 +1303,7 @@
                                 cursor: pointer;
                             "
                         >
-                            🔄 Actualiser
+                             Actualiser
                         </button>
                     </div>
 
@@ -1400,7 +1400,7 @@
                         class="text-center py-5"
                     >
                         <div style="font-size: 48px; margin-bottom: 12px">
-                            📝
+                            <i class="bx bx-edit" aria-hidden="true"></i>
                         </div>
                         <p style="color: hsl(var(--muted-foreground))">
                             Aucun résultat trouvé
@@ -1646,8 +1646,8 @@
                                         >
                                             {{
                                                 result.type === "lesson_quiz"
-                                                    ? "📝 Quiz"
-                                                    : "🎓 Examen Final"
+                                                    ? "Quiz"
+                                                    : "Examen Final"
                                             }}
                                         </span>
                                     </td>

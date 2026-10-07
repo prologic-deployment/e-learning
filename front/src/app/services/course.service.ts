@@ -20,7 +20,7 @@ export class CourseService {
     if (filters?.type) params = params.set('type', filters.type);
     if (filters?.page) params = params.set('page', filters.page);
     if (filters?.limit) params = params.set('limit', filters.limit);
-    if (filters?.category) params = params.set('category', filters.category); // ✅
+    if (filters?.category) params = params.set('category', filters.category); //
     return this.http.get(`${this.apiUrl}/courses`, { params });
   }
 

@@ -185,13 +185,11 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   setTab(tab: string): void {
+    if ((this.route.snapshot.queryParams['tab'] || 'stats') !== tab) {
+      this.router.navigate([], {relativeTo:this.route, queryParams:{tab}, queryParamsHandling:'merge', replaceUrl:true});
+      return;
+    }
     this.activeTab = tab;
-    if (this.route.snapshot.queryParams['tab'] !== tab) this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { tab },
-      queryParamsHandling: 'merge',
-      replaceUrl: true
-    });
 
     if ((tab === 'users' || tab === 'staff-list') && this.users.length === 0) this.loadUsers();
     if (tab === 'courses' && this.courses.length === 0) this.loadCourses();
@@ -332,7 +330,7 @@ export class AdminDashboardComponent implements OnInit {
     this.http.post(`${this.apiUrl}/courses`, body).subscribe({
       next: (data: any) => {
         this.createCourseLoading = false;
-        this.createCourseSuccess = 'Course created ! Now add lessons 📚';
+        this.createCourseSuccess = 'Course created ! Now add lessons ';
         this.createdCourse = data.course;
         this.loadLessons(data.course._id);
       },
@@ -362,7 +360,7 @@ export class AdminDashboardComponent implements OnInit {
     this.http.put(`${this.apiUrl}/courses/${this.createdCourse._id}`, body).subscribe({
       next: (data: any) => {
         this.createCourseLoading = false;
-        this.createCourseSuccess = 'Course updated successfully ! ✅';
+        this.createCourseSuccess = 'Course updated successfully ! ';
         this.createdCourse = { ...this.createdCourse, ...body };
         setTimeout(() => this.createCourseSuccess = '', 3000);
       },
@@ -396,7 +394,7 @@ export class AdminDashboardComponent implements OnInit {
     this.http.post(`${this.apiUrl}/lessons/course/${this.createdCourse._id}`, formData).subscribe({
       next: () => {
         this.lessonLoading = false;
-        this.lessonSuccess = 'Lesson added ! ✅';
+        this.lessonSuccess = 'Lesson added ! ';
         this.newLesson = { title: '', content: '' };
         this.lessonFile = null;
         this.loadLessons(this.createdCourse._id);
@@ -444,13 +442,13 @@ export class AdminDashboardComponent implements OnInit {
 
     const emptyQuestion = this.newQuiz.questions.find(q => !q.texte.trim());
     if (emptyQuestion) {
-      this.quizError = '⚠️ Please fill in all question texts !';
+      this.quizError = ' Please fill in all question texts !';
       return;
     }
     for (const q of this.newQuiz.questions) {
       const filledOptions = q.options.filter(opt => opt.trim() !== '');
       if (filledOptions.length < 2) {
-        this.quizError = '⚠️ Each question must have at least 2 answer options !';
+        this.quizError = ' Each question must have at least 2 answer options !';
         return;
       }
     }
@@ -459,7 +457,7 @@ export class AdminDashboardComponent implements OnInit {
     this.http.post(`${this.apiUrl}/quiz/lesson/${this.selectedLessonId}`, this.newQuiz).subscribe({
       next: () => {
         this.quizLoading = false;
-        this.quizSuccess = 'Quiz 1 saved ! ✅';
+        this.quizSuccess = 'Quiz 1 saved ! ';
         this.showQuizForm = false;
         this.newQuiz = {
           noteMinimale: 70,
@@ -503,13 +501,13 @@ export class AdminDashboardComponent implements OnInit {
 
     const emptyQuestion = this.newQuiz2.questions.find(q => !q.texte.trim());
     if (emptyQuestion) {
-      this.quizError2 = '⚠️ Please fill in all question texts !';
+      this.quizError2 = ' Please fill in all question texts !';
       return;
     }
     for (const q of this.newQuiz2.questions) {
       const filledOptions = q.options.filter(opt => opt.trim() !== '');
       if (filledOptions.length < 2) {
-        this.quizError2 = '⚠️ Each question must have at least 2 answer options !';
+        this.quizError2 = ' Each question must have at least 2 answer options !';
         return;
       }
     }
@@ -518,7 +516,7 @@ export class AdminDashboardComponent implements OnInit {
     this.http.post(`${this.apiUrl}/quiz/lesson/${this.selectedLessonId2}/quiz2`, this.newQuiz2).subscribe({
       next: () => {
         this.quizLoading2 = false;
-        this.quizSuccess2 = 'Quiz 2 saved ! ✅';
+        this.quizSuccess2 = 'Quiz 2 saved ! ';
         this.showQuizForm2 = false;
         this.newQuiz2 = {
           noteMinimale: 70,
@@ -561,13 +559,13 @@ export class AdminDashboardComponent implements OnInit {
 
     const emptyQuestion = this.newFinalExam.questions.find(q => !q.texte.trim());
     if (emptyQuestion) {
-      this.finalExamError = '⚠️ Please fill in all question texts !';
+      this.finalExamError = ' Please fill in all question texts !';
       return;
     }
     for (const q of this.newFinalExam.questions) {
       const filledOptions = q.options.filter(opt => opt.trim() !== '');
       if (filledOptions.length < 2) {
-        this.finalExamError = '⚠️ Each question must have at least 2 answer options !';
+        this.finalExamError = ' Each question must have at least 2 answer options !';
         return;
       }
     }
@@ -576,7 +574,7 @@ export class AdminDashboardComponent implements OnInit {
     this.http.post(`${this.apiUrl}/quiz/final/${this.createdCourse._id}`, this.newFinalExam).subscribe({
       next: () => {
         this.finalExamLoading = false;
-        this.finalExamSuccess = 'Final exam saved ! 🎓';
+        this.finalExamSuccess = 'Final exam saved ! ';
         this.showFinalExamForm = false;
         this.newFinalExam = {
           noteMinimale: 70,
@@ -612,7 +610,7 @@ export class AdminDashboardComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.assignUserLoading = false;
-        this.assignUserSuccess = 'User assigned to manager successfully ! ✅';
+        this.assignUserSuccess = 'User assigned to manager successfully ! ';
         this.assignUserId = '';
         this.assignManagerId = '';
         this.loadUsers();
@@ -652,7 +650,7 @@ export class AdminDashboardComponent implements OnInit {
   approveReview(reviewId: string): void {
     this.http.patch(`${this.apiUrl}/reviews/${reviewId}/approve`, {}).subscribe({
       next: () => { this.loadReviews(); },
-      error: (err) => alert(err.error?.message || 'Error approving review')
+      error: (err) => this.toast.show(err.error?.message || 'Error approving review', 'error')
     });
   }
 
@@ -660,7 +658,7 @@ export class AdminDashboardComponent implements OnInit {
     if (!confirm('Reject and delete this review ?')) return;
     this.http.patch(`${this.apiUrl}/reviews/${reviewId}/reject`, {}).subscribe({
       next: () => { this.loadReviews(); },
-      error: (err) => alert(err.error?.message || 'Error rejecting review')
+      error: (err) => this.toast.show(err.error?.message || 'Error rejecting review', 'error')
     });
   }
 
@@ -668,12 +666,8 @@ export class AdminDashboardComponent implements OnInit {
     if (!confirm('Delete this review ?')) return;
     this.http.delete(`${this.apiUrl}/reviews/${reviewId}`).subscribe({
       next: () => { this.loadReviews(); },
-      error: (err) => alert(err.error?.message || 'Error deleting review')
+      error: (err) => this.toast.show(err.error?.message || 'Error deleting review', 'error')
     });
-  }
-
-  getStars(rating: number): string {
-    return '⭐'.repeat(Math.round(rating));
   }
 
   loadQuizResults(): void {
@@ -781,7 +775,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout();
+    if (!this.authService.logout()) return;
     this.router.navigate(['/profile-authentication']);
   }
 
@@ -816,7 +810,7 @@ export class AdminDashboardComponent implements OnInit {
       next: () => {
         this.loadLessons(this.createdCourse._id);
       },
-      error: (err) => alert(err.error?.message || 'Error deleting quiz')
+      error: (err) => this.toast.show(err.error?.message || 'Error deleting quiz', 'error')
     });
   }
 
@@ -846,7 +840,7 @@ export class AdminDashboardComponent implements OnInit {
       next: () => {
         this.loadLessons(this.createdCourse._id);
       },
-      error: (err) => alert(err.error?.message || 'Error deleting quiz 2')
+      error: (err) => this.toast.show(err.error?.message || 'Error deleting quiz 2', 'error')
     });
   }
 
@@ -883,7 +877,7 @@ export class AdminDashboardComponent implements OnInit {
       next: () => {
         this.loadLessons(this.createdCourse._id);
       },
-      error: (err) => alert(err.error?.message || 'Error deleting final exam')
+      error: (err) => this.toast.show(err.error?.message || 'Error deleting final exam', 'error')
     });
   }
 

@@ -42,8 +42,8 @@
                 {{ certificateLoading ? 'Preparing…' : 'View certificate' }} ↗
             </button>
         </section>
-        <p class="product-alert" *ngIf="enrollError || enrollSuccess" aria-live="polite">
-            {{ enrollError || enrollSuccess }}
+        <p class="product-alert" *ngIf="enrollError" aria-live="polite">
+            {{ enrollError }}
         </p>
         <app-empty-state
             *ngIf="!canAccessContent()"
@@ -216,8 +216,8 @@
                                     {{ nlpLoading ? 'Preparing…' : 'Generate summary' }}
                                 </button>
                             </div>
-                            <p *ngIf="nlpError || nlpSuccess" role="status">
-                                {{ nlpError || nlpSuccess }}
+                            <p *ngIf="nlpError" role="status">
+                                {{ nlpError }}
                             </p>
                             <ng-container *ngIf="lessonSummaries[currentLesson._id] as summary"
                                 ><div
@@ -278,7 +278,7 @@
                         >
                     </div>
                     <p class="form-message" aria-live="polite">
-                        {{ reviewError || reviewSuccess }}
+                        {{ reviewError }}
                     </p>
                     <form
                         *ngIf="isEnrolled && !hasReviewed && !editingReview"
@@ -501,3 +501,7 @@
         </div>
     </ng-container>
 </div>
+
+<span [appToast]="enrollSuccess"></span>
+<span [appToast]="reviewSuccess"></span>
+<span [appToast]="nlpSuccess"></span>

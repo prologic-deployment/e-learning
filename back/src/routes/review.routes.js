@@ -12,8 +12,8 @@ const {
   rejectReview
 } = require("../controllers/review.controller");
 
-router.get("/all", protect, authorize("admin"), getAllReviews);           // ✅
-router.get("/course/:courseId", getCourseReviews);                        // ✅ public
+router.get("/all", protect, authorize("admin"), getAllReviews);           //
+router.get("/course/:courseId", getCourseReviews);                        //  public
 router.post("/course/:courseId", protect, addReview);
 router.put("/:reviewId", protect, updateReview);
 router.delete("/:reviewId", protect, deleteReview);

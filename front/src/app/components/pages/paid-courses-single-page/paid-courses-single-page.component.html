@@ -9,7 +9,7 @@
                 <div class="hero-badges">
                     <span hlmBadge variant="secondary">{{ course.category || 'Learning' }}</span
                     ><span hlmBadge variant="outline" *ngIf="totalReviews"
-                        >★ {{ avgRating | number: '1.1-1' }} · {{ totalReviews }} reviews</span
+                        > {{ avgRating | number: '1.1-1' }} · {{ totalReviews }} reviews</span
                     >
                 </div>
                 <h1>{{ course.title }}</h1>
@@ -28,7 +28,7 @@
             </div>
             <div class="course-hero-art" aria-hidden="true">
                 <div class="hero-orbit"></div>
-                <i class="bx bx-book-open"></i><span>KNOWLEDGE<br />OPENS DOORS.</span><b>✳</b>
+                <i class="bx bx-book-open"></i><span>KNOWLEDGE<br />OPENS DOORS.</span><b><i class="bx bx-compass" aria-hidden="true"></i></b>
             </div>
         </section>
         <div class="course-detail-layout">
@@ -140,8 +140,8 @@
                                 >
                             </div>
                         </section>
-                        <p *ngIf="nlpError || nlpSuccess" role="status">
-                            {{ nlpError || nlpSuccess }}
+                        <p *ngIf="nlpError" role="status">
+                            {{ nlpError }}
                         </p>
                     </div>
                     <div hlmTabsContent="overview">
@@ -208,7 +208,7 @@
                                 >
                             </div>
                             <p class="form-message" aria-live="polite">
-                                {{ reviewError || reviewSuccess }}
+                                {{ reviewError }}
                             </p>
                             <form
                                 *ngIf="isEnrolled && !hasReviewed && !editingReview"
@@ -383,7 +383,7 @@
                         ></ng-container
                     >
                     <p class="form-message" aria-live="polite">
-                        {{ enrollError || enrollSuccess || cartError || cartSuccess }}
+                        {{ enrollError || cartError }}
                     </p>
                     <brn-separator hlm />
                     <div class="course-facts">
@@ -401,3 +401,8 @@
         </div>
     </ng-container>
 </div>
+
+<span [appToast]="enrollSuccess"></span>
+<span [appToast]="cartSuccess"></span>
+<span [appToast]="reviewSuccess"></span>
+<span [appToast]="nlpSuccess"></span>

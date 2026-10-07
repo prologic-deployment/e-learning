@@ -18,15 +18,15 @@ async function generateWithRetry(prompt, maxRetries = 3) {
       try {
         const model = genAI.getGenerativeModel({ model: MODELS[modelIndex] });
         const result = await model.generateContent(prompt);
-        console.log(`✅ Used model: ${MODELS[modelIndex]}`);
+        console.log(` Used model: ${MODELS[modelIndex]}`);
         return result.response.text();
       } catch (error) {
         if ((error.message.includes('503') || error.message.includes('overloaded'))
             && i < maxRetries - 1) {
-          console.log(`⚠️ ${MODELS[modelIndex]} busy, retry ${i + 1}/${maxRetries}...`);
+          console.log(` ${MODELS[modelIndex]} busy, retry ${i + 1}/${maxRetries}...`);
           await new Promise(resolve => setTimeout(resolve, 2000 * (i + 1)));
         } else if (error.message.includes('503') && i === maxRetries - 1) {
-          console.log(`⚠️ Switching to next model: ${MODELS[modelIndex + 1] || 'none'}...`);
+          console.log(` Switching to next model: ${MODELS[modelIndex + 1] || 'none'}...`);
           break;
         } else {
           throw error;
@@ -143,7 +143,7 @@ exports.summarizeCourse = async (req, res) => {
 
     // ✅ Chunking
     const chunks = chunkText(fullText, 300, 30);
-    console.log(`📦 ${chunks.length} chunks created`);
+    console.log(` ${chunks.length} chunks created`);
 
     // ✅ NLP classique local
     const keywords = extractKeywords(fullText, 10);
@@ -208,7 +208,7 @@ Génère UNIQUEMENT un JSON valide sans backticks avec cette structure:
     });
 
   } catch (error) {
-    console.log('❌ NLP error:', error.message);
+    console.log(' NLP error:', error.message);
     res.status(500).json({ message: "NLP error", error: error.message });
   }
 };
@@ -244,7 +244,7 @@ exports.summarizeLesson = async (req, res) => {
     const whisperOk = await transcriptionService.checkWhisperHealth();
     if (!whisperOk) {
       return res.status(503).json({
-        message: '⚠️ Service Whisper non disponible. Assurez-vous que Flask tourne sur le port 5001.'
+        message: ' Service Whisper non disponible. Assurez-vous que Flask tourne sur le port 5001.'
       });
     }
 
@@ -252,14 +252,14 @@ exports.summarizeLesson = async (req, res) => {
     const videoPath = lesson.contentFile.startsWith('uploads/')
     ? lesson.contentFile
     : `uploads/${lesson.contentFile}`;
-    console.log(`🎬 Starting transcription: ${videoPath}`);
+    console.log(` Starting transcription: ${videoPath}`);
 
     // ✅ Transcription
     const transcriptionResult = await transcriptionService.transcribeVideo(videoPath);
     const transcription = transcriptionResult.text;
     const language = transcriptionResult.language;
 
-    console.log(`✅ Transcription done: ${transcription.substring(0, 100)}...`);
+    console.log(` Transcription done: ${transcription.substring(0, 100)}...`);
 
     // ✅ Génération du résumé avec Gemini
     const prompt = `
@@ -294,7 +294,7 @@ Génère UNIQUEMENT un JSON valide sans backticks:
     lesson.summarizedAt = new Date();
     await lesson.save();
 
-    console.log(`✅ Summary saved for lesson: ${lesson.title}`);
+    console.log(` Summary saved for lesson: ${lesson.title}`);
 
     res.status(200).json({
       cached: false,
@@ -306,7 +306,7 @@ Génère UNIQUEMENT un JSON valide sans backticks:
     });
 
   } catch (error) {
-    console.error('❌ NLP summarizeLesson error:', error.message);
+    console.error(' NLP summarizeLesson error:', error.message);
     res.status(500).json({
       message: 'Erreur lors du résumé',
       error: error.message
@@ -350,8 +350,8 @@ exports.whisperStatus = async (req, res) => {
     res.status(200).json({
       available: isAvailable,
       message: isAvailable
-        ? '✅ Whisper est disponible'
-        : '❌ Whisper non disponible — lancez Flask sur le port 5001'
+        ? ' Whisper est disponible'
+        : ' Whisper non disponible — lancez Flask sur le port 5001'
     });
   } catch (error) {
     res.status(500).json({ available: false, message: config.prodLike ? 'Server error' : error.message });
