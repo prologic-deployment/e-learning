@@ -68,3 +68,30 @@ Role/API fixtures deliberately exercise loading failures, not live operational m
 A condition-based post-resize wait verifies final document bounds (workspace transitions
 can briefly retain the previous viewport width). Trainer screenshot documents API-error
 state. Legacy nested management/CV forms are not all rewritten by this composition pass.
+
+## 4. Learner supporting workspaces
+Recomposed cart as a course list and summary, recommendations as interest context plus
+quiet course cards with expandable real score explanations, and CV as section navigation
+plus six semantic forms. CV uses FormField/Spartan inputs, selects, labels, cards and
+buttons; submitted required/email validation, date-order checks, pending mutations,
+visible API errors and component-destroy cleanup were added. Security uses PageHeading.
+All existing CV endpoints and PDF download remain; all recommendation scores still
+come from the backend. No invented progress, reviews, skill matching or payments.
+
+Cart GET failures no longer masquerade as an empty cart. Mutations expose pending/error
+states. Recommendations clear stale errors on retry and cancel superseded requests.
+Fixed an existing narrow-screen workspace-topbar overflow caused by global padding on
+Spartan buttons. Textareas now retain useful editing height and heading actions no
+longer compress into wrapped labels.
+
+Important pre-existing limitation found: `/checkout` does not exist and the backend only
+registers a simulated payment provider. Replaced the dead payment link with an explicit
+unavailable-payment notice and contact action. This change does NOT implement payments
+or silently simulate a purchase; the payment backend was not changed.
+
+PASS: development build and learner-composition browser test: cart error/empty/clear,
+recommendation error/retry/API scores, all six CV forms' labels and required validation,
+CV multipart save contract, security heading, theme and 320/390/768/1440 bounds. Tests
+use controlled API fixtures, not production mutations. CV and dark catalogue screenshots
+visually inspected. Full live authorization, payment, certificate/exam and every nested
+management-form workflow remain unverified. Nested staff forms retain existing structure.

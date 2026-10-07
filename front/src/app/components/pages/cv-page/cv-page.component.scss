@@ -1,0 +1,105 @@
+.cv-layout {
+    display: grid;
+    grid-template-columns: 210px minmax(0, 1fr);
+    gap: 30px;
+    align-items: start;
+}
+.cv-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-right: 1px solid hsl(var(--border));
+    padding-right: 22px;
+}
+.cv-sections > .eyebrow {
+    margin: 10px 12px 22px;
+}
+.cv-sections button {
+    justify-content: space-between;
+    font-size: 11px;
+    white-space: normal;
+    min-height: 44px;
+    height: auto;
+    padding: 12px;
+    text-align: left;
+}
+.cv-sections button.active {
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+}
+.cv-sections button > span {
+    margin-left: 8px;
+}
+.cv-editor {
+    min-width: 0;
+}
+.cv-section {
+    padding: 30px;
+    margin-bottom: 22px;
+}
+.cv-section h5 {
+    font-size: 21px;
+    letter-spacing: -0.6px;
+    font-weight: 550;
+    line-height: 1.35;
+    color: inherit;
+}
+.cv-section p {
+    font-size: 12px;
+    line-height: 1.8;
+    color: hsl(var(--muted-foreground));
+}
+.cv-section button {
+    font-size: 11px;
+}
+.cv-section .row {
+    row-gap: 12px;
+}
+.cv-editor input,
+.cv-editor textarea,
+.cv-editor select {
+    font-size: 12px;
+}
+.cv-editor .alert {
+    font-size: 12px;
+}
+.cv-editor h6 {
+    font-size: 14px;
+    color: inherit;
+}
+.cv-editor .badge {
+    background: hsl(var(--muted));
+    color: hsl(var(--foreground));
+    font-size: 10px;
+}
+.cv-editor app-form-field {
+    display: block;
+    margin-bottom: 14px;
+}
+@media (max-width: 900px) {
+    .cv-layout {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    .cv-sections {
+        border: 0;
+        border-bottom: 1px solid hsl(var(--border));
+        padding: 0 0 16px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 7px;
+    }
+    .cv-sections > .eyebrow {
+        width: 100%;
+        margin: 0 0 6px;
+    }
+    .cv-sections button {
+        min-height: 36px;
+        padding: 9px;
+        font-size: 10px;
+    }
+    .cv-section {
+        padding: 22px;
+    }
+}

@@ -1,44 +1,267 @@
 <div class="product-page security-page">
-  <header><span class="eyebrow">ACCOUNT / SECURITY</span><h1>Keep your path protected.</h1><p>Add an authenticator to protect your account beyond your password.</p></header>
-  <div class="product-alert" role="alert" *ngIf="error">{{error}} <button hlmBtn variant="outline" *ngIf="!status" [disabled]="loading" (click)="refresh()">Try again</button></div>
-  <div class="product-alert success" role="status" *ngIf="success">{{success}}</div>
-  <div *ngIf="loading && !status" aria-label="Loading security settings" role="status"><hlm-skeleton class="security-skeleton"/><hlm-skeleton class="security-skeleton"/></div>
-  <section hlmCard *ngIf="status" [attr.aria-busy]="loading">
-    <div class="section-row"><div><h2>Authenticator app</h2><p>Compatible with Google Authenticator, Microsoft Authenticator, Authy and 1Password.</p></div><span hlmBadge [variant]="status.enabled ? 'default' : 'secondary'">{{status.enabled ? 'Enabled' : 'Not enabled'}}</span></div>
-    <ng-container *ngIf="recoveryCodes.length; else settings">
-      <h3>Your recovery codes</h3><p>These are shown only now. Keep them in a password manager or a secure offline location—not with your password. Each code signs you in once if you lose access to your authenticator.</p>
-      <div class="recovery-list"><code *ngFor="let recovery of recoveryCodes">{{recovery}}</code></div>
-      <div class="actions"><button hlmBtn (click)="downloadCodes()">Download recovery codes</button><button hlmBtn variant="outline" (click)="recoveryCodes = []; success = ''">I have saved my codes</button></div>
-    </ng-container>
-    <ng-template #settings>
-      <ng-container *ngIf="!status.enabled">
-        <ol class="setup-steps" aria-label="Authenticator setup"><li [class.current]="!setup">1. Confirm identity</li><li [class.current]="setup">2. Connect app</li><li>3. Save recovery codes</li></ol>
-        <form *ngIf="!setup" #startForm="ngForm" (ngSubmit)="startForm.valid && begin()">
-          <app-form-field label="Current password" [required]="true" hint="Confirm it is you before creating an authenticator key."><input hlmInput type="password" name="password" autocomplete="current-password" [(ngModel)]="password" required></app-form-field>
-          <button hlmBtn type="submit" [disabled]="loading">{{loading ? 'Preparing setup…' : 'Set up authenticator'}}</button>
-        </form>
-        <div *ngIf="setup" class="setup-content">
-          <h3>Scan this QR code in your app</h3><p>Choose “Add account” in your authenticator. If you cannot scan, enter the manual key below. Setup expires in ten minutes.</p>
-          <img [src]="setup.qrCode" width="256" height="256" alt="Authenticator setup QR code; the equivalent manual key is below">
-          <details><summary>Cannot scan? Use the manual setup key</summary><code class="manual-key">{{setup.secret}}</code><p>Time-based • SHA-1 • 6 digits • 30 seconds. Account: {{auth.getCurrentUser()?.email}}</p></details>
-          <form #confirmForm="ngForm" (ngSubmit)="confirmForm.valid && confirm()">
-            <app-form-field label="Code from your authenticator" [required]="true" hint="Enter six digits to confirm setup. Your account is not protected until this step succeeds."><input hlmInput name="code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" [(ngModel)]="code" required></app-form-field>
-            <div class="actions"><button hlmBtn type="submit" [disabled]="loading">{{loading ? 'Confirming…' : 'Confirm and enable'}}</button><button hlmBtn type="button" variant="ghost" [disabled]="loading" (click)="cancel()">Cancel setup</button></div>
-          </form>
+    <app-page-heading eyebrow="ACCOUNT / SECURITY"
+        ><h1 pageTitle>Keep your path protected.</h1>
+        <p pageDescription>
+            Add an authenticator to protect your account beyond your password.
+        </p></app-page-heading
+    >
+    <div class="product-alert" role="alert" *ngIf="error">
+        {{ error }}
+        <button
+            hlmBtn
+            variant="outline"
+            *ngIf="!status"
+            [disabled]="loading"
+            (click)="refresh()"
+        >
+            Try again
+        </button>
+    </div>
+    <div class="product-alert success" role="status" *ngIf="success">
+        {{ success }}
+    </div>
+    <div
+        *ngIf="loading && !status"
+        aria-label="Loading security settings"
+        role="status"
+    >
+        <hlm-skeleton class="security-skeleton" /><hlm-skeleton
+            class="security-skeleton"
+        />
+    </div>
+    <section hlmCard *ngIf="status" [attr.aria-busy]="loading">
+        <div class="section-row">
+            <div>
+                <h2>Authenticator app</h2>
+                <p>
+                    Compatible with Google Authenticator, Microsoft
+                    Authenticator, Authy and 1Password.
+                </p>
+            </div>
+            <span
+                hlmBadge
+                [variant]="status.enabled ? 'default' : 'secondary'"
+                >{{ status.enabled ? "Enabled" : "Not enabled" }}</span
+            >
         </div>
-      </ng-container>
-      <ng-container *ngIf="status.enabled">
-        <p>You will be asked for an authenticator or recovery code after entering your password.</p><p><strong>{{status.recoveryCodesRemaining}} recovery codes remaining.</strong> Previously generated codes cannot be retrieved.</p>
-        <p class="help">To replace a lost device or recovery list, securely disable protection below, then immediately set it up again. If you have neither your device nor a recovery code, contact your administrator for identity-verified account recovery. Password reset alone does not remove this protection.</p>
-        <button hlmBtn variant="outline" *ngIf="!disabling" (click)="disabling = true">Disable authenticator…</button>
-        <form *ngIf="disabling" #disableForm="ngForm" (ngSubmit)="disableForm.valid && disable()" class="danger-zone">
-          <h3>Confirm removal of this protection</h3><p>This signs out your other sessions and deletes the current authenticator key and recovery codes.</p>
-          <app-form-field label="Current password" [required]="true"><input hlmInput type="password" name="password" autocomplete="current-password" [(ngModel)]="password" required></app-form-field>
-          <app-form-field [label]="recoveryMode ? 'Unused recovery code' : 'Fresh authenticator code'" [required]="true"><input hlmInput name="proof" autocomplete="one-time-code" [attr.inputmode]="recoveryMode ? 'text' : 'numeric'" [pattern]="recoveryMode ? '[a-fA-F0-9\\s-]{32,48}' : '[0-9]{6}'" [(ngModel)]="code" required></app-form-field>
-          <button hlmBtn type="button" variant="link" (click)="recoveryMode = !recoveryMode; code = ''">{{recoveryMode ? 'Use authenticator instead' : 'Use a recovery code instead'}}</button>
-          <div class="actions"><button hlmBtn variant="destructive" type="submit" [disabled]="loading">{{loading ? 'Disabling…' : 'Disable authenticator'}}</button><button hlmBtn type="button" variant="ghost" [disabled]="loading" (click)="disabling = false; password = ''; code = ''">Keep protection</button></div>
-        </form>
-      </ng-container>
-    </ng-template>
-  </section>
+        <ng-container *ngIf="recoveryCodes.length; else settings">
+            <h3>Your recovery codes</h3>
+            <p>
+                These are shown only now. Keep them in a password manager or a
+                secure offline location—not with your password. Each code signs
+                you in once if you lose access to your authenticator.
+            </p>
+            <div class="recovery-list">
+                <code *ngFor="let recovery of recoveryCodes">{{
+                    recovery
+                }}</code>
+            </div>
+            <div class="actions">
+                <button hlmBtn (click)="downloadCodes()">
+                    Download recovery codes</button
+                ><button
+                    hlmBtn
+                    variant="outline"
+                    (click)="recoveryCodes = []; success = ''"
+                >
+                    I have saved my codes
+                </button>
+            </div>
+        </ng-container>
+        <ng-template #settings>
+            <ng-container *ngIf="!status.enabled">
+                <ol class="setup-steps" aria-label="Authenticator setup">
+                    <li [class.current]="!setup">1. Confirm identity</li>
+                    <li [class.current]="setup">2. Connect app</li>
+                    <li>3. Save recovery codes</li>
+                </ol>
+                <form
+                    *ngIf="!setup"
+                    #startForm="ngForm"
+                    (ngSubmit)="startForm.valid && begin()"
+                >
+                    <app-form-field
+                        label="Current password"
+                        [required]="true"
+                        hint="Confirm it is you before creating an authenticator key."
+                        ><input
+                            hlmInput
+                            type="password"
+                            name="password"
+                            autocomplete="current-password"
+                            [(ngModel)]="password"
+                            required
+                    /></app-form-field>
+                    <button hlmBtn type="submit" [disabled]="loading">
+                        {{
+                            loading
+                                ? "Preparing setup…"
+                                : "Set up authenticator"
+                        }}
+                    </button>
+                </form>
+                <div *ngIf="setup" class="setup-content">
+                    <h3>Scan this QR code in your app</h3>
+                    <p>
+                        Choose “Add account” in your authenticator. If you
+                        cannot scan, enter the manual key below. Setup expires
+                        in ten minutes.
+                    </p>
+                    <img
+                        [src]="setup.qrCode"
+                        width="256"
+                        height="256"
+                        alt="Authenticator setup QR code; the equivalent manual key is below"
+                    />
+                    <details>
+                        <summary>Cannot scan? Use the manual setup key</summary>
+                        <code class="manual-key">{{ setup.secret }}</code>
+                        <p>
+                            Time-based • SHA-1 • 6 digits • 30 seconds. Account:
+                            {{ auth.getCurrentUser()?.email }}
+                        </p>
+                    </details>
+                    <form
+                        #confirmForm="ngForm"
+                        (ngSubmit)="confirmForm.valid && confirm()"
+                    >
+                        <app-form-field
+                            label="Code from your authenticator"
+                            [required]="true"
+                            hint="Enter six digits to confirm setup. Your account is not protected until this step succeeds."
+                            ><input
+                                hlmInput
+                                name="code"
+                                inputmode="numeric"
+                                autocomplete="one-time-code"
+                                pattern="[0-9]{6}"
+                                maxlength="6"
+                                [(ngModel)]="code"
+                                required
+                        /></app-form-field>
+                        <div class="actions">
+                            <button hlmBtn type="submit" [disabled]="loading">
+                                {{
+                                    loading
+                                        ? "Confirming…"
+                                        : "Confirm and enable"
+                                }}</button
+                            ><button
+                                hlmBtn
+                                type="button"
+                                variant="ghost"
+                                [disabled]="loading"
+                                (click)="cancel()"
+                            >
+                                Cancel setup
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="status.enabled">
+                <p>
+                    You will be asked for an authenticator or recovery code
+                    after entering your password.
+                </p>
+                <p>
+                    <strong
+                        >{{ status.recoveryCodesRemaining }} recovery codes
+                        remaining.</strong
+                    >
+                    Previously generated codes cannot be retrieved.
+                </p>
+                <p class="help">
+                    To replace a lost device or recovery list, securely disable
+                    protection below, then immediately set it up again. If you
+                    have neither your device nor a recovery code, contact your
+                    administrator for identity-verified account recovery.
+                    Password reset alone does not remove this protection.
+                </p>
+                <button
+                    hlmBtn
+                    variant="outline"
+                    *ngIf="!disabling"
+                    (click)="disabling = true"
+                >
+                    Disable authenticator…
+                </button>
+                <form
+                    *ngIf="disabling"
+                    #disableForm="ngForm"
+                    (ngSubmit)="disableForm.valid && disable()"
+                    class="danger-zone"
+                >
+                    <h3>Confirm removal of this protection</h3>
+                    <p>
+                        This signs out your other sessions and deletes the
+                        current authenticator key and recovery codes.
+                    </p>
+                    <app-form-field label="Current password" [required]="true"
+                        ><input
+                            hlmInput
+                            type="password"
+                            name="password"
+                            autocomplete="current-password"
+                            [(ngModel)]="password"
+                            required
+                    /></app-form-field>
+                    <app-form-field
+                        [label]="
+                            recoveryMode
+                                ? 'Unused recovery code'
+                                : 'Fresh authenticator code'
+                        "
+                        [required]="true"
+                        ><input
+                            hlmInput
+                            name="proof"
+                            autocomplete="one-time-code"
+                            [attr.inputmode]="recoveryMode ? 'text' : 'numeric'"
+                            [pattern]="
+                                recoveryMode
+                                    ? '[a-fA-F0-9\\s-]{32,48}'
+                                    : '[0-9]{6}'
+                            "
+                            [(ngModel)]="code"
+                            required
+                    /></app-form-field>
+                    <button
+                        hlmBtn
+                        type="button"
+                        variant="link"
+                        (click)="recoveryMode = !recoveryMode; code = ''"
+                    >
+                        {{
+                            recoveryMode
+                                ? "Use authenticator instead"
+                                : "Use a recovery code instead"
+                        }}
+                    </button>
+                    <div class="actions">
+                        <button
+                            hlmBtn
+                            variant="destructive"
+                            type="submit"
+                            [disabled]="loading"
+                        >
+                            {{
+                                loading ? "Disabling…" : "Disable authenticator"
+                            }}</button
+                        ><button
+                            hlmBtn
+                            type="button"
+                            variant="ghost"
+                            [disabled]="loading"
+                            (click)="
+                                disabling = false; password = ''; code = ''
+                            "
+                        >
+                            Keep protection
+                        </button>
+                    </div>
+                </form>
+            </ng-container>
+        </ng-template>
+    </section>
 </div>

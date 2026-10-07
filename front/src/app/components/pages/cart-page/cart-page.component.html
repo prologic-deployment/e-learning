@@ -1,86 +1,109 @@
-<!-- Page Title -->
-<div class="page-title-area">
-  <div class="container">
-    <div class="page-title-content">
-      <ul>
-        <li><a routerLink="/">Home</a></li>
-        <li>Cart</li>
-      </ul>
-      <h1>Shopping Cart 🛒</h1>
+<div class="product-page cart-workspace">
+    <app-page-heading eyebrow="YOUR NEXT CHAPTER"
+        ><h1 pageTitle>A little investment in you.</h1>
+        <p pageDescription>Review the courses you've saved to your cart.</p>
+        <a pageActions hlmBtn variant="outline" routerLink="/courses-grid"
+            >Keep exploring ↗</a
+        ></app-page-heading
+    ><app-learning-skeleton *ngIf="loading" />
+    <div *ngIf="error" class="product-alert" role="alert">
+        {{ error }}
+        <button
+            hlmBtn
+            variant="outline"
+            (click)="loadCart()"
+            [disabled]="loading"
+        >
+            Try again
+        </button>
     </div>
-  </div>
-</div>
-
-<!-- Cart -->
-<div class="cart-area ptb-100">
-  <div class="container">
-
-    <!-- Loading -->
-    <div *ngIf="loading" class="text-center py-5">
-      <p>Loading cart...</p>
+    <div *ngIf="actionError" class="product-alert" role="alert">
+        {{ actionError }}
     </div>
-
-    <!-- Empty Cart -->
-    <div *ngIf="!loading && (!cart || cart.items?.length === 0)" class="text-center py-5">
-      <h4 class="text-muted">Your cart is empty ! 🛒</h4>
-      <button class="btn btn-primary mt-3" routerLink="/courses-grid">
-        Browse Courses
-      </button>
+    <app-empty-state
+        *ngIf="!loading && !error && !cart?.items?.length"
+        title="Make room for something new."
+        description="Your cart is empty. Find a course that sparks your curiosity."
+        link="/courses-grid"
+        action="Explore courses"
+        icon="book-open"
+    />
+    <div *ngIf="!loading && !error && cart?.items?.length" class="cart-layout">
+        <section aria-label="Courses in your cart">
+            <article
+                hlmCard
+                class="cart-course"
+                *ngFor="let item of cart.items"
+            >
+                <div class="cart-cover" aria-hidden="true">
+                    <i class="bx bx-book-open"></i>
+                </div>
+                <div class="cart-course-copy">
+                    <span class="eyebrow">{{
+                        item.course?.category || "YOUR LEARNING"
+                    }}</span>
+                    <h2>
+                        <a
+                            *ngIf="item.course?._id; else missingCourse"
+                            [routerLink]="['/courses-details', item.course._id]"
+                            >{{ item.course.title }}</a
+                        ><ng-template #missingCourse
+                            >Course no longer available</ng-template
+                        >
+                    </h2>
+                    <p>{{ item.course?.description }}</p>
+                    <small *ngIf="item.course?.trainer"
+                        >{{ item.course.trainer.firstname }}
+                        {{ item.course.trainer.lastname }}</small
+                    >
+                    <div class="cart-course-bottom">
+                        <strong>{{
+                            item.price | currency: "TND" : "code"
+                        }}</strong
+                        ><button
+                            hlmBtn
+                            variant="ghost"
+                            size="sm"
+                            (click)="removeFromCart(item.course?._id)"
+                            [disabled]="
+                                !!removeLoading ||
+                                clearLoading ||
+                                !item.course?._id
+                            "
+                        >
+                            {{
+                                removeLoading === item.course?._id
+                                    ? "Removing…"
+                                    : "Remove"
+                            }}
+                        </button>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <aside hlmCard class="cart-summary">
+            <span class="eyebrow">AT A GLANCE</span>
+            <h2>Your learning, next.</h2>
+            <div class="section-row">
+                <span>{{ cart.items.length }} courses</span
+                ><strong>{{
+                    cart.totalPrice | currency: "TND" : "code"
+                }}</strong>
+            </div>
+            <p>
+                Online payment is not available in this application yet. Contact
+                the team about paid-course access; no charge or enrollment is
+                made here.
+            </p>
+            <a hlmBtn routerLink="/contact">Contact the team ↗</a
+            ><button
+                hlmBtn
+                variant="outline"
+                (click)="clearCart()"
+                [disabled]="clearLoading || !!removeLoading"
+            >
+                {{ clearLoading ? "Clearing…" : "Clear cart" }}
+            </button>
+        </aside>
     </div>
-
-    <!-- Cart Items -->
-    <div *ngIf="!loading && cart && cart.items?.length > 0">
-      <div class="cart-table table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Course</th>
-              <th>Trainer</th>
-              <th>Price</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of cart.items">
-              <td>
-                <strong>{{ item.course?.title }}</strong>
-                <p class="text-muted mb-0" style="font-size: 12px;">
-                  {{ item.course?.description | slice:0:60 }}...
-                </p>
-              </td>
-              <td>
-                {{ item.course?.trainer?.firstname }}
-                {{ item.course?.trainer?.lastname }}
-              </td>
-              <td><strong>{{ item.price }} TND</strong></td>
-              <td>
-                <button class="btn btn-sm btn-danger"
-                  (click)="removeFromCart(item.course?._id)"
-                  [disabled]="removeLoading === item.course?._id">
-                  <i class='bx bx-trash-alt'></i>
-                  {{ removeLoading === item.course?._id ? '...' : 'Remove' }}
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Cart Total -->
-      <div class="cart-totals">
-        <ul>
-          <li>Total <span><strong>{{ cart.totalPrice }} TND</strong></span></li>
-        </ul>
-        <div class="d-flex gap-3 mt-3">
-          <button class="btn btn-outline-danger" (click)="clearCart()">
-            🗑️ Clear Cart
-          </button>
-          <button class="default-btn" routerLink="/checkout">
-            💳 Go to Payment
-          </button>
-        </div>
-      </div>
-    </div>
-
-  </div>
 </div>

@@ -1,677 +1,759 @@
-<!-- Page Title -->
-<!-- <div class="page-title-area">
-  <div class="container">
-    <div class="page-title-content">
-
-      <h1>📄 CV Builder</h1>
-    </div>
-  </div>
-</div> -->
-
-<div class="profile-authentication-area ptb-100">
-  <div class="container">
-
-    <!-- Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <div>
-        <h4 style="font-weight: 800; color: #1D3557; margin: 0;">Mon CV Professionnel</h4>
-        <p style="font-size: 13px; color: #5C7184; margin: 0;">
-          Construisez et téléchargez votre CV
+<div class="product-page cv-workspace">
+    <app-page-heading eyebrow="VOTRE PARCOURS"
+        ><h1 pageTitle>Vos expériences. Votre prochaine étape.</h1>
+        <p pageDescription>
+            Construisez votre CV, puis emportez votre parcours avec vous.
         </p>
-      </div>
-      <button *ngIf="cv" (click)="downloadPDF()"
-        style="padding: 10px 22px; border: none; border-radius: 12px;
-          background: linear-gradient(135deg, #10b981, #059669);
-          color: white; font-weight: 600; font-size: 13px; cursor: pointer;
-          box-shadow: 0 4px 15px rgba(16,185,129,0.3);">
-        📥 Télécharger PDF
-      </button>
-    </div>
-
-    <!-- Tabs -->
-    <div style="background: #EAF3F5; border-radius: 14px; padding: 6px;
-      display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 28px;">
-      <button *ngFor="let tab of cvTabs"
-        (click)="activeTab = tab.id"
-        style="padding: 9px 16px; border: none; border-radius: 10px;
-          font-size: 13px; font-weight: 600; cursor: pointer;
-          transition: all 0.2s; white-space: nowrap;"
-        [style.background]="activeTab === tab.id ? 'white' : 'transparent'"
-        [style.color]="activeTab === tab.id ? '#457B9D' : '#5C7184'"
-        [style.boxShadow]="activeTab === tab.id ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
-        {{ tab.icon }} {{ tab.label }}
-      </button>
-    </div>
-
-    <!-- Loading -->
-    <div *ngIf="loading" class="text-center py-5">
-      <div class="spinner-border text-primary"></div>
-      <p style="color: #5C7184; margin-top: 12px;">Chargement du CV...</p>
-    </div>
-
-    <!-- ========== PERSONAL INFO ========== -->
-    <div *ngIf="activeTab === 'info' && !loading">
-      <div style="background: white; border-radius: 20px; padding: 32px;
-        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
-
-        <div class="d-flex align-items-center gap-3 mb-4">
-          <div style="width: 44px; height: 44px; border-radius: 12px;
-            background: #F4F8F9; display: flex; align-items: center;
-            justify-content: center; font-size: 20px;">👤</div>
-          <div>
-            <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
-              Informations Personnelles
-            </h5>
-            <p style="font-size: 13px; color: #5C7184; margin: 0;">
-              Vos coordonnées de base
-            </p>
-          </div>
-        </div>
-
-        <div *ngIf="saveSuccess" class="alert alert-success"
-          style="border-radius: 10px;">{{ saveSuccess }}</div>
-        <div *ngIf="saveError" class="alert alert-danger"
-          style="border-radius: 10px;">{{ saveError }}</div>
-
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Prénom *
-              </label>
-              <input type="text" class="form-control mt-1"
-                [(ngModel)]="cvInfo.prenom" placeholder="Prénom"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Nom *
-              </label>
-              <input type="text" class="form-control mt-1"
-                [(ngModel)]="cvInfo.nom" placeholder="Nom"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-            </div>
-          </div>
-        </div>
-
-        <div class="mb-3">
-          <label style="font-size: 13px; font-weight: 600; color: #374151;">
-            Email *
-          </label>
-          <input type="email" class="form-control mt-1"
-            [(ngModel)]="cvInfo.email" placeholder="email@example.com"
-            style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-              padding: 12px 15px; font-size: 14px;">
-        </div>
-
-        <div class="mb-3">
-          <label style="font-size: 13px; font-weight: 600; color: #374151;">
-            Téléphone
-          </label>
-          <input type="text" class="form-control mt-1"
-            [(ngModel)]="cvInfo.telephone" placeholder="+216 XX XXX XXX"
-            style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-              padding: 12px 15px; font-size: 14px;">
-        </div>
-
-        <div class="mb-4">
-          <label style="font-size: 13px; font-weight: 600; color: #374151;">
-            Description / Résumé
-          </label>
-          <textarea class="form-control mt-1" rows="4"
-            [(ngModel)]="cvInfo.description"
-            placeholder="Brève description de votre profil professionnel..."
-            style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-              padding: 12px 15px; font-size: 14px; resize: none;">
-          </textarea>
-        </div>
-
-        <div class="mb-4">
-          <label style="font-size: 13px; font-weight: 600; color: #374151;">
-            Photo de profil
-          </label>
-          <input type="file" class="form-control mt-1"
-            accept=".jpg,.jpeg,.png,.webp"
-            (change)="onPhotoSelected($event)"
-            style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-              padding: 10px 15px; font-size: 14px;">
-        </div>
-
-        <button (click)="saveCV()" [disabled]="saveLoading"
-          style="width: 100%; padding: 13px; border: none; border-radius: 12px;
-            font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #457B9D, #1D3557);
-            box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
-          [style.opacity]="saveLoading ? '0.7' : '1'">
-          <span *ngIf="!saveLoading">💾 Sauvegarder</span>
-          <span *ngIf="saveLoading">
-            <span class="spinner-border spinner-border-sm me-2"></span>
-            Sauvegarde...
-          </span>
-        </button>
-      </div>
-    </div>
-
-    <!-- ========== EXPERIENCE ========== -->
-    <div *ngIf="activeTab === 'experience' && !loading">
-
-      <!-- Add Form -->
-      <div style="background: white; border-radius: 20px; padding: 32px;
-        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        margin-bottom: 24px;">
-
-        <div class="d-flex align-items-center gap-3 mb-4">
-          <div style="width: 44px; height: 44px; border-radius: 12px;
-            background: #EAF3F5; display: flex; align-items: center;
-            justify-content: center; font-size: 20px;">💼</div>
-          <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
-            Ajouter une Expérience
-          </h5>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Poste *
-              </label>
-              <input type="text" class="form-control mt-1"
-                [(ngModel)]="newExperience.titre" placeholder="Ex: Développeur Full Stack"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Entreprise *
-              </label>
-              <input type="text" class="form-control mt-1"
-                [(ngModel)]="newExperience.entreprise" placeholder="Ex: Prologic"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Date de début *
-              </label>
-              <input type="date" class="form-control mt-1"
-                [(ngModel)]="newExperience.dateDebut"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Date de fin
-              </label>
-              <input type="date" class="form-control mt-1"
-                [(ngModel)]="newExperience.dateFin"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="mb-4">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Description
-              </label>
-              <textarea class="form-control mt-1" rows="3"
-                [(ngModel)]="newExperience.description"
-                placeholder="Décrivez vos responsabilités..."
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px; resize: none;">
-              </textarea>
-            </div>
-          </div>
-        </div>
-
-        <button (click)="addExperience()" [disabled]="expLoading"
-          style="width: 100%; padding: 13px; border: none; border-radius: 12px;
-            font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #457B9D, #1D3557);
-            box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
-          [style.opacity]="expLoading ? '0.7' : '1'">
-          <span *ngIf="!expLoading">➕ Ajouter l'expérience</span>
-          <span *ngIf="expLoading">
-            <span class="spinner-border spinner-border-sm me-2"></span>Ajout...
-          </span>
-        </button>
-      </div>
-
-      <!-- List -->
-      <div *ngIf="cv?.experiences?.length === 0" class="text-center py-5"
-        style="background: white; border-radius: 20px; border: 1px solid #D7E3E7;">
-        <div style="font-size: 48px; margin-bottom: 12px;">💼</div>
-        <p style="color: #5C7184;">Aucune expérience ajoutée</p>
-      </div>
-
-      <div *ngFor="let exp of cv?.experiences" class="mb-3"
-        style="background: white; border-radius: 16px; padding: 24px;
-          border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
-        <div class="d-flex justify-content-between align-items-start">
-          <div style="display: flex; gap: 16px; flex: 1;">
-            <div style="width: 44px; height: 44px; border-radius: 12px;
-              background: #EAF3F5; display: flex; align-items: center;
-              justify-content: center; font-size: 20px; flex-shrink: 0;">
-              💼
-            </div>
-            <div>
-              <div style="font-weight: 700; color: #1D3557; font-size: 15px;">
-                {{ exp.titre }}
-              </div>
-              <div style="color: #457B9D; font-weight: 600; font-size: 13px;
-                margin: 4px 0;">
-                {{ exp.entreprise }}
-              </div>
-              <div style="font-size: 12px; color: #7E93A3; margin-bottom: 8px;">
-                {{ exp.dateDebut | date:'MM/yyyy' }} →
-                {{ exp.dateFin ? (exp.dateFin | date:'MM/yyyy') : 'Présent' }}
-              </div>
-              <div style="font-size: 13px; color: #5C7184; line-height: 1.6;">
-                {{ exp.description }}
-              </div>
-            </div>
-          </div>
-          <button (click)="deleteExperience(exp._id)"
-            style="padding: 6px 12px; border: 1.5px solid #fecaca;
-              border-radius: 8px; background: #fef2f2; color: #E63946;
-              font-size: 13px; cursor: pointer; flex-shrink: 0; margin-left: 12px;">
-            🗑️
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========== FORMATION ========== -->
-    <div *ngIf="activeTab === 'formation' && !loading">
-
-      <div style="background: white; border-radius: 20px; padding: 32px;
-        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        margin-bottom: 24px;">
-
-        <div class="d-flex align-items-center gap-3 mb-4">
-          <div style="width: 44px; height: 44px; border-radius: 12px;
-            background: #dcfce7; display: flex; align-items: center;
-            justify-content: center; font-size: 20px;">🎓</div>
-          <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
-            Ajouter une Formation
-          </h5>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Diplôme *
-              </label>
-              <input type="text" class="form-control mt-1"
-                [(ngModel)]="newFormation.diplome" placeholder="Ex: Licence Informatique"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Établissement *
-              </label>
-              <input type="text" class="form-control mt-1"
-                [(ngModel)]="newFormation.etablissement" placeholder="Ex: ESPRIT"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Date de début *
-              </label>
-              <input type="date" class="form-control mt-1"
-                [(ngModel)]="newFormation.dateDebut"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="mb-4">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Date de fin
-              </label>
-              <input type="date" class="form-control mt-1"
-                [(ngModel)]="newFormation.dateFin"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-            </div>
-          </div>
-        </div>
-
-        <button (click)="addFormation()" [disabled]="formLoading"
-          style="width: 100%; padding: 13px; border: none; border-radius: 12px;
-            font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #457B9D, #1D3557);
-            box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
-          [style.opacity]="formLoading ? '0.7' : '1'">
-          <span *ngIf="!formLoading">➕ Ajouter la formation</span>
-          <span *ngIf="formLoading">
-            <span class="spinner-border spinner-border-sm me-2"></span>Ajout...
-          </span>
-        </button>
-      </div>
-
-      <div *ngIf="cv?.formations?.length === 0" class="text-center py-5"
-        style="background: white; border-radius: 20px; border: 1px solid #D7E3E7;">
-        <div style="font-size: 48px; margin-bottom: 12px;">🎓</div>
-        <p style="color: #5C7184;">Aucune formation ajoutée</p>
-      </div>
-
-      <div *ngFor="let form of cv?.formations" class="mb-3"
-        style="background: white; border-radius: 16px; padding: 24px;
-          border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
-        <div class="d-flex justify-content-between align-items-start">
-          <div style="display: flex; gap: 16px; flex: 1;">
-            <div style="width: 44px; height: 44px; border-radius: 12px;
-              background: #dcfce7; display: flex; align-items: center;
-              justify-content: center; font-size: 20px; flex-shrink: 0;">
-              🎓
-            </div>
-            <div>
-              <div style="font-weight: 700; color: #1D3557; font-size: 15px;">
-                {{ form.diplome }}
-              </div>
-              <div style="color: #10b981; font-weight: 600; font-size: 13px;
-                margin: 4px 0;">
-                {{ form.etablissement }}
-              </div>
-              <div style="font-size: 12px; color: #7E93A3;">
-                {{ form.dateDebut | date:'MM/yyyy' }} →
-                {{ form.dateFin ? (form.dateFin | date:'MM/yyyy') : 'Présent' }}
-              </div>
-            </div>
-          </div>
-          <button (click)="deleteFormation(form._id)"
-            style="padding: 6px 12px; border: 1.5px solid #fecaca;
-              border-radius: 8px; background: #fef2f2; color: #E63946;
-              font-size: 13px; cursor: pointer; flex-shrink: 0; margin-left: 12px;">
-            🗑️
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========== COMPETENCE ========== -->
-    <div *ngIf="activeTab === 'competence' && !loading">
-
-      <div style="background: white; border-radius: 20px; padding: 32px;
-        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        margin-bottom: 24px;">
-
-        <div class="d-flex align-items-center gap-3 mb-4">
-          <div style="width: 44px; height: 44px; border-radius: 12px;
-            background: #fef3c7; display: flex; align-items: center;
-            justify-content: center; font-size: 20px;">⚡</div>
-          <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
-            Ajouter une Compétence
-          </h5>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Compétence *
-              </label>
-              <input type="text" class="form-control mt-1"
-                [(ngModel)]="newCompetence.nom" placeholder="Ex: Angular, Node.js"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="mb-4">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Niveau *
-              </label>
-              <select class="form-select mt-1" [(ngModel)]="newCompetence.niveau"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-                <option value="Débutant">Débutant</option>
-                <option value="Intermédiaire">Intermédiaire</option>
-                <option value="Avancé">Avancé</option>
-                <option value="Expert">Expert</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <button (click)="addCompetence()" [disabled]="compLoading"
-          style="width: 100%; padding: 13px; border: none; border-radius: 12px;
-            font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #457B9D, #1D3557);
-            box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
-          [style.opacity]="compLoading ? '0.7' : '1'">
-          <span *ngIf="!compLoading">➕ Ajouter la compétence</span>
-          <span *ngIf="compLoading">
-            <span class="spinner-border spinner-border-sm me-2"></span>Ajout...
-          </span>
-        </button>
-      </div>
-
-      <div *ngIf="cv?.competences?.length === 0" class="text-center py-5"
-        style="background: white; border-radius: 20px; border: 1px solid #D7E3E7;">
-        <div style="font-size: 48px; margin-bottom: 12px;">⚡</div>
-        <p style="color: #5C7184;">Aucune compétence ajoutée</p>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-4 mb-3" *ngFor="let comp of cv?.competences">
-          <div style="background: white; border-radius: 16px; padding: 20px;
-            border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <div style="font-weight: 700; color: #1D3557; font-size: 14px;
-                margin-bottom: 6px;">
-                {{ comp.nom }}
-              </div>
-              <span style="padding: 3px 10px; border-radius: 20px; font-size: 11px;
-                font-weight: 600;"
-                [style.background]="comp.niveau === 'Expert' ? '#fef3c7' :
-                  comp.niveau === 'Avancé' ? '#EAF3F5' :
-                  comp.niveau === 'Intermédiaire' ? '#dcfce7' : '#EAF3F5'"
-                [style.color]="comp.niveau === 'Expert' ? '#f59e0b' :
-                  comp.niveau === 'Avancé' ? '#457B9D' :
-                  comp.niveau === 'Intermédiaire' ? '#10b981' : '#5C7184'">
-                {{ comp.niveau }}
-              </span>
-            </div>
-            <button (click)="deleteCompetence(comp._id)"
-              style="padding: 6px 10px; border: 1.5px solid #fecaca;
-                border-radius: 8px; background: #fef2f2; color: #E63946;
-                font-size: 12px; cursor: pointer;">
-              🗑️
+        <button
+            pageActions
+            hlmBtn
+            variant="outline"
+            *ngIf="cv"
+            (click)="downloadPDF()"
+            [disabled]="downloadLoading"
+        >
+            Télécharger le PDF ↗
+        </button></app-page-heading
+    >
+    <div class="cv-layout">
+        <nav class="cv-sections" aria-label="Sections du CV">
+            <span class="eyebrow">VOTRE PROFIL</span
+            ><button
+                hlmBtn
+                variant="ghost"
+                *ngFor="let tab of cvTabs"
+                (click)="activeTab = tab.id"
+                [class.active]="activeTab === tab.id"
+                [attr.aria-pressed]="activeTab === tab.id"
+            >
+                {{ tab.label }} <span aria-hidden="true">↗</span>
             </button>
-          </div>
-        </div>
-      </div>
+        </nav>
+        <section class="cv-editor" aria-label="Modifier votre profil">
+            <div *ngIf="operationError" class="product-alert" role="alert">
+                {{ operationError }}
+            </div>
+            <div *ngIf="loadError" class="product-alert" role="alert">
+                {{ loadError }}
+                <button hlmBtn variant="outline" (click)="loadCV()">
+                    Réessayer
+                </button>
+            </div>
+            <!-- Loading -->
+            <app-learning-skeleton *ngIf="loading" />
+
+            <!-- ========== PERSONAL INFO ========== -->
+            <div *ngIf="activeTab === 'info' && !loading && !loadError">
+                <form
+                    hlmCard
+                    class="cv-section"
+                    #cvForm="ngForm"
+                    (ngSubmit)="cvForm.valid && saveCV()"
+                    [attr.aria-busy]="saveLoading"
+                >
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div>👤</div>
+                        <div>
+                            <h5>Informations Personnelles</h5>
+                            <p>Vos coordonnées de base</p>
+                        </div>
+                    </div>
+
+                    <div
+                        *ngIf="saveSuccess"
+                        class="product-alert success"
+                        role="status"
+                    >
+                        {{ saveSuccess }}
+                    </div>
+                    <div *ngIf="saveError" class="product-alert" role="alert">
+                        {{ saveError }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <app-form-field label="Prénom" [required]="true"
+                                    ><input
+                                        required
+                                        hlmInput
+                                        type="text"
+                                        class="form-control mt-1"
+                                        name="cvInfo_prenom"
+                                        [(ngModel)]="cvInfo.prenom"
+                                        placeholder="Prénom"
+                                /></app-form-field>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <app-form-field label="Nom" [required]="true"
+                                    ><input
+                                        required
+                                        hlmInput
+                                        type="text"
+                                        class="form-control mt-1"
+                                        name="cvInfo_nom"
+                                        [(ngModel)]="cvInfo.nom"
+                                        placeholder="Nom"
+                                /></app-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <app-form-field label="Email" [required]="true"
+                            ><input
+                                required
+                                hlmInput
+                                type="email"
+                                email
+                                class="form-control mt-1"
+                                name="cvInfo_email"
+                                [(ngModel)]="cvInfo.email"
+                                placeholder="email@example.com"
+                        /></app-form-field>
+                    </div>
+
+                    <div class="mb-3">
+                        <app-form-field label="Téléphone"
+                            ><input
+                                hlmInput
+                                type="text"
+                                class="form-control mt-1"
+                                name="cvInfo_telephone"
+                                [(ngModel)]="cvInfo.telephone"
+                                placeholder="+216 XX XXX XXX"
+                        /></app-form-field>
+                    </div>
+
+                    <div class="mb-4">
+                        <app-form-field label="Description / Résumé">
+                            <textarea
+                                hlmInput
+                                class="form-control mt-1"
+                                rows="4"
+                                name="cvInfo_description"
+                                [(ngModel)]="cvInfo.description"
+                                placeholder="Brève description de votre profil professionnel..."
+                            >
+                            </textarea>
+                        </app-form-field>
+                    </div>
+
+                    <div class="mb-4">
+                        <app-form-field label="Photo de profil"
+                            ><input
+                                hlmInput
+                                type="file"
+                                class="form-control mt-1"
+                                accept=".jpg,.jpeg,.png,.webp"
+                                (change)="onPhotoSelected($event)"
+                        /></app-form-field>
+                    </div>
+
+                    <button
+                        hlmBtn
+                        variant="outline"
+                        type="submit"
+                        [disabled]="saveLoading"
+                        [style.opacity]="saveLoading ? '0.7' : '1'"
+                    >
+                        <span *ngIf="!saveLoading">💾 Sauvegarder</span>
+                        <span *ngIf="saveLoading">
+                            <span
+                                class="spinner-border spinner-border-sm me-2"
+                            ></span>
+                            Sauvegarde...
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- ========== EXPERIENCE ========== -->
+            <div *ngIf="activeTab === 'experience' && !loading && !loadError">
+                <!-- Add Form -->
+                <form
+                    hlmCard
+                    class="cv-section"
+                    #cvForm="ngForm"
+                    (ngSubmit)="cvForm.valid && addExperience()"
+                    [attr.aria-busy]="expLoading"
+                >
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div>💼</div>
+                        <h5>Ajouter une Expérience</h5>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <app-form-field label="Poste" [required]="true"
+                                    ><input
+                                        required
+                                        hlmInput
+                                        type="text"
+                                        class="form-control mt-1"
+                                        name="newExperience_titre"
+                                        [(ngModel)]="newExperience.titre"
+                                        placeholder="Ex: Développeur Full Stack"
+                                /></app-form-field>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <app-form-field
+                                    label="Entreprise"
+                                    [required]="true"
+                                    ><input
+                                        required
+                                        hlmInput
+                                        type="text"
+                                        class="form-control mt-1"
+                                        name="newExperience_entreprise"
+                                        [(ngModel)]="newExperience.entreprise"
+                                        placeholder="Ex: Prologic"
+                                /></app-form-field>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <app-form-field
+                                    label="Date de début"
+                                    [required]="true"
+                                    ><input
+                                        required
+                                        hlmInput
+                                        type="date"
+                                        class="form-control mt-1"
+                                        name="newExperience_dateDebut"
+                                        [(ngModel)]="newExperience.dateDebut"
+                                /></app-form-field>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <app-form-field label="Date de fin"
+                                    ><input
+                                        hlmInput
+                                        type="date"
+                                        class="form-control mt-1"
+                                        name="newExperience_dateFin"
+                                        [(ngModel)]="newExperience.dateFin"
+                                /></app-form-field>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-4">
+                                <app-form-field label="Description">
+                                    <textarea
+                                        hlmInput
+                                        class="form-control mt-1"
+                                        rows="3"
+                                        name="newExperience_description"
+                                        [(ngModel)]="newExperience.description"
+                                        placeholder="Décrivez vos responsabilités..."
+                                    >
+                                    </textarea>
+                                </app-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        hlmBtn
+                        variant="outline"
+                        type="submit"
+                        [disabled]="expLoading"
+                        [style.opacity]="expLoading ? '0.7' : '1'"
+                    >
+                        <span *ngIf="!expLoading">➕ Ajouter l'expérience</span>
+                        <span *ngIf="expLoading">
+                            <span
+                                class="spinner-border spinner-border-sm me-2"
+                            ></span
+                            >Ajout...
+                        </span>
+                    </button>
+                </form>
+
+                <!-- List -->
+                <div
+                    *ngIf="cv?.experiences?.length === 0"
+                    class="text-center py-5"
+                >
+                    <div>💼</div>
+                    <p>Aucune expérience ajoutée</p>
+                </div>
+
+                <div *ngFor="let exp of cv?.experiences" class="mb-3">
+                    <div
+                        class="d-flex justify-content-between align-items-start"
+                    >
+                        <div>
+                            <div>💼</div>
+                            <div>
+                                <div>
+                                    {{ exp.titre }}
+                                </div>
+                                <div>
+                                    {{ exp.entreprise }}
+                                </div>
+                                <div>
+                                    {{ exp.dateDebut | date: "MM/yyyy" }} →
+                                    {{
+                                        exp.dateFin
+                                            ? (exp.dateFin | date: "MM/yyyy")
+                                            : "Présent"
+                                    }}
+                                </div>
+                                <div>
+                                    {{ exp.description }}
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            hlmBtn
+                            variant="outline"
+                            (click)="deleteExperience(exp._id)"
+                            [disabled]="!!pendingDelete"
+                            aria-label="Supprimer cette entrée"
+                        >
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== FORMATION ========== -->
+            <div *ngIf="activeTab === 'formation' && !loading && !loadError">
+                <form
+                    hlmCard
+                    class="cv-section"
+                    #cvForm="ngForm"
+                    (ngSubmit)="cvForm.valid && addFormation()"
+                    [attr.aria-busy]="formLoading"
+                >
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div>🎓</div>
+                        <h5>Ajouter une Formation</h5>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <app-form-field
+                                    label="Diplôme"
+                                    [required]="true"
+                                    ><input
+                                        required
+                                        hlmInput
+                                        type="text"
+                                        class="form-control mt-1"
+                                        name="newFormation_diplome"
+                                        [(ngModel)]="newFormation.diplome"
+                                        placeholder="Ex: Licence Informatique"
+                                /></app-form-field>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <app-form-field
+                                    label="Établissement"
+                                    [required]="true"
+                                    ><input
+                                        required
+                                        hlmInput
+                                        type="text"
+                                        class="form-control mt-1"
+                                        name="newFormation_etablissement"
+                                        [(ngModel)]="newFormation.etablissement"
+                                        placeholder="Ex: ESPRIT"
+                                /></app-form-field>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <app-form-field
+                                    label="Date de début"
+                                    [required]="true"
+                                    ><input
+                                        required
+                                        hlmInput
+                                        type="date"
+                                        class="form-control mt-1"
+                                        name="newFormation_dateDebut"
+                                        [(ngModel)]="newFormation.dateDebut"
+                                /></app-form-field>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-4">
+                                <app-form-field label="Date de fin"
+                                    ><input
+                                        hlmInput
+                                        type="date"
+                                        class="form-control mt-1"
+                                        name="newFormation_dateFin"
+                                        [(ngModel)]="newFormation.dateFin"
+                                /></app-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        hlmBtn
+                        variant="outline"
+                        type="submit"
+                        [disabled]="formLoading"
+                        [style.opacity]="formLoading ? '0.7' : '1'"
+                    >
+                        <span *ngIf="!formLoading"
+                            >➕ Ajouter la formation</span
+                        >
+                        <span *ngIf="formLoading">
+                            <span
+                                class="spinner-border spinner-border-sm me-2"
+                            ></span
+                            >Ajout...
+                        </span>
+                    </button>
+                </form>
+
+                <div
+                    *ngIf="cv?.formations?.length === 0"
+                    class="text-center py-5"
+                >
+                    <div>🎓</div>
+                    <p>Aucune formation ajoutée</p>
+                </div>
+
+                <div *ngFor="let form of cv?.formations" class="mb-3">
+                    <div
+                        class="d-flex justify-content-between align-items-start"
+                    >
+                        <div>
+                            <div>🎓</div>
+                            <div>
+                                <div>
+                                    {{ form.diplome }}
+                                </div>
+                                <div>
+                                    {{ form.etablissement }}
+                                </div>
+                                <div>
+                                    {{ form.dateDebut | date: "MM/yyyy" }} →
+                                    {{
+                                        form.dateFin
+                                            ? (form.dateFin | date: "MM/yyyy")
+                                            : "Présent"
+                                    }}
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            hlmBtn
+                            variant="outline"
+                            (click)="deleteFormation(form._id)"
+                            [disabled]="!!pendingDelete"
+                            aria-label="Supprimer cette entrée"
+                        >
+                            🗑️
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== COMPETENCE ========== -->
+            <div *ngIf="activeTab === 'competence' && !loading && !loadError">
+                <form
+                    hlmCard
+                    class="cv-section"
+                    #cvForm="ngForm"
+                    (ngSubmit)="cvForm.valid && addCompetence()"
+                    [attr.aria-busy]="compLoading"
+                >
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div>⚡</div>
+                        <h5>Ajouter une Compétence</h5>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <app-form-field
+                                    label="Compétence"
+                                    [required]="true"
+                                    ><input
+                                        required
+                                        hlmInput
+                                        type="text"
+                                        class="form-control mt-1"
+                                        name="newCompetence_nom"
+                                        [(ngModel)]="newCompetence.nom"
+                                        placeholder="Ex: Angular, Node.js"
+                                /></app-form-field>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-4">
+                                <app-form-field label="Niveau" [required]="true"
+                                    ><select
+                                        required
+                                        hlmInput
+                                        class="form-select mt-1"
+                                        name="newCompetence_niveau"
+                                        [(ngModel)]="newCompetence.niveau"
+                                    >
+                                        <option value="Débutant">
+                                            Débutant
+                                        </option>
+                                        <option value="Intermédiaire">
+                                            Intermédiaire
+                                        </option>
+                                        <option value="Avancé">Avancé</option>
+                                        <option value="Expert">Expert</option>
+                                    </select></app-form-field
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        hlmBtn
+                        variant="outline"
+                        type="submit"
+                        [disabled]="compLoading"
+                        [style.opacity]="compLoading ? '0.7' : '1'"
+                    >
+                        <span *ngIf="!compLoading"
+                            >➕ Ajouter la compétence</span
+                        >
+                        <span *ngIf="compLoading">
+                            <span
+                                class="spinner-border spinner-border-sm me-2"
+                            ></span
+                            >Ajout...
+                        </span>
+                    </button>
+                </form>
+
+                <div
+                    *ngIf="cv?.competences?.length === 0"
+                    class="text-center py-5"
+                >
+                    <div>⚡</div>
+                    <p>Aucune compétence ajoutée</p>
+                </div>
+
+                <div class="row">
+                    <div
+                        class="col-lg-4 mb-3"
+                        *ngFor="let comp of cv?.competences"
+                    >
+                        <div hlmCard class="cv-section">
+                            <div>
+                                <div>
+                                    {{ comp.nom }}
+                                </div>
+                                <span>
+                                    {{ comp.niveau }}
+                                </span>
+                            </div>
+                            <button
+                                hlmBtn
+                                variant="outline"
+                                (click)="deleteCompetence(comp._id)"
+                                [disabled]="!!pendingDelete"
+                                aria-label="Supprimer cette entrée"
+                            >
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== LANGUE ========== -->
+            <div *ngIf="activeTab === 'langue' && !loading && !loadError">
+                <form
+                    hlmCard
+                    class="cv-section"
+                    #cvForm="ngForm"
+                    (ngSubmit)="cvForm.valid && addLangue()"
+                    [attr.aria-busy]="langLoading"
+                >
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div>🌍</div>
+                        <h5>Ajouter une Langue</h5>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <app-form-field label="Langue" [required]="true"
+                                    ><input
+                                        required
+                                        hlmInput
+                                        type="text"
+                                        class="form-control mt-1"
+                                        name="newLangue_langue"
+                                        [(ngModel)]="newLangue.langue"
+                                        placeholder="Ex: Français, Anglais"
+                                /></app-form-field>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-4">
+                                <app-form-field label="Niveau" [required]="true"
+                                    ><select
+                                        required
+                                        hlmInput
+                                        class="form-select mt-1"
+                                        name="newLangue_niveau"
+                                        [(ngModel)]="newLangue.niveau"
+                                    >
+                                        <option value="Débutant">
+                                            Débutant
+                                        </option>
+                                        <option value="Intermédiaire">
+                                            Intermédiaire
+                                        </option>
+                                        <option value="Avancé">Avancé</option>
+                                        <option value="Bilingue">
+                                            Bilingue
+                                        </option>
+                                        <option value="Natif">Natif</option>
+                                    </select></app-form-field
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        hlmBtn
+                        variant="outline"
+                        type="submit"
+                        [disabled]="langLoading"
+                        [style.opacity]="langLoading ? '0.7' : '1'"
+                    >
+                        <span *ngIf="!langLoading">➕ Ajouter la langue</span>
+                        <span *ngIf="langLoading">
+                            <span
+                                class="spinner-border spinner-border-sm me-2"
+                            ></span
+                            >Ajout...
+                        </span>
+                    </button>
+                </form>
+
+                <div *ngIf="cv?.langues?.length === 0" class="text-center py-5">
+                    <div>🌍</div>
+                    <p>Aucune langue ajoutée</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-4 mb-3" *ngFor="let lang of cv?.langues">
+                        <div hlmCard class="cv-section">
+                            <div>
+                                <div>🌍 {{ lang.langue }}</div>
+                                <span>
+                                    {{ lang.niveau }}
+                                </span>
+                            </div>
+                            <button
+                                hlmBtn
+                                variant="outline"
+                                (click)="deleteLangue(lang._id)"
+                                [disabled]="!!pendingDelete"
+                                aria-label="Supprimer cette entrée"
+                            >
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ========== HOBBY ========== -->
+            <div *ngIf="activeTab === 'hobby' && !loading && !loadError">
+                <form
+                    hlmCard
+                    class="cv-section"
+                    #cvForm="ngForm"
+                    (ngSubmit)="cvForm.valid && addHobby()"
+                    [attr.aria-busy]="hobbyLoading"
+                >
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div>🎯</div>
+                        <h5>Ajouter un Centre d'Intérêt</h5>
+                    </div>
+
+                    <div class="row align-items-end">
+                        <div class="col-lg-9">
+                            <div class="mb-3">
+                                <app-form-field
+                                    label="Centre d'intérêt"
+                                    [required]="true"
+                                    ><input
+                                        required
+                                        hlmInput
+                                        type="text"
+                                        class="form-control mt-1"
+                                        name="newHobby_nom"
+                                        [(ngModel)]="newHobby.nom"
+                                        placeholder="Ex: Lecture, Sport, Musique"
+                                /></app-form-field>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <button
+                                    hlmBtn
+                                    variant="outline"
+                                    type="submit"
+                                    [disabled]="hobbyLoading"
+                                    [style.opacity]="hobbyLoading ? '0.7' : '1'"
+                                >
+                                    <span *ngIf="!hobbyLoading"
+                                        >➕ Ajouter</span
+                                    >
+                                    <span *ngIf="hobbyLoading">
+                                        <span
+                                            class="spinner-border spinner-border-sm"
+                                        ></span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div *ngIf="cv?.hobbies?.length === 0" class="text-center py-5">
+                    <div>🎯</div>
+                    <p>Aucun centre d'intérêt ajouté</p>
+                </div>
+
+                <div class="row">
+                    <div
+                        class="col-lg-3 col-md-4 col-6 mb-3"
+                        *ngFor="let hobby of cv?.hobbies"
+                    >
+                        <div hlmCard class="cv-section">
+                            <div>🎯 {{ hobby.nom }}</div>
+                            <button
+                                hlmBtn
+                                variant="outline"
+                                (click)="deleteHobby(hobby._id)"
+                                [disabled]="!!pendingDelete"
+                                aria-label="Supprimer cette entrée"
+                            >
+                                🗑️
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-
-    <!-- ========== LANGUE ========== -->
-    <div *ngIf="activeTab === 'langue' && !loading">
-
-      <div style="background: white; border-radius: 20px; padding: 32px;
-        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        margin-bottom: 24px;">
-
-        <div class="d-flex align-items-center gap-3 mb-4">
-          <div style="width: 44px; height: 44px; border-radius: 12px;
-            background: #e0f2fe; display: flex; align-items: center;
-            justify-content: center; font-size: 20px;">🌍</div>
-          <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
-            Ajouter une Langue
-          </h5>
-        </div>
-
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Langue *
-              </label>
-              <input type="text" class="form-control mt-1"
-                [(ngModel)]="newLangue.langue" placeholder="Ex: Français, Anglais"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="mb-4">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Niveau *
-              </label>
-              <select class="form-select mt-1" [(ngModel)]="newLangue.niveau"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-                <option value="Débutant">Débutant</option>
-                <option value="Intermédiaire">Intermédiaire</option>
-                <option value="Avancé">Avancé</option>
-                <option value="Bilingue">Bilingue</option>
-                <option value="Natif">Natif</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <button (click)="addLangue()" [disabled]="langLoading"
-          style="width: 100%; padding: 13px; border: none; border-radius: 12px;
-            font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #457B9D, #1D3557);
-            box-shadow: 0 4px 15px rgba(69,123,157,0.4);"
-          [style.opacity]="langLoading ? '0.7' : '1'">
-          <span *ngIf="!langLoading">➕ Ajouter la langue</span>
-          <span *ngIf="langLoading">
-            <span class="spinner-border spinner-border-sm me-2"></span>Ajout...
-          </span>
-        </button>
-      </div>
-
-      <div *ngIf="cv?.langues?.length === 0" class="text-center py-5"
-        style="background: white; border-radius: 20px; border: 1px solid #D7E3E7;">
-        <div style="font-size: 48px; margin-bottom: 12px;">🌍</div>
-        <p style="color: #5C7184;">Aucune langue ajoutée</p>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-4 mb-3" *ngFor="let lang of cv?.langues">
-          <div style="background: white; border-radius: 16px; padding: 20px;
-            border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            display: flex; justify-content: space-between; align-items: center;">
-            <div>
-              <div style="font-weight: 700; color: #1D3557; font-size: 14px;
-                margin-bottom: 6px;">
-                🌍 {{ lang.langue }}
-              </div>
-              <span style="padding: 3px 10px; border-radius: 20px; font-size: 11px;
-                font-weight: 600;"
-                [style.background]="lang.niveau === 'Natif' ? '#fef3c7' :
-                  lang.niveau === 'Bilingue' ? '#F4F8F9' :
-                  lang.niveau === 'Avancé' ? '#EAF3F5' :
-                  lang.niveau === 'Intermédiaire' ? '#dcfce7' : '#EAF3F5'"
-                [style.color]="lang.niveau === 'Natif' ? '#f59e0b' :
-                  lang.niveau === 'Bilingue' ? '#457B9D' :
-                  lang.niveau === 'Avancé' ? '#457B9D' :
-                  lang.niveau === 'Intermédiaire' ? '#10b981' : '#5C7184'">
-                {{ lang.niveau }}
-              </span>
-            </div>
-            <button (click)="deleteLangue(lang._id)"
-              style="padding: 6px 10px; border: 1.5px solid #fecaca;
-                border-radius: 8px; background: #fef2f2; color: #E63946;
-                font-size: 12px; cursor: pointer;">
-              🗑️
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========== HOBBY ========== -->
-    <div *ngIf="activeTab === 'hobby' && !loading">
-
-      <div style="background: white; border-radius: 20px; padding: 32px;
-        border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        margin-bottom: 24px;">
-
-        <div class="d-flex align-items-center gap-3 mb-4">
-          <div style="width: 44px; height: 44px; border-radius: 12px;
-            background: #fce7f3; display: flex; align-items: center;
-            justify-content: center; font-size: 20px;">🎯</div>
-          <h5 style="font-weight: 700; color: #1D3557; margin: 0;">
-            Ajouter un Centre d'Intérêt
-          </h5>
-        </div>
-
-        <div class="row align-items-end">
-          <div class="col-lg-9">
-            <div class="mb-3">
-              <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                Centre d'intérêt *
-              </label>
-              <input type="text" class="form-control mt-1"
-                [(ngModel)]="newHobby.nom" placeholder="Ex: Lecture, Sport, Musique"
-                style="border-radius: 10px; border: 1.5px solid #D7E3E7;
-                  padding: 12px 15px; font-size: 14px;">
-            </div>
-          </div>
-          <div class="col-lg-3">
-            <div class="mb-3">
-              <button (click)="addHobby()" [disabled]="hobbyLoading"
-                style="width: 100%; padding: 13px; border: none; border-radius: 12px;
-                  font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-                  background: linear-gradient(135deg, #457B9D, #1D3557);"
-                [style.opacity]="hobbyLoading ? '0.7' : '1'">
-                <span *ngIf="!hobbyLoading">➕ Ajouter</span>
-                <span *ngIf="hobbyLoading">
-                  <span class="spinner-border spinner-border-sm"></span>
-                </span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div *ngIf="cv?.hobbies?.length === 0" class="text-center py-5"
-        style="background: white; border-radius: 20px; border: 1px solid #D7E3E7;">
-        <div style="font-size: 48px; margin-bottom: 12px;">🎯</div>
-        <p style="color: #5C7184;">Aucun centre d'intérêt ajouté</p>
-      </div>
-
-      <div class="row">
-        <div class="col-lg-3 col-md-4 col-6 mb-3"
-          *ngFor="let hobby of cv?.hobbies">
-          <div style="background: white; border-radius: 16px; padding: 18px;
-            border: 1px solid #D7E3E7; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            display: flex; justify-content: space-between; align-items: center;
-            gap: 8px;">
-            <div style="font-weight: 600; color: #1D3557; font-size: 13px;">
-              🎯 {{ hobby.nom }}
-            </div>
-            <button (click)="deleteHobby(hobby._id)"
-              style="padding: 4px 8px; border: 1.5px solid #fecaca;
-                border-radius: 6px; background: #fef2f2; color: #E63946;
-                font-size: 11px; cursor: pointer; flex-shrink: 0;">
-              🗑️
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </div>
 </div>

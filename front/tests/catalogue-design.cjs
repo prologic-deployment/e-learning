@@ -117,6 +117,7 @@ const { chromium } = require("playwright"),
         await p.locator(".catalogue-card").first().waitFor();
         for (let width of [320, 390, 768, 1440]) {
             await p.setViewportSize({ width, height: 1100 });
+            await p.waitForFunction(() => document.documentElement.scrollWidth <= innerWidth, {}, {timeout:2500});
             assert.equal(
                 await p.evaluate(
                     () => document.documentElement.scrollWidth <= innerWidth,
