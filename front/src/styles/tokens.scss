@@ -105,3 +105,7 @@
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
+
+/* FormaPath shared foundations: identical canvas/palette on marketing and workspaces. */
+:root{--background:96 33% 97%;--foreground:215 50% 23%;--card:80 40% 99%;--muted:105 23% 94%;--border:120 13% 86%;--muted-foreground:208 19% 40%;--formapath-serif:Georgia,'Times New Roman',serif}
+.dark{--background:216 50% 13%;--foreground:120 25% 94%;--card:211 45% 17%;--muted:210 40% 20%;--border:207 30% 28%;--muted-foreground:204 26% 75%}

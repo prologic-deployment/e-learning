@@ -1,3 +1,7 @@
+import { PublicHeaderComponent } from './components/common/public-header/public-header.component';
+import { PublicFooterComponent } from './components/common/public-footer/public-footer.component';
+import { LandingChatComponent } from './components/common/landing-chat/landing-chat.component';
+import { TranslationModule } from './i18n/translation.module';
 import { FormFieldComponent } from "./components/forms/form-field.component";
 import { CourseDetailsFormComponent } from './components/management/course-details-form.component';
 import { RecordTableComponent } from './components/management/record-table.component';
@@ -115,7 +119,7 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
         NotFoundPageComponent
     ],
     imports: [
-        UiModule,
+        UiModule, PublicHeaderComponent, PublicFooterComponent, LandingChatComponent, TranslationModule,
         FormFieldComponent,
         CourseDetailsFormComponent,
         RecordTableComponent,

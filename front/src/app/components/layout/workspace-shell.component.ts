@@ -1,3 +1,6 @@
+import { isWorkspaceRoute } from '../../services/workspace-route';
+import { BrandComponent } from '../brand/brand.component';
+import { ThemeService } from '../../services/theme.service';
 import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -16,7 +19,7 @@ interface Destination {
 @Component({
     selector: 'app-workspace-shell',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterModule, UiModule],
+    imports: [CommonModule, FormsModule, RouterModule, UiModule, BrandComponent],
     templateUrl: './workspace-shell.component.html',
     styleUrls: ['./workspace-shell.component.scss'],
 })
@@ -24,25 +27,16 @@ export class WorkspaceShellComponent implements OnDestroy {
     @ViewChild('searchDialog') searchDialog?: BrnDialogComponent;
     collapsed = false;
     query = '';
-    dark =
-        localStorage.getItem('lms-theme') === 'dark' ||
-        (!localStorage.getItem('lms-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+    get dark() { return this.theme.dark; }
     private sub: Subscription;
     constructor(
         public auth: AuthService,
         public router: Router,
+        public theme: ThemeService,
     ) {
-        document.documentElement.classList.toggle('dark', this.dark);
         this.sub = router.events.subscribe(() => (this.query = ''));
     }
-    get enabled() {
-        return (
-            this.auth.isLoggedIn() &&
-            /\/(dashboard|admin-dashboard|manager-dashboard|trainer-dashboard|account|course|courses|cv|cart|recommendations)/.test(
-                this.router.url,
-            )
-        );
-    }
+    get enabled() { return this.auth.isLoggedIn() && isWorkspaceRoute(this.router.url); }
     get role() {
         return this.auth.getRole().toLowerCase();
     }
@@ -113,11 +107,7 @@ export class WorkspaceShellComponent implements OnDestroy {
                 (item.tab || (this.role === 'user' ? 'overview' : 'stats'))
         );
     }
-    toggleTheme() {
-        this.dark = !this.dark;
-        localStorage.setItem('lms-theme', this.dark ? 'dark' : 'light');
-        document.documentElement.classList.toggle('dark', this.dark);
-    }
+    toggleTheme() { this.theme.toggle(); }
     @HostListener('document:keydown', ['$event']) shortcut(event: KeyboardEvent) {
         if (this.enabled && (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
             event.preventDefault();

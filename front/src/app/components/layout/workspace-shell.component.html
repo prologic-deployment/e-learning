@@ -2,10 +2,7 @@
     <ng-container *ngIf="enabled">
         <a class="skip-link" href="#workspace-content">Skip to content</a>
         <aside class="workspace-rail">
-            <a class="wordmark" [routerLink]="home"
-                ><span class="brand-mark">e.</span
-                ><span class="rail-label">edla<span class="brand-dot">.</span></span></a
-            >
+            <div class="workspace-brand"><app-brand [compact]="collapsed" /></div>
             <div class="workspace-label rail-label">
                 {{
                     role === 'user'

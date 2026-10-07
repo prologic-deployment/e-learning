@@ -1,10 +1,10 @@
-import { LanguageSwitcherComponent } from '../../common/language-switcher/language-switcher.component';
+import { PublicHeaderComponent } from '../../common/public-header/public-header.component';
+import { PublicFooterComponent } from '../../common/public-footer/public-footer.component';
 import {
     TranslationModule,
     TranslationService,
 } from '../../../i18n/translation.module';
 import { ThemeService } from '../../../services/theme.service';
-import { LandingChatComponent } from '../../common/landing-chat/landing-chat.component';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { CommonModule, ViewportScroller } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -21,8 +21,8 @@ import { AuthService } from '../../../services/auth.service';
         RouterModule,
         UiModule,
         TranslationModule,
-        LanguageSwitcherComponent,
-        LandingChatComponent,
+        PublicHeaderComponent,
+        PublicFooterComponent,
     ],
     templateUrl: './landing.component.html',
     styleUrls: ['./landing.component.scss'],
