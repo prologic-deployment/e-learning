@@ -164,3 +164,12 @@
         width: 50px;
     }
 }
+
+/* Short welcome motion, not an endless distracting pulse. */
+.chat-launcher{position:relative;isolation:isolate;animation:chat-arrive .5s ease-out,chat-wave .65s .8s ease-in-out 2;transition:transform .2s,box-shadow .2s}
+.chat-launcher:hover{transform:translateY(-3px);box-shadow:0 9px 30px #1d355740}.chat-launcher[aria-expanded=true]{animation:none}
+.chat-launcher::before{content:'';position:absolute;inset:-5px;border:1px solid #457b9d;border-radius:50%;pointer-events:none;opacity:0;animation:chat-ring 1.1s .5s ease-out 2;z-index:-1}
+@keyframes chat-arrive{from{opacity:0;transform:translateY(15px) scale(.85)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes chat-wave{0%,100%{rotate:0deg}35%{rotate:-8deg}70%{rotate:8deg}}
+@keyframes chat-ring{0%{opacity:.5;scale:.9}100%{opacity:0;scale:1.4}}
+@media(prefers-reduced-motion:reduce){.chat-launcher,.chat-launcher::before{animation:none!important;transition:none!important}}

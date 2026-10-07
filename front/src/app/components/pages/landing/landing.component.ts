@@ -5,7 +5,7 @@ import {
 import { ThemeService } from '../../../services/theme.service';
 import { LandingChatComponent } from '../../common/landing-chat/landing-chat.component';
 import { Component, DestroyRef, OnInit, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -121,8 +121,20 @@ export class LandingComponent implements OnInit {
         public i18n: TranslationService,
         public theme: ThemeService,
         private router: Router,
+        private viewportScroller: ViewportScroller,
     ) {}
+    ngAfterViewInit() {
+        const header = document.querySelector<HTMLElement>('.site-header');
+        const landing = document.querySelector<HTMLElement>('.landing');
+        if (header && landing) {
+            const observer = new ResizeObserver(() => landing.style.setProperty('--header-offset', `${header.offsetHeight + 16}px`));
+            observer.observe(header);
+            this.destroyRef.onDestroy(() => observer.disconnect());
+        }
+    }
     ngOnInit() {
+        this.viewportScroller.setOffset(() => [0, (document.querySelector<HTMLElement>('.site-header')?.offsetHeight || 104) + 16]);
+        this.destroyRef.onDestroy(() => this.viewportScroller.setOffset([0, 0]));
         document.documentElement.lang = this.i18n.language();
         this.destroyRef.onDestroy(() => { document.documentElement.lang = 'en'; });
         this.loadCourses();

@@ -80,3 +80,15 @@ are explicitly isolated fixtures: a live Gemini/RAG answer was NOT verified, and
 requires the backend's AI configuration and a signed-in account. Existing landing
 browser regressions and the Angular development build also passed. Production build
 and full-screen-reader verification remain outside this test run.
+
+### Full-width and sticky-header polish
+Replaced the native select with an actual Spartan/CDK menu, bundled SVG flags,
+English/Français names and a current-language checkmark. Fixed the global product-page
+1440px canvas cap only for the landing page; content remains readable and centered,
+while light/dark surfaces now cover the full viewport. Header is sticky and full-width.
+ResizeObserver plus Angular ViewportScroller offset account for its responsive height;
+without the Angular offset, the router's later scroll could cover section headings.
+The chat launcher has finite welcome motion, hover feedback and reduced-motion support.
+`front/tests/landing-polish.cjs` and Angular development build passed: menu selection,
+Escape, no gutters/overflow at 320/390/768/1440/1920/2560, sticky position and correct
+section offsets. Chat backend functionality is tracked separately below.

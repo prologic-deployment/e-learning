@@ -27,15 +27,14 @@
             >
         </nav>
         <div class="header-actions">
-            <select
-                class="language-select"
-                [attr.aria-label]="'Language' | t"
-                [value]="i18n.language()"
-                (change)="i18n.setLanguage($any($event.target).value)"
-            >
-                <option value="en" lang="en">EN</option>
-                <option value="fr" lang="fr">FR</option>
-            </select>
+            <button hlmBtn variant="outline" class="language-trigger" [brnMenuTriggerFor]="languageMenu" [attr.aria-label]="'Language' | t">
+              <img [src]="'assets/flags/' + i18n.language() + '.svg'" alt="" width="24" height="16"><span>{{ i18n.language() | uppercase }}</span><i class="bx bx-chevron-down" aria-hidden="true"></i>
+            </button>
+            <ng-template #languageMenu><hlm-menu class="language-menu">
+              <hlm-menu-label>{{'Language' | t}}</hlm-menu-label><hlm-menu-separator />
+              <button hlmMenuItem class="language-option" (click)="i18n.setLanguage('en')" [attr.aria-current]="i18n.language() === 'en' ? 'true' : null"><img src="assets/flags/en.svg" alt="" width="24" height="16"><span lang="en">English</span><i *ngIf="i18n.language() === 'en'" class="bx bx-check" aria-hidden="true"></i></button>
+              <button hlmMenuItem class="language-option" (click)="i18n.setLanguage('fr')" [attr.aria-current]="i18n.language() === 'fr' ? 'true' : null"><img src="assets/flags/fr.svg" alt="" width="24" height="16"><span lang="fr">Français</span><i *ngIf="i18n.language() === 'fr'" class="bx bx-check" aria-hidden="true"></i></button>
+            </hlm-menu></ng-template>
             <button
                 hlmBtn
                 variant="ghost"
