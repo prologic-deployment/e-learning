@@ -402,4 +402,4 @@ const COURSES = [
   }
 ];
 
-module.exports = COURSES;
+module.exports = COURSES.map(require('./assessment-bank').enrichCourse);

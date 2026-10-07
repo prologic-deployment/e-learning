@@ -219,6 +219,7 @@ async function checkQuizBadges(userId, score) {
 }
 
 module.exports = {
+  BADGE_DEFINITIONS,
   initBadges,
   checkEnrollmentBadges,
   checkCompletionBadges,

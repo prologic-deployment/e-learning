@@ -65,7 +65,9 @@ const SCENARIOS = {
    */
   purchases: [
     { user: 'user1@test.com', course: 'Docker & Kubernetes — Containerize Everything', daysAgo: 12 },
-    { user: 'user2@test.com', course: 'Machine Learning Foundations with Python', daysAgo: 5 }
+    { user: 'user2@test.com', course: 'Machine Learning Foundations with Python', daysAgo: 5 },
+    { user: 'user4@test.com', course: 'Machine Learning Foundations with Python', daysAgo: 12 },
+    { user: 'user5@test.com', course: 'Docker & Kubernetes — Containerize Everything', daysAgo: 10 }
   ]
 };
 
