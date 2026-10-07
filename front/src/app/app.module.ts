@@ -1,3 +1,5 @@
+import { PageHeadingComponent } from './components/layout/page-heading.component';
+import { BrandComponent } from './components/brand/brand.component';
 import { PublicHeaderComponent } from './components/common/public-header/public-header.component';
 import { PublicFooterComponent } from './components/common/public-footer/public-footer.component';
 import { LandingChatComponent } from './components/common/landing-chat/landing-chat.component';
@@ -118,7 +120,7 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
         ContactPageTwoComponent,
         NotFoundPageComponent
     ],
-    imports: [
+    imports: [PageHeadingComponent, BrandComponent,
         UiModule, PublicHeaderComponent, PublicFooterComponent, LandingChatComponent, TranslationModule,
         FormFieldComponent,
         CourseDetailsFormComponent,

@@ -46,16 +46,16 @@ const routes: Routes = [
   { path: 'courses-right-sidebar', pathMatch: 'full', redirectTo: 'courses-grid' },
   { path: 'courses-list', pathMatch: 'full', redirectTo: 'courses-grid' },
   { path: 'courses-details/:id', component: PaidCoursesSinglePageComponent, canActivate: [StaffRedirectGuard] },
-  { path: 'courses-details', component: FreeCoursesSinglePageComponent, canActivate: [StaffRedirectGuard] },
-  { path: 'courses-details-2', component: PaidCoursesSinglePageComponent, canActivate: [StaffRedirectGuard] },
+  { path: 'courses-details', pathMatch: 'full', redirectTo: 'courses-grid' },
+  { path: 'courses-details-2', pathMatch: 'full', redirectTo: 'courses-grid' },
 
   // ✅ Autres pages — staff bloqué
-  { path: 'categories', component: CategoriesPageOneComponent, canActivate: [StaffRedirectGuard] },
-  { path: 'categories-2', component: CategoriesPageTwoComponent, canActivate: [StaffRedirectGuard] },
-  { path: 'courses-category', component: CategoriesCoursesPageComponent, canActivate: [StaffRedirectGuard] },
+  { path: 'categories', pathMatch: 'full', redirectTo: 'courses-grid' },
+  { path: 'categories-2', pathMatch: 'full', redirectTo: 'courses-grid' },
+  { path: 'courses-category', pathMatch: 'full', redirectTo: 'courses-grid' },
   { path: 'about-us', component: AboutUsPageComponent, canActivate: [StaffRedirectGuard] },
   { path: 'contact', component: ContactPageOneComponent, canActivate: [StaffRedirectGuard] },
-  { path: 'contact-2', component: ContactPageTwoComponent, canActivate: [StaffRedirectGuard] },
+  { path: 'contact-2', pathMatch: 'full', redirectTo: 'contact' },
   { path: 'recommendations', component: RecommendationsComponent, canActivate: [StaffRedirectGuard] },
 
   // ✅ Pages privées user — staff bloqué

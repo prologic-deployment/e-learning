@@ -1,37 +1,7 @@
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-contact-page-one',
-  templateUrl: './contact-page-one.component.html'
-})
-export class ContactPageOneComponent {
-
-  contactForm = {
-    name: '',
-    email: '',
-    subject: '',
-    phone: '',
-    message: ''
-  };
-
-  contactLoading = false;
-  contactSuccess = '';
-  contactError = '';
-
-  sendMessage(): void {
-    if (!this.contactForm.name || !this.contactForm.email || !this.contactForm.message) {
-      this.contactError = 'Veuillez remplir tous les champs obligatoires (Nom, Email, Message).';
-      return;
-    }
-    this.contactLoading = true;
-    this.contactError = '';
-    this.contactSuccess = '';
-
-    setTimeout(() => {
-      this.contactLoading = false;
-      this.contactSuccess = 'Votre message a été envoyé ! Nous vous répondrons sous 24h.';
-      this.contactForm = { name: '', email: '', subject: '', phone: '', message: '' };
-      setTimeout(() => this.contactSuccess = '', 5000);
-    }, 1500);
-  }
+import {Component} from '@angular/core';
+@Component({selector:'app-contact-page-one',templateUrl:'./contact-page-one.component.html',styleUrls:['./contact-page-one.component.scss']})
+export class ContactPageOneComponent{
+ contactForm={name:'',email:'',subject:'',message:''};draftOpened=false;
+ get emailDraft(){return 'mailto:prologic@prologic.com.tn?subject='+encodeURIComponent(this.contactForm.subject.trim()||'FormaPath enquiry')+'&body='+encodeURIComponent(this.contactForm.message+'\n\n'+this.contactForm.name+'\n'+this.contactForm.email);}
+ openDraft(){this.draftOpened=true;window.location.href=this.emailDraft;}
 }

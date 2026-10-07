@@ -48,3 +48,23 @@ filters, browser back, pagination, stale responses, failure/retry/empty, EN/FR, 
 320/390/768/1440 widths and alias redirects. Light/dark screenshots are explicitly
 labelled test-response fixtures, not production catalogue data. Light screenshot
 visually inspected. No live backend data or complete purchase/learning workflow tested.
+
+## 3. Workspace and public-page composition
+Introduced PageHeading, a reusable projected-content composition used by all four role
+dashboards and rebuilt About/Contact pages. Auth, registration and both recovery pages
+now use the actual shared Brand component rather than different hand-written logos.
+About now explains existing product capabilities rather than displaying unverified
+company statistics/client lists. Legacy category routes preserve query parameters while
+opening the library, no-ID detail demos open the library, and contact-2 opens contact.
+
+Contact previously simulated sending with a timer. It now uses real Spartan fields,
+validation and an explicitly labelled email-draft action with the existing Prologic
+address. It does not claim delivery or promise a response time; no messaging backend
+was added and no email was sent in tests.
+
+PASS: app-composition browser test: all four role headings, About/Contact 320–1440,
+contact validation, auth/recovery shared brand, aliases and preserved category query.
+Role/API fixtures deliberately exercise loading failures, not live operational metrics.
+A condition-based post-resize wait verifies final document bounds (workspace transitions
+can briefly retain the previous viewport width). Trainer screenshot documents API-error
+state. Legacy nested management/CV forms are not all rewritten by this composition pass.

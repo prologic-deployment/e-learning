@@ -1,29 +1,24 @@
 <div class="product-page">
-    <header class="page-heading">
-        <div>
-            <span class="eyebrow">YOUR PERSONAL LEARNING SPACE</span>
-            <h1>
+    <app-page-heading eyebrow="YOUR PERSONAL LEARNING SPACE"><h1 pageTitle>
                 {{
                     activeTab === 'overview'
                         ? 'Welcome back, ' + (currentUser?.firstname || 'learner') + '.'
                         : sectionTitle
                 }}
-            </h1>
-            <p>
+            </h1><p pageDescription>
                 {{
                     activeTab === 'overview'
                         ? 'A little progress today. A world of possibilities tomorrow.'
                         : 'Everything you need for your next step.'
                 }}
-            </p>
-        </div>
+            </p><div pageActions>
         <div class="action-row">
             <a hlmBtn variant="outline" routerLink="/cv">My learning CV ↗</a
             ><button hlmBtn (click)="goToCourses()">
                 Explore courses <i class="bx bx-right-arrow-alt"></i>
             </button>
         </div>
-    </header>
+    </div></app-page-heading>
     <div *ngIf="errors[activeTab]" class="product-alert" role="alert">
         {{ errors[activeTab] }}
         <button hlmBtn variant="ghost" size="sm" (click)="setTab(activeTab)">Try again</button>
