@@ -1,0 +1,15 @@
+{
+  "watch": [
+    "server.js",
+    "src",
+    ".env"
+  ],
+  "ext": "js,cjs,mjs,json,env",
+  "ignore": [
+    "uploads/**",
+    "tests/**",
+    "seeder/**"
+  ],
+  "signal": "SIGTERM",
+  "delay": "300"
+}

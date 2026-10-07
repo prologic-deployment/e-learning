@@ -4,7 +4,7 @@ const { notifyDeadlineReminder } = require("../services/notification.service");
 
 const startDeadlineReminderJob = () => {
   // Exécuter tous les jours à 8h00
-  cron.schedule("0 8 * * *", async () => {
+  const task = cron.schedule("0 8 * * *", async () => {
     console.log("⏰ Cron Job: Vérification des délais cours...");
 
     try {
@@ -51,6 +51,7 @@ const startDeadlineReminderJob = () => {
   });
 
   console.log("✅ Cron Job démarré — Rappels délais actifs");
+  return task;
 };
 
 module.exports = startDeadlineReminderJob;

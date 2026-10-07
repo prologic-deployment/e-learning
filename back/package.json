@@ -9,7 +9,9 @@
     "seed:fresh": "node seeder/seed.js --fresh",
     "seed:users": "node seeder/seed.js --users",
     "test:security": "node tests/security.helpers.test.js",
-    "test:auth": "node --test tests/totp.integration.test.js"
+    "test:auth": "node --test tests/totp.integration.test.js",
+    "doctor": "node scripts/doctor.cjs",
+    "test:startup": "node --test tests/startup.test.cjs"
   },
   "keywords": [],
   "author": "",

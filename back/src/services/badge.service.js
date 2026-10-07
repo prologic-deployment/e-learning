@@ -107,7 +107,7 @@ async function initBadges() {
       await Badge.findOneAndUpdate(
         { condition: def.condition },
         { ...def },
-        { upsert: true, new: true }
+        { upsert: true, returnDocument: 'after' }
       );
     }
     console.log("✅ Badges initialized !");

@@ -140,7 +140,7 @@ exports.updateLesson = async (req, res) => {
     const updated = await Lesson.findByIdAndUpdate(
       req.params.id,
       { title, content, contentFile, contentType, order, isFree },
-      { new: true }
+      { returnDocument: 'after' }
     );
 
     res.status(200).json({ message: "Lesson updated", lesson: updated });

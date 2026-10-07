@@ -55,7 +55,7 @@ exports.updateProfile = async (req, res) => {
     const updated = await User.findByIdAndUpdate(
       req.user._id,
       { firstname, lastname, phone, address },
-      { new: true }
+      { returnDocument: 'after' }
     ).select("firstname lastname email phone address avatar");
 
     res.status(200).json({ message: "Profile updated", user: updated });
@@ -80,7 +80,7 @@ exports.updateAvatar = async (req, res) => {
     const updated = await User.findByIdAndUpdate(
       req.user._id,
       { avatar: avatarUrl },
-      { new: true }
+      { returnDocument: 'after' }
     ).select("firstname lastname email avatar");
 
     console.log('updated user:', updated);

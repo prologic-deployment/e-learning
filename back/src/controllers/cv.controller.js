@@ -39,7 +39,7 @@ exports.saveCV = async (req, res) => {
     const cv = await CV.findOneAndUpdate(
       { user: req.user._id },
       updateData,
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
 
     res.status(200).json({ message: "CV saved successfully", cv });
@@ -64,7 +64,7 @@ exports.addExperience = async (req, res) => {
     const cv = await CV.findOneAndUpdate(
       { user: req.user._id },
       { $push: { experiences: req.body } },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
     res.status(200).json({ message: "Experience added", cv });
   } catch (error) {
@@ -77,7 +77,7 @@ exports.deleteExperience = async (req, res) => {
     const cv = await CV.findOneAndUpdate(
       { user: req.user._id },
       { $pull: { experiences: { _id: req.params.id } } },
-      { new: true }
+      { returnDocument: 'after' }
     );
     res.status(200).json({ message: "Experience deleted", cv });
   } catch (error) {
@@ -91,7 +91,7 @@ exports.addFormation = async (req, res) => {
     const cv = await CV.findOneAndUpdate(
       { user: req.user._id },
       { $push: { formations: req.body } },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
     res.status(200).json({ message: "Formation added", cv });
   } catch (error) {
@@ -104,7 +104,7 @@ exports.deleteFormation = async (req, res) => {
     const cv = await CV.findOneAndUpdate(
       { user: req.user._id },
       { $pull: { formations: { _id: req.params.id } } },
-      { new: true }
+      { returnDocument: 'after' }
     );
     res.status(200).json({ message: "Formation deleted", cv });
   } catch (error) {
@@ -118,7 +118,7 @@ exports.addCompetence = async (req, res) => {
     const cv = await CV.findOneAndUpdate(
       { user: req.user._id },
       { $push: { competences: req.body } },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
     res.status(200).json({ message: "Competence added", cv });
   } catch (error) {
@@ -131,7 +131,7 @@ exports.deleteCompetence = async (req, res) => {
     const cv = await CV.findOneAndUpdate(
       { user: req.user._id },
       { $pull: { competences: { _id: req.params.id } } },
-      { new: true }
+      { returnDocument: 'after' }
     );
     res.status(200).json({ message: "Competence deleted", cv });
   } catch (error) {
@@ -145,7 +145,7 @@ exports.addLangue = async (req, res) => {
     const cv = await CV.findOneAndUpdate(
       { user: req.user._id },
       { $push: { langues: req.body } },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
     res.status(200).json({ message: "Langue added", cv });
   } catch (error) {
@@ -158,7 +158,7 @@ exports.deleteLangue = async (req, res) => {
     const cv = await CV.findOneAndUpdate(
       { user: req.user._id },
       { $pull: { langues: { _id: req.params.id } } },
-      { new: true }
+      { returnDocument: 'after' }
     );
     res.status(200).json({ message: "Langue deleted", cv });
   } catch (error) {
@@ -172,7 +172,7 @@ exports.addHobby = async (req, res) => {
     const cv = await CV.findOneAndUpdate(
       { user: req.user._id },
       { $push: { hobbies: req.body } },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
     res.status(200).json({ message: "Hobby added", cv });
   } catch (error) {
@@ -185,7 +185,7 @@ exports.deleteHobby = async (req, res) => {
     const cv = await CV.findOneAndUpdate(
       { user: req.user._id },
       { $pull: { hobbies: { _id: req.params.id } } },
-      { new: true }
+      { returnDocument: 'after' }
     );
     res.status(200).json({ message: "Hobby deleted", cv });
   } catch (error) {

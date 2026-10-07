@@ -40,7 +40,7 @@ async function reserveFactor(user) {
       { $and: [{ $ne: [{ $ifNull: ['$twoFactor.blockedUntil', null] }, null] }, { $lte: ['$twoFactor.blockedUntil', now] }] }, 0,
       { $ifNull: ['$twoFactor.failures', 0] }] }, 1] } } },
     { $set: { 'twoFactor.blockedUntil': { $cond: [{ $gte: ['$twoFactor.failures', 5] }, new Date(Date.now() + 600000), null] } } }
-  ], { new: true, updatePipeline: true }).select(fields);
+  ], { returnDocument: 'after', updatePipeline: true }).select(fields);
   if (!updated) throw fail(429, 'Too many attempts or an expired session. Wait ten minutes, then sign in again.');
   return updated;
 }
@@ -83,7 +83,7 @@ exports.login = wrap(async (req, res) => {
 });
 exports.verifyFactor = wrap(async (req, res) => {
   if (!/^[a-f0-9]{64}$/.test(text(req.body.challenge, 64))) throw fail(400, 'Sign-in request expired. Start again.');
-  const challenge = await Challenge.findOneAndUpdate({ hash: factor.digest(req.body.challenge), expiresAt: { $gt: new Date() }, attempts: { $lt: 5 } }, { $inc: { attempts: 1 } }, { new: true });
+  const challenge = await Challenge.findOneAndUpdate({ hash: factor.digest(req.body.challenge), expiresAt: { $gt: new Date() }, attempts: { $lt: 5 } }, { $inc: { attempts: 1 } }, { returnDocument: 'after' });
   if (!challenge) throw fail(400, 'Sign-in request expired or exhausted. Start again.');
   let user = await User.findById(challenge.user).select(fields);
   if (!user?.twoFactor.enabled || !user.isActive || user.tokenVersion !== challenge.tokenVersion) throw fail(400, 'Sign-in request expired. Start again.');
@@ -91,7 +91,7 @@ exports.verifyFactor = wrap(async (req, res) => {
   const proof = factorFilter(user, req.body);
   const updated = await User.findOneAndUpdate({ ...versionFilter(user), 'twoFactor.enabled': true, 'twoFactor.secret': user.twoFactor.secret, ...proof.query }, {
     $set: { ...proof.set, 'twoFactor.failures': 0, 'twoFactor.blockedUntil': null }, ...(proof.pull ? { $pull: proof.pull } : {})
-  }, { new: true }).select(fields);
+  }, { returnDocument: 'after' }).select(fields);
   if (!updated) throw fail(400, 'Code already used or security settings changed. Start again.');
   const consumed = await Challenge.deleteOne({ _id: challenge._id, expiresAt: { $gt: new Date() } });
   if (!consumed.deletedCount) throw fail(400, 'Sign-in request already used or expired. Start again.');
@@ -125,7 +125,7 @@ exports.confirmSetup = wrap(async (req, res) => {
   const updated = await User.findOneAndUpdate({ ...versionFilter(user), 'twoFactor.enabled': { $ne: true }, 'twoFactor.pendingHash': tf.pendingHash, 'twoFactor.pendingExpires': { $gt: new Date() } }, {
     $set: { 'twoFactor.enabled': true, 'twoFactor.secret': tf.pendingSecret, 'twoFactor.lastStep': step, 'twoFactor.recoveryHashes': recovery.hashes, 'twoFactor.failures': 0, 'twoFactor.blockedUntil': null },
     $unset: { 'twoFactor.pendingSecret': 1, 'twoFactor.pendingHash': 1, 'twoFactor.pendingExpires': 1 }, $inc: { tokenVersion: 1 }
-  }, { new: true }).select(fields);
+  }, { returnDocument: 'after' }).select(fields);
   if (!updated) throw fail(409, 'Setup has already been used or expired.');
   disconnectSessions(user._id);
   res.json({ success: true, recoveryCodes: recovery.codes, ...session(updated) });
@@ -141,7 +141,7 @@ exports.disableFactor = wrap(async (req, res) => {
   const proof = factorFilter(user, req.body);
   const updated = await User.findOneAndUpdate({ ...versionFilter(user), password: user.password, 'twoFactor.enabled': true, 'twoFactor.secret': user.twoFactor.secret, ...proof.query }, {
     $set: { twoFactor: { enabled: false, lastStep: -1, recoveryHashes: [], failures: 0, blockedUntil: null } }, $inc: { tokenVersion: 1 }
-  }, { new: true }).select(fields);
+  }, { returnDocument: 'after' }).select(fields);
   if (!updated) throw fail(400, 'Code already used or security settings changed. Start again.');
   disconnectSessions(user._id);
   res.json({ success: true, ...session(updated), message: 'Authenticator disabled. Other sessions have been signed out.' });
@@ -169,7 +169,7 @@ exports.resetPassword = wrap(async (req, res) => {
   const user = await User.findOneAndUpdate({ resetPasswordToken: factor.digest(req.params.token), resetPasswordExpires: { $gt: new Date() }, isActive: true }, {
     $set: { password: await bcrypt.hash(password, 10) }, $inc: { tokenVersion: 1 },
     $unset: { resetPasswordToken: 1, resetPasswordExpires: 1, 'twoFactor.pendingSecret': 1, 'twoFactor.pendingHash': 1, 'twoFactor.pendingExpires': 1 }
-  }, { new: true });
+  }, { returnDocument: 'after' });
   if (!user) throw fail(400, 'Invalid or expired reset link.');
   disconnectSessions(user._id);
   res.json({ success: true, message: 'Password updated. Sign in again; your authenticator remains enabled if configured.' });

@@ -1,5 +1,7 @@
 const dotenv = require("dotenv");
-dotenv.config();
+// Also silence repeated dotenv banners from transitive dependencies.
+process.env.DOTENV_CONFIG_QUIET = 'true';
+dotenv.config({ quiet: true });
 
 const { createServer } = require("http");
 const { Server } = require("socket.io");
@@ -80,6 +82,9 @@ io.on("connection", (socket) => {
 global.io = io;
 global.userSockets = userSockets;
 
+let reminderJob;
+let shuttingDown = false;
+
 const startServer = async () => {
   try {
     // 1. MongoDB
@@ -95,11 +100,11 @@ const startServer = async () => {
     void redisClient.connect(); // Optional cache must never gate HTTP startup.
 
     // 4. Cron job
-    startDeadlineReminderJob();
+    reminderJob = startDeadlineReminderJob();
 
     // 5. HTTP server
     const PORT = config.port;
-    httpServer.listen(PORT, () => {
+    httpServer.listen(PORT, "0.0.0.0", () => {
       console.log("\n" + "=".repeat(50));
       console.log(`🚀 Server started on port ${PORT}`);
       console.log(`📍 Environment: ${config.nodeEnv}`);
@@ -113,13 +118,40 @@ const startServer = async () => {
   }
 };
 
-process.on("SIGINT", async () => {
-  console.log("\n⏹️ Shutting down...");
-  await redisClient.disconnect();
-  const mongoose = require("mongoose");
-  await mongoose.connection.close();
-  console.log("✅ Shutdown complete");
-  process.exit(0);
+// SIGINT normally comes from Ctrl+C/terminal interruption. Never silently ignore it.
+// SIGTERM is also used by supervisors and configured nodemon restarts.
+async function shutdown(signal, exitCode = 0) {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  console.log(`\nStopping backend: received ${signal}. Port ${config.port} will become unavailable.`);
+  const deadline = setTimeout(() => {
+    console.error('Shutdown exceeded 10 seconds; forcing exit.');
+    process.exit(1);
+  }, 10000);
+  try {
+    await reminderJob?.stop();
+    await reminderJob?.destroy();
+    await new Promise(resolve => {
+      io.close(resolve);
+      httpServer.closeAllConnections?.();
+    });
+    await redisClient.disconnect();
+    await require('mongoose').connection.close();
+    clearTimeout(deadline);
+    console.log('Shutdown complete. Restart the backend before using the frontend.');
+    process.exit(exitCode);
+  } catch {
+    clearTimeout(deadline);
+    console.error('Backend shutdown failed.');
+    process.exit(1);
+  }
+}
+process.once('SIGINT', () => void shutdown('SIGINT'));
+process.once('SIGTERM', () => void shutdown('SIGTERM'));
+httpServer.on('error', error => {
+  if (error.code === 'EADDRINUSE') console.error(`Cannot start: port ${config.port} is already in use. Stop the other listener or align PORT and the frontend proxy.`);
+  else console.error(`HTTP server failed (${error.code || 'unknown error'}).`);
+  void shutdown('HTTP server error', 1);
 });
 
 startServer();
