@@ -1,165 +1,331 @@
-<div class="product-page discovery-page">
-    <header class="discovery-hero">
-        <div>
-            <span class="eyebrow">THE COURSE LIBRARY</span>
-            <h1>Follow your curiosity.<br /><span>Build what comes next.</span></h1>
-            <p>Explore new perspectives and invest in the skills that move you forward.</p>
-            <form class="discovery-search" (ngSubmit)="search()">
-                <i class="bx bx-search"></i
-                ><input
-                    hlmInput
-                    name="search"
-                    aria-label="Search courses"
-                    [(ngModel)]="searchQuery"
-                    placeholder="What would you like to learn?"
-                /><button hlmBtn type="submit">Find your next course →</button>
-            </form>
-        </div>
-        <div class="library-art" aria-hidden="true">
-            <div class="book book-one">THINK<br />BIGGER<span>01 / EXPLORE</span></div>
-            <div class="book book-two">STAY<br />CURIOUS<span>02 / GROW</span></div>
-            <span class="library-star">✳</span>
-        </div>
-    </header>
-    <div class="discovery-layout">
-        <aside class="discovery-filters">
-            <h2>Find your focus</h2>
-            <label hlmLabel for="category">Subject</label
-            ><select
-                hlmInput
-                id="category"
-                [(ngModel)]="selectedCategory"
-                (ngModelChange)="filterByCategory($event)"
-            >
-                <option value="">All subjects</option>
-                <option *ngFor="let c of categories" [value]="c">{{ c }}</option></select
-            ><label hlmLabel for="course-type">Access</label
-            ><select
-                hlmInput
-                id="course-type"
-                [(ngModel)]="selectedType"
-                (ngModelChange)="filterByType($event)"
-            >
-                <option value="">All courses</option>
-                <option value="free">Free courses</option>
-                <option value="paid">Paid courses</option></select
-            ><button
-                hlmBtn
-                variant="ghost"
-                (click)="
-                    searchQuery = '';
-                    selectedType = '';
-                    selectedTag = '';
-                    selectedCategory = '';
-                    search()
-                "
-            >
-                Reset filters
-            </button>
-            <div class="discovery-note">
-                <i class="bx bx-bulb"></i>
-                <p>Small steps.<br />Lasting possibilities.</p>
-                <span>Start with something that interests you.</span>
-            </div>
-        </aside>
-        <section>
-            <div class="section-row section-heading">
-                <div>
-                    <h2>{{ selectedCategory || 'Explore the library' }}</h2>
-                    <p *ngIf="!loading && !error">{{ totalCourses }} courses to discover</p>
-                </div>
-                <span hlmBadge variant="outline" *ngIf="selectedTag">{{ selectedTag }}</span>
-            </div>
-            <app-learning-skeleton *ngIf="loading" />
-            <div *ngIf="error" class="product-alert" role="alert">
-                {{ error }}
-                <button hlmBtn variant="outline" (click)="loadCourses()">Try again</button>
-            </div>
-            <app-empty-state
-                *ngIf="!loading && !error && !courses.length"
-                title="A different direction, perhaps?"
-                description="No courses match these filters. Try a broader topic or reset your filters."
-                icon="search"
-                ><button
-                    hlmBtn
-                    (click)="
-                        searchQuery = '';
-                        selectedType = '';
-                        selectedTag = '';
-                        selectedCategory = '';
-                        search()
-                    "
+<div class="catalogue product-page">
+    <section class="catalogue-intro">
+        <nav class="catalogue-breadcrumb" aria-label="Breadcrumb">
+            <a routerLink="/">FormaPath</a><span aria-hidden="true">/</span
+            ><span>{{ "Course library" | t }}</span>
+        </nav>
+        <div class="catalogue-heading">
+            <div>
+                <span class="eyebrow"
+                    ><span class="intro-dot"></span
+                    >{{ "ROOM FOR YOUR NEXT CHAPTER" | t }}</span
                 >
-                    Show all courses
-                </button></app-empty-state
-            >
-            <div class="course-grid discovery-grid" *ngIf="!loading && !error">
-                <article hlmCard class="discovery-card" *ngFor="let c of courses; let i = index">
-                    <a
-                        [routerLink]="['/courses-details', c._id]"
-                        class="discovery-art"
-                        [class.art-blue]="i % 3 === 1"
-                        [class.art-navy]="i % 3 === 2"
-                        [attr.aria-label]="'View ' + c.title"
-                        ><span>{{ c.category || 'LEARNING' }}</span
-                        ><i class="bx bx-book-open"></i
-                        ><span class="art-index" aria-hidden="true">↗</span></a
-                    >
-                    <div class="discovery-card-body">
-                        <div class="section-row">
-                            <span hlmBadge variant="secondary">{{
-                                c.price === 0 ? 'Free course' : 'Paid course'
-                            }}</span
-                            ><span class="small-muted" *ngIf="getReviewTotal(c._id)"
-                                >★ {{ getReviewRating(c._id) | number: '1.1-1' }} ({{
-                                    getReviewTotal(c._id)
-                                }})</span
-                            >
-                        </div>
-                        <h3>
-                            <a [routerLink]="['/courses-details', c._id]">{{ c.title }}</a>
-                        </h3>
-                        <p>{{ c.description }}</p>
-                        <span class="small-muted"
-                            >{{ c.trainer?.firstname }} {{ c.trainer?.lastname }}</span
-                        >
-                        <div class="discovery-card-footer">
-                            <strong>{{
-                                c.price === 0 ? 'Free' : (c.price | currency: 'TND' : 'code')
-                            }}</strong
-                            ><a
-                                hlmBtn
-                                variant="ghost"
-                                size="sm"
-                                [routerLink]="['/courses-details', c._id]"
-                                >View course →</a
-                            >
-                        </div>
-                    </div>
-                </article>
+                <h1>
+                    {{ "Follow your" | t }}<br /><em>{{ "curiosity." | t }}</em>
+                </h1>
+                <p>
+                    {{
+                        "Find a new perspective. Build a useful skill. Choose what comes next."
+                            | t
+                    }}
+                </p>
             </div>
-            <nav
-                class="pagination-row"
-                aria-label="Course pages"
-                *ngIf="!loading && !error && totalPages > 1"
+            <div class="catalogue-aside" aria-hidden="true">
+                <span>✳</span>
+                <p>
+                    {{ "A little curiosity" | t }}<br /><em>{{
+                        "goes a long way." | t
+                    }}</em>
+                </p>
+                <small>{{ "LEARN · PRACTISE · PROGRESS" | t }}</small>
+            </div>
+        </div>
+        <form class="catalogue-search" (ngSubmit)="search()">
+            <i class="bx bx-search" aria-hidden="true"></i
+            ><input
+                hlmInput
+                type="search"
+                name="search"
+                [(ngModel)]="searchQuery"
+                [attr.aria-label]="'Search courses' | t"
+                [placeholder]="'What would you like to learn?' | t"
+            /><button hlmBtn type="submit">
+                {{ "Find a course" | t }} <span aria-hidden="true">↗</span>
+            </button>
+        </form>
+    </section>
+    <section
+        class="catalogue-results"
+        aria-labelledby="catalogue-results-title"
+    >
+        <div class="filter-toolbar">
+            <div
+                class="access-filters"
+                role="group"
+                [attr.aria-label]="'Course access' | t"
             >
                 <button
                     hlmBtn
-                    variant="outline"
-                    [disabled]="currentPage === 1"
-                    (click)="goToPage(currentPage - 1)"
+                    variant="ghost"
+                    [class.active]="!selectedType"
+                    [attr.aria-pressed]="!selectedType"
+                    (click)="filterByType('')"
                 >
-                    ← Previous</button
-                ><span>Page {{ currentPage }} of {{ totalPages }}</span
+                    {{ "All courses" | t }}</button
                 ><button
                     hlmBtn
-                    variant="outline"
-                    [disabled]="currentPage >= totalPages"
-                    (click)="goToPage(currentPage + 1)"
+                    variant="ghost"
+                    [class.active]="selectedType === 'free'"
+                    [attr.aria-pressed]="selectedType === 'free'"
+                    (click)="filterByType('free')"
                 >
-                    Next →
+                    {{ "Free courses" | t }}</button
+                ><button
+                    hlmBtn
+                    variant="ghost"
+                    [class.active]="selectedType === 'paid'"
+                    [attr.aria-pressed]="selectedType === 'paid'"
+                    (click)="filterByType('paid')"
+                >
+                    {{ "Paid courses" | t }}
                 </button>
-            </nav>
+            </div>
+            <div class="subject-filter">
+                <label hlmLabel for="catalogue-subject">{{
+                    "Subject" | t
+                }}</label
+                ><select
+                    hlmInput
+                    id="catalogue-subject"
+                    [(ngModel)]="selectedCategory"
+                    (ngModelChange)="filterByCategory($event)"
+                >
+                    <option value="">{{ "All subjects" | t }}</option>
+                    <option
+                        *ngFor="let category of categories"
+                        [value]="category"
+                    >
+                        {{ category | t }}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="catalogue-chips" *ngIf="hasFilters">
+            <span>{{ "Your focus" | t }}</span
+            ><button
+                *ngIf="searchQuery"
+                hlmBtn
+                variant="outline"
+                size="sm"
+                (click)="removeFilter('search')"
+                [attr.aria-label]="'Remove search filter' | t"
+            >
+                {{ searchQuery }} ×</button
+            ><button
+                *ngIf="selectedCategory"
+                hlmBtn
+                variant="outline"
+                size="sm"
+                (click)="removeFilter('category')"
+            >
+                {{ selectedCategory | t }} ×</button
+            ><button
+                *ngIf="selectedTag"
+                hlmBtn
+                variant="outline"
+                size="sm"
+                (click)="removeFilter('tag')"
+            >
+                {{ selectedTag }} ×</button
+            ><button
+                *ngIf="selectedType"
+                hlmBtn
+                variant="outline"
+                size="sm"
+                (click)="removeFilter('type')"
+            >
+                {{
+                    (selectedType === "free" ? "Free courses" : "Paid courses")
+                        | t
+                }}
+                ×</button
+            ><button hlmBtn variant="link" size="sm" (click)="reset()">
+                {{ "Clear all" | t }}
+            </button>
+        </div>
+        <div class="results-heading">
+            <h2 id="catalogue-results-title">
+                {{
+                    (hasFilters
+                        ? "A path that fits you."
+                        : "Make room for possibility."
+                    ) | t
+                }}
+            </h2>
+            <p *ngIf="!loading && !error" role="status">
+                {{ totalCourses }}
+                {{
+                    (totalCourses === 1
+                        ? "course available"
+                        : "courses available"
+                    ) | t
+                }}
+            </p>
+        </div>
+        <div
+            *ngIf="loading"
+            class="catalogue-grid"
+            role="status"
+            [attr.aria-label]="'Loading course previews' | t"
+            aria-busy="true"
+        >
+            <article
+                class="catalogue-skeleton"
+                *ngFor="let n of [1, 2, 3, 4, 5, 6]"
+            >
+                <hlm-skeleton class="cover-skeleton" /><hlm-skeleton
+                    class="title-skeleton"
+                /><hlm-skeleton class="copy-skeleton" />
+            </article>
+        </div>
+        <section
+            *ngIf="!loading && error"
+            hlmCard
+            class="catalogue-state"
+            role="alert"
+        >
+            <i class="bx bx-cloud" aria-hidden="true"></i>
+            <h3>{{ "A brief pause in discovery." | t }}</h3>
+            <p>{{ error | t }}</p>
+            <button hlmBtn variant="outline" (click)="loadCourses()">
+                {{ "Try again" | t }}
+            </button>
         </section>
-    </div>
+        <section
+            *ngIf="!loading && !error && !courses.length"
+            hlmCard
+            class="catalogue-state"
+        >
+            <i class="bx bx-compass" aria-hidden="true"></i>
+            <h3>
+                {{
+                    (hasFilters
+                        ? "A different direction, perhaps?"
+                        : "Room for what comes next."
+                    ) | t
+                }}
+            </h3>
+            <p>
+                {{
+                    (hasFilters
+                        ? "No courses match these filters. Try a broader topic."
+                        : "No courses are available in the library yet. Check back as new courses are published."
+                    ) | t
+                }}
+            </p>
+            <button
+                *ngIf="hasFilters"
+                hlmBtn
+                variant="outline"
+                (click)="reset()"
+            >
+                {{ "Show all courses" | t }}
+            </button>
+        </section>
+        <div
+            class="catalogue-grid"
+            *ngIf="!loading && !error && courses.length"
+        >
+            <article
+                hlmCard
+                class="catalogue-card"
+                *ngFor="
+                    let course of courses;
+                    let i = index;
+                    trackBy: trackCourse
+                "
+            >
+                <a
+                    [routerLink]="['/courses-details', course._id]"
+                    class="catalogue-cover"
+                    [class.cover-navy]="i % 3 === 1"
+                    [class.cover-mist]="i % 3 === 2"
+                    [attr.aria-label]="course.title"
+                    ><span>{{ course.category || ("LEARNING" | t) }}</span
+                    ><i class="bx bx-book-open" aria-hidden="true"></i
+                    ><span class="cover-orbit" aria-hidden="true"></span
+                    ><span class="cover-arrow" aria-hidden="true">↗</span></a
+                >
+                <div class="catalogue-card-body">
+                    <div class="course-meta">
+                        <span hlmBadge variant="secondary">{{
+                            (course.price === 0 ? "Free course" : "Paid course")
+                                | t
+                        }}</span
+                        ><span
+                            class="rating"
+                            *ngIf="reviewsMap[course._id]?.total"
+                            >★
+                            {{
+                                reviewsMap[course._id]?.avgRating
+                                    | number: "1.1-1"
+                            }}
+                            <span
+                                >({{ reviewsMap[course._id]?.total }})</span
+                            ></span
+                        >
+                    </div>
+                    <h3>
+                        <a [routerLink]="['/courses-details', course._id]">{{
+                            course.title
+                        }}</a>
+                    </h3>
+                    <p>{{ course.description }}</p>
+                    <span
+                        class="course-trainer"
+                        *ngIf="course.trainer?.firstname"
+                        >{{ course.trainer.firstname }}
+                        {{ course.trainer.lastname }}</span
+                    >
+                    <div class="card-bottom">
+                        <strong>{{
+                            course.price === 0
+                                ? ("Free" | t)
+                                : (course.price | currency: "TND" : "code")
+                        }}</strong
+                        ><a
+                            hlmBtn
+                            variant="ghost"
+                            size="sm"
+                            [routerLink]="['/courses-details', course._id]"
+                            >{{ "View course ↗" | t }}</a
+                        >
+                    </div>
+                </div>
+            </article>
+        </div>
+        <nav
+            *ngIf="!loading && !error && totalPages > 1"
+            class="catalogue-pagination"
+            [attr.aria-label]="'Course pages' | t"
+        >
+            <button
+                hlmBtn
+                variant="outline"
+                [disabled]="currentPage <= 1"
+                (click)="goToPage(currentPage - 1)"
+            >
+                ← {{ "Previous" | t }}</button
+            ><span
+                >{{ "Page" | t }} {{ currentPage }} {{ "of" | t }}
+                {{ totalPages }}</span
+            ><button
+                hlmBtn
+                variant="outline"
+                [disabled]="currentPage >= totalPages"
+                (click)="goToPage(currentPage + 1)"
+            >
+                {{ "Next" | t }} →
+            </button>
+        </nav>
+        <aside class="catalogue-bottom-note">
+            <span aria-hidden="true">✳</span>
+            <p>
+                {{ "Small steps. Lasting possibilities." | t }}<br /><span>{{
+                    "Your next chapter starts with something that interests you."
+                        | t
+                }}</span>
+            </p>
+        </aside>
+    </section>
 </div>

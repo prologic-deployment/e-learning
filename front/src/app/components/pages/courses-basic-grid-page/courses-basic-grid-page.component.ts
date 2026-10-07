@@ -1,36 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-import { CourseService } from '../../../services/course.service';
-import { AuthService } from '../../../services/auth.service';
+import { Component, DestroyRef, OnInit, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../environments/environment';
 import { Router, ActivatedRoute } from '@angular/router';
-
+import {
+    combineLatest,
+    defer,
+    of,
+    Subject,
+    Subscription,
+    forkJoin,
+} from 'rxjs';
+import {
+    catchError,
+    finalize,
+    startWith,
+    switchMap,
+    map,
+} from 'rxjs/operators';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CourseService } from '../../../services/course.service';
+import { environment } from '../../../../environments/environment';
 @Component({
     selector: 'app-courses-basic-grid-page',
     templateUrl: './courses-basic-grid-page.component.html',
     styleUrls: ['./courses-basic-grid-page.component.scss'],
 })
 export class CoursesBasicGridPageComponent implements OnInit {
+    private destroy = inject(DestroyRef);
+    private refresh = new Subject<void>();
+    private reviews?: Subscription;
     courses: any[] = [];
     loading = true;
     error = '';
     searchQuery = '';
+    selectedCategory = '';
     selectedType = '';
     selectedTag = '';
-    selectedCategory = '';
-    totalCourses = 0;
     currentPage = 1;
     totalPages = 1;
-    apiUrl = environment.apiUrl;
-    enrollingCourseId = '';
-    enrollSuccess = '';
-    enrollError = '';
-
-    // ✅ Reviews par cours
-    reviewsMap: {
-        [courseId: string]: { avgRating: number; total: number; reviews: any[] } | undefined;
-    } = {};
-
+    totalCourses = 0;
+    reviewsMap: Record<string, { avgRating: number; total: number } | null> =
+        {};
     categories = [
         'Development',
         'Business',
@@ -40,189 +49,165 @@ export class CoursesBasicGridPageComponent implements OnInit {
         'Marketing',
         'Data Science',
     ];
-
     constructor(
-        private courseService: CourseService,
-        private authService: AuthService,
+        private service: CourseService,
         private http: HttpClient,
-        private router: Router,
         private route: ActivatedRoute,
+        private router: Router,
     ) {}
-
-    ngOnInit(): void {
-        this.route.queryParams.subscribe((params) => {
-            this.searchQuery = params['search'] || '';
-            this.selectedCategory = params['category'] || '';
-            this.selectedTag = params['tag'] || ''; // ✅ tag manquait
-            this.currentPage = 1;
-            this.loadCourses();
-        });
-    }
-
-    loadCourses(): void {
-        this.loading = true;
-        this.error = '';
-        this.courseService
-            .getAllCourses({
-                search: this.searchQuery,
-                type: this.selectedType,
-                tag: this.selectedTag,
-                category: this.selectedCategory,
-                page: this.currentPage,
-                limit: 8,
-            })
-            .subscribe({
-                next: (data) => {
-                    this.courses = data.courses;
-                    this.totalCourses = data.pagination.total;
-                    this.totalPages = data.pagination.pages;
-                    this.loading = false;
-                    this.loadAllReviews();
-                },
-                error: (err) => {
-                    this.error = err.error?.message || 'Error loading courses';
-                    this.loading = false;
-                },
+    ngOnInit() {
+        combineLatest([
+            this.route.queryParamMap,
+            this.refresh.pipe(startWith(undefined)),
+        ])
+            .pipe(
+                switchMap(([params]) =>
+                    defer(() => {
+                        this.reviews?.unsubscribe();
+                        this.reviewsMap = {};
+                        this.loading = true;
+                        this.error = '';
+                        this.courses = [];
+                        this.searchQuery = params.get('search') || '';
+                        this.selectedCategory = params.get('category') || '';
+                        this.selectedTag = params.get('tag') || '';
+                        this.selectedType = ['free', 'paid'].includes(
+                            params.get('type') || '',
+                        )
+                            ? params.get('type')!
+                            : '';
+                        this.currentPage = Math.max(
+                            1,
+                            Math.min(
+                                10000,
+                                Math.floor(Number(params.get('page'))) || 1,
+                            ),
+                        );
+                        return this.service
+                            .getAllCourses({
+                                search: this.searchQuery,
+                                category: this.selectedCategory,
+                                tag: this.selectedTag,
+                                type: this.selectedType,
+                                page: this.currentPage,
+                                limit: 9,
+                            })
+                            .pipe(
+                                map((data) => {
+                                    if (
+                                        !Array.isArray(data?.courses) ||
+                                        !data.pagination
+                                    )
+                                        throw new Error(
+                                            'Invalid catalogue response',
+                                        );
+                                    return data;
+                                }),
+                                catchError(() => {
+                                    this.error =
+                                        'The course library is unavailable right now. Please try again.';
+                                    return of(null);
+                                }),
+                                finalize(() => (this.loading = false)),
+                            );
+                    }),
+                ),
+                takeUntilDestroyed(this.destroy),
+            )
+            .subscribe((data) => {
+                if (!data) return;
+                this.courses = data.courses;
+                this.totalCourses = Math.max(
+                    0,
+                    Number(data.pagination.total) || 0,
+                );
+                this.totalPages = Math.max(
+                    1,
+                    Number(data.pagination.pages) || 1,
+                );
+                this.loadReviews();
             });
     }
-
-    loadAllReviews(): void {
-        this.courses.forEach((course) => {
-            this.http.get(`${this.apiUrl}/reviews/course/${course._id}`).subscribe({
-                next: (data: any) => {
-                    this.reviewsMap[course._id] = {
-                        avgRating: data.avgRating || 0,
-                        total: data.total || 0,
-                        reviews: (data.reviews || []).slice(0, 2),
-                    };
-                },
-                error: () => {
-                    this.reviewsMap[course._id] = { avgRating: 0, total: 0, reviews: [] };
-                },
-            });
-        });
+    private loadReviews() {
+        if (!this.courses.length) return;
+        this.reviews = forkJoin(
+            this.courses.map((c) =>
+                this.http
+                    .get<any>(`${environment.apiUrl}/reviews/course/${c._id}`)
+                    .pipe(
+                        map((r) => ({
+                            id: c._id,
+                            value:
+                                typeof r.avgRating === 'number' &&
+                                typeof r.total === 'number'
+                                    ? { avgRating: r.avgRating, total: r.total }
+                                    : null,
+                        })),
+                        catchError(() => of({ id: c._id, value: null })),
+                    ),
+            ),
+        )
+            .pipe(takeUntilDestroyed(this.destroy))
+            .subscribe((rows) =>
+                rows.forEach((r) => (this.reviewsMap[r.id] = r.value)),
+            );
     }
-
-    // ✅ Fonctions helper pour éviter les erreurs de type
-    getReviewRating(courseId: string): number {
-        return this.reviewsMap[courseId]?.avgRating || 0;
+    loadCourses() {
+        this.refresh.next();
     }
-
-    getReviewTotal(courseId: string): number {
-        return this.reviewsMap[courseId]?.total || 0;
+    search() {
+        this.navigate(1);
     }
-
-    getReviewList(courseId: string): any[] {
-        return this.reviewsMap[courseId]?.reviews || [];
+    filterByType(value: string) {
+        this.selectedType = value;
+        this.search();
     }
-
-    getStars(rating: number): string {
-        return '⭐'.repeat(Math.round(rating));
+    filterByCategory(value: string) {
+        this.selectedCategory = value;
+        this.search();
     }
-
-    search(): void {
-        this.currentPage = 1;
-        this.loadCourses();
-    }
-
-    filterByType(type: string): void {
-        this.selectedType = type;
-        this.currentPage = 1;
-        this.loadCourses();
-    }
-
-    filterByCategory(category: string): void {
-        this.selectedCategory = category;
-        this.currentPage = 1;
-        this.loadCourses();
-    }
-
-    clearCategory(): void {
+    reset() {
+        this.searchQuery = '';
+        this.selectedType = '';
         this.selectedCategory = '';
-        this.currentPage = 1;
-        this.loadCourses();
+        this.selectedTag = '';
+        this.search();
     }
-
-    goToPage(page: number): void {
-        if (page < 1 || page > this.totalPages) return;
-        this.currentPage = page;
-        this.loadCourses();
+    removeFilter(kind: string) {
+        if (kind === 'search') this.searchQuery = '';
+        if (kind === 'category') this.selectedCategory = '';
+        if (kind === 'tag') this.selectedTag = '';
+        if (kind === 'type') this.selectedType = '';
+        this.search();
     }
-
-    goToCourseDetail(courseId: string): void {
-        this.router.navigate(['/courses-details', courseId]);
+    get hasFilters() {
+        return !!(
+            this.searchQuery ||
+            this.selectedCategory ||
+            this.selectedTag ||
+            this.selectedType
+        );
     }
-
-    enrollCourse(courseId: string): void {
-        this.enrollingCourseId = courseId;
-        this.enrollSuccess = '';
-        this.enrollError = '';
-
-        this.http.post(`${this.apiUrl}/enrollments/${courseId}/enroll`, {}).subscribe({
-            next: () => {
-                this.enrollSuccess = 'Enrolled successfully ! 🎉';
-                this.enrollingCourseId = '';
-                setTimeout(() => (this.enrollSuccess = ''), 3000);
-            },
-            error: (err) => {
-                this.enrollError = err.error?.message || 'Error enrolling';
-                this.enrollingCourseId = '';
-                setTimeout(() => (this.enrollError = ''), 3000);
-            },
-        });
+    private navigate(page: number) {
+        this.router
+            .navigate(['/courses-grid'], {
+                queryParams: {
+                    search: this.searchQuery.trim() || null,
+                    category: this.selectedCategory || null,
+                    type: this.selectedType || null,
+                    tag: this.selectedTag || null,
+                    page: page > 1 ? page : null,
+                },
+            })
+            .then((changed) => {
+                if (!changed) this.refresh.next();
+            });
     }
-
-    isLoggedIn(): boolean {
-        return this.authService.isLoggedIn();
+    goToPage(page: number) {
+        if (page < 1 || page > this.totalPages || this.loading) return;
+        this.navigate(page);
     }
-
-    getPages(): number[] {
-        return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    }
-
-    getCategoryIcon(category: string): string {
-        const icons: any = {
-            Development: '💻',
-            Business: '💼',
-            Finance: '💰',
-            'IT & Software': '🖥️',
-            Design: '🎨',
-            Marketing: '📣',
-            'Data Science': '📊',
-        };
-        return icons[category] || '📚';
-    }
-
-    getCourseColor(category: string): string {
-        const colors: any = {
-            Development: 'linear-gradient(135deg, #457B9D, #1D3557)',
-            Business: 'linear-gradient(135deg, #f093fb, #f5576c)',
-            Finance: 'linear-gradient(135deg, #4facfe, #00f2fe)',
-            'IT & Software': 'linear-gradient(135deg, #43e97b, #38f9d7)',
-            Design: 'linear-gradient(135deg, #fa709a, #fee140)',
-            Marketing: 'linear-gradient(135deg, #a18cd1, #fbc2eb)',
-            'Data Science': 'linear-gradient(135deg, #ffecd2, #fcb69f)',
-        };
-        return colors[category] || 'linear-gradient(135deg, #457B9D, #1D3557)';
-    }
-
-    getCourseImage(category: string): string {
-        const images: any = {
-            Development: 'assets/img/courses/courses-img1.jpg',
-            Business: 'assets/img/courses/courses-img2.jpg',
-            Finance: 'assets/img/courses/courses-img3.jpg',
-            'IT & Software': 'assets/img/courses/courses-img4.jpg',
-            Design: 'assets/img/courses/courses-img5.jpg',
-            Marketing: 'assets/img/courses/courses-img6.jpg',
-            'Data Science': 'assets/img/courses/courses-img7.jpg',
-        };
-        return images[category] || 'assets/img/courses/courses-img1.jpg';
-    }
-
-    goToSearch(): void {
-        if (!this.searchQuery.trim()) return;
-        this.router.navigate(['/courses-grid'], {
-            queryParams: { search: this.searchQuery },
-        });
+    trackCourse(_index: number, course: any) {
+        return course._id;
     }
 }

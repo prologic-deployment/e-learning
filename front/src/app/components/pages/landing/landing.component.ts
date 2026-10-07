@@ -140,18 +140,6 @@ export class LandingComponent implements OnInit {
         }
     }
     ngOnInit() {
-        this.viewportScroller.setOffset(() => [
-            0,
-            (document.querySelector<HTMLElement>('.site-header')
-                ?.offsetHeight || 104) + 16,
-        ]);
-        this.destroyRef.onDestroy(() =>
-            this.viewportScroller.setOffset([0, 0]),
-        );
-        document.documentElement.lang = this.i18n.language();
-        this.destroyRef.onDestroy(() => {
-            document.documentElement.lang = 'en';
-        });
         this.loadCourses();
     }
     goToSection(event: Event, id: string) {

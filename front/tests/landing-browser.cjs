@@ -61,10 +61,10 @@ const base = process.env.PREVIEW_URL || "http://127.0.0.1:4200";
         await page.setViewportSize({ width: 390, height: 844 });
         await page.getByRole("button", { name: "Toggle navigation" }).click();
         await page
-            .locator("#landing-mobile-nav")
+            .locator("#public-mobile-nav")
             .getByRole("link", { name: "The experience" })
             .click();
-        assert.equal(await page.locator("#landing-mobile-nav").count(), 0);
+        assert.equal(await page.locator("#public-mobile-nav").count(), 0);
         await page.evaluate(() => window.scrollTo(0, 0));
         await page.screenshot({
             path: "../docs/product-quality/landing-mobile.png",
@@ -73,7 +73,7 @@ const base = process.env.PREVIEW_URL || "http://127.0.0.1:4200";
         });
         await page.getByRole("button", { name: "Toggle navigation" }).click();
         await page
-            .locator("#landing-mobile-nav")
+            .locator("#public-mobile-nav")
             .getByRole("link", { name: "Create an account" })
             .click();
         await page.waitForURL("**/profile-authentication?tab=register");

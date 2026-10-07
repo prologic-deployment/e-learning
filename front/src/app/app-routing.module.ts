@@ -39,12 +39,12 @@ const routes: Routes = [
   { path: 'welcome', pathMatch: 'full', redirectTo: '' },
 
   // ✅ Cours — staff bloqué
-  { path: 'courses-grid', component: CoursesBasicGridPageComponent, canActivate: [StaffRedirectGuard] },
-  { path: 'courses-grid-2', component: CoursesModernGridPageComponent, canActivate: [StaffRedirectGuard] },
-  { path: 'courses-wide-grid', component: CoursesWideGridPageComponent, canActivate: [StaffRedirectGuard] },
-  { path: 'courses-left-sidebar', component: CoursesLeftSidebarPageComponent, canActivate: [StaffRedirectGuard] },
-  { path: 'courses-right-sidebar', component: CoursesRightSidebarPageComponent, canActivate: [StaffRedirectGuard] },
-  { path: 'courses-list', component: CoursesListSidebarPageComponent, canActivate: [StaffRedirectGuard] },
+  { path: 'courses-grid', title: 'Course library — FormaPath', component: CoursesBasicGridPageComponent, canActivate: [StaffRedirectGuard] },
+  { path: 'courses-grid-2', pathMatch: 'full', redirectTo: 'courses-grid' },
+  { path: 'courses-wide-grid', pathMatch: 'full', redirectTo: 'courses-grid' },
+  { path: 'courses-left-sidebar', pathMatch: 'full', redirectTo: 'courses-grid' },
+  { path: 'courses-right-sidebar', pathMatch: 'full', redirectTo: 'courses-grid' },
+  { path: 'courses-list', pathMatch: 'full', redirectTo: 'courses-grid' },
   { path: 'courses-details/:id', component: PaidCoursesSinglePageComponent, canActivate: [StaffRedirectGuard] },
   { path: 'courses-details', component: FreeCoursesSinglePageComponent, canActivate: [StaffRedirectGuard] },
   { path: 'courses-details-2', component: PaidCoursesSinglePageComponent, canActivate: [StaffRedirectGuard] },

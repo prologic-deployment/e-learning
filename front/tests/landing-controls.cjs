@@ -98,7 +98,7 @@ const { chromium } = require("playwright"),
             .getByRole("button", { name: "Ouvrir ou fermer la navigation" })
             .click();
         await page
-            .locator("#landing-mobile-nav")
+            .locator("#public-mobile-nav")
             .getByRole("link", { name: "Pour votre équipe" })
             .click();
         await page.waitForFunction(() => {

@@ -25,3 +25,26 @@ fixtures and API failures; they do not establish backend authorization or all wo
 This is shared design architecture, not a claim that every legacy form has been
 individually rewritten or that every business workflow was end-to-end tested.
 Catalogue rebuild and further workspace surface review are recorded below as completed.
+
+## 2. Course library composition and request lifecycle
+Rebuilt `/courses-grid` with the landing's open editorial introduction, italic accent,
+compact search, horizontal access/subject filters, removable filter chips, course cover
+system, consistent typography/cards, and a quieter pagination/footer transition.
+Controls use actual Spartan button, input, label, badge, card and skeleton primitives.
+No fabricated application courses, reviews or statistics: all cards/counts/prices and
+ratings come from the existing backend APIs. Cover artwork is decorative, not a claim
+of a course-provided thumbnail. EN/FR UI copy is included; course content stays original.
+
+Filters and pagination live in URL query parameters, support browser back/deep links,
+and reset page on filter changes. `switchMap` aborts superseded catalogue requests;
+review subscriptions are cleaned up separately. Skeleton, error/retry, empty and loaded
+states are distinct. All five old catalogue layout URLs redirect to this single library.
+Shared header retains landing anchors and mobile Escape restores focus. Shared footer
+retains back-to-top. Removed landing's competing scroll-offset/locale reset hooks.
+
+PASS: development build; catalogue-design, shared-design, language-switcher,
+landing-controls, landing-browser and landing-polish browser tests. Catalogue covers
+filters, browser back, pagination, stale responses, failure/retry/empty, EN/FR, theme,
+320/390/768/1440 widths and alias redirects. Light/dark screenshots are explicitly
+labelled test-response fixtures, not production catalogue data. Light screenshot
+visually inspected. No live backend data or complete purchase/learning workflow tested.

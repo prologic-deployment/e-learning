@@ -1,6 +1,126 @@
-import {Component} from '@angular/core';
-import {RouterModule} from '@angular/router';
-import {BrandComponent} from '../../brand/brand.component';
-import {TranslationModule} from '../../../i18n/translation.module';
-@Component({selector:'app-public-footer',standalone:true,imports:[RouterModule,BrandComponent,TranslationModule],template:`<footer><div class="footer-top"><div><app-brand/><p>{{'A clear path to capability.'|t}}<br>{{'For people. For teams. For what’s next.'|t}}</p></div><nav aria-label="Explore"><strong>{{'Explore'|t}}</strong><a routerLink="/courses-grid">{{'Course library'|t}}</a><a routerLink="/" fragment="how-it-works">{{'The experience'|t}}</a><a routerLink="/" fragment="for-every-role">{{'For every role'|t}}</a></nav><nav aria-label="Your account"><strong>{{'Your account'|t}}</strong><a routerLink="/profile-authentication">{{'Sign in'|t}}</a><a routerLink="/profile-authentication" [queryParams]="{tab:'register'}">{{'Create an account'|t}}</a><a routerLink="/forgot-password">{{'Account recovery'|t}}</a></nav></div><div class="footer-bottom"><span>© {{year}} FormaPath.</span><span>{{'LEARN WITH PURPOSE. GROW AT YOUR PACE.'|t}} ↗</span></div></footer>`,styles:[`:host{display:block;background:hsl(var(--background));color:hsl(var(--foreground));border-top:1px solid hsl(var(--border));font-family:Inter,Arial,sans-serif}footer{max-width:1280px;margin:auto;padding:55px clamp(24px,5vw,72px) 26px}.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px;padding-bottom:45px}.footer-top p{font-size:12px;color:hsl(var(--muted-foreground));line-height:1.9;margin-top:20px}.footer-top nav{display:flex;flex-direction:column;gap:14px;font-size:11px}.footer-top strong{margin:5px 0}.footer-top a{color:hsl(var(--muted-foreground));text-decoration:none}.footer-top a:hover{text-decoration:underline}.footer-bottom{border-top:1px solid hsl(var(--border));padding-top:22px;display:flex;justify-content:space-between;gap:18px;font-size:9px;color:hsl(var(--muted-foreground))}.footer-bottom>span:last-child{font-size:8px;letter-spacing:1px}@media(max-width:650px){footer{padding-bottom:85px}.footer-top{grid-template-columns:1fr 1fr}.footer-top>div{grid-column:1/-1}.footer-bottom>span:last-child{display:none}}`]})
-export class PublicFooterComponent{year=new Date().getFullYear();}
+import { ViewportScroller } from '@angular/common';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { BrandComponent } from '../../brand/brand.component';
+import { TranslationModule } from '../../../i18n/translation.module';
+@Component({
+    selector: 'app-public-footer',
+    standalone: true,
+    imports: [RouterModule, BrandComponent, TranslationModule],
+    template: `<footer>
+        <div class="footer-top">
+            <div>
+                <app-brand />
+                <p>
+                    {{ 'A clear path to capability.' | t }}<br />{{
+                        'For people. For teams. For what’s next.' | t
+                    }}
+                </p>
+            </div>
+            <nav aria-label="Explore">
+                <strong>{{ 'Explore' | t }}</strong
+                ><a routerLink="/courses-grid">{{ 'Course library' | t }}</a
+                ><a routerLink="/" fragment="how-it-works">{{
+                    'The experience' | t
+                }}</a
+                ><a routerLink="/" fragment="for-every-role">{{
+                    'For every role' | t
+                }}</a>
+            </nav>
+            <nav aria-label="Your account">
+                <strong>{{ 'Your account' | t }}</strong
+                ><a routerLink="/profile-authentication">{{ 'Sign in' | t }}</a
+                ><a
+                    routerLink="/profile-authentication"
+                    [queryParams]="{ tab: 'register' }"
+                    >{{ 'Create an account' | t }}</a
+                ><a routerLink="/forgot-password">{{
+                    'Account recovery' | t
+                }}</a>
+            </nav>
+        </div>
+        <div class="footer-bottom">
+            <span>© {{ year }} FormaPath.</span
+            ><a href="#" (click)="top($event)">{{ 'Back to top ↑' | t }}</a>
+        </div>
+    </footer>`,
+    styles: [
+        `
+            :host {
+                display: block;
+                background: hsl(var(--background));
+                color: hsl(var(--foreground));
+                border-top: 1px solid hsl(var(--border));
+                font-family: Inter, Arial, sans-serif;
+            }
+            footer {
+                max-width: 1280px;
+                margin: auto;
+                padding: 55px clamp(24px, 5vw, 72px) 26px;
+            }
+            .footer-top {
+                display: grid;
+                grid-template-columns: 2fr 1fr 1fr;
+                gap: 30px;
+                padding-bottom: 45px;
+            }
+            .footer-top p {
+                font-size: 12px;
+                color: hsl(var(--muted-foreground));
+                line-height: 1.9;
+                margin-top: 20px;
+            }
+            .footer-top nav {
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+                font-size: 11px;
+            }
+            .footer-top strong {
+                margin: 5px 0;
+            }
+            .footer-top a {
+                color: hsl(var(--muted-foreground));
+                text-decoration: none;
+            }
+            .footer-top a:hover {
+                text-decoration: underline;
+            }
+            .footer-bottom {
+                border-top: 1px solid hsl(var(--border));
+                padding-top: 22px;
+                display: flex;
+                justify-content: space-between;
+                gap: 18px;
+                font-size: 9px;
+                color: hsl(var(--muted-foreground));
+            }
+            .footer-bottom > span:last-child {
+                font-size: 8px;
+                letter-spacing: 1px;
+            }
+            @media (max-width: 650px) {
+                footer {
+                    padding-bottom: 85px;
+                }
+                .footer-top {
+                    grid-template-columns: 1fr 1fr;
+                }
+                .footer-top > div {
+                    grid-column: 1/-1;
+                }
+                .footer-bottom > span:last-child {
+                    display: none;
+                }
+            }
+        `,
+    ],
+})
+export class PublicFooterComponent {
+    year = new Date().getFullYear();
+    constructor(private scroller: ViewportScroller) {}
+    top(event: Event) {
+        event.preventDefault();
+        this.scroller.scrollToPosition([0, 0]);
+    }
+}

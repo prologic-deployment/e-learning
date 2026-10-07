@@ -1,2 +1,89 @@
-<header class="site-header"><app-brand/><nav class="desktop-nav" [attr.aria-label]="'Main navigation' | t"><a routerLink="/" fragment="how-it-works">{{'The experience'|t}}</a><a routerLink="/" fragment="for-every-role">{{'For your team'|t}}</a><a routerLink="/courses-grid" routerLinkActive="current">{{'Course library'|t}}</a></nav><div class="header-actions"><app-language-switcher/><button hlmBtn variant="ghost" size="icon" class="theme-toggle" (click)="theme.toggle()" [attr.aria-label]="(theme.dark?'Switch to light mode':'Switch to dark mode')|t"><i class="bx" [class.bx-sun]="theme.dark" [class.bx-moon]="!theme.dark" aria-hidden="true"></i></button><a *ngIf="!auth.isLoggedIn()" class="sign-in" routerLink="/profile-authentication">{{'Sign in'|t}}</a><a hlmBtn class="small-cta" [routerLink]="auth.isLoggedIn()?workspace:'/profile-authentication'" [queryParams]="auth.isLoggedIn()?{}:{tab:'register'}">{{(auth.isLoggedIn()?'My workspace':'Get started')|t}} ↗</a><button hlmBtn variant="ghost" size="icon" class="mobile-toggle" [attr.aria-label]="'Toggle navigation'|t" aria-controls="public-mobile-nav" [attr.aria-expanded]="menuOpen" (click)="menuOpen=!menuOpen"><i class="bx" [class.bx-menu]="!menuOpen" [class.bx-x]="menuOpen" aria-hidden="true"></i></button></div>
-<nav *ngIf="menuOpen" id="public-mobile-nav" class="mobile-nav" [attr.aria-label]="'Mobile navigation'|t" (keydown.escape)="menuOpen=false"><a routerLink="/" fragment="how-it-works">{{'The experience'|t}}</a><a routerLink="/" fragment="for-every-role">{{'For your team'|t}}</a><a routerLink="/courses-grid">{{'Course library'|t}}</a><a routerLink="/profile-authentication">{{'Sign in'|t}}</a><a [routerLink]="auth.isLoggedIn()?workspace:'/profile-authentication'" [queryParams]="auth.isLoggedIn()?{}:{tab:'register'}">{{(auth.isLoggedIn()?'My workspace':'Create an account')|t}}</a></nav></header>
+<header class="site-header">
+    <app-brand />
+    <nav class="desktop-nav" [attr.aria-label]="'Main navigation' | t">
+        <a routerLink="/" fragment="how-it-works">{{ "The experience" | t }}</a
+        ><a routerLink="/" fragment="for-every-role">{{
+            "For your team" | t
+        }}</a
+        ><a
+            [routerLink]="onLanding ? '/' : '/courses-grid'"
+            [fragment]="onLanding ? 'course-library' : undefined"
+            >{{ "Course library" | t }}</a
+        >
+    </nav>
+    <div class="header-actions">
+        <app-language-switcher /><button
+            hlmBtn
+            variant="ghost"
+            size="icon"
+            class="theme-toggle"
+            (click)="theme.toggle()"
+            [attr.aria-label]="
+                (theme.dark ? 'Switch to light mode' : 'Switch to dark mode')
+                    | t
+            "
+        >
+            <i
+                class="bx"
+                [class.bx-sun]="theme.dark"
+                [class.bx-moon]="!theme.dark"
+                aria-hidden="true"
+            ></i></button
+        ><a
+            *ngIf="!auth.isLoggedIn()"
+            class="sign-in"
+            routerLink="/profile-authentication"
+            >{{ "Sign in" | t }}</a
+        ><a
+            hlmBtn
+            class="small-cta"
+            [routerLink]="
+                auth.isLoggedIn() ? workspace : '/profile-authentication'
+            "
+            [queryParams]="auth.isLoggedIn() ? {} : { tab: 'register' }"
+            >{{ (auth.isLoggedIn() ? "My workspace" : "Get started") | t }} ↗</a
+        ><button
+            #mobileToggle
+            hlmBtn
+            variant="ghost"
+            size="icon"
+            class="mobile-toggle"
+            [attr.aria-label]="'Toggle navigation' | t"
+            aria-controls="public-mobile-nav"
+            [attr.aria-expanded]="menuOpen"
+            (click)="menuOpen = !menuOpen"
+        >
+            <i
+                class="bx"
+                [class.bx-menu]="!menuOpen"
+                [class.bx-x]="menuOpen"
+                aria-hidden="true"
+            ></i>
+        </button>
+    </div>
+    <nav
+        *ngIf="menuOpen"
+        id="public-mobile-nav"
+        class="mobile-nav"
+        [attr.aria-label]="'Mobile navigation' | t"
+        (keydown.escape)="menuOpen = false; mobileToggle.focus()"
+    >
+        <a routerLink="/" fragment="how-it-works">{{ "The experience" | t }}</a
+        ><a routerLink="/" fragment="for-every-role">{{
+            "For your team" | t
+        }}</a
+        ><a routerLink="/courses-grid">{{ "Course library" | t }}</a
+        ><a *ngIf="!auth.isLoggedIn()" routerLink="/profile-authentication">{{
+            "Sign in" | t
+        }}</a
+        ><a
+            [routerLink]="
+                auth.isLoggedIn() ? workspace : '/profile-authentication'
+            "
+            [queryParams]="auth.isLoggedIn() ? {} : { tab: 'register' }"
+            >{{
+                (auth.isLoggedIn() ? "My workspace" : "Create an account") | t
+            }}</a
+        >
+    </nav>
+</header>
