@@ -151,16 +151,9 @@ const requireCourseAccess = (options = {}) => {
 
 // Strip correctAnswer from quiz/exam questions before sending to any client
 const stripAnswers = (obj) => {
-  if (!obj) return obj;
-  const o = JSON.parse(JSON.stringify(obj));
-  const clean = (questions) => {
-    if (!Array.isArray(questions)) return;
-    questions.forEach(q => { delete q.correctAnswer; });
-  };
-  if (o.quiz) clean(o.quiz.questions);
-  if (o.quiz2) clean(o.quiz2.questions);
-  if (o.finalExam) clean(o.finalExam.questions);
-  return o;
+ if(!obj)return obj;
+ const o=JSON.parse(JSON.stringify(obj));
+ const walk=value=>{if(!value||typeof value!=='object')return;if(Array.isArray(value)){value.forEach(walk);return;}delete value.correctAnswer;delete value.correctAnswers;Object.values(value).forEach(walk);};walk(o);return o;
 };
 
 // ✅ Express middleware wrapper — usable directly in a route chain
@@ -182,8 +175,7 @@ const wrapStripAnswers = (req, res, next) => {
     res.json = json;
     try {
       const o = JSON.parse(JSON.stringify(data));
-      stripAnswers(o);
-      return json(o);
+      return json(stripAnswers(o));
     } catch {
       return json(data);
     }

@@ -23,21 +23,7 @@ async function refreshLearningState(enrollment, courseId) {
 // ✅ Unified quiz/exam grading engine (replaces quiz + quiz2 duplication)
 // ============================================================
 
-const gradeSubmission = (questions, answers) => {
-  const total = questions.length;
-  let correct = 0;
-
-  questions.forEach((q, index) => {
-    const userAnswer = parseInt(answers?.[index]);
-    if (isNaN(userAnswer) || userAnswer < 0 || userAnswer >= q.options.length) return;
-    const selectedOption = q.options[userAnswer];
-    if (!selectedOption || String(selectedOption).trim() === '') return;
-    if (userAnswer === parseInt(q.correctAnswer)) correct++;
-  });
-
-  const score = total > 0 ? Math.round((correct / total) * 100) : 0;
-  return { correct, total, score };
-};
+const {gradeSubmission,validateAssessment}=require('../utils/assessment');
 
 // Server-side attempt counter — client cannot reset it
 const recordAttempt = (enrollment, lessonId, quizKey) => {
@@ -90,54 +76,17 @@ const loadLessonWithOwnership = async (req, res) => {
   return lesson;
 };
 
-const normalizeQuestions = (questions) => {
-  if (!Array.isArray(questions)) return [];
-  return questions.map(q => ({
-    texte: String(q.texte || ''),
-    options: (q.options || []).map(o => String(o)),
-    correctAnswer: Number(q.correctAnswer) || 0,
-    points: Number(q.points) || 1
-  }));
+exports.addQuizToLesson = async (req,res)=>{
+ try{const lesson=await loadLessonWithOwnership(req,res);if(!lesson)return;
+ let quiz;try{quiz=validateAssessment(req.body);}catch(e){return res.status(400).json({message:e.message});}
+ if(lesson.quiz2?.questions?.length)return res.status(409).json({message:'A legacy second quiz exists. Remove it before saving the single lesson quiz.'});
+ const editing=req.method==='PUT';
+ const updated=await Lesson.findOneAndUpdate({_id:lesson._id,'quiz.questions.0':{$exists:editing},'quiz2.questions.0':{$exists:false}},{$set:{quiz}},{returnDocument:'after',runValidators:true});
+ if(!updated)return res.status(editing?404:409).json({message:editing?'No quiz exists to update.':'This lesson already has a quiz. Edit it instead.'});
+ res.json({message:editing?'Lesson quiz updated.':'Lesson quiz created.'});
+ }catch(e){res.status(500).json({message:'Unable to save the lesson quiz.'});}
 };
-
-exports.addQuizToLesson = async (req, res) => {
-  try {
-    const lesson = await loadLessonWithOwnership(req, res);
-    if (!lesson) return;
-
-    const { questions, noteMinimale, maxAttempts } = req.body;
-    lesson.quiz = {
-      questions: normalizeQuestions(questions),
-      noteMinimale: noteMinimale || 70,
-      maxAttempts: Math.max(1, Number(maxAttempts) || 3)
-    };
-    await lesson.save();
-
-    res.status(200).json({ success: true, message: "Quiz added to lesson" });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-};
-
-// Legacy quiz2 endpoints — kept for data compatibility, same engine
-exports.addQuiz2ToLesson = async (req, res) => {
-  try {
-    const lesson = await loadLessonWithOwnership(req, res);
-    if (!lesson) return;
-
-    const { questions, noteMinimale, maxAttempts } = req.body;
-    lesson.quiz2 = {
-      questions: normalizeQuestions(questions),
-      noteMinimale: noteMinimale || 70,
-      maxAttempts: Math.max(1, Number(maxAttempts) || 3)
-    };
-    await lesson.save();
-
-    res.status(200).json({ success: true, message: "Quiz 2 added to lesson" });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-};
+exports.addQuiz2ToLesson=(req,res)=>res.status(409).json({message:'Only one quiz per lesson is supported. Edit the existing lesson quiz.'});
 
 exports.deleteQuizFromLesson = async (req, res) => {
   try {
@@ -173,12 +122,9 @@ exports.addFinalExam = async (req, res) => {
       return res.status(403).json({ success: false, message: "You do not own this course." });
     }
 
-    const { questions, noteMinimale, maxAttempts } = req.body;
-    course.finalExam = {
-      questions: normalizeQuestions(questions),
-      noteMinimale: noteMinimale || 70,
-      maxAttempts: Math.max(1, Number(maxAttempts) || 3)
-    };
+    const lessons=await Lesson.find({course:course._id}).select('quiz quiz2');
+    if(!lessons.length||lessons.some(l=>(l.quiz?.questions?.length||0)<20||l.quiz2?.questions?.length))return res.status(400).json({message:'Add lessons and complete one 20-question quiz per lesson before the final exam.'});
+    try{course.finalExam=validateAssessment(req.body);}catch(e){return res.status(400).json({message:e.message});}
     await course.save();
 
     res.status(200).json({ success: true, message: "Final exam added" });
@@ -219,7 +165,7 @@ exports.submitLessonQuiz = async (req, res) => {
     // submission score 0. Explicitly re-include it for grading only; the
     // response contains scores, never questions.
     const lesson = await Lesson.findById(lessonId)
-      .select("+quiz.questions.correctAnswer");
+      .select("+quiz.questions.correctAnswer +quiz.questions.correctAnswers");
     if (!lesson || !lesson.quiz || !lesson.quiz.questions?.length) {
       return res.status(404).json({ success: false, message: "Quiz not found" });
     }
@@ -233,14 +179,15 @@ exports.submitLessonQuiz = async (req, res) => {
       return res.status(403).json({ success: false, message: "You are not enrolled in this course" });
     }
 
-    // ✅ Attempt limit — enforced server-side
-    const maxAttempts = lesson.quiz.maxAttempts || 3;
-    const used = getAttemptCount(enrollment, lessonId, "quiz");
+    if(lesson.quiz.questions.some(q=>q.timeLimitSeconds>0)&&!req.assessmentAttempt)return res.status(409).json({message:'Start a timed attempt before answering this quiz.'});
+    // Attempt limit — enforced server-side
+    const maxAttempts = req.assessmentAttempt?.maxAttempts || lesson.quiz.maxAttempts || 3;
+    const used = req.assessmentAttempt ? req.assessmentAttempt.attemptsUsed-1 : getAttemptCount(enrollment, lessonId, "quiz");
     if (used >= maxAttempts) return tooManyAttempts(res, maxAttempts);
-    recordAttempt(enrollment, lessonId, "quiz");
+    if(!req.assessmentAttempt)recordAttempt(enrollment, lessonId, "quiz");
 
-    const { correct, total, score } = gradeSubmission(lesson.quiz.questions, answers);
-    const passed = score >= (lesson.quiz.noteMinimale || 70);
+    const { correct, total, score } = gradeSubmission(req.assessmentAttempt?.questions || lesson.quiz.questions, answers);
+    const passed = score >= (req.assessmentAttempt?.noteMinimale || lesson.quiz.noteMinimale || 70);
 
     const existingResult = enrollment.quizResults.find(
       r => r.lesson.toString() === lessonId
@@ -249,14 +196,14 @@ exports.submitLessonQuiz = async (req, res) => {
     if (existingResult) {
       existingResult.score = score;
       existingResult.passed = passed;
-      existingResult.attempts += 1;
+      existingResult.attempts = req.assessmentAttempt?.attemptsUsed || existingResult.attempts+1;
       existingResult.completedAt = new Date();
     } else {
       enrollment.quizResults.push({
         lesson: lessonId,
         score,
         passed,
-        attempts: 1,
+        attempts: req.assessmentAttempt?.attemptsUsed || 1,
         completedAt: new Date()
       });
     }
@@ -284,7 +231,7 @@ exports.submitLessonQuiz = async (req, res) => {
       total,
       attemptsUsed: used + 1,
       maxAttempts,
-      noteMinimale: lesson.quiz.noteMinimale || 70,
+      noteMinimale: req.assessmentAttempt?.noteMinimale || lesson.quiz.noteMinimale || 70,
       message: passed ? "✅ Quiz passed !" : "❌ Quiz failed, try again !"
     });
   } catch (error) {
@@ -300,7 +247,7 @@ exports.submitLessonQuiz2 = async (req, res) => {
 
     // ✅ Same grading fix as submitLessonQuiz (quiz2 answer key)
     const lesson = await Lesson.findById(lessonId)
-      .select("+quiz2.questions.correctAnswer");
+      .select("+quiz2.questions.correctAnswer +quiz2.questions.correctAnswers");
     if (!lesson || !lesson.quiz2 || !lesson.quiz2.questions?.length) {
       return res.status(404).json({ success: false, message: "Quiz 2 not found" });
     }
@@ -329,7 +276,7 @@ exports.submitLessonQuiz2 = async (req, res) => {
     if (existingResult) {
       existingResult.score = score;
       existingResult.passed = passed;
-      existingResult.attempts += 1;
+      existingResult.attempts = req.assessmentAttempt?.attemptsUsed || existingResult.attempts+1;
       existingResult.completedAt = new Date();
     } else {
       if (!enrollment.quiz2Results) enrollment.quiz2Results = [];
@@ -337,7 +284,7 @@ exports.submitLessonQuiz2 = async (req, res) => {
         lesson: lessonId,
         score,
         passed,
-        attempts: 1,
+        attempts: req.assessmentAttempt?.attemptsUsed || 1,
         completedAt: new Date()
       });
     }
@@ -371,7 +318,7 @@ exports.submitFinalExam = async (req, res) => {
     // ✅ GRADING FIX: re-include the select:false answer key for grading only
     // (identical to the lesson-quiz fix — responses carry scores only).
     const course = await Course.findById(courseId)
-      .select("+finalExam.questions.correctAnswer");
+      .select("+finalExam.questions.correctAnswer +finalExam.questions.correctAnswers");
     if (!course || !course.finalExam || !course.finalExam.questions?.length) {
       return res.status(404).json({ success: false, message: "Final exam not found" });
     }
@@ -402,15 +349,16 @@ exports.submitFinalExam = async (req, res) => {
       });
     }
 
-    // ✅ Attempt limit
-    const maxAttempts = course.finalExam.maxAttempts || 3;
-    if (enrollment.finalExamAttempts >= maxAttempts) {
+    if(course.finalExam.questions.some(q=>q.timeLimitSeconds>0)&&!req.assessmentAttempt)return res.status(409).json({message:'Start a timed attempt before answering this exam.'});
+    // Attempt limit
+    const maxAttempts = req.assessmentAttempt?.maxAttempts || course.finalExam.maxAttempts || 3;
+    if (!req.assessmentAttempt && enrollment.finalExamAttempts >= maxAttempts) {
       return tooManyAttempts(res, maxAttempts);
     }
-    enrollment.finalExamAttempts += 1;
+    if(!req.assessmentAttempt)enrollment.finalExamAttempts += 1;
 
-    const { correct, total, score } = gradeSubmission(course.finalExam.questions, answers);
-    const passed = score >= (course.finalExam.noteMinimale || 70);
+    const { correct, total, score } = gradeSubmission(req.assessmentAttempt?.questions || course.finalExam.questions, answers);
+    const passed = score >= (req.assessmentAttempt?.noteMinimale || course.finalExam.noteMinimale || 70);
 
     enrollment.finalExamResult = {
       score,
@@ -498,7 +446,7 @@ exports.submitFinalExam = async (req, res) => {
       total,
       attemptsUsed: enrollment.finalExamAttempts,
       maxAttempts,
-      noteMinimale: course.finalExam.noteMinimale || 70,
+      noteMinimale: req.assessmentAttempt?.noteMinimale || course.finalExam.noteMinimale || 70,
       message: passed ? "🎓 Exam passed ! Certificate generated !" : "❌ Exam failed, try again !",
       certificate: passed ? "generated" : null
     });

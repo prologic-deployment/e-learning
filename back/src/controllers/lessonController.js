@@ -66,7 +66,7 @@ exports.getLessonsByCourse = async (req, res) => {
     // re-strips it for everyone else as a second layer.
     let query = Lesson.find({ course: req.params.courseId });
     if (role === "admin" || isOwner) {
-      query = query.select("+quiz.questions.correctAnswer +quiz2.questions.correctAnswer");
+      query = query.select("+quiz.questions.correctAnswer +quiz.questions.correctAnswers +quiz2.questions.correctAnswer +quiz2.questions.correctAnswers");
     }
     const lessons = await query.sort({ order: 1 });
 
@@ -95,7 +95,7 @@ exports.getLessonById = async (req, res) => {
     // ✅ Same answer-key policy as getLessonsByCourse (owner/admin only)
     let query = Lesson.findById(req.params.id);
     if (role === "admin" || isOwner) {
-      query = query.select("+quiz.questions.correctAnswer +quiz2.questions.correctAnswer");
+      query = query.select("+quiz.questions.correctAnswer +quiz.questions.correctAnswers +quiz2.questions.correctAnswer +quiz2.questions.correctAnswers");
     }
     const lesson = await query;
     if (!lesson) {

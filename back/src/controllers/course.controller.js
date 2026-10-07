@@ -18,7 +18,7 @@ exports.createCourse = async (req, res) => {
     const course = new Course({
       title,
       description,
-      tags: tags ? tags.split(",") : [],
+      tags: Array.isArray(tags) ? [...new Set(tags.map(t=>String(t).trim()).filter(Boolean))].slice(0,20) : tags ? tags.split(",").map(t=>t.trim()).filter(Boolean).slice(0,20) : [],
       price: price || 0,
       category: category || '',
       trainer: req.user._id,
@@ -120,6 +120,7 @@ exports.getAllCourses = async (req, res) => {
 exports.getCourseById = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id)
+      .select(req.user ? "+finalExam.questions.correctAnswer +finalExam.questions.correctAnswers" : "")
       .populate("trainer", "firstname lastname"); // ✅ never expose trainer email
 
     if (!course) {
@@ -139,7 +140,7 @@ exports.getCourseById = async (req, res) => {
 
     const strip = (questions) => {
       if (!Array.isArray(questions)) return;
-      questions.forEach(q => { delete q.correctAnswer; });
+      questions.forEach(q => { delete q.correctAnswer; delete q.correctAnswers; });
     };
     if (!isOwnerOrAdmin) strip(plain.finalExam?.questions);
 

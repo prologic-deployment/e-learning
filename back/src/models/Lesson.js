@@ -1,3 +1,4 @@
+const {questionSchema}=require('../utils/assessment');
 const mongoose = require("mongoose");
 
 const lessonSchema = new mongoose.Schema(
@@ -33,24 +34,14 @@ const lessonSchema = new mongoose.Schema(
 
     // ✅ Quiz 1
     quiz: {
-      questions: [{
-        texte: { type: String, required: true },
-        options: [{ type: String }],
-        correctAnswer: { type: Number, select: false },
-        points: { type: Number, default: 1 }
-      }],
+      questions: [questionSchema],
       noteMinimale: { type: Number, default: 70 },
       maxAttempts: { type: Number, default: 3 } // ✅ anti-bruteforce sur les réponses
     },
 
     // ✅ Quiz 2 (deprecated — merged into `quiz`, kept for data compatibility)
     quiz2: {
-      questions: [{
-        texte: { type: String },
-        options: [{ type: String }],
-        correctAnswer: { type: Number, select: false },
-        points: { type: Number, default: 1 }
-      }],
+      questions: [questionSchema],
       noteMinimale: { type: Number, default: 70 },
       maxAttempts: { type: Number, default: 3 }
     }

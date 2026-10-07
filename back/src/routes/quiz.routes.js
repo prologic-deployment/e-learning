@@ -15,6 +15,7 @@ const {
   deleteFinalExam
 } = require("../controllers/quiz.controller");
 
+router.put("/lesson/:lessonId", protect, authorize("trainer", "admin"), addQuizToLesson);
 router.post("/lesson/:lessonId", protect, authorize("trainer", "admin"), addQuizToLesson);
 // ✅ MISSING ROUTE FIX: trainer & admin dashboards call POST /quiz/lesson/:id/quiz2
 // to create "Quiz 2" — the controller existed but was never wired to a route,
@@ -32,4 +33,7 @@ router.delete("/lesson/:lessonId/delete", protect, authorize("trainer", "admin")
 router.delete("/lesson/:lessonId/quiz2/delete", protect, authorize("trainer", "admin"), deleteQuiz2FromLesson);
 router.delete("/final/:courseId/delete", protect, authorize("trainer", "admin"), deleteFinalExam);
 
+const attempts=require('../controllers/assessment-attempt.controller');
+router.post('/attempts/:kind/:targetId/start',protect,attempts.start);
+router.post('/attempts/:attemptId/answer',protect,attempts.answer);
 module.exports = router;

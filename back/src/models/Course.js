@@ -1,3 +1,4 @@
+const {questionSchema}=require('../utils/assessment');
 const mongoose = require("mongoose");
 
 const courseSchema = new mongoose.Schema(
@@ -63,12 +64,7 @@ const courseSchema = new mongoose.Schema(
     ],
     // ✅ Examen final
     finalExam: {
-      questions: [{
-        texte: { type: String },
-        options: [{ type: String }],
-        correctAnswer: { type: Number, select: false },
-        points: { type: Number, default: 1 }
-      }],
+      questions: [questionSchema],
       noteMinimale: { type: Number, default: 70 },
       maxAttempts: { type: Number, default: 3 }
     },

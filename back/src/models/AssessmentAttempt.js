@@ -1,0 +1,4 @@
+const mongoose=require('mongoose');
+const schema=new mongoose.Schema({user:{type:mongoose.Schema.Types.ObjectId,required:true},course:{type:mongoose.Schema.Types.ObjectId,required:true},target:{type:mongoose.Schema.Types.ObjectId,required:true},kind:{type:String,enum:['lesson','final'],required:true},active:{type:Boolean,default:true},status:{type:String,enum:['preparing','ready','grading','finished'],default:'preparing'},paper:{type:mongoose.Schema.Types.Mixed,select:false},answers:{type:[mongoose.Schema.Types.Mixed],default:[]},index:{type:Number,default:0},questionStartedAt:{type:Date,default:Date.now},attemptsUsed:Number,result:mongoose.Schema.Types.Mixed},{timestamps:true});
+schema.index({user:1,target:1,kind:1},{unique:true,partialFilterExpression:{active:true}});
+module.exports=mongoose.model('AssessmentAttempt',schema);
