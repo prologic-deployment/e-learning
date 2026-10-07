@@ -28,7 +28,7 @@ const {
   encryptAES,
   decryptAES,
   hashSHA256,
-  generateOTP
+  generateSecureToken
 } = require("../src/services/encryption.service");
 
 // ============ stripAnswers ============
@@ -106,15 +106,7 @@ test("decryptAES returns null on garbage instead of crashing", () => {
   assert.strictEqual(decryptAES(""), null);
 });
 
-test("generateOTP is 6 digits and cryptographically random", () => {
-  for (let i = 0; i < 20; i++) {
-    const otp = generateOTP();
-    assert.ok(/^\d{6}$/.test(otp), `OTP must be 6 digits, got ${otp}`);
-  }
-  // Should (practically always) produce varied outputs
-  const set = new Set(Array.from({ length: 30 }, () => generateOTP()));
-  assert.ok(set.size > 20, "OTP generation must not be deterministic");
-});
+
 
 test("hashSHA256 produces consistent hex digests", () => {
   const h1 = hashSHA256("reset-token-123");

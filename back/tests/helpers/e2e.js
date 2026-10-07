@@ -1,7 +1,4 @@
-/**
- * E2E test helper — logs in via the OTP flow (DEV_EXPOSE_OTP=true) and
- * returns an authenticated fetch wrapper for a given role account.
- */
+/** E2E helper for isolated password-only fixture accounts; never bypasses 2FA. */
 const BASE = process.env.API_BASE || 'http://localhost:5000';
 
 async function login(email, password) {
@@ -12,21 +9,9 @@ async function login(email, password) {
   });
   const loginBody = await loginRes.json();
 
-  const otp = loginBody.devOtp;
-  if (!otp) {
-    throw new Error(`No devOtp in login response for ${email}: ${JSON.stringify(loginBody).slice(0, 200)}`);
-  }
-
-  const verifyRes = await fetch(`${BASE}/api/auth/verify-otp`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, otp })
-  });
-  const verifyBody = await verifyRes.json();
-  const token = verifyBody?.data?.token || verifyBody?.token;
-  if (!token) {
-    throw new Error(`OTP verification failed for ${email}: ${JSON.stringify(verifyBody).slice(0, 200)}`);
-  }
+  if (loginBody.requiresTwoFactor) throw new Error('This E2E helper requires an isolated password-only fixture account.');
+  const token = loginBody.token;
+  if (!token) throw new Error(`Sign-in failed with status ${loginRes.status}`);
   return token;
 }
 

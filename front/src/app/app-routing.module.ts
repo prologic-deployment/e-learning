@@ -1,3 +1,4 @@
+import { SecurityComponent } from './components/pages/security/security.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AboutUsPageComponent } from './components/pages/about-us-page/about-us-page.component';
@@ -32,6 +33,7 @@ import { RecommendationsComponent } from './components/pages/recommendations/rec
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
 
 const routes: Routes = [
+    { path: 'account/security', component: SecurityComponent, canActivate: [AuthGuard] },
 
   // ✅ Page d'accueil — staff redirigé vers dashboard
   { path: '', pathMatch: 'full', redirectTo: 'profile-authentication' },

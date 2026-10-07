@@ -1,270 +1,40 @@
 <div class="auth-experience product-page">
-    <section class="auth-story">
-        <a routerLink="/" class="auth-brand"><span>e.</span>edla.</a>
-        <div class="auth-story-copy">
-            <span class="eyebrow">MAKE SPACE FOR POSSIBILITY</span>
-            <h1>Your next chapter<br />starts with<br /><em>curiosity.</em></h1>
-            <p>A place to explore new ideas, build meaningful skills, and keep moving forward.</p>
-            <div class="auth-art" aria-hidden="true">
-                <div class="auth-orbit"></div>
-                <div class="auth-book">
-                    <span>NEVER<br />STOP<br />LEARNING.</span><i class="bx bx-book-open"></i>
-                </div>
-                <span class="auth-spark">✳</span
-                ><span class="auth-note">ONE LESSON AT A TIME ↗</span>
-            </div>
-        </div>
-        <footer>LEARN WITH PURPOSE. GROW AT YOUR PACE.</footer>
-    </section>
-    <section class="auth-form-area">
-        <nav>
-            <a routerLink="/courses-grid">Explore the library ↗</a
-            ><button
-                hlmBtn
-                variant="ghost"
-                size="icon"
-                (click)="toggleTheme()"
-                aria-label="Switch color theme"
-            >
-                <i class="bx bx-adjust"></i>
-            </button>
-        </nav>
-        <div class="auth-form-inner">
-            <ng-container *ngIf="activeTab === 'login' && !showOTP"
-                ><span class="eyebrow">GOOD TO SEE YOU AGAIN</span>
-                <h2>Welcome back.</h2>
-                <p>Sign in to pick up where you left off.</p>
-                <div *ngIf="loginError" class="product-alert" role="alert">{{ loginError }}</div>
-                <form #loginForm="ngForm" (ngSubmit)="loginForm.valid && onLogin()">
-                    <label hlmLabel for="login-email">Email address</label
-                    ><input
-                        hlmInput
-                        id="login-email"
-                        type="email"
-                        email
-                        name="email"
-                        autocomplete="username"
-                        placeholder="you@example.com"
-                        [(ngModel)]="loginData.email"
-                        required
-                    />
-                    <div class="section-row password-label">
-                        <label hlmLabel for="login-password">Password</label
-                        ><a routerLink="/forgot-password">Forgot password?</a>
-                    </div>
-                    <div class="password-field">
-                        <input
-                            hlmInput
-                            id="login-password"
-                            [type]="passwordVisible ? 'text' : 'password'"
-                            name="password"
-                            autocomplete="current-password"
-                            [(ngModel)]="loginData.password"
-                            required
-                        /><button
-                            hlmBtn
-                            variant="ghost"
-                            size="icon"
-                            type="button"
-                            (click)="passwordVisible = !passwordVisible"
-                            [attr.aria-label]="passwordVisible ? 'Hide password' : 'Show password'"
-                        >
-                            <i [class]="passwordVisible ? 'bx bx-hide' : 'bx bx-show'"></i>
-                        </button>
-                    </div>
-                    <button
-                        hlmBtn
-                        type="submit"
-                        class="auth-submit"
-                        [disabled]="loginLoading || loginForm.invalid"
-                    >
-                        {{ loginLoading ? 'Signing in…' : 'Sign in' }} <span>→</span>
-                    </button>
-                </form>
-                <p class="auth-switch">
-                    New to Edla?
-                    <button hlmBtn variant="link" (click)="activeTab = 'register'">
-                        Create an account
-                    </button>
-                </p>
-                <div class="auth-security">
-                    <i class="bx bx-shield-quarter"></i
-                    ><span>Your learning. Your secure workspace.</span>
-                </div></ng-container
-            >
-            <ng-container *ngIf="showOTP"
-                ><span class="eyebrow">ONE MORE STEP</span>
-                <h2>Check your inbox.</h2>
-                <p>
-                    Enter the six-digit verification code sent to <strong>{{ tempEmail }}</strong
-                    >.
-                </p>
-                <div *ngIf="loginError" class="product-alert" role="alert">{{ loginError }}</div>
-                <form #otpForm="ngForm" (ngSubmit)="otpForm.valid && onVerifyOTP()">
-                    <label hlmLabel for="otp">Verification code</label
-                    ><input
-                        hlmInput
-                        id="otp"
-                        name="otp"
-                        class="otp-input"
-                        inputmode="numeric"
-                        autocomplete="one-time-code"
-                        pattern="[0-9]{6}"
-                        maxlength="6"
-                        [(ngModel)]="otpCode"
-                        required
-                    /><button
-                        hlmBtn
-                        class="auth-submit"
-                        type="submit"
-                        [disabled]="otpLoading || otpForm.invalid"
-                    >
-                        {{ otpLoading ? 'Verifying…' : 'Verify & continue' }} →
-                    </button>
-                </form>
-                <div class="auth-switch">
-                    <button
-                        hlmBtn
-                        variant="link"
-                        (click)="onResendOTP()"
-                        [disabled]="resendCooldown > 0 || loginLoading"
-                    >
-                        {{
-                            resendCooldown > 0
-                                ? 'Resend in ' + resendCooldown + 's'
-                                : 'Send a new code'
-                        }}</button
-                    ><button hlmBtn variant="ghost" (click)="showOTP = false; loginError = ''">
-                        Back to sign in
-                    </button>
-                </div>
-                <details *ngIf="devOtp" class="development-code">
-                    <summary>Development verification code</summary>
-                    <code>{{ devOtp }}</code>
-                    <p>Provided by the development server only.</p>
-                </details></ng-container
-            >
-            <ng-container *ngIf="activeTab === 'register' && !showOTP"
-                ><span class="eyebrow">BEGIN SOMETHING GOOD</span>
-                <h2>Make room for growth.</h2>
-                <p>Create your learner account. Your next chapter awaits.</p>
-                <div
-                    *ngIf="registerError || registerSuccess"
-                    class="product-alert"
-                    aria-live="polite"
-                >
-                    {{ registerError || registerSuccess }}
-                </div>
-                <form #registerForm="ngForm" (ngSubmit)="registerForm.valid && onRegister()">
-                    <div class="form-grid">
-                        <div>
-                            <label hlmLabel for="reg-first">First name *</label
-                            ><input
-                                hlmInput
-                                id="reg-first"
-                                name="firstname"
-                                autocomplete="given-name"
-                                [(ngModel)]="registerData.firstname"
-                                required
-                                (blur)="touch('firstname')"
-                            /><small class="field-error" *ngIf="isInvalid('firstname')"
-                                >Enter your first name.</small
-                            >
-                        </div>
-                        <div>
-                            <label hlmLabel for="reg-last">Last name *</label
-                            ><input
-                                hlmInput
-                                id="reg-last"
-                                name="lastname"
-                                autocomplete="family-name"
-                                [(ngModel)]="registerData.lastname"
-                                required
-                                (blur)="touch('lastname')"
-                            /><small class="field-error" *ngIf="isInvalid('lastname')"
-                                >Enter your last name.</small
-                            >
-                        </div>
-                        <div class="full-width">
-                            <label hlmLabel for="reg-email">Email address *</label
-                            ><input
-                                hlmInput
-                                id="reg-email"
-                                name="regEmail"
-                                type="email"
-                                email
-                                autocomplete="email"
-                                [(ngModel)]="registerData.email"
-                                required
-                                (blur)="touch('email')"
-                            /><small class="field-error" *ngIf="isInvalid('email')"
-                                >Enter a valid email address.</small
-                            >
-                        </div>
-                        <div>
-                            <label hlmLabel for="reg-birth">Date of birth *</label
-                            ><input
-                                hlmInput
-                                id="reg-birth"
-                                name="birth"
-                                type="date"
-                                [(ngModel)]="registerData.dateOfBirth"
-                                required
-                            />
-                        </div>
-                        <div>
-                            <label hlmLabel for="reg-phone">Phone *</label
-                            ><input
-                                hlmInput
-                                id="reg-phone"
-                                name="phone"
-                                type="tel"
-                                autocomplete="tel"
-                                [(ngModel)]="registerData.phone"
-                                required
-                                minlength="8"
-                                (blur)="touch('phone')"
-                            /><small class="field-error" *ngIf="isInvalid('phone')"
-                                >Enter at least 8 digits.</small
-                            >
-                        </div>
-                        <div class="full-width">
-                            <label hlmLabel for="reg-password">Password *</label
-                            ><input
-                                hlmInput
-                                id="reg-password"
-                                name="regPassword"
-                                type="password"
-                                autocomplete="new-password"
-                                [(ngModel)]="registerData.password"
-                                required
-                                minlength="8"
-                                (blur)="touch('password')"
-                            /><small class="field-help"
-                                >Use at least 8 characters. Add uppercase letters, numbers and
-                                symbols.</small
-                            ><app-learning-progress
-                                *ngIf="registerData.password"
-                                [value]="getPasswordStrength() * 25"
-                                label="Password strength"
-                            />
-                        </div>
-                    </div>
-                    <button
-                        hlmBtn
-                        class="auth-submit"
-                        type="submit"
-                        [disabled]="registerLoading || registerForm.invalid"
-                    >
-                        {{ registerLoading ? 'Creating account…' : 'Create learner account' }} →
-                    </button>
-                </form>
-                <p class="auth-switch">
-                    Already learning with us?
-                    <button hlmBtn variant="link" (click)="activeTab = 'login'">Sign in</button>
-                </p></ng-container
-            >
-        </div>
-        <footer>Designed for lifelong learning.</footer>
-    </section>
+  <section class="auth-story">
+    <a routerLink="/" class="auth-brand"><span>F.</span>FormaPath</a>
+    <div class="auth-story-copy"><span class="eyebrow">A CLEAR PATH TO CAPABILITY</span><h1>Small steps.<br>Lasting<br><em>possibility.</em></h1><p>Learn with focus. Build with purpose. Give every new skill somewhere to go.</p><div class="auth-art" aria-hidden="true"><div class="auth-orbit"></div><div class="auth-book"><span>LEARN.<br>PRACTISE.<br>PROGRESS.</span><i class="bx bx-book-open"></i></div><span class="auth-spark">✳</span><span class="auth-note">ONE LESSON AT A TIME ↗</span></div></div>
+    <footer>YOUR NEXT CHAPTER STARTS HERE.</footer>
+  </section>
+  <section class="auth-form-area">
+    <nav><a routerLink="/courses-grid">Explore the library ↗</a><button hlmBtn variant="ghost" size="icon" (click)="toggleTheme()" aria-label="Switch color theme"><i class="bx bx-adjust"></i></button></nav>
+    <div class="auth-form-inner">
+      <div *ngIf="error" class="product-alert" role="alert">{{error}}</div><div *ngIf="success" class="product-alert success" role="status">{{success}}</div>
+      <ng-container *ngIf="!challenge && activeTab === 'login'">
+        <span class="eyebrow">YOUR LEARNING, CONTINUED</span><h2>Welcome back.</h2><p>Sign in with your email and password.</p>
+        <form #loginForm="ngForm" (ngSubmit)="loginForm.valid && onLogin()" [attr.aria-busy]="loading">
+          <app-form-field label="Email address" [required]="true"><input hlmInput type="email" email name="email" autocomplete="username" [(ngModel)]="loginData.email" required></app-form-field>
+          <app-form-field label="Password" [required]="true"><input hlmInput [type]="passwordVisible ? 'text' : 'password'" name="password" autocomplete="current-password" [(ngModel)]="loginData.password" required></app-form-field>
+          <div class="section-row"><button hlmBtn variant="ghost" type="button" (click)="passwordVisible = !passwordVisible" [attr.aria-pressed]="passwordVisible">{{passwordVisible ? 'Hide' : 'Show'}} password</button><a routerLink="/forgot-password">Forgot password?</a></div>
+          <button hlmBtn class="auth-submit" type="submit" [disabled]="loading">{{loading ? 'Signing in…' : 'Sign in'}} <span aria-hidden="true">↗</span></button>
+        </form><p class="auth-switch">New here? <button hlmBtn variant="link" (click)="switchTab('register')">Create an account</button></p>
+      </ng-container>
+      <ng-container *ngIf="challenge">
+        <span class="eyebrow">ONE MORE STEP</span><h2>{{recoveryMode ? 'Use a recovery code.' : 'Check your authenticator.'}}</h2>
+        <p>{{recoveryMode ? 'Enter one unused recovery code from your saved list. Each works only once.' : 'Open Google Authenticator, Microsoft Authenticator, Authy or 1Password and enter your six-digit FormaPath code.'}}</p>
+        <form #factorForm="ngForm" (ngSubmit)="factorForm.valid && verify()" [attr.aria-busy]="loading">
+          <app-form-field [label]="recoveryMode ? 'Recovery code' : 'Authenticator code'" [required]="true" [hint]="recoveryMode ? 'Your saved 32-character code; hyphens are optional.' : 'Codes refresh every 30 seconds. Keep your device clock automatic.'"><input hlmInput id="factor-code" name="code" [attr.inputmode]="recoveryMode ? 'text' : 'numeric'" autocomplete="one-time-code" [(ngModel)]="code" [pattern]="recoveryMode ? '[a-fA-F0-9\\s-]{32,48}' : '[0-9]{6}'" [maxlength]="recoveryMode ? 48 : 6" required></app-form-field>
+          <button hlmBtn type="submit" class="auth-submit" [disabled]="loading">{{loading ? 'Verifying…' : 'Verify and sign in'}}</button>
+        </form>
+        <button hlmBtn variant="link" [disabled]="loading" (click)="recoveryMode = !recoveryMode; code = ''; error = ''">{{recoveryMode ? 'Use an authenticator code' : 'Use a recovery code instead'}}</button><button hlmBtn variant="ghost" [disabled]="loading" (click)="startAgain()">Start sign-in again</button>
+        <p class="field-hint">This sign-in request expires after five minutes. No codes are sent by email.</p>
+      </ng-container>
+      <ng-container *ngIf="!challenge && activeTab === 'register'">
+        <span class="eyebrow">MAKE ROOM FOR GROWTH</span><h2>Your path starts here.</h2><p>Create your learner account. Fields marked * are required.</p>
+        <form #registerForm="ngForm" (ngSubmit)="registerForm.valid && onRegister()" [attr.aria-busy]="loading">
+          <fieldset><legend>01 / About you</legend><div class="form-row"><app-form-field label="First name" [required]="true"><input hlmInput name="firstname" autocomplete="given-name" [(ngModel)]="registerData.firstname" maxlength="100" required></app-form-field><app-form-field label="Last name" [required]="true"><input hlmInput name="lastname" autocomplete="family-name" [(ngModel)]="registerData.lastname" maxlength="100" required></app-form-field></div><app-form-field label="Date of birth" [required]="true"><input hlmInput type="date" name="dateOfBirth" autocomplete="bday" [max]="today" [(ngModel)]="registerData.dateOfBirth" required></app-form-field><app-form-field label="Phone number" hint="Optional. Include your country code."><input hlmInput type="tel" name="phone" autocomplete="tel" [(ngModel)]="registerData.phone" maxlength="40"></app-form-field></fieldset>
+          <fieldset><legend>02 / Account access</legend><app-form-field label="Email address" [required]="true"><input hlmInput type="email" email name="email" autocomplete="email" [(ngModel)]="registerData.email" required></app-form-field><app-form-field label="Password" [required]="true" hint="At least 8 characters, an uppercase letter and a number. Maximum 72 bytes."><input hlmInput type="password" name="password" autocomplete="new-password" [(ngModel)]="registerData.password" minlength="8" maxlength="72" pattern="(?=.*[A-Z])(?=.*[0-9]).{8,}" required></app-form-field></fieldset>
+          <button hlmBtn type="submit" class="auth-submit" [disabled]="loading">{{loading ? 'Creating your account…' : 'Create account'}} ↗</button>
+        </form><p class="auth-switch">Already learning with us? <button hlmBtn variant="link" (click)="switchTab('login')">Sign in</button></p>
+      </ng-container>
+    </div>
+  </section>
 </div>

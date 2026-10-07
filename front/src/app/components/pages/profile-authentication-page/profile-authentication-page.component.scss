@@ -354,3 +354,4 @@
         grid-template-columns: minmax(0, 1fr);
     }
 }
+fieldset{border:0;padding:0;margin:1.5rem 0}legend{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-foreground);margin-bottom:1rem}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.auth-submit{width:100%;margin-top:1rem}.field-hint{font-size:.82rem;margin-top:1rem}@media(max-width:480px){.form-row{grid-template-columns:1fr;gap:0}}

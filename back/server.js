@@ -28,7 +28,7 @@ const userSockets = new Map();
 
 // ✅ SOCKET AUTH: the handshake must carry a valid JWT — anonymous sockets are
 // rejected immediately instead of being able to register as any userId.
-io.use((socket, next) => {
+io.use(async (socket, next) => {
   try {
     const token =
       socket.handshake.auth?.token ||
@@ -38,8 +38,9 @@ io.use((socket, next) => {
       return next(new Error("Authentication required"));
     }
 
-    const decoded = jwt.verify(token, config.jwtSecret);
-    socket.data.userId = decoded.id;
+    const user = await require('./src/services/session.service').authenticate(token);
+    socket.data.userId = String(user._id);
+    socket.data.sessionToken = token;
     next();
   } catch (err) {
     next(new Error("Invalid token"));
@@ -48,6 +49,15 @@ io.use((socket, next) => {
 
 io.on("connection", (socket) => {
   const tokenUserId = socket.data.userId;
+  socket.join(`account:${tokenUserId}`);
+  // Revalidate incoming events, not just the initial handshake.
+  socket.use(async (_packet, next) => {
+    try { await require('./src/services/session.service').authenticate(socket.data.sessionToken); next(); }
+    catch { socket.disconnect(true); }
+  });
+  const expires = jwt.decode(socket.data.sessionToken).exp * 1000 - Date.now();
+  const expiryTimer = setTimeout(() => socket.disconnect(true), Math.max(0, Math.min(expires, 2147483647)));
+  socket.on('disconnect', () => clearTimeout(expiryTimer));
 
   socket.on("register", (userId) => {
     // ✅ The registered userId MUST match the authenticated token subject

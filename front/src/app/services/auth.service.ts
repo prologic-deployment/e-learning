@@ -30,34 +30,26 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/auth/register`, data);
   }
 
-  // Login
-  login(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/login`, data).pipe(
-      tap((res: any) => {
-        // Admin -> token direct
-        if (res.token && res.user) {
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('user', JSON.stringify(res.user));
-          this.currentUserSubject.next(res.user);
-        }
-      })
-    );
+  acceptSession(res: any): void {
+    if (!res?.token || !res?.user) return;
+    localStorage.setItem('token', res.token);
+    localStorage.setItem('user', JSON.stringify(res.user));
+    this.currentUserSubject.next(res.user);
   }
-
-  verifyOTP(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/verify-otp`, data).pipe(
-      tap((res: any) => {
-        // Accept both response shapes (data wrapper or flat)
-        const token = res.data?.token || res.token;
-        const user = res.data?.user || res.user;
-
-        if (token && user) {
-          localStorage.setItem('token', token);
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-        }
-      })
-    );
+  login(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/login`, data).pipe(tap(res => this.acceptSession(res)));
+  }
+  verifyFactor(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/two-factor/verify`, data).pipe(tap(res => this.acceptSession(res)));
+  }
+  factorStatus(): Observable<any> { return this.http.get(`${this.apiUrl}/auth/two-factor`); }
+  beginSetup(currentPassword: string): Observable<any> { return this.http.post(`${this.apiUrl}/auth/two-factor/setup`, {currentPassword}); }
+  confirmSetup(setupToken: string, code: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/two-factor/confirm`, {setupToken, code}).pipe(tap(res => this.acceptSession(res)));
+  }
+  cancelSetup(): Observable<any> { return this.http.delete(`${this.apiUrl}/auth/two-factor/setup`); }
+  disableFactor(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/auth/two-factor/disable`, data).pipe(tap(res => this.acceptSession(res)));
   }
 
   // Forgot Password
@@ -74,6 +66,12 @@ export class AuthService {
 
   // Logout
   logout(): void {
+    // Capture the existing bearer token before clearing local state.
+    const token = this.getToken();
+    if (token) this.http.post(`${this.apiUrl}/auth/logout`, {}, {headers: {Authorization: `Bearer ${token}`}}).subscribe({error: () => {}});
+    this.clearSession();
+  }
+  clearSession(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.currentUserSubject.next(null);

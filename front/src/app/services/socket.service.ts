@@ -10,7 +10,13 @@ export class SocketService {
   private socket: Socket | null = null;
   public notification$ = new Subject<any>();
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    this.authService.currentUser$.subscribe(user => {
+      const wasConnected = !!this.socket;
+      this.disconnect();
+      if (user && wasConnected) this.connect();
+    });
+  }
 
   connect(): void {
     if (this.socket?.connected) return;

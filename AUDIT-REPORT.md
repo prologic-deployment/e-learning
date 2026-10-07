@@ -144,7 +144,7 @@ No schema changes, no migrations, no production data touched (all runs against l
 ### How to re-verify
 ```bash
 cd back
-DEV_EXPOSE_OTP=true RATE_LIMIT_LOGIN_MAX=100 node server.js   # terminal 1
+RATE_LIMIT_LOGIN_MAX=100 node server.js # isolated password-only fixture accounts   # terminal 1
 node tests/audit.probe.test.js                                 # terminal 2 (22 checks)
 node tests/workflow.e2e.test.js                                # terminal 2 (35 checks)
 node tests/security.helpers.test.js                            # 11 unit tests, no server needed

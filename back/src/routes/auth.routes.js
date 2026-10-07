@@ -1,27 +1,18 @@
-const express = require("express");
-const router = express.Router();
-const { protect } = require("../middlewares/auth.middleware");
-const { loginLimiter } = require("../middlewares/rateLimiter");
-
-const {
-  register,
-  login,
-  verifyOTP,
-  forgotPassword,
-  resetPassword,
-  changePassword
-} = require("../controllers/auth.controller");
-
-// ✅ RATE LIMITED: brute-force protection on all credential endpoints
-router.post("/register", loginLimiter, register);
-router.post("/login", loginLimiter, login);
-router.post("/verify-otp", loginLimiter, verifyOTP);
-router.post('/forgot-password', loginLimiter, forgotPassword);
-router.post('/reset-password/:token', loginLimiter, resetPassword);
-
-router.post("/change-password", protect, changePassword);
-// ✅ Alias matching the frontend (trainer/manager dashboards call PUT) —
-// same credential-checked handler, no security downgrade.
-router.put("/change-password", protect, changePassword);
-
+const router = require('express').Router();
+const { protect } = require('../middlewares/auth.middleware');
+const { loginLimiter } = require('../middlewares/rateLimiter');
+const a = require('../controllers/auth.controller');
+router.post('/register', loginLimiter, a.register);
+router.post('/login', loginLimiter, a.login);
+router.post('/two-factor/verify', loginLimiter, a.verifyFactor);
+router.post('/forgot-password', loginLimiter, a.forgotPassword);
+router.post('/reset-password/:token', loginLimiter, a.resetPassword);
+router.get('/two-factor', protect, a.factorStatus);
+router.post('/two-factor/setup', protect, loginLimiter, a.beginSetup);
+router.post('/two-factor/confirm', protect, loginLimiter, a.confirmSetup);
+router.delete('/two-factor/setup', protect, a.cancelSetup);
+router.post('/two-factor/disable', protect, loginLimiter, a.disableFactor);
+router.post('/logout', protect, a.logout);
+router.post('/change-password', protect, loginLimiter, a.changePassword);
+router.put('/change-password', protect, loginLimiter, a.changePassword);
 module.exports = router;

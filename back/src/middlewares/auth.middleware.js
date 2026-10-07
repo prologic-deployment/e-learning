@@ -20,34 +20,7 @@ const protect = async (req, res, next) => {
       });
     }
 
-    const decoded = jwt.verify(token, config.jwtSecret);
-
-    const user = await User.findById(decoded.id).select("-password");
-
-    if (!user || !user.isActive) {
-      return res.status(401).json({
-        success: false,
-        message: "User not found or inactive."
-      });
-    }
-
-    // ✅ SECURITY: reject tokens issued before the last password change/reset.
-    // tokenVersion is incremented on every credential change.
-    if (
-      typeof decoded.tokenVersion === "number" &&
-      decoded.tokenVersion !== (user.tokenVersion || 0)
-    ) {
-      return res.status(401).json({
-        success: false,
-        message: "Session expired. Please sign in again."
-      });
-    }
-
-    // Normalize legacy array roles
-    if (Array.isArray(user.role)) {
-      user.role = user.role[0];
-      await User.findByIdAndUpdate(decoded.id, { role: user.role });
-    }
+    const user = await require('../services/session.service').authenticate(token);
 
     req.user = user;
     next();

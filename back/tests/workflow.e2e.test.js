@@ -5,7 +5,7 @@
  *   USER:    register → login → enroll → blocked exam → pass quizzes →
  *            unlock exam → pass exam → completion + certificate
  *   Cleanup: trainer deletes course → cascade wipes lessons/enrollments
- * Run with the API server started as:  DEV_EXPOSE_OTP=true npm start
+ * Run with the API server started as:  npm start (isolated password-only test accounts)
  */
 const { login, makeApi, check, summary } = require('./helpers/e2e');
 

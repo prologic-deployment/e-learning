@@ -80,11 +80,6 @@ function generateSecureToken(length = 32) {
   return crypto.randomBytes(length).toString('hex');
 }
 
-function generateOTP() {
-  // Cryptographically secure 6-digit OTP (replaces the old Math.random version)
-  return crypto.randomInt(100000, 1000000).toString();
-}
-
 function encryptFields(obj, fields) {
   const out = { ...obj };
   fields.forEach(f => { if (out[f]) out[f] = encryptAES(out[f]); });
@@ -109,6 +104,5 @@ module.exports = {
   decryptFields,
   hashSHA256,
   verifySHA256: (data, hash) => hashSHA256(data) === hash,
-  generateSecureToken,
-  generateOTP
+  generateSecureToken
 };

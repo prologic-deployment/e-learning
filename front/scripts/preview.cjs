@@ -59,6 +59,7 @@ const server = http.createServer((req, res) => {
     });
     fs.createReadStream(file).pipe(res);
 });
+server.on('connection', socket => socket.on('error', () => socket.destroy()));
 server.on('upgrade', (req, socket, head) => {
     if (req.url.startsWith('/socket.io')) proxy.ws(req, socket, head);
     else socket.destroy();

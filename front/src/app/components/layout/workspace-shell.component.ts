@@ -38,7 +38,7 @@ export class WorkspaceShellComponent implements OnDestroy {
     get enabled() {
         return (
             this.auth.isLoggedIn() &&
-            /\/(dashboard|admin-dashboard|manager-dashboard|trainer-dashboard|course|courses|cv|cart|recommendations)/.test(
+            /\/(dashboard|admin-dashboard|manager-dashboard|trainer-dashboard|account|course|courses|cv|cart|recommendations)/.test(
                 this.router.url,
             )
         );
@@ -98,6 +98,7 @@ export class WorkspaceShellComponent implements OnDestroy {
                 tab: '',
                 path: '/courses-grid',
             });
+        items.push({label: 'Account security', icon: 'shield-quarter', tab: '', path: '/account/security'});
         return items;
     }
     get filteredItems() {
