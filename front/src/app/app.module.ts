@@ -1,3 +1,4 @@
+import { AccountSecurityCardComponent } from './components/pages/security/account-security-card.component';
 import {TimedAssessmentComponent} from './components/assessments/timed-assessment.component';
 import {CourseBuilderComponent} from './components/management/course-builder.component';
 import {ToastOutletComponent,ToastFeedbackDirective} from './components/feedback/toast-outlet.component';
@@ -123,7 +124,7 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
         ContactPageTwoComponent,
         NotFoundPageComponent
     ],
-    imports: [TimedAssessmentComponent,CourseBuilderComponent,ToastOutletComponent,ToastFeedbackDirective,PageHeadingComponent, BrandComponent,
+    imports: [AccountSecurityCardComponent,TimedAssessmentComponent,CourseBuilderComponent,ToastOutletComponent,ToastFeedbackDirective,PageHeadingComponent, BrandComponent,
         UiModule, PublicHeaderComponent, PublicFooterComponent, LandingChatComponent, TranslationModule,
         FormFieldComponent,
         CourseDetailsFormComponent,

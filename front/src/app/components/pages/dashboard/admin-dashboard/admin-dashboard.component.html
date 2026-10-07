@@ -25,6 +25,8 @@
             <button *ngIf="activeTab==='courses'" hlmBtn (click)="clearCourseForm();setTab('create')">Create course</button><button *ngIf="activeTab==='staff'" hlmBtn variant="outline" (click)="setTab('staff-list')">Staff list</button>
         </div></app-page-heading
     >
+<app-account-security-card *ngIf="activeTab === 'stats' || activeTab === 'overview' || activeTab === 'profile'" />
+
     <app-operations-overview
         *ngIf="activeTab === 'stats'"
         role="admin"

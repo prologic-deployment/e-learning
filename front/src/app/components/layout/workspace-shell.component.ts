@@ -92,7 +92,7 @@ export class WorkspaceShellComponent implements OnDestroy {
                 tab: '',
                 path: '/courses-grid',
             });
-        items.push({label: 'Account security', icon: 'shield-quarter', tab: '', path: '/account/security'});
+        items.push({label: 'Security & 2FA', icon: 'shield-quarter', tab: '', path: '/account/security'});
         return items;
     }
     destinationKey(_: number, item: Destination): string { return item.path + '?' + (item.tab || ''); }

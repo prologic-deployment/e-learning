@@ -19,6 +19,8 @@
             </button>
         </div>
     </div></app-page-heading>
+<app-account-security-card *ngIf="activeTab === 'stats' || activeTab === 'overview' || activeTab === 'profile'" />
+
     <div *ngIf="errors[activeTab]" class="product-alert" role="alert">
         {{ errors[activeTab] }}
         <button hlmBtn variant="ghost" size="sm" (click)="setTab(activeTab)">Try again</button>

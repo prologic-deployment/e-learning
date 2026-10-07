@@ -2,6 +2,8 @@ const router = require('express').Router();
 const { protect } = require('../middlewares/auth.middleware');
 const { loginLimiter } = require('../middlewares/rateLimiter');
 const a = require('../controllers/auth.controller');
+// Authentication responses may contain setup keys, recovery codes or sessions.
+router.use((req, res, next) => { res.set('Cache-Control', 'no-store'); next(); });
 router.post('/register', loginLimiter, a.register);
 router.post('/login', loginLimiter, a.login);
 router.post('/two-factor/verify', loginLimiter, a.verifyFactor);
