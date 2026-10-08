@@ -236,4 +236,6 @@ userSchema.set("toJSON", {
   }
 });
 
+userSchema.index({ manager: 1, role: 1 });
+
 module.exports = mongoose.model("User", userSchema);

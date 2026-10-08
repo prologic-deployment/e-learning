@@ -70,13 +70,31 @@ exports.assignCourseToUsers = async (req, res) => {
 // ================= TEAM PROGRESS (Manager only) =================
 exports.getTeamProgress = async (req, res) => {
   try {
-    const members = await User.find({ manager: req.user._id }).select('firstname lastname').lean();
-    const enrollments = members.length ? await Enrollment.find({ user: { $in: members.map(m=>m._id) } })
-      .select('user course progress completed').populate('course','title').lean() : [];
-    const buckets = new Map(members.map(m=>[String(m._id),[]]));
-    for(const e of enrollments) {
-      if(e.course) buckets.get(String(e.user)).push({courseId:e.course._id,title:e.course.title,progress:e.progress,completed:e.completed});
+    const teamMembers = await User.find({ manager: req.user._id });
+
+    const progressData = [];
+    for (let member of teamMembers) {
+      const enrollments = await Enrollment.find({ user: member._id })
+        .populate("course", "title")
+        .exec();
+
+      progressData.push({
+        user: {
+          id: member._id,
+          firstname: member.firstname,
+          lastname: member.lastname
+        },
+        courses: enrollments.map(e => ({
+          courseId: e.course._id,
+          title: e.course.title,
+          progress: e.progress,
+          completed: e.completed
+        }))
+      });
     }
-    res.json(members.map(m=>({user:{id:m._id,firstname:m.firstname,lastname:m.lastname},courses:buckets.get(String(m._id))})));
-  } catch (error) { res.status(500).json({message:'Unable to load team progress.'}); }
+
+    res.status(200).json(progressData);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
 };

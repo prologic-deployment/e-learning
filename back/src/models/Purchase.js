@@ -29,4 +29,6 @@ const purchaseSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+purchaseSchema.index({ course: 1, paymentStatus: 1 });
+
 module.exports = mongoose.model("Purchase", purchaseSchema);

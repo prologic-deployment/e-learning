@@ -78,4 +78,6 @@ const courseSchema = new mongoose.Schema(
   }
 );
 
+courseSchema.index({ trainer: 1, createdAt: -1 });
+
 module.exports = mongoose.model("Course", courseSchema);
