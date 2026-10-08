@@ -551,3 +551,43 @@ button.account-link:focus {
 .account-panel.is-dark .sign-out i {
     color: #ff9ca5;
 }
+
+/* The rail, header and content share one width and one motion curve. */
+.workspace { --navigation-motion: 0s; }
+.workspace.navigation-animated { --navigation-motion: 220ms cubic-bezier(.2,.8,.2,1); }
+.workspace-rail {
+    height: 100dvh;
+    box-sizing: border-box;
+    transition: width var(--navigation-motion), padding var(--navigation-motion);
+    overflow: hidden;
+}
+.workspace-rail > nav { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
+.workspace-brand, .rail-bottom { flex-shrink: 0; }
+.workspace-topbar { transition: margin-left var(--navigation-motion); gap: 12px; }
+.workspace-content { min-width: 0; transition: margin-left var(--navigation-motion); }
+.desktop-navigation-toggle { flex-shrink: 0; font-size: 22px; }
+.top-context { margin-right: auto; }
+.top-actions { margin-left: auto; }
+.rail-link:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: -2px; }
+.compact .workspace-brand { display: flex; justify-content: center; }
+.compact .rail-link { justify-content: center; padding-inline: 0; min-height: 46px; }
+.mobile-nav-link { color: hsl(var(--muted-foreground)); }
+.mobile-nav-link:hover, .mobile-nav-link:focus-visible { color: hsl(var(--foreground)); background: hsl(var(--muted)); }
+.mobile-nav-link.selected, .mobile-nav-link.selected:hover { background: hsl(var(--muted)); color: hsl(var(--foreground)); font-weight: 650; }
+@media (max-height: 780px) { .rail-note { display: none; } .workspace-brand { margin-bottom: 22px; } }
+@media (max-width: 760px) { .desktop-navigation-toggle { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+    .workspace-rail, .workspace-topbar, .workspace-content, .rail-link { transition: none; }
+}
+
+.mobile-sheet {
+    width: min(320px, calc(100vw - 32px)) !important;
+    height: 100dvh !important;
+    max-height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+.mobile-sheet { animation-duration: 220ms !important; }
+@media (prefers-reduced-motion: reduce) {
+    .mobile-sheet { animation: none !important; transition: none !important; }
+}

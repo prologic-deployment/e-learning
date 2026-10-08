@@ -1,10 +1,15 @@
-<div class="product-alert" role="status" *ngIf="!isAuthPage && (socketService.state$ | async) === 'offline'">
-    Live notifications are disconnected. Check that the backend is running, then retry.
-    <button hlmBtn variant="outline" type="button" (click)="socketService.retry()">Retry notifications</button>
-</div>
 <app-navbar *ngIf="!isLandingPage && !isAuthPage && !workspaceEnabled && !(location == '/thank-you' || location == '/coming-soon')"></app-navbar>
 
-<app-workspace-shell><router-outlet></router-outlet></app-workspace-shell>
+<app-workspace-shell>
+    <section class="connection-notice" role="status" aria-live="polite"
+        *ngIf="!isAuthPage && (socketService.state$ | async) === 'offline'">
+        <i class="bx bx-wifi-off" aria-hidden="true"></i>
+        <div><strong>{{ 'Live notifications are disconnected.' | t }}</strong>
+            <p>{{ 'Updates are paused. Retry to reconnect.' | t }}</p></div>
+        <button hlmBtn variant="outline" type="button" (click)="socketService.retry()">{{ 'Retry notifications' | t }}</button>
+    </section>
+    <router-outlet></router-outlet>
+</app-workspace-shell>
 
 <app-footer *ngIf="!isLandingPage && !isAuthPage && !workspaceEnabled && !(location == '/thank-you' || location == '/coming-soon')"></app-footer>
 

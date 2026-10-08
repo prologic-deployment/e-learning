@@ -10,7 +10,7 @@ import { ThemeService } from '../../services/theme.service';
 import { Component, HostListener, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { UiModule } from '../ui/ui.module';
@@ -39,8 +39,24 @@ interface Destination {
     styleUrls: ['./workspace-shell.component.scss'],
 })
 export class WorkspaceShellComponent implements OnDestroy {
+    @ViewChild('mobileDrawer') mobileDrawer?: BrnDialogComponent;
+    @HostListener('window:resize') closeDesktopDrawer() {
+        this.animateNavigation = false;
+        if (window.innerWidth > 760) this.mobileDrawer?.close();
+    }
     @ViewChild('searchDialog') searchDialog?: BrnDialogComponent;
-    collapsed = false;
+    animateNavigation = false;
+    collapsed = this.readCollapsed();
+    private readCollapsed(): boolean {
+        try { return localStorage.getItem('formapath.sidebar.collapsed') === 'true'; }
+        catch { return false; }
+    }
+    toggleNavigation() {
+        this.animateNavigation = true;
+        this.collapsed = !this.collapsed;
+        try { localStorage.setItem('formapath.sidebar.collapsed', String(this.collapsed)); }
+        catch { /* Navigation remains usable when browser storage is unavailable. */ }
+    }
     query = '';
     get dark() {
         return this.theme.dark;
@@ -52,7 +68,10 @@ export class WorkspaceShellComponent implements OnDestroy {
         public theme: ThemeService,
         public i18n: TranslationService,
     ) {
-        this.sub = router.events.subscribe(() => (this.query = ''));
+        this.sub = router.events.subscribe(event => {
+            this.query = '';
+            if (event instanceof NavigationEnd) this.mobileDrawer?.close();
+        });
     }
     get enabled() {
         return this.auth.isLoggedIn() && isWorkspaceRoute(this.router.url);

@@ -1,33 +1,23 @@
-
-
-/* Max width 767px */
-@media only screen and (max-width : 767px) {}
-
-/* Min width 576px to Max width 767px */
-@media only screen and (min-width : 576px) and (max-width : 767px) {}
-
-/* Min width 768px to Max width 991px */
-@media only screen and (min-width : 768px) and (max-width : 991px) {}
-
-/* Min width 992px to Max width 1199px */
-@media only screen and (min-width : 992px) and (max-width : 1199px) {}
-
-/* Min width 1200px to Max width 1399px */
-@media only screen and (min-width: 1200px) and (max-width: 1399px) {}
-
-/* Min width 1600px */
-@media only screen and (min-width: 1600px) {}
-
-@keyframes shrinkBar {
-  from { width: 100%; }
-  to { width: 0%; }
+.connection-notice {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 18px;
+    margin: 0 0 24px;
+    border: 1px solid hsl(var(--border));
+    border-left: 3px solid hsl(var(--primary));
+    border-radius: 10px;
+    background: hsl(var(--card));
+    color: hsl(var(--foreground));
+    overflow-wrap: anywhere;
+    > i { font-size: 24px; flex-shrink: 0; }
+    > div { flex: 1; min-width: 0; }
+    strong { font-size: 14px; }
+    p { margin: 4px 0 0; font-size: 13px; color: hsl(var(--muted-foreground)); }
+    button { flex-shrink: 0; }
 }
-
-// ✅ Responsive mobile
-@media (max-width: 480px) {
-  div[style*="position: fixed; top: 24px; right: 24px"] {
-    right: 12px !important;
-    left: 12px !important;
-    max-width: calc(100% - 24px) !important;
-  }
+@media (max-width: 600px) {
+    .connection-notice { flex-wrap: wrap; gap: 10px; padding: 14px; }
+    .connection-notice > div { flex-basis: calc(100% - 40px); }
+    .connection-notice button { width: 100%; }
 }

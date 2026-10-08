@@ -1,9 +1,9 @@
-<div [class.workspace]="enabled" [class.compact]="collapsed">
+<div [class.workspace]="enabled" [class.compact]="collapsed" [class.navigation-animated]="animateNavigation">
     <ng-container *ngIf="enabled">
         <a class="skip-link" href="#workspace-content">{{
             "Skip to content" | t
         }}</a>
-        <aside class="workspace-rail">
+        <aside class="workspace-rail" id="workspace-navigation">
             <div class="workspace-brand">
                 <app-brand [compact]="collapsed" />
             </div>
@@ -26,27 +26,18 @@
                     <p>{{ "Make room for your next big idea." | t }}</p>
                     <span class="note-orbit" aria-hidden="true">↗</span>
                 </div>
-                <button
-                    hlmBtn
-                    variant="ghost"
-                    (click)="collapsed = !collapsed"
-                    [attr.aria-label]="
-                        (collapsed
-                            ? 'Expand navigation'
-                            : 'Collapse navigation'
-                        ) | t
-                    "
-                    [attr.aria-expanded]="!collapsed"
-                >
-                    <i class="bx bx-sidebar" aria-hidden="true"></i
-                    ><span class="rail-label">{{
-                        "Collapse sidebar" | t
-                    }}</span>
-                </button>
+
             </div>
         </aside>
         <header class="workspace-topbar">
-            <hlm-sheet side="left" class="mobile-navigation">
+            <button hlmBtn variant="ghost" size="icon" type="button"
+                class="desktop-navigation-toggle" (click)="toggleNavigation()"
+                aria-controls="workspace-navigation" [attr.aria-expanded]="!collapsed"
+                [attr.aria-label]="(collapsed ? 'Expand navigation' : 'Collapse navigation') | t"
+                [title]="(collapsed ? 'Expand navigation' : 'Collapse navigation') | t">
+                <i [class]="collapsed ? 'bx bx-chevrons-right' : 'bx bx-chevrons-left'" aria-hidden="true"></i>
+            </button>
+            <hlm-sheet #mobileDrawer side="left" class="mobile-navigation">
                 <button
                     hlmBtn
                     variant="ghost"
@@ -70,6 +61,8 @@
                             hlmBtn
                             variant="ghost"
                             class="mobile-nav-link"
+                            [class.selected]="active(item)"
+                            [attr.aria-current]="active(item) ? 'page' : null"
                             [routerLink]="item.path"
                             [queryParams]="item.tab ? { tab: item.tab } : {}"
                             (click)="ctx.close()"
@@ -347,6 +340,7 @@
         [routerLink]="item.path"
         [queryParams]="item.tab ? { tab: item.tab } : {}"
         [attr.aria-current]="active(item) ? 'page' : null"
+        [attr.aria-label]="item.label | t"
         [title]="item.label | t"
         ><i [class]="'bx bx-' + item.icon" aria-hidden="true"></i
         ><span class="rail-label">{{ item.label | t }}</span

@@ -1,5 +1,9 @@
 // UI copy only. API course content and conversation messages are not machine-translated.
 export const FR: Record<string, string> = {
+    'Live notifications are disconnected.': 'Les notifications en direct sont déconnectées.',
+    'Updates are paused. Retry to reconnect.': 'Les mises à jour sont suspendues. Réessayez pour vous reconnecter.',
+    'Retry notifications': 'Reconnecter les notifications',
+
     // Shared workspace header, navigation and account menu.
     'Use dark theme': 'Activer le mode sombre',
     'Use light theme': 'Activer le mode clair',
