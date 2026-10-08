@@ -7,7 +7,37 @@ export interface TableColumn {
     type?: 'badge' | 'progress' | 'date' | 'money' | 'number';
     filter?: boolean;
     range?: boolean;
+    rangeBands?: readonly RangeBand[];
 }
+export interface RangeBand {
+    value: string;
+    label: string;
+    min: number;
+    max?: number;
+    excludeMin?: boolean;
+    excludeMax?: boolean;
+}
+export const PRICE_BANDS: readonly RangeBand[] = [
+    { value: 'free', label: 'Free', min: 0, max: 0 },
+    { value: 'under-50', label: 'Paid · under 50 TND', min: 0, max: 50, excludeMin: true, excludeMax: true },
+    { value: '50-100', label: '50–under 100 TND', min: 50, max: 100, excludeMax: true },
+    { value: '100-200', label: '100–under 200 TND', min: 100, max: 200, excludeMax: true },
+    { value: '200-plus', label: '200 TND and above', min: 200 },
+];
+export const PROGRESS_BANDS: readonly RangeBand[] = [
+    { value: 'not-started', label: 'Not started · 0%', min: 0, max: 0 },
+    { value: 'in-progress', label: 'In progress · between 0% and 100%', min: 0, max: 100, excludeMin: true, excludeMax: true },
+    { value: 'completed', label: 'Completed · 100%', min: 100, max: 100 },
+];
+export const SCORE_BANDS: readonly RangeBand[] = [
+    { value: 'under-50', label: 'Below 50%', min: 0, max: 50, excludeMax: true },
+    { value: '50-70', label: '50%–under 70%', min: 50, max: 70, excludeMax: true },
+    { value: '70-90', label: '70%–under 90%', min: 70, max: 90, excludeMax: true },
+    { value: '90-100', label: '90%–100%', min: 90, max: 100 },
+];
+export const RATING_BANDS: readonly RangeBand[] = [5,4,3,2,1].map(stars => ({
+    value: String(stars), label: `${stars} ${stars === 1 ? 'star' : 'stars'}`, min: stars, max: stars,
+}));
 export interface TablePreset {
     label: string;
     columns: TableColumn[];
@@ -28,6 +58,7 @@ export interface TableQuery {
     min: string;
     max: string;
     sort: string;
+    band?: string;
 }
 export function filterRecords(
     records: any[],
@@ -60,6 +91,14 @@ export function filterRecords(
             const value = dateKey(date.get(row));
             if (!value || (q.from && value < q.from) || (q.to && value > q.to))
                 return false;
+        }
+        if (range && q.band) {
+            const band = range.rangeBands?.find(b => b.value === q.band);
+            const raw = range.get(row), value = Number(raw);
+            // A selected band never treats missing/invalid amounts as free or zero.
+            if (!band || raw == null || raw === '' || typeof raw === 'boolean' || !Number.isFinite(value) ||
+                (band.excludeMin ? value <= band.min : value < band.min) ||
+                (band.max !== undefined && (band.excludeMax ? value >= band.max : value > band.max))) return false;
         }
         if (range && (q.min !== '' || q.max !== '')) {
             const raw = range.get(row),

@@ -184,3 +184,36 @@ test("filters intersect categorical, inclusive dates and numeric bounds; reset a
     c.to = "2026-10-08";
     assert.ok(c.rangeError);
 });
+
+test('price bands partition actual nonnegative prices exactly once, including boundary values', () => {
+    const {filterRecords, PRICE_BANDS} = load('src/app/components/data-table/table-model.ts');
+    const preset = load('src/app/components/data-table/table-presets.ts').TABLES.courses;
+    const q = {search:'', choices:{}, from:'', to:'', min:'', max:'', sort:''};
+    const expected = [[0,'free'],[0.001,'under-50'],[49.999,'under-50'],[50,'50-100'],[99.99,'50-100'],[100,'100-200'],[199.99,'100-200'],[200,'200-plus'],[1000000,'200-plus']];
+    for (const [price, value] of expected) {
+        const matches = PRICE_BANDS.filter(b => filterRecords([{price}],preset,{...q,band:b.value}).length);
+        assert.deepEqual(matches.map(b=>b.value),[value],String(price));
+    }
+    for (const price of [-1,null,undefined,'',false,NaN,Infinity,'bad']) {
+        for (const band of PRICE_BANDS) assert.equal(filterRecords([{price}],preset,{...q,band:band.value}).length,0);
+    }
+    assert.equal(filterRecords([{price:50}],preset,{...q,band:'forged'}).length,0);
+});
+test('price selection composes with search, status and sorting; reset clears the band and pagination', () => {
+    const C=load('src/app/components/data-table/data-table.component.ts').DataTableComponent, c=new C();
+    c.preset=load('src/app/components/data-table/table-presets.ts').TABLES.courses;
+    c.records=[{_id:'a',title:'Angular',price:50,isApproved:true},{_id:'b',title:'Angular advanced',price:75,isApproved:false},{_id:'c',title:'Design',price:80,isApproved:true},{_id:'d',title:'Free Angular',price:0,isApproved:true}];
+    c.band='50-100';c.query='Angular';c.choices={status:'Published'};
+    assert.deepEqual(c.filtered.map(r=>r._id),['a']);assert.equal(c.activeFilters,3);
+    c.reset();assert.equal(c.band,'');assert.equal(c.activeFilters,0);assert.equal(c.page,1);assert.equal(c.filtered.length,4);
+    c.band='free';assert.deepEqual(c.filtered.map(r=>r._id),['d']);
+});
+test('progress, score and rating choices respect their real domains', () => {
+    const {filterRecords,PROGRESS_BANDS,SCORE_BANDS,RATING_BANDS}=load('src/app/components/data-table/table-model.ts');
+    const q={search:'',choices:{},from:'',to:'',min:'',max:'',sort:''};
+    for (const [bands,valid,invalid] of [[PROGRESS_BANDS,[0,0.5,99.9,100],[-1,101]], [SCORE_BANDS,[0,49.9,50,69.9,70,89.9,90,100],[-1,101]], [RATING_BANDS,[1,2,3,4,5],[0,2.5,6]]]) {
+        const preset={columns:[{key:'value',label:'Value',get:r=>r.value,range:true,rangeBands:bands}]};
+        for(const value of valid)assert.equal(bands.filter(b=>filterRecords([{value}],preset,{...q,band:b.value}).length).length,1);
+        for(const value of invalid)assert.equal(bands.filter(b=>filterRecords([{value}],preset,{...q,band:b.value}).length).length,0);
+    }
+});

@@ -29,6 +29,7 @@ export class DataTableComponent {
     choices: Record<string, string> = {};
     from = '';
     to = '';
+    band = '';
     min = '';
     max = '';
     sort = '';
@@ -45,6 +46,7 @@ export class DataTableComponent {
                 JSON.stringify(this.choices),
                 this.from,
                 this.to,
+                this.band,
                 this.min,
                 this.max,
                 this.sort,
@@ -57,6 +59,7 @@ export class DataTableComponent {
                           choices: this.choices,
                           from: this.from,
                           to: this.to,
+                          band: this.band,
                           min: this.min,
                           max: this.max,
                           sort: this.sort,
@@ -87,6 +90,11 @@ export class DataTableComponent {
     get rangeColumn() {
         return this.preset.columns.find((c) => c.range);
     }
+    get bandOptions() {
+        const column = this.rangeColumn;
+        const all = column?.type === 'money' ? 'All prices' : column?.key === 'rating' ? 'All ratings' : column?.key === 'score' ? 'All scores' : 'All progress';
+        return [{value: '', label: all}, ...(column?.rangeBands || [])];
+    }
     get rangeError() {
         return this.from && this.to && this.from > this.to
             ? 'Start date must be on or before end date.'
@@ -101,7 +109,7 @@ export class DataTableComponent {
             Number(!!this.query.trim()) +
             Object.values(this.choices).filter(Boolean).length +
             Number(!!(this.from || this.to)) +
-            Number(this.min !== '' || this.max !== '')
+            Number(!!this.band || this.min !== '' || this.max !== '')
         );
     }
     get pages() {
@@ -124,6 +132,7 @@ export class DataTableComponent {
         this.choices = {};
         this.from = '';
         this.to = '';
+        this.band = '';
         this.min = '';
         this.max = '';
         this.page = 1;

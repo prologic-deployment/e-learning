@@ -54,30 +54,11 @@
                     [(ngModel)]="to"
                     (ngModelChange)="page = 1" /></label
         ></ng-container>
-        <ng-container *ngIf="rangeColumn as range"
-            ><label
-                ><span>{{ range.label }} minimum</span
-                ><input
-                    hlmInput
-                    type="number"
-                    [attr.aria-label]="range.label + ' minimum'"
-                    [ngModel]="min"
-                    (ngModelChange)="
-                        min = $event == null ? '' : $event.toString(); page = 1
-                    "
-                    placeholder="Min" /></label
-            ><label
-                ><span>{{ range.label }} maximum</span
-                ><input
-                    hlmInput
-                    type="number"
-                    [attr.aria-label]="range.label + ' maximum'"
-                    [ngModel]="max"
-                    (ngModelChange)="
-                        max = $event == null ? '' : $event.toString(); page = 1
-                    "
-                    placeholder="Max" /></label
-        ></ng-container>
+        <label *ngIf="rangeColumn as range">
+            <span>{{ range.label }}{{ range.type === 'money' ? ' (TND)' : '' }}</span>
+            <app-filter-select [label]="'Filter ' + range.label" [(value)]="band"
+                (valueChange)="page = 1" [options]="bandOptions" />
+        </label>
     </div>
     <p *ngIf="rangeError" class="filter-error" role="alert">{{ rangeError }}</p>
     <div

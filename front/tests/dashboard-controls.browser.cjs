@@ -86,19 +86,9 @@ const { chromium } = require("playwright"),
                 await page.getByRole('heading',{name:'No records yet'}).waitFor();scenarios++;
                 await page.goto(base + "?tab=quiz-results");
                 await page.locator(".detail-record-row").first().waitFor();
-                await page
-                    .getByLabel("Score minimum", { exact: true })
-                    .fill("101");
-                await page
-                    .getByRole("heading", { name: "No matching records" })
-                    .waitFor();
-                await page
-                    .getByLabel("Score maximum", { exact: true })
-                    .fill("50");
-                await page
-                    .getByRole("alert")
-                    .filter({ hasText: "Minimum must" })
-                    .waitFor();
+                assert.equal(await page.getByRole('spinbutton').count(), 0);
+                await page.getByRole('button', {name:'Filter Score', exact:true}).click();
+                await page.getByRole('menuitemradio', {name:'90%–100%', exact:true}).click();
                 await page
                     .getByRole("button", { name: /Reset filters/ })
                     .click();

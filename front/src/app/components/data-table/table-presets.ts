@@ -1,4 +1,4 @@
-import { TablePreset, TableColumn } from './table-model';
+import { TablePreset, TableColumn, PRICE_BANDS, PROGRESS_BANDS, SCORE_BANDS, RATING_BANDS } from './table-model';
 const name = (u: any) =>
     u
         ? [u.firstname, u.lastname].filter(Boolean).join(' ') ||
@@ -32,6 +32,7 @@ const progress: TableColumn = {
     get: (r) => r.progress ?? 0,
     type: 'progress',
     range: true,
+    rangeBands: PROGRESS_BANDS,
 };
 const date: TableColumn = {
     key: 'date',
@@ -103,6 +104,7 @@ export const TABLES: Record<string, TablePreset> = {
                 get: (r) => r.price,
                 type: 'money',
                 range: true,
+                rangeBands: PRICE_BANDS,
             },
             { ...date, label: 'Created' },
         ],
@@ -170,6 +172,7 @@ export const TABLES: Record<string, TablePreset> = {
                 get: (r) => r.rating,
                 type: 'number',
                 range: true,
+                rangeBands: RATING_BANDS,
             },
             { key: 'comment', label: 'Comment', get: (r) => r.comment },
             {
@@ -214,6 +217,7 @@ export const TABLES: Record<string, TablePreset> = {
                 get: (r) => r.score,
                 type: 'progress',
                 range: true,
+                rangeBands: SCORE_BANDS,
             },
             {
                 key: 'status',
