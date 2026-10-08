@@ -12,21 +12,7 @@
         /></label>
         <label
             ><span>Sort by</span
-            ><select
-                hlmInput
-                aria-label="Sort records"
-                [(ngModel)]="sort"
-                (ngModelChange)="page = 1"
-            >
-                <option value="">Original order</option>
-                <ng-container
-                    *ngFor="let c of preset.columns; trackBy: trackColumn"
-                    ><option [value]="c.key + ':asc'">{{ c.label }} ↑</option>
-                    <option [value]="c.key + ':desc'">
-                        {{ c.label }} ↓
-                    </option></ng-container
-                >
-            </select></label
+            ><app-filter-select label="Sort records" [(value)]="sort" (valueChange)="page=1" [options]="sortOptions" /></label
         >
         <button
             hlmBtn
@@ -47,22 +33,7 @@
         <ng-container *ngFor="let c of preset.columns; trackBy: trackColumn"
             ><label *ngIf="c.filter"
                 ><span>{{ c.label }}</span
-                ><select
-                    hlmInput
-                    [attr.aria-label]="'Filter ' + c.label"
-                    [(ngModel)]="choices[c.key]"
-                    (ngModelChange)="page = 1"
-                >
-                    <option [ngValue]="undefined">
-                        All {{ c.label.toLowerCase() }}
-                    </option>
-                    <option
-                        *ngFor="let option of options[c.key]"
-                        [value]="option"
-                    >
-                        {{ option }}
-                    </option>
-                </select></label
+                ><app-filter-select [label]="'Filter '+c.label" [(value)]="choices[c.key]" (valueChange)="page=1" [options]="choiceOptions(c.key,c.label)" /></label
             ></ng-container
         >
         <ng-container *ngIf="dateColumn as date"
@@ -234,16 +205,7 @@
         <div>
             <label
                 ><span>Rows per page</span
-                ><select
-                    hlmInput
-                    aria-label="Rows per page"
-                    [(ngModel)]="size"
-                    (ngModelChange)="page = 1"
-                >
-                    <option *ngFor="let n of [10, 20, 50]" [ngValue]="n">
-                        {{ n }}
-                    </option>
-                </select></label
+                ><app-filter-select class="page-size" label="Rows per page" [(value)]="size" (valueChange)="page=1" [options]="pageOptions" /></label
             ><button
                 hlmBtn
                 variant="outline"

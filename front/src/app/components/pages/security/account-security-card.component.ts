@@ -24,12 +24,15 @@ import { UiModule } from '../../ui/ui.module';
                     <button hlmBtn variant="link" [disabled]="loading" (click)="refresh()">Retry</button>
                 </p>
             </div>
-            <a hlmBtn variant="outline" routerLink="/account/security">
+            <a hlmBtn variant="outline" class="security-action" routerLink="/account/security">
                 {{ status?.enabled ? 'Manage my 2FA' : 'Configure my 2FA' }}
             </a>
         </section>
     `,
     styles: [`
+        .security-action { color:hsl(var(--foreground))!important;background:hsl(var(--card))!important;border:1px solid hsl(var(--border))!important;text-decoration:none!important; }
+        .security-action:hover { background:hsl(var(--muted))!important; }
+        .security-action:focus-visible { outline:2px solid hsl(var(--ring));outline-offset:3px; }
         :host { display:block; margin:0 0 24px; }
         .account-security { display:flex; align-items:center; gap:20px; padding:24px; }
         .account-security > i { font-size:28px; color:hsl(var(--primary)); }

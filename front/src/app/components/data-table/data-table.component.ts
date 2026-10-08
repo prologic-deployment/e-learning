@@ -1,3 +1,4 @@
+import { FilterSelectComponent } from '../forms/filter-select.component';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -12,7 +13,7 @@ import { TableColumn, TablePreset, filterRecords } from './table-model';
 @Component({
     selector: 'app-data-table',
     standalone: true,
-    imports: [CommonModule, FormsModule, UiModule],
+    imports: [CommonModule, FormsModule, UiModule, FilterSelectComponent],
     templateUrl: './data-table.component.html',
     styleUrls: ['./data-table.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,6 +22,9 @@ export class DataTableComponent {
     @Input() records: any[] = [];
     @Input() preset!: TablePreset;
     @Input() actions: TemplateRef<any> | null = null;
+    get sortOptions(){return [{value:'',label:'Original order'},...this.preset.columns.flatMap(c=>[{value:c.key+':asc',label:c.label+' ↑'},{value:c.key+':desc',label:c.label+' ↓'}])];}
+    choiceOptions(key:string,label:string){return [{value:undefined,label:'All '+label.toLowerCase()},...this.options[key].map(value=>({value,label:value}))];}
+    readonly pageOptions=[10,20,50].map(value=>({value,label:String(value)}));
     query = '';
     choices: Record<string, string> = {};
     from = '';

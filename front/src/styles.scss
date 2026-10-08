@@ -3046,3 +3046,7 @@ p {
 .record-detail-backdrop{background:rgba(15,23,42,.48);backdrop-filter:blur(3px)}
 /* The floating assistant must never cover a modal's mobile close/action controls. */
 .cdk-overlay-container:has(.record-detail-dialog){z-index:10000}
+
+/* Native selects outside the shared data tables must use the active palette too. */
+select[hlmInput], select[hlmInput] option { background-color:hsl(var(--card));color:hsl(var(--foreground)); }
+.dark select { color-scheme:dark; }

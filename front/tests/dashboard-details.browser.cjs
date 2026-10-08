@@ -168,7 +168,8 @@ const { chromium } = require("playwright"),
         const beforeNames = await page
             .locator(".detail-record-row")
             .allTextContents();
-        await page.getByLabel("Sort records").selectOption("name:desc");
+        await page.getByRole("button", {name:"Sort records",exact:true}).click();
+        await page.getByRole("menuitemradio", {name:"Person ↓",exact:true}).click();
         assert.notDeepEqual(
             await page.locator(".detail-record-row").allTextContents(),
             beforeNames,

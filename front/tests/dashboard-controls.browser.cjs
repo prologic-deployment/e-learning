@@ -56,9 +56,8 @@ const { chromium } = require("playwright"),
             if (role === "admin") {
                 await page.goto(base + "?tab=users");
                 await page.locator(".detail-record-row").first().waitFor();
-                await page
-                    .getByLabel("Filter Role", { exact: true })
-                    .selectOption("Manager");
+                await page.getByRole("button", {name:"Filter Role",exact:true}).click();
+                await page.getByRole("menuitemradio", {name:"Manager",exact:true}).click();
                 assert.equal(
                     await page.locator(".detail-record-row").count(),
                     1,
@@ -116,9 +115,8 @@ const { chromium } = require("playwright"),
                 await page
                     .getByRole("button", { name: /Reset filters/ })
                     .click();
-                await page
-                    .getByLabel("Rows per page", { exact: true })
-                    .selectOption({ label: "10" });
+                await page.getByRole("button", {name:"Rows per page",exact:true}).click();
+                await page.getByRole("menuitemradio", {name:"10",exact:true}).click();
                 assert.equal(
                     await page.locator(".detail-record-row").count(),
                     10,
