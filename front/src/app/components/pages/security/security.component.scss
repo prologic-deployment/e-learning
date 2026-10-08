@@ -21,6 +21,7 @@ section {
     padding: clamp(1.25rem, 4vw, 2.5rem);
 }
 .section-row {
+    flex-wrap: wrap;
     align-items: start;
     gap: 1rem;
     margin-bottom: 1.5rem;

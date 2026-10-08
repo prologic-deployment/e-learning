@@ -1,3 +1,8 @@
+import { LanguageSwitcherComponent } from '../common/language-switcher/language-switcher.component';
+import {
+    TranslationModule,
+    TranslationService,
+} from '../../i18n/translation.module';
 import { ProfileAvatarComponent } from '../profile/profile-avatar.component';
 import { isWorkspaceRoute } from '../../services/workspace-route';
 import { BrandComponent } from '../brand/brand.component';
@@ -20,7 +25,16 @@ interface Destination {
 @Component({
     selector: 'app-workspace-shell',
     standalone: true,
-    imports: [ProfileAvatarComponent, CommonModule, FormsModule, RouterModule, UiModule, BrandComponent],
+    imports: [
+        LanguageSwitcherComponent,
+        TranslationModule,
+        ProfileAvatarComponent,
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        UiModule,
+        BrandComponent,
+    ],
     templateUrl: './workspace-shell.component.html',
     styleUrls: ['./workspace-shell.component.scss'],
 })
@@ -28,21 +42,49 @@ export class WorkspaceShellComponent implements OnDestroy {
     @ViewChild('searchDialog') searchDialog?: BrnDialogComponent;
     collapsed = false;
     query = '';
-    get dark() { return this.theme.dark; }
+    get dark() {
+        return this.theme.dark;
+    }
     private sub: Subscription;
     constructor(
         public auth: AuthService,
         public router: Router,
         public theme: ThemeService,
+        public i18n: TranslationService,
     ) {
         this.sub = router.events.subscribe(() => (this.query = ''));
     }
-    get enabled() { return this.auth.isLoggedIn() && isWorkspaceRoute(this.router.url); }
+    get enabled() {
+        return this.auth.isLoggedIn() && isWorkspaceRoute(this.router.url);
+    }
     get role() {
         return this.auth.getRole().toLowerCase();
     }
     get home() {
         return this.role === 'user' ? '/dashboard' : `/${this.role}-dashboard`;
+    }
+    get roleLabel() {
+        return (
+            (
+                {
+                    user: 'Learner',
+                    trainer: 'Trainer',
+                    manager: 'Manager',
+                    admin: 'Administrator',
+                } as Record<string, string>
+            )[this.role] || 'Account'
+        );
+    }
+    get accountLinks(): Destination[] {
+        const tabs: Record<string, string[]> = {
+            user: ['overview', 'courses', 'certificates', 'notifications'],
+            trainer: ['stats', 'courses', 'create', 'quiz-results'],
+            manager: ['stats', 'assign', 'overdue'],
+            admin: ['stats', 'users', 'staff-list', 'courses'],
+        };
+        return this.items.filter(
+            (item) => !!item.tab && (tabs[this.role] || []).includes(item.tab),
+        );
     }
     get items(): Destination[] {
         const definitions: Record<string, string[][]> = {
@@ -80,12 +122,14 @@ export class WorkspaceShellComponent implements OnDestroy {
                 ['Assessment results', 'bar-chart-alt-2', 'quiz-results'],
             ],
         };
-        const items = (definitions[this.role] || []).map(([label, icon, tab]) => ({
-            label,
-            icon,
-            tab,
-            path: this.home,
-        }));
+        const items = (definitions[this.role] || []).map(
+            ([label, icon, tab]) => ({
+                label,
+                icon,
+                tab,
+                path: this.home,
+            }),
+        );
         if (this.role === 'user')
             items.splice(2, 0, {
                 label: 'Discover courses',
@@ -93,25 +137,47 @@ export class WorkspaceShellComponent implements OnDestroy {
                 tab: '',
                 path: '/courses-grid',
             });
-        items.push({label: 'Security & 2FA', icon: 'shield-quarter', tab: '', path: '/account/security'});
+        items.push({
+            label: 'Security & 2FA',
+            icon: 'shield-quarter',
+            tab: '',
+            path: '/account/security',
+        });
         return items;
     }
-    destinationKey(_: number, item: Destination): string { return item.path + '?' + (item.tab || ''); }
+    destinationKey(_: number, item: Destination): string {
+        return item.path + '?' + (item.tab || '');
+    }
     get filteredItems() {
-        return this.items.filter((i) => i.label.toLowerCase().includes(this.query.toLowerCase()));
+        return this.items.filter((i) =>
+            this.i18n
+                .translate(i.label)
+                .toLocaleLowerCase()
+                .includes(this.query.toLocaleLowerCase()),
+        );
     }
     active(item: Destination) {
         const url = this.router.parseUrl(this.router.url);
         return (
-            url.root.children['primary']?.segments.map((s) => s.path).join('/') ===
-                item.path.slice(1) &&
-            (url.queryParams['tab'] || (this.role === 'user' ? 'overview' : 'stats')) ===
+            url.root.children['primary']?.segments
+                .map((s) => s.path)
+                .join('/') === item.path.slice(1) &&
+            (url.queryParams['tab'] ||
+                (this.role === 'user' ? 'overview' : 'stats')) ===
                 (item.tab || (this.role === 'user' ? 'overview' : 'stats'))
         );
     }
-    toggleTheme() { this.theme.toggle(); }
-    @HostListener('document:keydown', ['$event']) shortcut(event: KeyboardEvent) {
-        if (this.enabled && (event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+    toggleTheme() {
+        this.theme.toggle();
+    }
+    @HostListener('document:keydown', ['$event']) shortcut(
+        event: KeyboardEvent,
+    ) {
+        if (
+            this.enabled &&
+            (event.ctrlKey || event.metaKey) &&
+            event.key.toLowerCase() === 'k'
+        ) {
             event.preventDefault();
             this.searchDialog?.open();
         }

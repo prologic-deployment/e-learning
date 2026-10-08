@@ -276,5 +276,278 @@
     }
 }
 
-.workspace-brand{margin-bottom:32px}.workspace-rail{padding:28px 22px;background:hsl(var(--background))}.workspace-label{color:hsl(var(--muted-foreground));letter-spacing:1.5px;margin-bottom:17px}.rail-link{font-size:12px;border-radius:8px;padding:12px 11px;transition:background .15s,color .15s}.rail-link.selected{background:hsl(var(--card));box-shadow:0 2px 6px #1d355705;border:1px solid hsl(var(--border));color:hsl(var(--foreground))}.rail-link:not(.selected){border:1px solid transparent}.workspace-topbar{background:hsl(var(--background));border-color:hsl(var(--border))}.rail-note{background:hsl(var(--muted));border:1px solid hsl(var(--border));box-shadow:none}.rail-note p{font-family:var(--formapath-serif);font-style:italic;font-weight:400;font-size:24px;letter-spacing:-.5px}.workspace-content{padding-top:36px}.top-context{font-size:11px}.profile-trigger{background:hsl(var(--card));border-color:hsl(var(--border))}
-@media(max-width:760px){.workspace-topbar .search-launch{width:36px;padding:0!important}.workspace-topbar .profile-trigger{padding:0 4px!important;gap:4px}.workspace-topbar .top-actions{gap:5px}}
+.workspace-brand {
+    margin-bottom: 32px;
+}
+.workspace-rail {
+    padding: 28px 22px;
+    background: hsl(var(--background));
+}
+.workspace-label {
+    color: hsl(var(--muted-foreground));
+    letter-spacing: 1.5px;
+    margin-bottom: 17px;
+}
+.rail-link {
+    font-size: 12px;
+    border-radius: 8px;
+    padding: 12px 11px;
+    transition:
+        background 0.15s,
+        color 0.15s;
+}
+.rail-link.selected {
+    background: hsl(var(--card));
+    box-shadow: 0 2px 6px #1d355705;
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--foreground));
+}
+.rail-link:not(.selected) {
+    border: 1px solid transparent;
+}
+.workspace-topbar {
+    background: hsl(var(--background));
+    border-color: hsl(var(--border));
+}
+.rail-note {
+    background: hsl(var(--muted));
+    border: 1px solid hsl(var(--border));
+    box-shadow: none;
+}
+.rail-note p {
+    font-family: var(--formapath-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+}
+.workspace-content {
+    padding-top: 36px;
+}
+.top-context {
+    font-size: 11px;
+}
+.profile-trigger {
+    background: hsl(var(--card));
+    border-color: hsl(var(--border));
+}
+@media (max-width: 760px) {
+    .workspace-topbar .search-launch {
+        width: 36px;
+        padding: 0 !important;
+    }
+    .workspace-topbar .profile-trigger {
+        padding: 0 4px !important;
+        gap: 4px;
+    }
+    .workspace-topbar .top-actions {
+        gap: 5px;
+    }
+}
+
+/* Account content is rendered in a CDK overlay, outside the workspace container. */
+.account-panel {
+    display: block;
+    width: 304px;
+    max-width: calc(100vw - 24px);
+    max-height: calc(100dvh - 88px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 !important;
+    margin-top: 8px;
+    border-radius: 14px !important;
+    background: hsl(var(--popover));
+    color: hsl(var(--popover-foreground));
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 18px 50px #102b3b26;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    animation: account-reveal 0.14s ease-out;
+}
+.account-identity {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px;
+    background: hsl(var(--muted) / 0.65);
+    border-bottom: 1px solid hsl(var(--border));
+}
+.account-identity app-profile-avatar {
+    --avatar-size: 46px;
+}
+.account-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 0;
+}
+.account-copy strong {
+    font-size: 14px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.account-copy > span:not(.account-role) {
+    font-size: 11px;
+    color: hsl(var(--muted-foreground));
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.account-role {
+    font-size: 10px;
+    font-weight: 600;
+    border: 1px solid hsl(var(--border));
+    border-radius: 5px;
+    padding: 2px 7px;
+    margin-top: 3px;
+    background: hsl(var(--card));
+    color: hsl(var(--foreground));
+}
+.account-section {
+    padding: 6px;
+}
+.account-heading {
+    display: block !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.7px;
+    text-transform: uppercase;
+    padding: 7px 10px 5px !important;
+    color: hsl(var(--muted-foreground)) !important;
+}
+.account-link {
+    display: flex !important;
+    align-items: center;
+    gap: 11px;
+    min-height: 38px;
+    width: 100%;
+    padding: 9px 10px !important;
+    font-size: 12px !important;
+    font-weight: 500;
+    border-radius: 7px !important;
+    text-decoration: none !important;
+    color: inherit;
+    cursor: pointer !important;
+    text-align: start;
+}
+.account-link > i {
+    font-size: 17px;
+    flex-shrink: 0;
+    color: hsl(var(--muted-foreground));
+}
+.account-link span {
+    flex: 1;
+}
+.account-link .item-chevron {
+    margin-left: auto;
+    font-size: 14px;
+}
+.account-link:hover,
+.account-link:focus {
+    background: hsl(var(--accent));
+    color: hsl(var(--accent-foreground));
+}
+.account-link:focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: -2px;
+}
+.account-link .menu-current {
+    flex: 0 0 5px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: hsl(var(--primary));
+    margin-inline-end: 4px;
+}
+.account-exit {
+    padding: 6px;
+}
+.account-link.sign-out,
+.account-link.sign-out i {
+    color: hsl(var(--destructive));
+}
+.account-panel hlm-menu-separator {
+    margin: 0 12px !important;
+}
+.profile-trigger {
+    min-height: 40px;
+    border: 1px solid hsl(var(--border));
+    border-radius: 10px;
+    padding: 4px 9px !important;
+}
+.profile-name {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.profile-trigger[aria-expanded="true"] {
+    background: hsl(var(--muted));
+}
+.profile-trigger > i {
+    transition: transform 0.15s;
+}
+.profile-trigger[aria-expanded="true"] > i {
+    transform: rotate(180deg);
+}
+@keyframes account-reveal {
+    from {
+        opacity: 0;
+        translate: 0 -4px;
+    }
+    to {
+        opacity: 1;
+        translate: 0 0;
+    }
+}
+@media (max-width: 480px) {
+    .header-notifications {
+        display: none !important;
+    }
+    .workspace-topbar {
+        padding-inline: 12px;
+    }
+    .account-panel {
+        width: 288px;
+    }
+    .account-identity {
+        padding: 14px;
+    }
+    .account-link {
+        min-height: 40px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .account-panel {
+        animation: none;
+    }
+    .profile-trigger > i {
+        transition: none;
+    }
+}
+
+button.account-link {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+button.account-link:hover,
+button.account-link:focus {
+    background: hsl(var(--accent));
+}
+
+/* Readable destructive text in either palette, without a filled danger button. */
+.account-link.sign-out,
+.account-link.sign-out i {
+    color: #b92332;
+}
+.account-panel.is-dark {
+    border-color: #344c5e !important;
+}
+.account-panel.is-dark .sign-out,
+.account-panel.is-dark .sign-out i {
+    color: #ff9ca5;
+}

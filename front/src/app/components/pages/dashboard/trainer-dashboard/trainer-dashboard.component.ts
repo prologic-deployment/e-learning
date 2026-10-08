@@ -223,6 +223,7 @@ export class TrainerDashboardComponent implements OnInit {
       next: (data: any) => {
         this.profile = data;
                 this.authService.updateProfileSummary(data.user);
+                this.currentUser = this.authService.getCurrentUser();
         this.profileData = {
           firstname: data.user?.firstname || '',
           lastname: data.user?.lastname || '',

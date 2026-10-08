@@ -146,7 +146,9 @@ const { chromium } = require("playwright"),
                 });
                 scenarios++;
             } else {
+                const profileLoaded = page.waitForResponse(r => r.url().endsWith('/api/profile') && r.request().method() === 'GET');
                 await page.goto(base + "?tab=profile");
+                assert.equal((await profileLoaded).status(), 200);
                 const avatar = page.locator("app-avatar-picker");
                 await avatar
                     .getByRole("button", { name: "Change profile photo" })
@@ -159,12 +161,8 @@ const { chromium } = require("playwright"),
                     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a6k0AAAAASUVORK5CYII=",
                     "base64",
                 );
-                await page.waitForTimeout(300);
-                await avatar
-                    .getByRole("button", { name: "Change profile photo" })
-                    .focus();
                 const chooser = page.waitForEvent("filechooser");
-                await page.keyboard.press("Enter");
+                await avatar.getByRole("button", { name: "Change profile photo" }).press("Enter");
                 await (
                     await chooser
                 ).setFiles({

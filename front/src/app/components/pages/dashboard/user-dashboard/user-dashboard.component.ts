@@ -239,6 +239,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
             next: (data: any) => {
                 this.profile = data;
                 this.authService.updateProfileSummary(data.user);
+                this.currentUser = this.authService.getCurrentUser();
                 this.profileData.firstname = data.user?.firstname || '';
                 this.profileData.lastname = data.user?.lastname || '';
                 this.profileData.phone = data.user?.phone || '';

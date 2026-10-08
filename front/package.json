@@ -12,7 +12,9 @@
     "test:socket": "node --test tests/socket-lifecycle.cjs tests/proxy-socket.integration.cjs",
     "test:tables": "node --test tests/table-derivations.cjs",
     "test:details:browser": "node tests/dashboard-details.browser.cjs",
-    "test:controls:browser": "node tests/dashboard-controls.browser.cjs"
+    "test:controls:browser": "node tests/dashboard-controls.browser.cjs",
+    "test:header:browser": "node tests/header-account.browser.cjs",
+    "test:profile-summary": "node --test tests/profile-summary.cjs"
   },
   "private": true,
   "dependencies": {
