@@ -380,8 +380,8 @@ const COURSES = [
           maxAttempts: 3,
           questions: [
             {
-              texte: 'useEffect with [] runs…',
-              options: ['On every render', 'Once after mount', 'Never', 'On unmount only'],
+              texte: 'In production, when is an effect with an empty dependency array normally set up?',
+              options: ['On every render', 'After each mount', 'Never', 'On unmount only'],
               correctAnswer: 1
             }
           ]
@@ -402,4 +402,4 @@ const COURSES = [
   }
 ];
 
-module.exports = COURSES.map(require('./assessment-bank').enrichCourse);
+module.exports = [...COURSES.map(require('./assessment-bank').enrichCourse), require('./security-course')];

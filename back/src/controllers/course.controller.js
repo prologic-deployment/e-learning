@@ -306,13 +306,25 @@ exports.approveCourse = async (req, res) => {
     const userRole = Array.isArray(req.user.role) ? req.user.role[0] : req.user.role;
     if (userRole !== "admin") return res.status(403).json({ message: "Access denied" });
 
-    const course = await Course.findById(id);
+    const course = await Course.findById(id).select('+isArchived');
     if (!course) return res.status(404).json({ message: "Course not found" });
 
-    const lessons=await require('../models/Lesson').find({course:id}).select('quiz quiz2');
-    if(!lessons.length || lessons.some(l=>(l.quiz?.questions?.length||0)<20 || l.quiz2?.questions?.length) || (course.finalExam?.questions?.length||0)<20)return res.status(400).json({message:'Complete the lessons, one 20-question quiz per lesson, and the final exam before publishing.'});
+    const [privateCourse, lessons] = await Promise.all([
+      Course.findById(id).select('+finalExam.questions.correctAnswer +finalExam.questions.correctAnswers'),
+      require('../models/Lesson').find({course:id}).select('+quiz.questions.correctAnswer +quiz.questions.correctAnswers'),
+    ]);
+    if (!privateCourse) return res.status(404).json({message:'Course not found'});
+    try {
+      require('../utils/coursePublication').validateCourseForPublication({...privateCourse.toObject(), isArchived:course.isArchived}, lessons);
+    } catch (error) { return res.status(400).json({message:error.message}); }
+    if (course.isApproved) return res.status(200).json({message:'Course is already approved',course});
+    const publication = await Course.updateOne({_id:id,isApproved:{$ne:true},isArchived:{$ne:true},updatedAt:course.updatedAt},{$set:{isApproved:true}});
+    if (!publication.modifiedCount) {
+      const latest = await Course.findById(id).select('+isArchived');
+      if (latest?.isApproved && !latest.isArchived) return res.status(200).json({message:'Course is already approved',course:latest});
+      return res.status(409).json({message:'The course changed during review. Reload it before approving.'});
+    }
     course.isApproved = true;
-    await course.save();
 
     await Promise.all([
       invalidateCache('cache:GET:/api/courses:*'),

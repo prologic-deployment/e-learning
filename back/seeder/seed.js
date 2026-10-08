@@ -6,6 +6,9 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const config = require('../src/config/env');
 const {validateAssessment, gradeSubmission} = require('../src/utils/assessment');
+const {validateRequest} = require('../src/validation/input-policy');
+const {validateCourseForPublication} = require('../src/utils/coursePublication');
+const checkInput = (path, body) => { if(Object.keys(validateRequest('POST', '/api'+path, body)).length)throw new Error('Seed fixture violates current input contract: '+path); };
 const {calculateProgress} = require('../src/utils/learningProgress');
 const USERS = require('./data/users');
 const COURSES = require('./data/courses');
@@ -25,15 +28,22 @@ function preflight() {
   if(users.size!==userDefinitions.length || courses.size!==COURSES.length)throw new Error('Duplicate fixture identifiers.');
   for(const user of userDefinitions){const error=new User(user).validateSync();if(error)throw new Error('User fixture validation failed.');}
   for(const course of COURSES){
+    checkInput('/courses', course);
     if(!users.get(course.trainerEmail)?.role.includes('trainer'))throw new Error('Fixture course must have a trainer.');
     validateAssessment(course.finalExam);
     const trainer=new mongoose.Types.ObjectId();
     const doc=new Course({...course,trainer,lessons:[]});if(doc.validateSync())throw new Error('Course fixture validation failed.');
+    const lessonDocs=[];
     for(const lesson of course.lessons){
+      checkInput('/lessons/course/'+doc._id, lesson);
       validateAssessment(lesson.quiz);
-      if(new Lesson({...lesson,course:doc._id}).validateSync())throw new Error('Lesson fixture validation failed.');
+      const lessonDoc=new Lesson({...lesson,course:doc._id});
+      if(lessonDoc.validateSync())throw new Error('Lesson fixture validation failed.');
+      lessonDocs.push(lessonDoc);
       if(lesson.quiz2?.questions?.length)throw new Error('Only one quiz per lesson is supported.');
     }
+    doc.lessons=lessonDocs.map(l=>l._id);
+    validateCourseForPublication(doc,lessonDocs);
   }
   for(const item of [...SCENARIOS.enrollments,...SCENARIOS.reviews]){
     if(!users.get(item.user)?.role.includes('user') || !courses.has(item.course))throw new Error('Invalid activity fixture reference.');
@@ -64,6 +74,7 @@ async function award(userId, condition) {
   await User.updateOne({_id:userId,'badges.badge':{$ne:badge._id}},{$push:{badges:{badge:badge._id,earnedAt:daysAgo(2)}}});
 }
 async function seedDatabase(options={}) {
+  if(options.reviewOnly && (options.fresh || options.usersOnly))throw new Error('--review cannot be combined with --fresh or --users.');
   preflight();assertWritable(options,mongoose.connection.name);
   if(options.fresh)for(const Model of Object.values(models))await Model.deleteMany({});
   // Fail if badge definitions cannot be initialized; do not swallow setup errors.
@@ -80,31 +91,35 @@ async function seedDatabase(options={}) {
     if(createdUsers.has(email))await User.updateOne({_id:users.get(email)._id},{$set:{manager:users.get(team.manager)._id}});
   }
   if(options.usersOnly)return {users:users.size};
-  const courses=new Map();
-  for(const definition of COURSES){
+  const courses=new Map();let reviewCoursesCreated=0,reviewCoursesPreserved=0;
+  for(const definition of COURSES.filter(c=>!options.reviewOnly || !c.isApproved)){
     const trainer=users.get(definition.trainerEmail)._id;
     let course=await Course.findOne({title:definition.title,trainer}).select('+isArchived +finalExam.questions.correctAnswer +finalExam.questions.correctAnswers');
+    if(options.reviewOnly && course){reviewCoursesPreserved++;continue;}
     if(!course){
+      if(!users.get(definition.trainerEmail).role.includes('trainer'))throw new Error('The existing fixture owner is no longer a trainer. Restore the intended role explicitly before creating its courses.');
       course=await Course.create({title:definition.title,description:definition.description,tags:definition.tags,
         category:definition.category,price:definition.price,isPaid:definition.price>0,trainer,
         isApproved:false,createdAt:daysAgo(30),finalExam:definition.finalExam});
       const lessons=[];
       for(const lesson of definition.lessons)lessons.push(await Lesson.create({...lesson,course:course._id,createdAt:daysAgo(25)}));
       course.lessons=lessons.map(l=>l._id);
+      validateCourseForPublication(course, lessons);
       course.isApproved=definition.isApproved;
-      await course.save();
+      await course.save();reviewCoursesCreated++;
     }
     try {
       validateAssessment(course.finalExam);
       const existingLessons=await Lesson.find({course:course._id}).select('+quiz.questions.correctAnswer +quiz.questions.correctAnswers');
       if(!existingLessons.length || existingLessons.some(l=>l.quiz2?.questions?.length))throw new Error('Incomplete course.');
-      for(const lesson of existingLessons)validateAssessment(lesson.quiz);
+      validateCourseForPublication(course, existingLessons);
       if(definition.isApproved && (!course.isApproved || course.isArchived))throw new Error('Course is unavailable.');
     } catch {
       throw new Error('An existing fixture course is incomplete, archived, or unpublished. It was preserved. Edit it through authoring or use --fresh only on a disposable database.');
     }
     courses.set(definition.title,course);
   }
+  if(options.reviewOnly)return {users:users.size,reviewCoursesCreated,reviewCoursesPreserved};
   for(const scenario of SCENARIOS.enrollments){
     const user=users.get(scenario.user),course=courses.get(scenario.course);
     const filter={user:user._id,course:course._id};
@@ -172,11 +187,12 @@ async function seedDatabase(options={}) {
   return summary;
 }
 async function main() {
-  const args=process.argv.slice(2),options={fresh:args.includes('--fresh'),usersOnly:args.includes('--users')};
+  const args=process.argv.slice(2),options={fresh:args.includes('--fresh'),usersOnly:args.includes('--users'),reviewOnly:args.includes('--review')};
   for(let i=0;i<args.length;i++){
     if(args[i]==='--confirm-db'){options.confirmDb=args[++i];if(!options.confirmDb)throw new Error('--confirm-db requires a database name.');}
-    else if(!['--fresh','--users','--dry-run'].includes(args[i]))throw new Error('Unknown seeder option.');
+    else if(!['--fresh','--users','--review','--dry-run'].includes(args[i]))throw new Error('Unknown seeder option.');
   }
+  if(options.reviewOnly && (options.fresh || options.usersOnly))throw new Error('--review cannot be combined with --fresh or --users.');
   const plan=preflight();
   if(args.includes('--dry-run')){console.log('Dry run: fixtures validated; no database connection or writes.',plan);return;}
   if(!process.env.MONGO_URI)throw new Error('MONGO_URI must explicitly name a disposable database.');
@@ -185,7 +201,8 @@ async function main() {
   try{
     await mongoose.connect(process.env.MONGO_URI,{serverSelectionTimeoutMS:5000});
     console.log('Seed complete:',await seedDatabase(options));
-    console.log('Synthetic non-production fixtures only. Existing passwords and 2FA were not reset. No passwords or secrets are printed.');
+    console.log(options.fresh ? 'Synthetic non-production fixtures recreated after confirmed cleanup. Previous records were replaced.' : 'Synthetic non-production fixtures only. Existing passwords and 2FA were not reset. No passwords or secrets are printed.');
+    if(options.reviewOnly)console.log('Existing course content was preserved, not repaired. Review newly inserted drafts in admin course management.');
   }finally{await mongoose.disconnect();}
 }
 if(require.main===module)main().catch(error=>{

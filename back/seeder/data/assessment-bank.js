@@ -91,20 +91,29 @@ const banks = {
     ['Conditional rendering', 'choosing which React elements to return based on application state'],
   ],
 };
-function paper(existing, bank, label, timed) {
+// Extra review concepts allow larger papers without cycling the same bank entries.
+banks.node.push(['HTTP 429','the status used when a client exceeds a request rate limit'], ['TLS','the protocol protecting data in transit'], ['Object-level authorization','checking permission for the specific requested record'], ['Idempotency','the property that repeating an operation has the same intended effect'], ['Input allowlist','an explicit set of accepted input fields or values']);
+banks.docker.push(['Multi-stage build','a build technique separating build tools from the final image'], ['Resource limit','a configured ceiling for container CPU or memory usage'], ['Non-root user','a container identity without root privileges'], ['Rolling update','gradually replacing running workload replicas'], ['Network policy','rules controlling permitted Kubernetes network traffic']);
+banks.ml.push(['Class imbalance','unequal representation of target categories'], ['Hyperparameter','a model configuration chosen outside parameter fitting'], ['Baseline model','a simple reference used to judge improvements'], ['Stratified split','a data split preserving approximate class proportions'], ['Concept drift','a change over time in the relationship between inputs and targets']);
+banks.react.push(['Error boundary','a React boundary that handles rendering errors in descendants'], ['Reducer','a function computing next state from current state and an action'], ['Strict Mode','a development aid exposing unsafe component behavior'], ['Lazy initialization','deferring initial state computation until initialization'], ['Accessible name','the text identifying a UI control to assistive technology']);
+function paper(existing, bank, label, timed, target = 20) {
   const questions = structuredClone(existing.questions);
-  for (let i = 0; questions.length < 20; i++) {
-    const [term, description] = bank[i % bank.length];
+  for (let i = 0; questions.length < target; i++) {
+    if (!bank[i]) throw new Error('Assessment bank is too small for the requested paper.');
+    const [term, description] = bank[i];
     const next = bank[(i + 1) % bank.length];
     const multiple = i % 5 === 4;
     const options = multiple ? [
       `${term}: ${description}`, `${term}: ${next[1]}`,
       `${next[0]}: ${next[1]}`, `${next[0]}: ${description}`,
     ] : [term, ...[1, 2, 3].map(offset => bank[(i + offset) % bank.length][0])];
+    const shift = i % options.length;
+    const rotated = [...options.slice(shift), ...options.slice(0, shift)];
+    const answerIndex = original => (original - shift + options.length) % options.length;
     questions.push({
       texte: multiple ? `${label} — Review ${i + 1}: Select the two correctly matched terms.` : `${label} — Review ${i + 1}: Which term describes ${description}?`,
-      type: multiple ? 'multiple' : 'single', options,
-      ...(multiple ? {correctAnswers:[0, 2]} : {correctAnswer:0}),
+      type: multiple ? 'multiple' : 'single', options: rotated,
+      ...(multiple ? {correctAnswers:[answerIndex(0), answerIndex(2)]} : {correctAnswer:answerIndex(0)}),
       points: multiple ? 2 : 1,
       timeLimitSeconds: timed && i === 0 ? 30 : 0,
     });
@@ -117,8 +126,8 @@ function enrichCourse(course) {
   return {...course,
     tags: Array.isArray(course.tags) ? course.tags : course.tags.split(',').map(t=>t.trim()),
     category: topic === 'docker' ? 'IT & Software' : topic === 'ml' ? 'Data Science' : 'Development',
-    lessons: course.lessons.map((lesson, i) => ({...lesson, quiz:paper(lesson.quiz, bank, lesson.title, i === 0)})),
-    finalExam: paper(course.finalExam, bank, 'Final course review', false),
+    lessons: course.lessons.map((lesson, i) => ({...lesson, quiz:paper(lesson.quiz, bank, lesson.title, i === 0, 20 + (i % 3) * 2)})),
+    finalExam: paper(course.finalExam, bank, 'Final course review', false, 25),
   };
 }
 module.exports = { enrichCourse };

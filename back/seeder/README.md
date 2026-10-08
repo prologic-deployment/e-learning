@@ -13,6 +13,7 @@ metadata is signed. `.env` is loaded from `back/`, independent of your current d
 ```bash
 npm run seed:check                           # validate fixtures; no connection or writes
 SEED_ALLOW_WRITE=true npm run seed           # insert missing records; keep existing data
+SEED_ALLOW_WRITE=true npm run seed:review    # insert missing approval drafts; preserve existing courses
 SEED_ALLOW_WRITE=true npm run seed:users     # users/teams and built-in badges only
 ```
 
@@ -38,15 +39,40 @@ Do not run parallel seed processes. Writes are not wrapped in a database transac
 a failed run can be retried after addressing the error. No passwords, keys, tokens,
 connection URIs or user documents are printed by the seeder.
 
+## Review-ready courses on an existing development database
+
+Use `SEED_ALLOW_WRITE=true npm run seed:review` to add missing draft courses without
+requiring legacy activity fixtures to be complete. It prepares missing accounts and
+badge definitions, then inserts only missing React and API Security review drafts.
+It does not create enrollments, purchases, grades or certificates. Repeating it leaves
+existing courses untouched, including administrator approval decisions. `--review`
+cannot be combined with `--fresh` or `--users`.
+
+The default full seed still refuses incomplete existing scenario courses instead of
+rewriting assessments under learner histories. Neither command upgrades existing
+quiz contents in place. Use authoring to repair those courses; use a confirmed fresh
+seed **only** when intentionally replacing a disposable database.
+
+In the admin course-management screen, review and approve:
+- **React Fundamentals — Components, Hooks & State**: two quizzes (20 and 22 questions), final 25.
+- **API Security — Authentication and Access Control**: one 20-question quiz, final 25; passing score 80%.
+
+The real approval endpoint checks role authorization, course/lesson field contracts,
+matching lesson references, one valid quiz per lesson, complete valid final exam,
+answer indices/options, points, timers, passing scores and attempt limits. Archived
+courses must be restored first. Invalid papers remain unpublished. Answer keys used
+for validation are not included in the approval response. Repeated approval does not
+send a second new-course notification; publication uses a conditional state update.
+
 ## Current fixture graph
 
 | Collection | Fresh full count | Contract |
 |---|---:|---|
 | User | 13 | 1 admin, 2 managers, 3 trainers, 7 learners; hashed passwords; 2FA off initially |
 | Badge | 13 | Current definitions; earned badge references assigned to fixture learners |
-| Course | 4 | 3 published, 1 draft; tags as arrays, correct price/isPaid, lesson references |
-| Lesson | 12 | One embedded quiz each; no second quiz |
-| Embedded assessments | 16 | 12 quizzes + 4 finals, each 20 valid questions with hidden answer keys |
+| Course | 5 | 3 published, 2 review-ready drafts; tags as arrays, correct price/isPaid, lesson references |
+| Lesson | 13 | One embedded quiz each; no second quiz |
+| Embedded assessments | 18 | 13 quizzes of 20–24 questions + 5 finals of 25 questions; 405 questions total, hidden answer keys |
 | Enrollment | 9 | Shared progress calculation, matching quiz results/counters, 2 completed finals |
 | Purchase | 4 | Every paid enrollment has a matching simulated paid purchase |
 | Certificate | 2 | Unique serials and valid HMAC metadata for completed courses only |
@@ -58,8 +84,8 @@ connection URIs or user documents are printed by the seeder.
 | Quiz / Question / QuizResult / FinalExam | 0 | Legacy standalone models; active assessments are embedded in Lesson/Course |
 
 Questions retain the original lesson-specific content and add an explicit course-wide
-practice bank to reach 20. Banks exercise single response, multiple response, weighted
-points and a 30-second timed item in each course's first lesson quiz. Finals are untimed.
+practice bank to reach 20, 22 or 24 questions per lesson and 25 per final, without cycling bank entries. Answer positions rotate deterministically. The new API Security draft contains 25 contextual security questions, with 20 in its lesson quiz. Banks exercise single response, multiple response, weighted
+points and a 30-second timed item in each original course's first lesson quiz. The API Security lesson is untimed. Finals are untimed.
 These are development fixtures, not a production curriculum or real learner activity.
 Completed scores are calculated from correct fixture answers. Certificates are signed
 metadata only; no PDF/media files, payment-provider transactions, emails or AI calls are

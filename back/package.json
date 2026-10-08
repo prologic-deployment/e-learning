@@ -19,7 +19,8 @@
     "test:seed": "node --test tests/seeder.integration.test.cjs",
     "test:dashboards": "node --test --test-concurrency=1 tests/dashboard-details.integration.test.cjs tests/dashboard-performance.integration.test.cjs tests/assessment-authoring.integration.test.cjs",
     "test:dashboard-api": "node tests/dashboard-browser-api.cjs",
-    "test:validation": "node --test tests/input-validation.integration.test.cjs"
+    "test:validation": "node --test tests/input-validation.integration.test.cjs",
+    "seed:review": "node seeder/seed.js --review"
   },
   "keywords": [],
   "author": "",
