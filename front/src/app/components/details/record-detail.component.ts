@@ -14,12 +14,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Subscription } from 'rxjs';
 import { BrnDialogComponent } from '@spartan-ng/ui-dialog-brain';
 import { UiModule } from '../ui/ui.module';
-import { DetailRef, DetailService, RecordDetail } from './detail.service';
+import { TranslationModule } from '../../i18n/translation.module';
+import { DetailRef, DetailEvent, DetailService, RecordDetail } from './detail.service';
+import { TranslationService } from '../../i18n/translation.module';
 import { environment } from '../../../environments/environment';
 @Component({
     selector: 'app-record-detail',
     standalone: true,
-    imports: [CommonModule, UiModule],
+    imports: [CommonModule, UiModule, TranslationModule],
     templateUrl: './record-detail.component.html',
     styleUrls: ['./record-detail.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,6 +46,7 @@ export class RecordDetailComponent {
         private http: HttpClient,
         private change: ChangeDetectorRef,
         router: Router,
+        public i18n: TranslationService,
     ) {
         details.opened
             .pipe(takeUntilDestroyed())
@@ -134,9 +137,37 @@ export class RecordDetailComponent {
         )
             return Number.isNaN(new Date(value).getTime())
                 ? value
-                : new Date(value).toLocaleString();
+                : this.formatEventDate(value);
         return String(value);
     }
+    private get locale() {
+        return this.i18n.language() === 'fr' ? 'fr-FR' : 'en-GB';
+    }
+    formatEventDate(value: string): string {
+        const date = new Date(value);
+        return Number.isNaN(date.getTime())
+            ? value
+            : new Intl.DateTimeFormat(this.locale, {
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+              }).format(date);
+    }
+    eventIcon(type: string): string {
+        return (
+            {
+                purchase: 'bx-cart',
+                enrollment: 'bx-user-plus',
+                assessment_started: 'bx-play-circle',
+                assessment_submitted: 'bx-check-circle',
+                assessment_in_progress: 'bx-loader-circle',
+                result_saved: 'bx-badge-check',
+                certificate: 'bx-award',
+                review: 'bx-message-square-detail',
+                current_state: 'bx-pulse',
+            }[type] || 'bx-dot'
+        );
+    }
     trackSection = (_: number, s: { title: string }) => s.title;
+    trackEvent = (_: number, e: DetailEvent) => e.type + ':' + e.at;
     trackQuestion = (_: number, q: { number: number }) => q.number;
 }

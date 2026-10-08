@@ -9,6 +9,13 @@ export interface DetailField {
     label: string;
     value: string | number | boolean;
 }
+export interface DetailEvent {
+    at: string;
+    type: string;
+    title: string;
+    subtitle?: string;
+    fields?: DetailField[];
+}
 export interface DetailSection {
     title: string;
     fields?: DetailField[];
@@ -18,6 +25,7 @@ export interface DetailSection {
         fields?: DetailField[];
         detail?: DetailRef;
     }[];
+    timeline?: DetailEvent[];
     page?: { key: string; current: number; total: number; pages: number };
 }
 export interface QuestionReview {

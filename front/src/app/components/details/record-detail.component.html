@@ -3,7 +3,7 @@
     <hlm-dialog-content *brnDialogContent class="record-detail-dialog">
         <header class="detail-header">
             <div class="detail-eyebrow">
-                <span>Record details</span
+                <span>{{ "Record details" | t }}</span
                 ><button
                     *ngIf="history.length"
                     hlmBtn
@@ -11,19 +11,19 @@
                     size="sm"
                     (click)="back()"
                 >
-                    ← Back
+                    ← {{ "Back" | t }}
                 </button>
             </div>
             <h2 hlmDialogTitle>
                 {{
                     data?.title ||
-                        (error ? "Details unavailable" : "Loading record…")
+                        (error ? ("Details unavailable" | t) : ("Loading record…" | t))
                 }}
             </h2>
             <p hlmDialogDescription>
                 {{
                     data?.subtitle ||
-                        "Explore this record and its related information."
+                        ("Explore this record and its related information." | t)
                 }}
             </p>
             <button
@@ -34,13 +34,13 @@
                 class="review-jump"
                 (click)="scrollToAnswers()"
             >
-                View answers ({{ data?.review?.total }}) ↓
+                {{ "View answers" | t }} ({{ data?.review?.total }}) ↓
             </button>
         </header>
         <div #scrollBody class="detail-scroll" [attr.aria-busy]="loading">
             <div *ngIf="loading" role="status" class="detail-loading">
                 <span class="detail-spinner" aria-hidden="true"></span>
-                <p>Loading details…</p>
+                <p>{{ "Loading details…" | t }}</p>
                 <div class="skeleton-grid" aria-hidden="true">
                     <hlm-skeleton
                         *ngFor="let n of [1, 2, 3, 4]"
@@ -49,14 +49,14 @@
                 </div>
             </div>
             <div *ngIf="error" role="alert" class="detail-empty">
-                <h3>Unable to open this record</h3>
-                <p>{{ error }}</p>
-                <button hlmBtn (click)="load()">Retry</button>
+                <h3>{{ "Unable to open this record" | t }}</h3>
+                <p>{{ error | t }}</p>
+                <button hlmBtn (click)="load()">{{ "Retry" | t }}</button>
             </div>
             <ng-container *ngIf="data && !loading">
                 <p class="detail-notice" *ngIf="data.notice">
                     <i class="bx bx-info-circle" aria-hidden="true"></i
-                    >{{ data.notice }}
+                    >{{ data.notice | t }}
                 </p>
                 <section
                     *ngFor="let section of data.sections; trackBy: trackSection"
@@ -64,9 +64,10 @@
                     hlmCard
                 >
                     <div class="section-heading">
-                        <h3>{{ section.title }}</h3>
+                        <h3>{{ section.title | t }}</h3>
                         <span *ngIf="section.page" hlmBadge variant="secondary"
-                            >{{ section.page.total }} records</span
+                            >{{ section.page.total }}
+                            {{ "records" | t }}</span
                         >
                     </div>
                     <dl *ngIf="section.fields?.length" class="detail-fields">
@@ -77,17 +78,55 @@
                                     'Description',
                                     'Course description',
                                     'Content',
-                                    'Comment',
+                                    'Comment'
                                 ].includes(f.label)
                             "
                         >
-                            <dt>{{ f.label }}</dt>
-                            <dd>{{ display(f.value) }}</dd>
+                            <dt>{{ f.label | t }}</dt>
+                            <dd>{{ display(f.value) | t }}</dd>
                         </div>
                     </dl>
+                    <ol
+                        *ngIf="section.timeline?.length"
+                        class="journey-timeline"
+                        [attr.aria-label]="section.title | t"
+                    >
+                        <li
+                            *ngFor="
+                                let ev of section.timeline;
+                                trackBy: trackEvent
+                            "
+                            class="journey-event"
+                            [class]="'event-' + ev.type"
+                        >
+                            <span class="event-marker" aria-hidden="true"
+                                ><i [class]="'bx ' + eventIcon(ev.type)"></i
+                            ></span>
+                            <div class="event-card">
+                                <header>
+                                    <h4>{{ ev.title | t }}</h4>
+                                    <time [attr.datetime]="ev.at">{{
+                                        formatEventDate(ev.at)
+                                    }}</time>
+                                </header>
+                                <p *ngIf="ev.subtitle" class="event-subtitle">
+                                    {{ ev.subtitle }}
+                                </p>
+                                <dl
+                                    *ngIf="ev.fields?.length"
+                                    class="detail-fields compact"
+                                >
+                                    <div *ngFor="let f of ev.fields">
+                                        <dt>{{ f.label | t }}</dt>
+                                        <dd>{{ display(f.value) | t }}</dd>
+                                    </div>
+                                </dl>
+                            </div>
+                        </li>
+                    </ol>
                     <div *ngIf="section.items" class="related-records">
                         <p *ngIf="!section.items.length" class="detail-empty">
-                            No records available in this section.
+                            {{ "No records available in this section." | t }}
                         </p>
                         <article
                             *ngFor="let item of section.items"
@@ -96,7 +135,7 @@
                             <div class="related-heading">
                                 <div>
                                     <h4>
-                                        {{ item.title || "Unavailable record" }}
+                                        {{ item.title || ("Unavailable record" | t) }}
                                     </h4>
                                     <p *ngIf="item.subtitle">
                                         {{ item.subtitle }}
@@ -109,10 +148,10 @@
                                     size="sm"
                                     (click)="open(item.detail)"
                                     [attr.aria-label]="
-                                        'View details: ' + item.title
+                                        ('View details' | t) + ': ' + item.title
                                     "
                                 >
-                                    View details
+                                    {{ "View details" | t }}
                                     <span aria-hidden="true">↗</span>
                                 </button>
                             </div>
@@ -121,8 +160,8 @@
                                 class="detail-fields compact"
                             >
                                 <div *ngFor="let f of item.fields">
-                                    <dt>{{ f.label }}</dt>
-                                    <dd>{{ display(f.value) }}</dd>
+                                    <dt>{{ f.label | t }}</dt>
+                                    <dd>{{ display(f.value) | t }}</dd>
                                 </div>
                             </dl>
                         </article>
@@ -130,7 +169,7 @@
                     <nav
                         *ngIf="section.page && section.page.pages > 1"
                         class="detail-pagination"
-                        [attr.aria-label]="section.title + ' pages'"
+                        [attr.aria-label]="(section.title | t) + ' ' + ('pages' | t)"
                     >
                         <button
                             hlmBtn
@@ -144,10 +183,10 @@
                                 )
                             "
                         >
-                            Previous</button
+                            {{ "Previous" | t }}</button
                         ><span
-                            >Page {{ section.page.current }} of
-                            {{ section.page.pages }}</span
+                            >{{ "Page" | t }} {{ section.page.current }}
+                            {{ "of" | t }} {{ section.page.pages }}</span
                         ><button
                             hlmBtn
                             variant="outline"
@@ -162,7 +201,7 @@
                                 )
                             "
                         >
-                            Next
+                            {{ "Next" | t }}
                         </button>
                     </nav>
                 </section>
@@ -173,16 +212,16 @@
                 >
                     <div class="section-heading">
                         <div>
-                            <span class="detail-eyebrow"
-                                >Assessment evidence</span
-                            >
+                            <span class="detail-eyebrow">{{
+                                "Assessment evidence" | t
+                            }}</span>
                             <h3 id="answer-review-heading">
-                                Question-by-question review
+                                {{ "Question-by-question review" | t }}
                             </h3>
                         </div>
                         <span hlmBadge variant="secondary"
                             >{{ review.correct }} /
-                            {{ review.total }} correct</span
+                            {{ review.total }} {{ "correct" | t }}</span
                         >
                     </div>
                     <article
@@ -200,11 +239,13 @@
                                 <h4>{{ q.text }}</h4>
                                 <p>
                                     {{
-                                        q.type === "multiple"
+                                        (q.type === "multiple"
                                             ? "Multiple response"
                                             : "Single response"
+                                        ) | t
                                     }}<span *ngIf="q.timeLimitSeconds">
-                                        · {{ q.timeLimitSeconds }}s limit</span
+                                        · {{ q.timeLimitSeconds }}s
+                                        {{ "limit" | t }}</span
                                     >
                                 </p>
                             </div>
@@ -212,19 +253,20 @@
                                 class="answer-status"
                                 [class.correct]="q.correct"
                                 >{{
-                                    q.correct
+                                    (q.correct
                                         ? "Correct"
                                         : q.unanswered
                                           ? "Unanswered"
                                           : "Incorrect"
+                                    ) | t
                                 }}
                                 · {{ q.earnedPoints }} /
-                                {{ q.points }} pts</span
+                                {{ q.points }} {{ "pts" | t }}</span
                             >
                         </header>
                         <div class="answer-comparison">
                             <div class="student-answer">
-                                <h5>Student’s answer</h5>
+                                <h5>{{ "Student’s answer" | t }}</h5>
                                 <ul
                                     *ngIf="
                                         q.studentAnswers.length;
@@ -238,17 +280,21 @@
                                 <ng-template #noAnswer
                                     ><p>
                                         {{
-                                            q.unanswered
+                                            (q.unanswered
                                                 ? "No answer submitted"
                                                 : "No valid option submitted"
+                                            ) | t
                                         }}
                                     </p></ng-template
                                 >
                             </div>
                             <div class="correct-answer">
                                 <h5>
-                                    Correct answer{{
-                                        q.correctAnswers.length > 1 ? "s" : ""
+                                    {{
+                                        (q.correctAnswers.length > 1
+                                            ? "Correct answers"
+                                            : "Correct answer"
+                                        ) | t
                                     }}
                                 </h5>
                                 <ul>
@@ -259,7 +305,7 @@
                             </div>
                         </div>
                         <div *ngIf="q.explanation" class="answer-explanation">
-                            <h5>Explanation</h5>
+                            <h5>{{ "Explanation" | t }}</h5>
                             <p>{{ q.explanation }}</p>
                         </div>
                     </article>
@@ -268,14 +314,14 @@
                     class="detail-empty"
                     *ngIf="!data.sections?.length && !data.review"
                 >
-                    No additional details are available for this record.
+                    {{ "No additional details are available for this record." | t }}
                 </p>
             </ng-container>
         </div>
         <footer class="detail-footer">
-            <span>Authorized, current record data</span
+            <span>{{ "Authorized, current record data" | t }}</span
             ><button hlmBtn variant="outline" (click)="dialog.close(0)">
-                Close
+                {{ "Close" | t }}
             </button>
         </footer>
     </hlm-dialog-content>
