@@ -13,7 +13,9 @@ const User = require("../src/models/User"),
   Lesson = require("../src/models/Lesson"),
   Enrollment = require("../src/models/Enrollment"),
   Review = require("../src/models/Review"),
-  Attempt = require("../src/models/AssessmentAttempt");
+  Attempt = require("../src/models/AssessmentAttempt"),
+  Purchase = require("../src/models/Purchase"),
+  Certificate = require("../src/models/Certificate");
 const { session } = require("../src/services/session.service");
 const { assessmentReview } = require("../src/utils/assessmentReview");
 const questions = Array.from({ length: 20 }, (_, i) => ({
@@ -299,6 +301,30 @@ test(
           assert.equal((await get(path)).body.review, null);
         },
       );
+      await t.test("enrollment journey lists the recorded lifecycle in order", async () => {
+        await Purchase.create({ user: users.user._id, course: c._id, amount: 75, paymentStatus: "paid" });
+        await Certificate.create({ user: users.user._id, course: c._id, trainer: users.trainer._id, serial: "JOURNEY-1" });
+        for (const who of ["admin", "trainer", "manager", "user"]) {
+          const r = await get("/details/enrollment/" + e.id, who).expect(200);
+          const journey = r.body.sections.find((s) => s.title === "Course journey");
+          assert.ok(journey?.timeline?.length >= 6, who + " sees the journey");
+          const types = journey.timeline.map((ev) => ev.type);
+          const ats = journey.timeline.map((ev) => new Date(ev.at).getTime());
+          assert.deepEqual(ats, [...ats].sort((a, b) => a - b), "chronological order");
+          for (const expected of ["purchase", "enrollment", "assessment_submitted", "result_saved", "certificate", "current_state"])
+            assert.ok(types.includes(expected), who + " sees " + expected);
+          assert.equal(journey.timeline.at(-1).type, "current_state");
+          const submitted = journey.timeline.find((ev) => ev.type === "assessment_submitted");
+          assert.match(JSON.stringify(submitted.fields), /Score/);
+          assert.ok(!JSON.stringify(journey).includes("correctAnswer"), "no answer keys in journey");
+          assert.ok(!JSON.stringify(journey).includes("paper"), "no papers in journey");
+        }
+        await get("/details/enrollment/" + e.id, "otherTrainer").expect(404);
+        const titles = (await get("/details/enrollment/" + e.id, "trainer").expect(200)).body.sections.find((s) => s.title === "Course journey").timeline.map((ev) => ev.title);
+        assert.ok(titles.includes("Final exam result saved"), "summary-only final keeps an event");
+        assert.ok(!titles.includes("Lesson quiz result saved"), "lesson result with a finished attempt is not duplicated");
+        assert.ok(titles.includes("Legacy lesson quiz result saved"), "legacy quiz2 keeps its own event");
+      });
       await t.test(
         "relations are paginated and reviews have independent permissions",
         async () => {

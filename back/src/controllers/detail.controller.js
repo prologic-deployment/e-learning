@@ -4,6 +4,8 @@ const Course = require("../models/Course");
 const Lesson = require("../models/Lesson");
 const Enrollment = require("../models/Enrollment");
 const Review = require("../models/Review");
+const Purchase = require("../models/Purchase");
+const Certificate = require("../models/Certificate");
 const AssessmentAttempt = require("../models/AssessmentAttempt");
 const { assessmentReview } = require("../utils/assessmentReview");
 const { gradeSubmission } = require("../utils/assessment");
@@ -393,6 +395,124 @@ function resultItems(e) {
       : []),
   ].filter((r) => typeof r.score === "number");
 }
+const secondsBetween = (a, b) =>
+  Math.max(0, Math.round((new Date(b).getTime() - new Date(a).getTime()) / 1000));
+// Chronological lifecycle of one enrollment, built only from recorded evidence:
+// purchases, enrollment, per-attempt assessment history, saved results that have no
+// attempt document, certificate, review and the current progress state.
+async function journeySection(e) {
+  const userId = e.user?._id || e.user,
+    courseId = e.course?._id || e.course;
+  const events = [];
+  const add = (at, type, title, subtitle, obj) =>
+    events.push({
+      at,
+      type,
+      title,
+      ...(subtitle ? { subtitle } : {}),
+      fields: fields(obj || {}),
+    });
+  const purchases = await Purchase.find({ user: userId, course: courseId })
+    .select("amount paymentStatus paymentProvider paymentReference createdAt")
+    .sort({ createdAt: 1 })
+    .lean();
+  for (const p of purchases)
+    add(p.createdAt, "purchase", "Purchase recorded", null, {
+      Amount: p.amount,
+      "Payment status": p.paymentStatus,
+      Provider: p.paymentProvider,
+      ...(p.paymentReference ? { Reference: p.paymentReference } : {}),
+    });
+  add(e.createdAt, "enrollment", "Enrolled in the course", null, {
+    ...(e.deadline ? { Deadline: e.deadline } : {}),
+  });
+  const attempts = await AssessmentAttempt.find({ user: userId, course: courseId })
+    .select("kind target status index attemptsUsed result createdAt updatedAt")
+    .sort({ createdAt: 1 })
+    .lean();
+  const lessonTitles = new Map(
+    (
+      await Lesson.find({
+        _id: { $in: attempts.filter((a) => a.kind === "lesson").map((a) => a.target) },
+      })
+        .select("title")
+        .lean()
+    ).map((l) => [String(l._id), l.title]),
+  );
+  const targetTitle = (a) =>
+    a.kind === "final"
+      ? "Final exam"
+      : lessonTitles.get(String(a.target)) || "Deleted lesson";
+  const finishedTargets = new Set();
+  for (const a of attempts) {
+    const title = targetTitle(a);
+    if (a.status === "finished") {
+      finishedTargets.add(a.kind + ":" + String(a.target));
+      add(a.createdAt, "assessment_started", a.kind === "final" ? "Final exam started" : "Lesson quiz started", title, {
+        ...(a.attemptsUsed ? { Attempt: a.attemptsUsed } : {}),
+      });
+      add(a.updatedAt, "assessment_submitted", a.kind === "final" ? "Final exam submitted" : "Lesson quiz submitted", title, {
+        ...(a.result?.score != null ? { Score: a.result.score + "%" } : {}),
+        ...(a.result?.passed != null
+          ? { Status: a.result.passed ? "Passed" : "Not passed" }
+          : {}),
+        ...(a.attemptsUsed ? { Attempt: a.attemptsUsed } : {}),
+        Duration: secondsBetween(a.createdAt, a.updatedAt) + " seconds",
+      });
+    } else {
+      add(a.updatedAt, "assessment_in_progress", "Assessment in progress", title, {
+        Status: a.status,
+        "Current question": (a.index || 0) + 1,
+        ...(a.attemptsUsed ? { Attempt: a.attemptsUsed } : {}),
+      });
+    }
+  }
+  const savedResults = [
+    ...(e.quizResults || []).map((r) => ({ r, kind: "lesson" })),
+    ...(e.quiz2Results || []).map((r) => ({ r, kind: "lesson2" })),
+    ...(typeof e.finalExamResult?.score === "number"
+      ? [{ r: { ...e.finalExamResult, lesson: null }, kind: "final" }]
+      : []),
+  ];
+  for (const { r, kind } of savedResults) {
+    if (typeof r.score !== "number") continue;
+    const key =
+      kind === "final" ? "final:" + String(courseId) : kind + ":" + String(r.lesson);
+    if (kind !== "lesson2" && finishedTargets.has(key)) continue;
+    const title =
+      kind === "final"
+        ? "Final exam"
+        : lessonTitles.get(String(r.lesson)) || "Deleted lesson";
+    add(r.completedAt, "result_saved", kind === "final" ? "Final exam result saved" : kind === "lesson2" ? "Legacy lesson quiz result saved" : "Lesson quiz result saved", title, {
+      Score: r.score + "%",
+      Status: r.passed ? "Passed" : "Not passed",
+      Attempts: r.attempts || 1,
+    });
+  }
+  const certificate = await Certificate.findOne({ user: userId, course: courseId })
+    .select("date serial isValid")
+    .lean();
+  if (certificate)
+    add(certificate.date, "certificate", "Certificate issued", null, {
+      ...(certificate.serial ? { Serial: certificate.serial } : {}),
+      Status: certificate.isValid === false ? "Revoked" : "Valid",
+    });
+  const review = await Review.findOne({ user: userId, course: courseId })
+    .select("rating createdAt")
+    .lean();
+  if (review)
+    add(review.createdAt, "review", "Course review posted", null, {
+      Rating: review.rating,
+    });
+  add(new Date(), "current_state", "Current progress state", null, {
+    Progress: (e.progress || 0) + "%",
+    "Completed lessons": e.lessonsCompleted?.length || 0,
+    Status: e.completed ? "Completed" : "In progress",
+    "Last activity": e.updatedAt,
+  });
+  events.sort((a, b) => new Date(a.at).getTime() - new Date(b.at).getTime());
+  return { title: "Course journey", timeline: events };
+}
 async function enrollmentDetail(req, id) {
   const e = await enrollment(req, id),
     results = resultItems(e);
@@ -421,6 +541,7 @@ async function enrollmentDetail(req, id) {
         "Completed lessons": e.lessonsCompleted?.length || 0,
         Deadline: e.deadline,
       }),
+      await journeySection(e),
       {
         title: "Related records",
         items: [
