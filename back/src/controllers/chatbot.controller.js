@@ -132,3 +132,8 @@ exports.reindex = async (req, res) => {
     res.status(503).json({ message: "Re-indexing unavailable." });
   }
 };
+
+// Shared browser/server input contract. Route guards still run first.
+for (const name of ["chat"]) {
+  exports[name] = require("../validation/validate-input").withInputValidation(exports[name]);
+}

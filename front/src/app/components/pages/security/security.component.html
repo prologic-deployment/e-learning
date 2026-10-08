@@ -84,7 +84,7 @@
                         label="Current password"
                         [required]="true"
                         hint="Confirm it is you before creating an authenticator key."
-                        ><input
+                        ><input appInputRule="currentPassword" appFieldPath="password"
                             hlmInput
                             type="password"
                             name="password"
@@ -129,7 +129,7 @@
                             label="Code from your authenticator"
                             [required]="true"
                             hint="Enter six digits to confirm setup. Your account is not protected until this step succeeds."
-                            ><input
+                            ><input [appInputRule]="recoveryMode ? 'recovery' : 'code'" appFieldPath="code"
                                 hlmInput
                                 name="code"
                                 inputmode="numeric"
@@ -198,7 +198,7 @@
                         current authenticator key and recovery codes.
                     </p>
                     <app-form-field label="Current password" [required]="true"
-                        ><input
+                        ><input appInputRule="currentPassword" appFieldPath="password"
                             hlmInput
                             type="password"
                             name="password"
@@ -213,7 +213,7 @@
                                 : 'Fresh authenticator code'
                         "
                         [required]="true"
-                        ><input
+                        ><input [appInputRule]="recoveryMode ? 'recovery' : 'code'" appFieldPath="code"
                             hlmInput
                             name="proof"
                             autocomplete="one-time-code"

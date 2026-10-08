@@ -278,3 +278,8 @@ exports.createStaff = async (req,res) => {
     res.status(201).json({message:'Staff account created.',user:{_id:staff._id,firstname:staff.firstname,lastname:staff.lastname,email:staff.email,role:staff.role}});
   }catch(error){res.status(error.code===11000?409:400).json({message:error.code===11000?'An account with this email already exists.':'Staff details could not be saved. Check the required fields.'});}
 };
+
+// Shared browser/server input contract. Route guards still run first.
+for (const name of ["updateProfile", "updateUserRole", "createTrainer", "createManager", "createStaff"]) {
+  exports[name] = require("../validation/validate-input").withInputValidation(exports[name]);
+}

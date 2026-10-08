@@ -3050,3 +3050,7 @@ p {
 /* Native selects outside the shared data tables must use the active palette too. */
 select[hlmInput], select[hlmInput] option { background-color:hsl(var(--card));color:hsl(var(--foreground)); }
 .dark select { color-scheme:dark; }
+
+.control-validation-message {display:block;margin-top:6px;font-size:12px;font-weight:400;line-height:1.5;color:#b92332;white-space:normal;}
+.control-validation-message[hidden]{display:none!important}
+.dark .control-validation-message,.dark app-form-field .field-error{color:#ff9ca5!important}

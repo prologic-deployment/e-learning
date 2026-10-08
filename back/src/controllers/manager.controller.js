@@ -80,3 +80,8 @@ exports.getTeamProgress = async (req, res) => {
     res.json(members.map(m=>({user:{id:m._id,firstname:m.firstname,lastname:m.lastname},courses:buckets.get(String(m._id))})));
   } catch (error) { res.status(500).json({message:'Unable to load team progress.'}); }
 };
+
+// Shared browser/server input contract. Route guards still run first.
+for (const name of ["assignUserToManager", "assignCourseToUsers"]) {
+  exports[name] = require("../validation/validate-input").withInputValidation(exports[name]);
+}

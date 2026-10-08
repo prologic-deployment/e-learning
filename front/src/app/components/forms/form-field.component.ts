@@ -18,6 +18,7 @@ export class FormFieldComponent implements AfterContentChecked {
   get error(): string {
     const c = this.control;
     if (!c?.invalid || !(c.touched || this.form?.submitted)) return '';
+    if (c.errors?.['inputPolicy']) return c.errors['inputPolicy'].message;
     if (c.errors?.['required']) return `${this.label} is required.`;
     if (c.errors?.['email']) return 'Enter a valid email address.';
     if (c.errors?.['minlength']) return `Use at least ${c.errors['minlength'].requiredLength} characters.`;

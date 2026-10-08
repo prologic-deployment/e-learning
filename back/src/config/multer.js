@@ -47,7 +47,7 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = /pdf|mp4|mov|avi|mkv|jpg|jpeg|png|webp/;
+  const allowedTypes = /\.(pdf|mp4|mov|avi|mkv|jpg|jpeg|png|webp)$/;
   const extname = allowedTypes.test(
     path.extname(file.originalname).toLowerCase()
   );
@@ -55,7 +55,7 @@ const fileFilter = (req, file, cb) => {
   if (extname) {
     cb(null, true);
   } else {
-    cb(new Error("File type not allowed"));
+    cb(Object.assign(new Error("File type not allowed"), { status: 400 }));
   }
 };
 
@@ -65,4 +65,8 @@ const upload = multer({
   fileFilter: fileFilter
 });
 
+upload.image = multer({storage, limits:{fileSize:5*1024*1024},fileFilter(req,file,cb){
+  if(!/\.(jpg|jpeg|png|webp)$/i.test(file.originalname))return cb(Object.assign(new Error('File type not allowed'),{status:400}));
+  fileFilter(req,file,cb);
+}});
 module.exports = upload;

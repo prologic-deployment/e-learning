@@ -31,6 +31,10 @@ exports.saveCV = async (req, res) => {
       competences, langues, hobbies
     };
 
+    // Omitted sections are not empty sections: preserve previously saved entries.
+    for (const key of ['experiences','formations','certifications','competences','langues','hobbies']) {
+      if (req.body[key] === undefined) delete updateData[key];
+    }
     // ✅ Ajouter la photo seulement si un fichier est uploadé
     if (req.file) {
       updateData.photo = `/uploads/images/${req.file.filename}`;
@@ -228,3 +232,7 @@ exports.downloadCV = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+// Shared browser/server input contract. Route guards still run first.
+for (const name of ["saveCV", "addExperience", "addFormation", "addCompetence", "addLangue", "addHobby"]) {
+  exports[name] = require("../validation/validate-input").withInputValidation(exports[name]);
+}

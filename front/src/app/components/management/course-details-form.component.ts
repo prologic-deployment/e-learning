@@ -13,7 +13,7 @@ import { UiModule } from '../ui/ui.module';
             <h2>{{ editing ? 'Refine your course' : 'Start with a great idea.' }}</h2>
             <p>Tell learners what they will explore and why it matters.</p>
             <label hlmLabel for="editor-title">Course title *</label
-            ><input
+            ><input appInputRule="title" appFieldPath="title"
                 hlmInput
                 id="editor-title"
                 name="title"
@@ -26,7 +26,7 @@ import { UiModule } from '../ui/ui.module';
                 >Give your course a title.</small
             >
             <label hlmLabel for="editor-description">What will learners discover? *</label
-            ><textarea
+            ><textarea appInputRule="description" appFieldPath="description" maxlength="10000"
                 hlmInput
                 id="editor-description"
                 name="description"
@@ -45,7 +45,7 @@ import { UiModule } from '../ui/ui.module';
             <span class="eyebrow">02 / COURSE SETTINGS</span>
             <h2>Give it a home.</h2>
             <label hlmLabel for="editor-category">Subject *</label
-            ><input
+            ><input appInputRule="category" appFieldPath="category" maxlength="100"
                 hlmInput
                 id="editor-category"
                 name="category"
@@ -60,7 +60,7 @@ import { UiModule } from '../ui/ui.module';
             >
             <ng-container *ngIf="allowSubcategory"
                 ><label hlmLabel for="editor-subcategory">Subcategory</label
-                ><input
+                ><input appInputRule="category" appFieldPath="subCategory" maxlength="100"
                     hlmInput
                     id="editor-subcategory"
                     name="subcategory"
@@ -70,7 +70,7 @@ import { UiModule } from '../ui/ui.module';
                     <option *ngFor="let c of subcategories" [value]="c"></option></datalist
             ></ng-container>
             <label hlmLabel for="editor-price">Price in TND *</label
-            ><input
+            ><input appInputRule="price" appFieldPath="price"
                 hlmInput
                 id="editor-price"
                 type="number"

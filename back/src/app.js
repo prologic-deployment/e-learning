@@ -119,6 +119,7 @@ app.use((req, res) => {
 // ✅ Central error handler — never leaks internals to the client
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
+  if (err.name === 'MulterError') return res.status(400).json({code:'VALIDATION_ERROR',message:err.code==='LIMIT_FILE_SIZE'?'The selected file is too large. Images are limited to 5 MB and lesson files to 100 MB.':'Check the selected file and upload field.'});
   // Multer file-type errors and CORS rejections get clear messages
   const safeMessage =
     err.message === "File type not allowed"

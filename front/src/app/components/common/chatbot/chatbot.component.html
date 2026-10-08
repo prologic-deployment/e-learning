@@ -96,7 +96,7 @@
 
     <!-- Input -->
     <div class="chat-input-area">
-      <textarea
+      <textarea appInputRule="chat" appFieldPath="message" required maxlength="2000"
         [(ngModel)]="message"
         (keydown)="onKeyPress($event)"
         placeholder="Écrivez votre message..."

@@ -32,7 +32,7 @@
         </div>
         <form class="catalogue-search" (ngSubmit)="search()">
             <i class="bx bx-search" aria-hidden="true"></i
-            ><input
+            ><input maxlength="100" appInputRule="search"
                 hlmInput
                 type="search"
                 name="search"

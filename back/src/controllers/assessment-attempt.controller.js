@@ -38,3 +38,8 @@ exports.answer=async(req,res)=>{try{
  if(!updated)return res.status(409).json({message:'This question was already answered. Resume your attempt.'});
  if(updated.index===updated.paper.questions.length)return finish(req,res,updated);res.json({...publicState(updated),previousExpired:expired});
 }catch(e){res.status(500).json({message:'Unable to save this answer. Resume your attempt.'});}};
+
+// Shared browser/server input contract. Route guards still run first.
+for (const name of ["start", "answer"]) {
+  exports[name] = require("../validation/validate-input").withInputValidation(exports[name]);
+}

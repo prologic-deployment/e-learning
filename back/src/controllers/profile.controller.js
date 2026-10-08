@@ -67,15 +67,12 @@ exports.updateProfile = async (req, res) => {
 // Mettre à jour mon avatar
 exports.updateAvatar = async (req, res) => {
   try {
-    console.log(' updateAvatar called');
-    console.log('req.file:', req.file);
 
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
     const avatarUrl = `/uploads/avatars/${req.file.filename}`;
-    console.log('avatarUrl:', avatarUrl);
 
     const updated = await User.findByIdAndUpdate(
       req.user._id,
@@ -83,7 +80,6 @@ exports.updateAvatar = async (req, res) => {
       { returnDocument: 'after' }
     ).select("firstname lastname email avatar");
 
-    console.log('updated user:', updated);
 
     res.status(200).json({ message: "Avatar updated", user: updated });
   } catch (error) {
@@ -91,3 +87,8 @@ exports.updateAvatar = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+// Shared browser/server input contract. Route guards still run first.
+for (const name of ["updateProfile", "updateAvatar"]) {
+  exports[name] = require("../validation/validate-input").withInputValidation(exports[name]);
+}

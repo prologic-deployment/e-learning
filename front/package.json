@@ -14,7 +14,10 @@
     "test:details:browser": "node tests/dashboard-details.browser.cjs",
     "test:controls:browser": "node tests/dashboard-controls.browser.cjs",
     "test:header:browser": "node tests/header-account.browser.cjs",
-    "test:profile-summary": "node --test tests/profile-summary.cjs"
+    "test:profile-summary": "node --test tests/profile-summary.cjs",
+    "validation:sync": "node scripts/sync-validation.cjs",
+    "validation:check": "node scripts/sync-validation.cjs --check",
+    "test:validation:browser": "node tests/input-validation.browser.cjs"
   },
   "private": true,
   "dependencies": {

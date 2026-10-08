@@ -159,7 +159,7 @@
                         </button>
                     </div>
                     <div class="filter-bar" *ngIf="activeTab === 'courses'">
-                        <input
+                        <input maxlength="100" appInputRule="search"
                             hlmInput
                             aria-label="Search enrolled courses"
                             [(ngModel)]="courseQuery"
@@ -482,7 +482,7 @@
                     <div class="form-grid">
                         <div>
                             <label hlmLabel for="first-name">First name *</label
-                            ><input
+                            ><input appInputRule="name" appFieldPath="firstname" maxlength="100"
                                 hlmInput
                                 id="first-name"
                                 name="firstname"
@@ -492,7 +492,7 @@
                         </div>
                         <div>
                             <label hlmLabel for="last-name">Last name *</label
-                            ><input
+                            ><input appInputRule="name" appFieldPath="lastname" maxlength="100"
                                 hlmInput
                                 id="last-name"
                                 name="lastname"
@@ -502,7 +502,7 @@
                         </div>
                         <div>
                             <label hlmLabel for="phone">Phone</label
-                            ><input
+                            ><input appInputRule="phone" appFieldPath="phone" maxlength="40"
                                 hlmInput
                                 id="phone"
                                 name="phone"
@@ -512,7 +512,7 @@
                         </div>
                         <div>
                             <label hlmLabel for="address">Address</label
-                            ><input
+                            ><input appInputRule="address" appFieldPath="address" maxlength="500"
                                 hlmInput
                                 id="address"
                                 name="address"
@@ -550,7 +550,7 @@
                         <div class="full-width">
                             <label hlmLabel for="current-password"
                                 >Current password *</label
-                            ><input
+                            ><input appInputRule="currentPassword" appFieldPath="currentPassword"
                                 hlmInput
                                 id="current-password"
                                 name="currentPassword"
@@ -563,7 +563,7 @@
                         <div>
                             <label hlmLabel for="new-password"
                                 >New password *</label
-                            ><input
+                            ><input appInputRule="password" appFieldPath="newPassword"
                                 hlmInput
                                 id="new-password"
                                 name="newPassword"
@@ -576,7 +576,7 @@
                         <div>
                             <label hlmLabel for="confirm-password"
                                 >Confirm password *</label
-                            ><input
+                            ><input [appMatches]="passwordData.newPassword" appInputRule="password" appFieldPath="confirmPassword"
                                 hlmInput
                                 id="confirm-password"
                                 name="confirmPassword"

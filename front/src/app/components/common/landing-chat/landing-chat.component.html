@@ -71,7 +71,7 @@
             <label hlmLabel for="landing-chat-message">{{
                 "Your message" | t
             }}</label>
-            <textarea
+            <textarea appInputRule="chat" appFieldPath="message" required
                 #input
                 hlmInput
                 id="landing-chat-message"

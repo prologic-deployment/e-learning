@@ -357,3 +357,8 @@ exports.whisperStatus = async (req, res) => {
     res.status(500).json({ available: false, message: config.prodLike ? 'Server error' : error.message });
   }
 };
+
+// Shared browser/server input contract. Route guards still run first.
+for (const name of ["summarizeCourse", "summarizeLesson"]) {
+  exports[name] = require("../validation/validate-input").withInputValidation(exports[name]);
+}

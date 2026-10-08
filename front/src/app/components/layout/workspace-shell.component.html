@@ -114,7 +114,7 @@
                         <label hlmLabel for="workspace-search">{{
                             "Search navigation" | t
                         }}</label
-                        ><input
+                        ><input maxlength="100" appInputRule="search"
                             hlmInput
                             id="workspace-search"
                             [(ngModel)]="query"

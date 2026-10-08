@@ -165,3 +165,7 @@ exports.setDeadline = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+// Shared browser/server input contract. Route guards still run first.
+for (const name of ["updateProgress", "enrollInCourse", "setDeadline"]) {
+  exports[name] = require("../validation/validate-input").withInputValidation(exports[name]);
+}

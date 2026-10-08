@@ -1,3 +1,4 @@
+import { InputValidationInterceptor } from './interceptors/input-validation.interceptor';
 import { AvatarPickerComponent } from './components/profile/avatar-picker.component';
 import { DataTableComponent } from './components/data-table/data-table.component';
 import { RecordDetailComponent } from './components/details/record-detail.component';
@@ -153,6 +154,7 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
         HttpClientModule 
     ],
     providers: [
+        { provide: HTTP_INTERCEPTORS, useClass: InputValidationInterceptor, multi: true },
         RoleGuard,
         SocketService,
         {

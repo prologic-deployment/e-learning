@@ -421,3 +421,8 @@ exports.archiveCourse = async (req, res) => {
     res.status(500).json({ message: config.prodLike ? 'Server error' : error.message });
   }
 };
+
+// Shared browser/server input contract. Route guards still run first.
+for (const name of ["createCourse", "updateCourse", "deleteCourse", "approveCourse", "enrollCourse", "archiveCourse", "restoreCourse"]) {
+  exports[name] = require("../validation/validate-input").withInputValidation(exports[name]);
+}

@@ -74,7 +74,7 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <app-form-field label="Prénom" [required]="true"
-                                    ><input
+                                    ><input appInputRule="name" appFieldPath="prenom" appValidationScope="/cv" maxlength="100"
                                         required
                                         hlmInput
                                         type="text"
@@ -88,7 +88,7 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <app-form-field label="Nom" [required]="true"
-                                    ><input
+                                    ><input appInputRule="name" appFieldPath="nom" appValidationScope="/cv" maxlength="100"
                                         required
                                         hlmInput
                                         type="text"
@@ -103,7 +103,7 @@
 
                     <div class="mb-3">
                         <app-form-field label="Email" [required]="true"
-                            ><input
+                            ><input appInputRule="email" appFieldPath="email" appValidationScope="/cv" maxlength="320"
                                 required
                                 hlmInput
                                 type="email"
@@ -117,7 +117,7 @@
 
                     <div class="mb-3">
                         <app-form-field label="Téléphone"
-                            ><input
+                            ><input appInputRule="phone" appFieldPath="telephone" appValidationScope="/cv" maxlength="40"
                                 hlmInput
                                 type="text"
                                 class="form-control mt-1"
@@ -129,7 +129,7 @@
 
                     <div class="mb-4">
                         <app-form-field label="Description / Résumé">
-                            <textarea
+                            <textarea appInputRule="description" appFieldPath="description" appValidationScope="/cv" maxlength="10000"
                                 hlmInput
                                 class="form-control mt-1"
                                 rows="4"
@@ -189,7 +189,7 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <app-form-field label="Poste" [required]="true"
-                                    ><input
+                                    ><input appInputRule="title" appFieldPath="titre" appValidationScope="/cv/experience" maxlength="200"
                                         required
                                         hlmInput
                                         type="text"
@@ -205,7 +205,7 @@
                                 <app-form-field
                                     label="Entreprise"
                                     [required]="true"
-                                    ><input
+                                    ><input appInputRule="title" appFieldPath="entreprise" appValidationScope="/cv/experience" maxlength="200"
                                         required
                                         hlmInput
                                         type="text"
@@ -221,7 +221,7 @@
                                 <app-form-field
                                     label="Date de début"
                                     [required]="true"
-                                    ><input
+                                    ><input appInputRule="date" appFieldPath="dateDebut" appValidationScope="/cv/experience"
                                         required
                                         hlmInput
                                         type="date"
@@ -234,19 +234,19 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <app-form-field label="Date de fin"
-                                    ><input
+                                    ><input appInputRule="date" appFieldPath="dateFin" appValidationScope="/cv/experience"
                                         hlmInput
                                         type="date"
                                         class="form-control mt-1"
                                         name="newExperience_dateFin"
-                                        [(ngModel)]="newExperience.dateFin"
+                                        [(ngModel)]="newExperience.dateFin" [appDateAfter]="newExperience.dateDebut"
                                 /></app-form-field>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="mb-4">
                                 <app-form-field label="Description">
-                                    <textarea
+                                    <textarea appInputRule="description" appFieldPath="description" appValidationScope="/cv/experience" maxlength="10000"
                                         hlmInput
                                         class="form-control mt-1"
                                         rows="3"
@@ -345,7 +345,7 @@
                                 <app-form-field
                                     label="Diplôme"
                                     [required]="true"
-                                    ><input
+                                    ><input appInputRule="title" appFieldPath="diplome" appValidationScope="/cv/formation" maxlength="200"
                                         required
                                         hlmInput
                                         type="text"
@@ -361,7 +361,7 @@
                                 <app-form-field
                                     label="Établissement"
                                     [required]="true"
-                                    ><input
+                                    ><input appInputRule="title" appFieldPath="etablissement" appValidationScope="/cv/formation" maxlength="200"
                                         required
                                         hlmInput
                                         type="text"
@@ -377,7 +377,7 @@
                                 <app-form-field
                                     label="Date de début"
                                     [required]="true"
-                                    ><input
+                                    ><input appInputRule="date" appFieldPath="dateDebut" appValidationScope="/cv/formation"
                                         required
                                         hlmInput
                                         type="date"
@@ -390,12 +390,12 @@
                         <div class="col-lg-6">
                             <div class="mb-4">
                                 <app-form-field label="Date de fin"
-                                    ><input
+                                    ><input appInputRule="date" appFieldPath="dateFin" appValidationScope="/cv/formation"
                                         hlmInput
                                         type="date"
                                         class="form-control mt-1"
                                         name="newFormation_dateFin"
-                                        [(ngModel)]="newFormation.dateFin"
+                                        [(ngModel)]="newFormation.dateFin" [appDateAfter]="newFormation.dateDebut"
                                 /></app-form-field>
                             </div>
                         </div>
@@ -484,7 +484,7 @@
                                 <app-form-field
                                     label="Compétence"
                                     [required]="true"
-                                    ><input
+                                    ><input appInputRule="name" appFieldPath="nom" appValidationScope="/cv/competence" maxlength="100"
                                         required
                                         hlmInput
                                         type="text"
@@ -498,7 +498,7 @@
                         <div class="col-lg-6">
                             <div class="mb-4">
                                 <app-form-field label="Niveau" [required]="true"
-                                    ><select
+                                    ><select appFieldPath="niveau" appValidationScope="/cv/competence"
                                         required
                                         hlmInput
                                         class="form-select mt-1"
@@ -592,7 +592,7 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <app-form-field label="Langue" [required]="true"
-                                    ><input
+                                    ><input appInputRule="name" appFieldPath="langue" appValidationScope="/cv/langue" maxlength="100"
                                         required
                                         hlmInput
                                         type="text"
@@ -606,7 +606,7 @@
                         <div class="col-lg-6">
                             <div class="mb-4">
                                 <app-form-field label="Niveau" [required]="true"
-                                    ><select
+                                    ><select appFieldPath="niveau" appValidationScope="/cv/langue"
                                         required
                                         hlmInput
                                         class="form-select mt-1"
@@ -695,7 +695,7 @@
                                 <app-form-field
                                     label="Centre d'intérêt"
                                     [required]="true"
-                                    ><input
+                                    ><input appInputRule="name" appFieldPath="nom" appValidationScope="/cv/hobby" maxlength="100"
                                         required
                                         hlmInput
                                         type="text"

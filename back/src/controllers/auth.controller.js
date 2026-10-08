@@ -186,3 +186,9 @@ exports.changePassword = wrap(async (req, res) => {
   disconnectSessions(user._id);
   res.json({ success: true, message: 'Password changed. Sign in again on all devices.' });
 });
+
+// Shared input contracts. Factor proofs deliberately retain the existing
+// in-controller validation AFTER challenge/account attempt accounting.
+for (const name of ["register", "login", "forgotPassword", "resetPassword", "beginSetup", "changePassword"]) {
+  exports[name] = require("../validation/validate-input").withInputValidation(exports[name]);
+}

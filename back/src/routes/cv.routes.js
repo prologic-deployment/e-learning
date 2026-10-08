@@ -20,7 +20,7 @@ const upload = require("../config/multer");
 router.get("/download", protect, downloadCV);
 
 // Infos personnelles
-router.post("/", protect, upload.single("photo"), saveCV);
+router.post("/", protect, upload.image.single("photo"), saveCV);
 router.get("/me", protect, getMyCV);
 router.get("/user/:userId", protect, authorize("admin", "manager"), getCVByUser);
 

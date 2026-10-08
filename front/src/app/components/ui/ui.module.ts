@@ -1,3 +1,5 @@
+import { InputValidationDirective } from '../../validation/input-validation.directive';
+import { ValidFormDirective } from '../../validation/valid-form.directive';
 import { DetailRowDirective } from '../details/detail-row.directive';
 import { NgModule } from '@angular/core';
 import { HlmIconModule } from '@spartan-ng/ui-icon-helm';
@@ -26,6 +28,6 @@ import { HlmInputModule } from '@spartan-ng/ui-input-helm';
 import { HlmBadgeModule } from '@spartan-ng/ui-badge-helm';
 import { HlmCardModule } from '@spartan-ng/ui-card-helm';
 import { HlmButtonModule } from '@spartan-ng/ui-button-helm';
-const modules = [DetailRowDirective, HlmIconModule, BrnLabelModule, HlmLabelModule, BrnTableModule, HlmTableModule, BrnMenuModule, HlmMenuModule, BrnSheetModule, HlmSheetModule, BrnDialogModule, HlmDialogModule, BrnTabsModule, HlmTabsModule, BrnRadioGroupModule, HlmRadioGroupModule, BrnAccordionModule, HlmAccordionModule, BrnSeparatorModule, HlmSeparatorModule, BrnProgressModule, HlmProgressModule, HlmSkeletonModule, HlmInputModule, HlmBadgeModule, HlmCardModule, HlmButtonModule];
+const modules = [InputValidationDirective, ValidFormDirective,DetailRowDirective, HlmIconModule, BrnLabelModule, HlmLabelModule, BrnTableModule, HlmTableModule, BrnMenuModule, HlmMenuModule, BrnSheetModule, HlmSheetModule, BrnDialogModule, HlmDialogModule, BrnTabsModule, HlmTabsModule, BrnRadioGroupModule, HlmRadioGroupModule, BrnAccordionModule, HlmAccordionModule, BrnSeparatorModule, HlmSeparatorModule, BrnProgressModule, HlmProgressModule, HlmSkeletonModule, HlmInputModule, HlmBadgeModule, HlmCardModule, HlmButtonModule];
 @NgModule({ imports: modules, exports: modules })
 export class UiModule {}

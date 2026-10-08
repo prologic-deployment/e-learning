@@ -89,7 +89,7 @@
                 <!-- Course Select -->
                 <div class="mb-4">
                     <app-form-field label=" Select Course" [required]="true"
-                        ><select
+                        ><select appInputRule="id" appFieldPath="courseId" required
                             hlmInput
                             class="form-select mt-1"
                             [(ngModel)]="selectedCourseId"
@@ -127,7 +127,7 @@
                         Deadline
                         <small class="text-muted fw-normal">(optional)</small>
                     </label>
-                    <input
+                    <input appInputRule="deadline" appFieldPath="deadline" appValidationScope="/managers/assign-course"
                         hlmInput
                         type="date"
                         class="form-control mt-1"
@@ -362,7 +362,7 @@
                     [records]="overdueEnrollments"
                     [actions]="deadlineActions" /></ng-container
             ><ng-template #deadlineActions let-enrollment
-                ><input
+                ><input appInputRule="deadline" appFieldPath="deadline" appValidationScope="/enrollments/deadline" required
                     hlmInput
                     type="date"
                     [attr.aria-label]="
@@ -614,7 +614,7 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <app-form-field label="First Name"
-                                        ><input
+                                        ><input appInputRule="name" appFieldPath="firstname" required maxlength="100"
                                             hlmInput
                                             type="text"
                                             class="form-control mt-1"
@@ -633,7 +633,7 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <app-form-field label="Last Name"
-                                        ><input
+                                        ><input appInputRule="name" appFieldPath="lastname" required maxlength="100"
                                             hlmInput
                                             type="text"
                                             class="form-control mt-1"
@@ -653,7 +653,7 @@
 
                         <div class="mb-3">
                             <app-form-field label="Phone"
-                                ><input
+                                ><input appInputRule="phone" appFieldPath="phone" maxlength="40"
                                     hlmInput
                                     type="text"
                                     class="form-control mt-1"
@@ -670,7 +670,7 @@
 
                         <div class="mb-4">
                             <app-form-field label="Address"
-                                ><input
+                                ><input appInputRule="address" appFieldPath="address" maxlength="500"
                                     hlmInput
                                     type="text"
                                     class="form-control mt-1"
@@ -752,7 +752,7 @@
                             <app-form-field
                                 label="Current Password"
                                 [required]="true"
-                                ><input
+                                ><input appInputRule="currentPassword" appFieldPath="currentPassword" required
                                     hlmInput
                                     type="password"
                                     class="form-control mt-1"
@@ -771,7 +771,7 @@
                             <app-form-field
                                 label="New Password"
                                 [required]="true"
-                                ><input
+                                ><input appInputRule="password" appFieldPath="newPassword" required
                                     hlmInput
                                     type="password"
                                     class="form-control mt-1"
@@ -790,7 +790,7 @@
                             <app-form-field
                                 label="Confirm New Password"
                                 [required]="true"
-                                ><input
+                                ><input [appMatches]="passwordData.newPassword" appInputRule="password" appFieldPath="confirmPassword" required
                                     hlmInput
                                     type="password"
                                     class="form-control mt-1"

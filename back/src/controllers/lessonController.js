@@ -176,3 +176,7 @@ exports.deleteLesson = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+// Shared browser/server input contract. Route guards still run first.
+for (const name of ["addLesson", "updateLesson", "deleteLesson"]) {
+  exports[name] = require("../validation/validate-input").withInputValidation(exports[name]);
+}

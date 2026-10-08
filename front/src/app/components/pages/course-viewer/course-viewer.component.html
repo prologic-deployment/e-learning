@@ -286,7 +286,7 @@
                         class="review-form"
                     >
                         <label hlmLabel for="review-rating">Your rating</label
-                        ><select
+                        ><select appInputRule="rating" appFieldPath="rating" required
                             hlmInput
                             id="review-rating"
                             name="rating"
@@ -296,7 +296,7 @@
                                 {{ n }} / 5
                             </option></select
                         ><label hlmLabel for="review-comment">What did you learn?</label
-                        ><textarea
+                        ><textarea appInputRule="text" appFieldPath="comment"
                             hlmInput
                             id="review-comment"
                             name="comment"
@@ -315,7 +315,7 @@
                     </form>
                     <form *ngIf="editingReview" (ngSubmit)="updateReview()" class="review-form">
                         <label hlmLabel for="edit-rating">Rating</label
-                        ><select
+                        ><select appInputRule="rating" appFieldPath="rating" required
                             hlmInput
                             id="edit-rating"
                             name="editRating"
@@ -325,7 +325,7 @@
                                 {{ n }} / 5
                             </option></select
                         ><label hlmLabel for="edit-comment">Your review</label
-                        ><textarea
+                        ><textarea appInputRule="text" appFieldPath="comment"
                             hlmInput
                             id="edit-comment"
                             name="editComment"

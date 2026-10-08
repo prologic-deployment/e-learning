@@ -532,3 +532,8 @@ exports.getAllQuizResults = async (req, res) => {
     res.status(500).json({ success: false, message: "Server error" });
   }
 };
+
+// Shared browser/server input contract. Route guards still run first.
+for (const name of ["addQuizToLesson", "addQuiz2ToLesson", "addFinalExam"]) {
+  exports[name] = require("../validation/validate-input").withInputValidation(exports[name]);
+}

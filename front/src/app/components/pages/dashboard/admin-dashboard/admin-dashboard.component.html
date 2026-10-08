@@ -235,7 +235,7 @@
                     <app-form-field
                         label="Sélectionner un utilisateur"
                         [required]="true"
-                        ><select
+                        ><select appInputRule="id" appFieldPath="userId" required
                             hlmInput
                             class="form-select mt-1"
                             [(ngModel)]="assignUserId"
@@ -266,7 +266,7 @@
                     <app-form-field
                         label="Sélectionner un manager"
                         [required]="true"
-                        ><select
+                        ><select appInputRule="id" appFieldPath="managerId" required
                             hlmInput
                             class="form-select mt-1"
                             [(ngModel)]="assignManagerId"
@@ -368,7 +368,7 @@
             >
                 <div class="form-grid">
                     <app-form-field label="First name" [required]="true"
-                        ><input
+                        ><input appInputRule="name" appFieldPath="firstname"
                             hlmInput
                             name="firstname"
                             [(ngModel)]="newStaff.firstname"
@@ -376,7 +376,7 @@
                             autocomplete="given-name"
                             required /></app-form-field
                     ><app-form-field label="Last name" [required]="true"
-                        ><input
+                        ><input appInputRule="name" appFieldPath="lastname"
                             hlmInput
                             name="lastname"
                             [(ngModel)]="newStaff.lastname"
@@ -386,7 +386,7 @@
                     /></app-form-field>
                 </div>
                 <app-form-field label="Email address" [required]="true"
-                    ><input
+                    ><input appInputRule="email" appFieldPath="email" maxlength="320"
                         hlmInput
                         type="email"
                         email
@@ -398,7 +398,7 @@
                     label="Initial password"
                     [required]="true"
                     hint="At least 8 characters, an uppercase letter and a number. Share securely, never by email."
-                    ><input
+                    ><input appInputRule="password" appFieldPath="password"
                         hlmInput
                         type="password"
                         name="password"
@@ -411,14 +411,14 @@
                 /></app-form-field>
                 <div class="form-grid">
                     <app-form-field label="Date of birth" [required]="true"
-                        ><input
+                        ><input appInputRule="birth" appFieldPath="dateOfBirth"
                             hlmInput
                             type="date"
                             name="birth"
                             [(ngModel)]="newStaff.dateOfBirth"
                             required /></app-form-field
                     ><app-form-field label="Staff role" [required]="true"
-                        ><select
+                        ><select appFieldPath="role"
                             hlmInput
                             name="role"
                             [(ngModel)]="newStaff.role"
