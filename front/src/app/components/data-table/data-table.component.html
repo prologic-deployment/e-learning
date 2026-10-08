@@ -1,0 +1,267 @@
+<section class="data-view" [attr.aria-label]="preset.label">
+    <div class="table-toolbar">
+        <label class="search-control"
+            ><span>Search</span
+            ><input
+                hlmInput
+                type="search"
+                aria-label="Search records"
+                [(ngModel)]="query"
+                (ngModelChange)="page = 1"
+                placeholder="Search these records…"
+        /></label>
+        <label
+            ><span>Sort by</span
+            ><select
+                hlmInput
+                aria-label="Sort records"
+                [(ngModel)]="sort"
+                (ngModelChange)="page = 1"
+            >
+                <option value="">Original order</option>
+                <ng-container
+                    *ngFor="let c of preset.columns; trackBy: trackColumn"
+                    ><option [value]="c.key + ':asc'">{{ c.label }} ↑</option>
+                    <option [value]="c.key + ':desc'">
+                        {{ c.label }} ↓
+                    </option></ng-container
+                >
+            </select></label
+        >
+        <button
+            hlmBtn
+            variant="ghost"
+            size="sm"
+            (click)="reset()"
+            [disabled]="!activeFilters"
+        >
+            Reset filters<span
+                *ngIf="activeFilters"
+                hlmBadge
+                variant="secondary"
+                >{{ activeFilters }}</span
+            >
+        </button>
+    </div>
+    <div class="table-filters">
+        <ng-container *ngFor="let c of preset.columns; trackBy: trackColumn"
+            ><label *ngIf="c.filter"
+                ><span>{{ c.label }}</span
+                ><select
+                    hlmInput
+                    [attr.aria-label]="'Filter ' + c.label"
+                    [(ngModel)]="choices[c.key]"
+                    (ngModelChange)="page = 1"
+                >
+                    <option [ngValue]="undefined">
+                        All {{ c.label.toLowerCase() }}
+                    </option>
+                    <option
+                        *ngFor="let option of options[c.key]"
+                        [value]="option"
+                    >
+                        {{ option }}
+                    </option>
+                </select></label
+            ></ng-container
+        >
+        <ng-container *ngIf="dateColumn as date"
+            ><label
+                ><span>{{ date.label }} from</span
+                ><input
+                    hlmInput
+                    type="date"
+                    [attr.aria-label]="date.label + ' from'"
+                    [(ngModel)]="from"
+                    (ngModelChange)="page = 1" /></label
+            ><label
+                ><span>{{ date.label }} to</span
+                ><input
+                    hlmInput
+                    type="date"
+                    [attr.aria-label]="date.label + ' to'"
+                    [(ngModel)]="to"
+                    (ngModelChange)="page = 1" /></label
+        ></ng-container>
+        <ng-container *ngIf="rangeColumn as range"
+            ><label
+                ><span>{{ range.label }} minimum</span
+                ><input
+                    hlmInput
+                    type="number"
+                    [attr.aria-label]="range.label + ' minimum'"
+                    [ngModel]="min"
+                    (ngModelChange)="
+                        min = $event == null ? '' : $event.toString(); page = 1
+                    "
+                    placeholder="Min" /></label
+            ><label
+                ><span>{{ range.label }} maximum</span
+                ><input
+                    hlmInput
+                    type="number"
+                    [attr.aria-label]="range.label + ' maximum'"
+                    [ngModel]="max"
+                    (ngModelChange)="
+                        max = $event == null ? '' : $event.toString(); page = 1
+                    "
+                    placeholder="Max" /></label
+        ></ng-container>
+    </div>
+    <p *ngIf="rangeError" class="filter-error" role="alert">{{ rangeError }}</p>
+    <div
+        class="table-scroll"
+        tabindex="0"
+        [attr.aria-label]="
+            preset.label + ' table; scroll horizontally for more columns'
+        "
+    >
+        <hlm-table class="unified-table">
+            <hlm-trow class="table-heading"
+                ><hlm-th
+                    *ngFor="let c of preset.columns; trackBy: trackColumn"
+                    [attr.aria-sort]="sortDirection(c)"
+                    ><button class="sort-heading" (click)="toggleSort(c)">
+                        {{ c.label }}
+                        <span aria-hidden="true">{{
+                            sortDirection(c) === "ascending"
+                                ? "↑"
+                                : sortDirection(c) === "descending"
+                                  ? "↓"
+                                  : "↕"
+                        }}</span>
+                    </button></hlm-th
+                ><hlm-th *ngIf="actions" class="table-actions"
+                    >Actions</hlm-th
+                ></hlm-trow
+            >
+            <hlm-trow
+                *ngFor="let row of visible; trackBy: trackRow"
+                [appDetailRow]="preset.detail(row)"
+            >
+                <hlm-td
+                    *ngFor="
+                        let c of preset.columns;
+                        let first = first;
+                        trackBy: trackColumn
+                    "
+                    [class.primary-cell]="first"
+                    [ngSwitch]="c.type"
+                >
+                    <span
+                        *ngSwitchCase="'badge'"
+                        hlmBadge
+                        variant="secondary"
+                        >{{ display(c.get(row)) }}</span
+                    >
+                    <span *ngSwitchCase="'date'">{{
+                        dateValue(c.get(row))
+                            ? (c.get(row) | date: "mediumDate")
+                            : "Not recorded"
+                    }}</span>
+                    <span *ngSwitchCase="'money'">{{
+                        numeric(c.get(row))
+                            ? (c.get(row) | currency: "TND" : "code")
+                            : "Not recorded"
+                    }}</span>
+                    <div *ngSwitchCase="'progress'" class="table-progress">
+                        <span>{{
+                            numeric(c.get(row))
+                                ? c.get(row) + "%"
+                                : "Not recorded"
+                        }}</span>
+                        <div
+                            *ngIf="numeric(c.get(row))"
+                            class="progress-track"
+                            aria-hidden="true"
+                        >
+                            <span [style.width.%]="c.get(row)"></span>
+                        </div>
+                    </div>
+                    <span *ngSwitchDefault>{{ display(c.get(row)) }}</span
+                    ><small *ngIf="c.sub">{{ c.sub(row) }}</small>
+                </hlm-td>
+                <hlm-td
+                    *ngIf="actions"
+                    class="table-actions actions-cell"
+                    data-row-action
+                    ><div class="table-action-group">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                actions;
+                                context: { $implicit: row }
+                            "
+                        ></ng-container></div
+                ></hlm-td>
+            </hlm-trow>
+        </hlm-table>
+    </div>
+    <div
+        *ngIf="!filtered.length && !rangeError"
+        class="table-empty"
+        role="status"
+    >
+        <i class="bx bx-search" aria-hidden="true"></i>
+        <h3>{{ activeFilters ? "No matching records" : "No records yet" }}</h3>
+        <p>
+            {{
+                activeFilters
+                    ? "Try a broader search or reset your filters."
+                    : "Records will appear here when available."
+            }}
+        </p>
+        <button
+            *ngIf="activeFilters"
+            hlmBtn
+            variant="outline"
+            size="sm"
+            (click)="reset()"
+        >
+            Clear all filters
+        </button>
+    </div>
+    <nav
+        class="pagination-row"
+        [attr.aria-label]="preset.label + ' pagination'"
+    >
+        <span role="status"
+            >{{ filtered.length ? start + 1 : 0 }}–{{ end }} of
+            {{ filtered.length
+            }}<span *ngIf="activeFilters">
+                ({{ records.length }} total)</span
+            ></span
+        >
+        <div>
+            <label
+                ><span>Rows per page</span
+                ><select
+                    hlmInput
+                    aria-label="Rows per page"
+                    [(ngModel)]="size"
+                    (ngModelChange)="page = 1"
+                >
+                    <option *ngFor="let n of [10, 20, 50]" [ngValue]="n">
+                        {{ n }}
+                    </option>
+                </select></label
+            ><button
+                hlmBtn
+                variant="outline"
+                size="sm"
+                [disabled]="current <= 1"
+                (click)="page = current - 1"
+            >
+                Previous</button
+            ><span>Page {{ current }} of {{ pages }}</span
+            ><button
+                hlmBtn
+                variant="outline"
+                size="sm"
+                [disabled]="current >= pages"
+                (click)="page = current + 1"
+            >
+                Next
+            </button>
+        </div>
+    </nav>
+</section>

@@ -1,3 +1,4 @@
+import { TABLES } from '../../../data-table/table-presets';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { plainSystemText } from '../../../../services/system-text';
 import { Component, OnInit, OnDestroy, DestroyRef, inject } from '@angular/core';
@@ -15,6 +16,7 @@ import * as XLSX from 'xlsx';
     styleUrls: ['./user-dashboard.component.scss'],
 })
 export class UserDashboardComponent implements OnInit, OnDestroy {
+    readonly tables=TABLES;
     private readonly destroyRef=inject(DestroyRef);
     private readonly inflight=new Map<string,Observable<any>>();
     private read(path:string):Observable<any>{
@@ -116,8 +118,6 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     profileUpdateLoading = false;
     profileUpdateSuccess = '';
     profileUpdateError = '';
-    selectedAvatar: File | null = null;
-    avatarPreview: string | null = null;
 
     passwordData = { currentPassword: '', newPassword: '', confirmPassword: '' };
     passwordLoading = false;
@@ -238,7 +238,6 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         this.read('profile').subscribe({
             next: (data: any) => {
                 this.profile = data;
-                this.avatarPreview = null;
                 this.profileData.firstname = data.user?.firstname || '';
                 this.profileData.lastname = data.user?.lastname || '';
                 this.profileData.phone = data.user?.phone || '';
@@ -250,17 +249,6 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
                 this.profileLoading = false;
             },
         });
-    }
-
-    onAvatarSelected(event: any): void {
-        this.selectedAvatar = event.target.files[0];
-        if (this.selectedAvatar) {
-            const reader = new FileReader();
-            reader.onload = (e: any) => {
-                this.avatarPreview = e.target.result;
-            };
-            reader.readAsDataURL(this.selectedAvatar);
-        }
     }
 
     updateProfile(): void {
@@ -277,29 +265,6 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
             error: (err) => {
                 this.profileUpdateLoading = false;
                 this.profileUpdateError = err.error?.message || 'Erreur';
-            },
-        });
-    }
-
-    updateAvatar(): void {
-        if (!this.selectedAvatar) return;
-        const formData = new FormData();
-        formData.append('avatar', this.selectedAvatar);
-        this.http.put(`${this.apiUrl}/profile/avatar`, formData).subscribe({
-            next: (res: any) => {
-                this.profileUpdateSuccess = 'Avatar mis à jour ! ';
-                this.selectedAvatar = null;
-                this.avatarPreview = null;
-                const user = this.authService.getCurrentUser();
-                if (user) {
-                    user.avatar = res.user.avatar;
-                    localStorage.setItem('user', JSON.stringify(user));
-                }
-                this.loadProfile();
-                setTimeout(() => (this.profileUpdateSuccess = ''), 3000);
-            },
-            error: (err) => {
-                this.profileUpdateError = err.error?.message || 'Erreur avatar';
             },
         });
     }

@@ -1,3 +1,4 @@
+import { TABLES } from '../../../data-table/table-presets';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Component, OnInit, DestroyRef, inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -16,6 +17,8 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./manager-dashboard.component.scss']
 })
 export class ManagerDashboardComponent implements OnInit {
+    readonly tables=TABLES;
+    deadlineDrafts:Record<string,string>={};
 
   private readonly destroyRef = inject(DestroyRef);
   private readonly route = inject(ActivatedRoute);
@@ -62,8 +65,6 @@ export class ManagerDashboardComponent implements OnInit {
   profileUpdateLoading = false;
   profileUpdateSuccess = '';
   profileUpdateError = '';
-  selectedAvatar: File | null = null;
-  avatarPreview: string | null = null;
 
   // ✅ Password
   passwordData = { currentPassword: '', newPassword: '', confirmPassword: '' };
@@ -240,35 +241,6 @@ export class ManagerDashboardComponent implements OnInit {
       error: (err) => {
         this.profileUpdateLoading = false;
         this.profileUpdateError = err.error?.message || 'Error updating profile';
-      }
-    });
-  }
-
-  onAvatarSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedAvatar = file;
-      const reader = new FileReader();
-      reader.onload = (e: any) => { this.avatarPreview = e.target.result; };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  updateAvatar(): void {
-    if (!this.selectedAvatar) return;
-    const formData = new FormData();
-    formData.append('avatar', this.selectedAvatar);
-
-    this.http.put(`${this.apiUrl}/profile/avatar`, formData).subscribe({
-      next: () => {
-        this.profileUpdateSuccess = 'Avatar updated ! ';
-        this.loadProfile();
-        this.selectedAvatar = null;
-        this.avatarPreview = null;
-        setTimeout(() => this.profileUpdateSuccess = '', 3000);
-      },
-      error: (err) => {
-        this.profileUpdateError = err.error?.message || 'Error updating avatar';
       }
     });
   }

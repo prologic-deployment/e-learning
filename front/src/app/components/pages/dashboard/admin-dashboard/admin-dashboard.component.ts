@@ -1,3 +1,4 @@
+import { TABLES } from '../../../data-table/table-presets';
 import { memoLast } from '../../../management/memo-last';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {ToastService} from '../../../../services/toast.service';
@@ -19,6 +20,8 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent implements OnInit {
+    readonly tables=TABLES;
+    archivedDeleteId='';
 
   private readonly destroyRef = inject(DestroyRef);
   activeTab: string = 'stats';
@@ -313,7 +316,7 @@ export class AdminDashboardComponent implements OnInit {
   deleteCourse(courseId: string): void {
     {
       this.courseService.deleteCourse(courseId).subscribe({
-        next: () => { this.loadCourses(); },
+        next: () => { this.archivedCourses=this.archivedCourses.filter(c=>c._id!==courseId);this.loadCourses(); },
         error: (err) => this.toast.show(err.error?.message || 'Unable to delete course.','error')
       });
     }
@@ -894,11 +897,11 @@ export class AdminDashboardComponent implements OnInit {
         // ✅ Retirer de la liste active
         this.courses = this.courses.filter(c => c._id !== course._id);
         // ✅ Ajouter à la liste archivée
-        this.archivedCourses.unshift({
+        this.archivedCourses = [{
           ...course,
           isArchived: true,
           archivedAt: new Date()
-        });
+        }, ...this.archivedCourses];
       },
       error: (err) => console.error(err)
     });
@@ -911,7 +914,7 @@ export class AdminDashboardComponent implements OnInit {
         const course = this.archivedCourses.find(c => c._id === courseId);
         if (course) {
           this.archivedCourses = this.archivedCourses.filter(c => c._id !== courseId);
-          this.courses.unshift({ ...course, isArchived: false });
+          this.courses = [{ ...course, isArchived: false }, ...this.courses];
         }
       },
       error: (err) => console.error(err)

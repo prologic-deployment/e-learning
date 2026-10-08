@@ -1,29 +1,43 @@
 <div class="product-page">
-    <app-page-heading eyebrow="YOUR PERSONAL LEARNING SPACE"><h1 pageTitle>
-                {{
-                    activeTab === 'overview'
-                        ? 'Welcome back, ' + (currentUser?.firstname || 'learner') + '.'
-                        : sectionTitle
-                }}
-            </h1><p pageDescription>
-                {{
-                    activeTab === 'overview'
-                        ? 'A little progress today. A world of possibilities tomorrow.'
-                        : 'Everything you need for your next step.'
-                }}
-            </p><div pageActions>
-        <div class="action-row">
-            <a hlmBtn variant="outline" routerLink="/cv">My learning CV ↗</a
-            ><button hlmBtn (click)="goToCourses()">
-                Explore courses <i class="bx bx-right-arrow-alt"></i>
-            </button>
-        </div>
-    </div></app-page-heading>
-<app-account-security-card *ngIf="activeTab === 'stats' || activeTab === 'overview' || activeTab === 'profile'" />
+    <app-page-heading eyebrow="YOUR PERSONAL LEARNING SPACE"
+        ><h1 pageTitle>
+            {{
+                activeTab === "overview"
+                    ? "Welcome back, " +
+                      (currentUser?.firstname || "learner") +
+                      "."
+                    : sectionTitle
+            }}
+        </h1>
+        <p pageDescription>
+            {{
+                activeTab === "overview"
+                    ? "A little progress today. A world of possibilities tomorrow."
+                    : "Everything you need for your next step."
+            }}
+        </p>
+        <div pageActions>
+            <div class="action-row">
+                <a hlmBtn variant="outline" routerLink="/cv"
+                    >My learning CV ↗</a
+                ><button hlmBtn (click)="goToCourses()">
+                    Explore courses <i class="bx bx-right-arrow-alt"></i>
+                </button>
+            </div></div
+    ></app-page-heading>
+    <app-account-security-card
+        *ngIf="
+            activeTab === 'stats' ||
+            activeTab === 'overview' ||
+            activeTab === 'profile'
+        "
+    />
 
     <div *ngIf="errors[activeTab]" class="product-alert" role="alert">
         {{ errors[activeTab] }}
-        <button hlmBtn variant="ghost" size="sm" (click)="setTab(activeTab)">Try again</button>
+        <button hlmBtn variant="ghost" size="sm" (click)="setTab(activeTab)">
+            Try again
+        </button>
     </div>
     <ng-container *ngIf="activeTab === 'overview' || activeTab === 'courses'">
         <app-learning-skeleton *ngIf="enrollmentsLoading" />
@@ -32,11 +46,18 @@
                 <section class="resume-panel" *ngIf="getContinueCourse() as e">
                     <div class="resume-copy">
                         <span class="eyebrow">{{
-                            e.completed ? 'KEEP YOUR KNOWLEDGE FRESH' : 'PICK UP WHERE YOU LEFT OFF'
+                            e.completed
+                                ? "KEEP YOUR KNOWLEDGE FRESH"
+                                : "PICK UP WHERE YOU LEFT OFF"
                         }}</span
-                        ><span hlmBadge variant="secondary" class="resume-category">{{
-                            e.course?.category || 'Your learning journey'
-                        }}</span>
+                        ><span
+                            hlmBadge
+                            variant="secondary"
+                            class="resume-category"
+                            >{{
+                                e.course?.category || "Your learning journey"
+                            }}</span
+                        >
                         <h2>{{ e.course?.title }}</h2>
                         <p>{{ e.course?.description }}</p>
                         <div class="resume-progress">
@@ -44,9 +65,17 @@
                                 >{{ e.progress || 0 }}% complete</span
                             >
                         </div>
-                        <button hlmBtn *ngIf="e.course?._id" (click)="goToCourse(e.course._id)">
+                        <button
+                            hlmBtn
+                            *ngIf="e.course?._id"
+                            (click)="goToCourse(e.course._id)"
+                        >
                             <i class="bx bx-play-circle"></i
-                            >{{ e.completed ? 'Review course' : 'Continue learning' }}
+                            >{{
+                                e.completed
+                                    ? "Review course"
+                                    : "Continue learning"
+                            }}
                             <span>→</span>
                         </button>
                     </div>
@@ -55,28 +84,39 @@
                         <div class="orbit orbit-two"></div>
                         <div class="orbit orbit-three"></div>
                         <div class="floating-book">
-                            <span>YOUR NEXT<br />CHAPTER</span><i class="bx bx-book-open"></i
+                            <span>YOUR NEXT<br />CHAPTER</span
+                            ><i class="bx bx-book-open"></i
                             ><span>STARTS WITH YOU ↗</span>
                         </div>
-                        <span class="art-spark"><i class="bx bx-compass" aria-hidden="true"></i></span
+                        <span class="art-spark"
+                            ><i
+                                class="bx bx-compass"
+                                aria-hidden="true"
+                            ></i></span
                         ><span class="art-caption">STAY CURIOUS.</span>
                     </div>
                 </section>
                 <div class="metric-strip" *ngIf="enrollments.length">
                     <div class="metric">
-                        <span>Enrolled courses</span><strong>{{ enrollments.length }}</strong>
+                        <span>Enrolled courses</span
+                        ><strong>{{ enrollments.length }}</strong>
                     </div>
                     <div class="metric">
-                        <span>Courses completed</span><strong>{{ getCompletedCourses() }}</strong>
+                        <span>Courses completed</span
+                        ><strong>{{ getCompletedCourses() }}</strong>
                     </div>
                     <div class="metric">
                         <span>Average progress</span
-                        ><strong>{{ getAverageProgress() }}<small>%</small></strong>
+                        ><strong
+                            >{{ getAverageProgress() }}<small>%</small></strong
+                        >
                     </div>
                     <div class="metric">
                         <span>Achievements earned</span
                         ><strong>{{
-                            badgesLoading || errors['badges'] ? '—' : badges.length
+                            badgesLoading || errors["badges"]
+                                ? "—"
+                                : badges.length
                         }}</strong>
                     </div>
                 </div>
@@ -93,9 +133,9 @@
                         <div>
                             <h2>
                                 {{
-                                    activeTab === 'overview'
-                                        ? 'Your learning, in motion'
-                                        : 'Your course library'
+                                    activeTab === "overview"
+                                        ? "Your learning, in motion"
+                                        : "Your course library"
                                 }}
                             </h2>
                             <p>One lesson closer to your goals.</p>
@@ -145,12 +185,18 @@
                         />
                     </div>
                     <app-empty-state
-                        *ngIf="activeTab === 'courses' && !filteredEnrollments.length"
+                        *ngIf="
+                            activeTab === 'courses' &&
+                            !filteredEnrollments.length
+                        "
                         title="Let's try another search"
                         description="No enrolled courses match these filters. Clear your search or choose another status."
                         icon="search"
                     />
-                    <section *ngIf="activeTab === 'overview'" class="product-section">
+                    <section
+                        *ngIf="activeTab === 'overview'"
+                        class="product-section"
+                    >
                         <div class="section-row section-heading">
                             <h2>Recent activity</h2>
                             <button
@@ -164,19 +210,22 @@
                         </div>
                         <div hlmCard class="surface">
                             <p *ngIf="!notifications.length">
-                                Your learning updates will appear here as you progress.
+                                Your learning updates will appear here as you
+                                progress.
                             </p>
                             <div class="product-list">
                                 <div
                                     class="product-list-item"
                                     *ngFor="let n of notifications.slice(0, 3)"
                                 >
-                                    <span class="list-icon"><i class="bx bx-bell"></i></span>
+                                    <span class="list-icon"
+                                        ><i class="bx bx-bell"></i
+                                    ></span>
                                     <div>
                                         <h3>{{ systemText(n.title) }}</h3>
                                         <p>{{ systemText(n.message) }}</p>
                                         <span class="small-muted">{{
-                                            n.createdAt | date: 'MMM d, h:mm a'
+                                            n.createdAt | date: "MMM d, h:mm a"
                                         }}</span>
                                     </div>
                                 </div>
@@ -191,10 +240,15 @@
                     </div>
                     <section hlmCard class="surface">
                         <div class="product-list">
-                            <div *ngFor="let e of upcoming" class="product-list-item">
+                            <div
+                                *ngFor="let e of upcoming"
+                                class="product-list-item"
+                            >
                                 <div class="date-tile">
-                                    <span>{{ e.deadline | date: 'MMM' }}</span
-                                    ><strong>{{ e.deadline | date: 'dd' }}</strong>
+                                    <span>{{ e.deadline | date: "MMM" }}</span
+                                    ><strong>{{
+                                        e.deadline | date: "dd"
+                                    }}</strong>
                                 </div>
                                 <div>
                                     <h3>{{ e.course?.title }}</h3>
@@ -211,7 +265,10 @@
                         <div *ngIf="!upcoming.length" class="quiet-empty">
                             <i class="bx bx-calendar-check"></i>
                             <h3>Room to explore</h3>
-                            <p>No course deadlines to show. Keep learning at your own pace.</p>
+                            <p>
+                                No course deadlines to show. Keep learning at
+                                your own pace.
+                            </p>
                         </div>
                     </section>
                     <section hlmCard class="surface achievement-preview">
@@ -220,17 +277,27 @@
                             <i class="bx bx-medal"></i>
                         </div>
                         <p *ngIf="!badges.length">
-                            Your achievements will live here. Complete a course to take your next
-                            step.
+                            Your achievements will live here. Complete a course
+                            to take your next step.
                         </p>
-                        <div class="product-list-item" *ngFor="let b of badges.slice(0, 2)">
-                            <span class="list-icon"><i class="bx bx-medal" aria-hidden="true"></i></span>
+                        <div
+                            class="product-list-item"
+                            *ngFor="let b of badges.slice(0, 2)"
+                        >
+                            <span class="list-icon"
+                                ><i class="bx bx-medal" aria-hidden="true"></i
+                            ></span>
                             <div>
                                 <h3>{{ systemText(b.badge?.name) }}</h3>
-                                <p>{{ b.earnedAt | date: 'MMM d, y' }}</p>
+                                <p>{{ b.earnedAt | date: "MMM d, y" }}</p>
                             </div>
                         </div>
-                        <button hlmBtn variant="ghost" size="sm" (click)="setTab('badges')">
+                        <button
+                            hlmBtn
+                            variant="ghost"
+                            size="sm"
+                            (click)="setTab('badges')"
+                        >
                             See achievements →
                         </button>
                     </section>
@@ -242,19 +309,28 @@
             class="product-alert"
             role="alert"
         >
-            {{ errors['courses'] }}
-            <button hlmBtn variant="ghost" (click)="loadEnrollments()">Retry</button>
+            {{ errors["courses"] }}
+            <button hlmBtn variant="ghost" (click)="loadEnrollments()">
+                Retry
+            </button>
         </div>
     </ng-container>
     <ng-container *ngIf="activeTab === 'badges'"
         ><app-learning-skeleton *ngIf="badgesLoading" />
         <div class="course-grid" *ngIf="!badgesLoading && !errors['badges']">
-            <article hlmCard class="surface achievement" *ngFor="let b of badges">
-                <span class="achievement-icon"><i class="bx bx-medal" aria-hidden="true"></i></span
+            <article
+                hlmCard
+                class="surface achievement"
+                *ngFor="let b of badges"
+            >
+                <span class="achievement-icon"
+                    ><i class="bx bx-medal" aria-hidden="true"></i></span
                 ><span hlmBadge variant="secondary">Earned</span>
                 <h2>{{ systemText(b.badge?.name) }}</h2>
                 <p>{{ systemText(b.badge?.description) }}</p>
-                <span class="small-muted">{{ b.earnedAt | date: 'longDate' }}</span>
+                <span class="small-muted">{{
+                    b.earnedAt | date: "longDate"
+                }}</span>
             </article>
         </div>
         <app-empty-state
@@ -267,29 +343,46 @@
     <ng-container *ngIf="activeTab === 'certificates'"
         ><app-learning-skeleton *ngIf="certificatesLoading" />
         <div class="course-grid" *ngIf="!certificatesLoading">
-            <article hlmCard class="surface certificate" *ngFor="let c of certificates">
-                <span class="eyebrow">CERTIFICATE OF COMPLETION</span><i class="bx bx-award"></i>
+            <article
+                hlmCard
+                class="surface certificate"
+                *ngFor="let c of certificates"
+            >
+                <span class="eyebrow">CERTIFICATE OF COMPLETION</span
+                ><i class="bx bx-award"></i>
                 <h2>{{ c.course?.title }}</h2>
-                <p>Issued {{ c.date | date: 'longDate' }}</p>
+                <p>Issued {{ c.date | date: "longDate" }}</p>
                 <div class="section-row">
-                    <span hlmBadge [variant]="c.isValid ? 'secondary' : 'destructive'">{{
-                        c.isValid ? 'Valid' : 'Revoked'
-                    }}</span
+                    <span
+                        hlmBadge
+                        [variant]="c.isValid ? 'secondary' : 'destructive'"
+                        >{{ c.isValid ? "Valid" : "Revoked" }}</span
                     ><button
                         *ngIf="c.certificateUrl"
                         hlmBtn
                         variant="outline"
                         size="sm"
-                        [disabled]="!c.isValid || certificateDownloading === c._id"
+                        [disabled]="
+                            !c.isValid || certificateDownloading === c._id
+                        "
                         (click)="downloadCertificate(c)"
                     >
-                        {{ certificateDownloading === c._id ? 'Preparing…' : 'Download' }} ↧
+                        {{
+                            certificateDownloading === c._id
+                                ? "Preparing…"
+                                : "Download"
+                        }}
+                        ↧
                     </button>
                 </div>
             </article>
         </div>
         <app-empty-state
-            *ngIf="!certificatesLoading && !errors['certificates'] && !certificates.length"
+            *ngIf="
+                !certificatesLoading &&
+                !errors['certificates'] &&
+                !certificates.length
+            "
             title="Something worth working towards"
             description="Finish your course requirements to earn a certificate. Your completed credentials will appear here."
             link="/courses-grid"
@@ -297,11 +390,17 @@
     /></ng-container>
     <ng-container *ngIf="activeTab === 'notifications'"
         ><app-learning-skeleton *ngIf="notificationsLoading" />
-        <section hlmCard class="surface" *ngIf="!notificationsLoading && notifications.length">
+        <section
+            hlmCard
+            class="surface"
+            *ngIf="!notificationsLoading && notifications.length"
+        >
             <div class="section-row">
                 <h2>
                     Learning updates
-                    <span hlmBadge variant="secondary">{{ unreadCount }} unread</span>
+                    <span hlmBadge variant="secondary"
+                        >{{ unreadCount }} unread</span
+                    >
                 </h2>
                 <button
                     hlmBtn
@@ -318,7 +417,9 @@
                 <div class="notification-copy">
                     <h3>{{ systemText(n.title) }}</h3>
                     <p>{{ systemText(n.message) }}</p>
-                    <span class="small-muted">{{ n.createdAt | date: 'medium' }}</span>
+                    <span class="small-muted">{{
+                        n.createdAt | date: "medium"
+                    }}</span>
                 </div>
                 <button
                     hlmBtn
@@ -332,7 +433,11 @@
             </div>
         </section>
         <app-empty-state
-            *ngIf="!notificationsLoading && !errors['notifications'] && !notifications.length"
+            *ngIf="
+                !notificationsLoading &&
+                !errors['notifications'] &&
+                !notifications.length
+            "
             title="You're all caught up"
             description="Course assignments, deadlines, and learning milestones will appear here."
             icon="bell"
@@ -341,27 +446,18 @@
         ><app-learning-skeleton *ngIf="historyLoading" />
         <section hlmCard class="surface" *ngIf="!historyLoading">
             <h2>Enrollment history</h2>
-            <app-data-pager #detailPager0 [rows]="history" label="Records" />
-<hlm-table
-                ><hlm-trow
-                    ><hlm-th class="w-1/2">Course</hlm-th><hlm-th class="w-1/4">Progress</hlm-th
-                    ><hlm-th class="w-1/4">Enrolled</hlm-th></hlm-trow
-                ><hlm-trow [appDetailRow]="{kind:'enrollment',id:e._id}" *ngFor="let e of detailPager0.visible"
-                    ><hlm-td class="w-1/2">{{ e.course?.title }}</hlm-td
-                    ><hlm-td class="w-1/4">{{ e.progress }}%</hlm-td
-                    ><hlm-td class="w-1/4">{{ e.createdAt | date: 'mediumDate' }}</hlm-td></hlm-trow
-                ></hlm-table
-            >
-            <p *ngIf="!history.length && !errors['history']">
-                Your enrollments will appear here when you start learning.
-            </p>
+            <app-data-table [preset]="tables['history']" [records]="history" />
         </section>
-        <section hlmCard class="surface product-section" *ngIf="purchases.length">
+        <section
+            hlmCard
+            class="surface product-section"
+            *ngIf="purchases.length"
+        >
             <h2>Purchase history</h2>
             <div class="product-list-item" *ngFor="let p of purchases">
                 <div>
                     <h3>{{ p.course?.title }}</h3>
-                    <p>{{ p.createdAt | date: 'mediumDate' }}</p>
+                    <p>{{ p.createdAt | date: "mediumDate" }}</p>
                 </div>
             </div>
         </section></ng-container
@@ -370,27 +466,14 @@
         ><app-learning-skeleton *ngIf="profileLoading" />
         <div class="profile-layout" *ngIf="!profileLoading">
             <section hlmCard class="surface profile-summary">
-                <div class="profile-avatar">
-                    <img
-                        *ngIf="avatarPreview || profile?.user?.avatar"
-                        [src]="avatarPreview || assetUrl(profile.user.avatar)"
-                        alt="Your profile photo"
-                    /><span *ngIf="!avatarPreview && !profile?.user?.avatar">{{
-                        currentUser?.firstname?.charAt(0)
-                    }}</span>
-                </div>
-                <h2>{{ currentUser?.firstname }} {{ currentUser?.lastname }}</h2>
+                <app-avatar-picker
+                    [user]="profile?.user"
+                    (saved)="loadProfile()"
+                />
+                <h2>
+                    {{ currentUser?.firstname }} {{ currentUser?.lastname }}
+                </h2>
                 <p>{{ currentUser?.email }}</p>
-                <label hlmLabel for="avatar-file">Profile photo</label
-                ><input
-                    hlmInput
-                    id="avatar-file"
-                    type="file"
-                    accept="image/*"
-                    (change)="onAvatarSelected($event)"
-                /><button hlmBtn variant="outline" *ngIf="selectedAvatar" (click)="updateAvatar()">
-                    Upload photo
-                </button>
             </section>
             <div class="stack">
                 <form hlmCard class="surface" (ngSubmit)="updateProfile()">
@@ -444,18 +527,29 @@
                         hlmBtn
                         type="submit"
                         [disabled]="
-                            profileUpdateLoading || !profileData.firstname || !profileData.lastname
+                            profileUpdateLoading ||
+                            !profileData.firstname ||
+                            !profileData.lastname
                         "
                     >
-                        {{ profileUpdateLoading ? 'Saving…' : 'Save changes' }}
+                        {{ profileUpdateLoading ? "Saving…" : "Save changes" }}
                     </button>
                 </form>
-                <form hlmCard class="surface" id="password-section" (ngSubmit)="changePassword()">
+                <form
+                    hlmCard
+                    class="surface"
+                    id="password-section"
+                    (ngSubmit)="changePassword()"
+                >
                     <h2>Password & security</h2>
-                    <p>Use at least 8 characters, one uppercase letter and one number.</p>
+                    <p>
+                        Use at least 8 characters, one uppercase letter and one
+                        number.
+                    </p>
                     <div class="form-grid">
                         <div class="full-width">
-                            <label hlmLabel for="current-password">Current password *</label
+                            <label hlmLabel for="current-password"
+                                >Current password *</label
                             ><input
                                 hlmInput
                                 id="current-password"
@@ -467,7 +561,8 @@
                             />
                         </div>
                         <div>
-                            <label hlmLabel for="new-password">New password *</label
+                            <label hlmLabel for="new-password"
+                                >New password *</label
                             ><input
                                 hlmInput
                                 id="new-password"
@@ -479,7 +574,8 @@
                             />
                         </div>
                         <div>
-                            <label hlmLabel for="confirm-password">Confirm password *</label
+                            <label hlmLabel for="confirm-password"
+                                >Confirm password *</label
                             ><input
                                 hlmInput
                                 id="confirm-password"
@@ -504,7 +600,7 @@
                             !passwordData.confirmPassword
                         "
                     >
-                        {{ passwordLoading ? 'Updating…' : 'Update password' }}
+                        {{ passwordLoading ? "Updating…" : "Update password" }}
                     </button>
                 </form>
             </div>

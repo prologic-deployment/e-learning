@@ -11,7 +11,8 @@
     "test:browser": "node tests/browser-smoke.cjs",
     "test:socket": "node --test tests/socket-lifecycle.cjs tests/proxy-socket.integration.cjs",
     "test:tables": "node --test tests/table-derivations.cjs",
-    "test:details:browser": "node tests/dashboard-details.browser.cjs"
+    "test:details:browser": "node tests/dashboard-details.browser.cjs",
+    "test:controls:browser": "node tests/dashboard-controls.browser.cjs"
   },
   "private": true,
   "dependencies": {

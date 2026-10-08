@@ -1,113 +1,151 @@
 <app-learning-skeleton *ngIf="loading" />
 <div *ngIf="error" class="product-alert" role="alert">
-    {{ error }} <button hlmBtn variant="outline" (click)="refresh.emit()">Try again</button>
+    {{ error }}
+    <button hlmBtn variant="outline" (click)="refresh.emit()">Try again</button>
 </div>
 <section hlmCard class="surface" *ngIf="!loading">
     <div class="section-row">
         <div>
-            <h2>{{ kind === 'people' ? 'Your learning community' : 'Course management' }}</h2>
-            <p>
-                Search, review, and manage
-                {{ kind === 'people' ? 'platform access' : 'your course library' }}.
-            </p>
+            <h2>
+                {{
+                    kind === "people"
+                        ? "Your learning community"
+                        : "Course management"
+                }}
+            </h2>
+            <p>Search, filter and manage your records.</p>
         </div>
-        <button hlmBtn variant="outline" size="sm" (click)="refresh.emit()" [disabled]="busy">
+        <button
+            hlmBtn
+            variant="outline"
+            size="sm"
+            (click)="refresh.emit()"
+            [disabled]="busy"
+        >
             Refresh
         </button>
     </div>
-    <div class="filter-bar">
-        <input
-            hlmInput
-            aria-label="Search records"
-            [(ngModel)]="query"
-            (ngModelChange)="page = 1"
-            placeholder="Search by name…"
-        /><select
-            hlmInput
-            aria-label="Filter records"
-            [(ngModel)]="filter"
-            (ngModelChange)="page = 1"
-        >
-            <option value="all">All {{ kind === 'people' ? 'roles' : 'statuses' }}</option>
-            <ng-container *ngIf="kind === 'people'"
-                ><option *ngFor="let r of ['user', 'trainer', 'manager', 'admin']" [value]="r">
-                    {{ r | titlecase }}
-                </option></ng-container
-            ><ng-container *ngIf="kind === 'courses'"
-                ><option value="Published">Published</option>
-                <option value="Pending">Pending</option></ng-container
-            ></select
-        ><select hlmInput aria-label="Sort records" [(ngModel)]="sort">
-            <option value="name">Name A–Z</option>
-            <option value="reverse">Name Z–A</option>
-            <option value="updated">Recently updated</option>
-        </select>
-    </div>
-    <hlm-table class="record-table"
-        ><hlm-trow class="table-heading"
-            ><hlm-th class="name-cell">{{ kind === 'people' ? 'Person' : 'Course' }}</hlm-th
-            ><hlm-th class="status-cell">{{ kind === 'people' ? 'Role' : 'Status' }}</hlm-th
-            ><hlm-th class="detail-cell">{{ kind === 'people' ? 'Account' : 'Price' }}</hlm-th
-            ><hlm-th class="actions-cell">Actions</hlm-th></hlm-trow
-        ><hlm-trow [appDetailRow]="{kind:kind==='people'?'user':'course',id:r._id}" *ngFor="let r of rows"
-            ><hlm-td class="name-cell"
-                ><span class="record-avatar"
-                    ><i [class]="kind === 'people' ? 'bx bx-user' : 'bx bx-book-open'"></i
-                ></span>
-                <div>
-                    <strong>{{ name(r) }}</strong
-                    ><small>{{ kind === 'people' ? r.email : r.category }}</small>
-                </div></hlm-td
-            ><hlm-td class="status-cell"
-                ><span hlmBadge variant="secondary">{{ status(r) | titlecase }}</span></hlm-td
-            ><hlm-td class="detail-cell"
-                ><span *ngIf="kind === 'people'">{{ r.isActive ? 'Active' : 'Inactive' }}</span
-                ><span *ngIf="kind === 'courses'">{{
-                    r.price === 0 ? 'Free' : (r.price | currency: 'TND' : 'code')
-                }}</span></hlm-td
-            ><hlm-td class="actions-cell"
-                ><ng-container *ngIf="canManage(r)"
-                    ><button
-                        hlmBtn
-                        variant="ghost"
-                        size="sm"
-                        *ngIf="kind === 'courses'"
-                        (click)="edit.emit(r)"
-                    >
-                        Edit</button
-                    ><button *ngIf="kind==='people'" hlmBtn variant="ghost" size="sm" [disabled]="busy" (click)="open(r,'role')">Change role</button><button *ngIf="allowApproval && !r.isApproved" hlmBtn variant="outline" size="sm" [disabled]="busy" (click)="approve.emit(r._id)">Publish</button><button *ngIf="allowApproval" hlmBtn variant="ghost" size="icon" [attr.aria-label]="'Archive '+name(r)" [disabled]="busy" (click)="open(r,'archive')"><i class="bx bx-archive-in" aria-hidden="true"></i></button><button hlmBtn variant="ghost" size="icon" [disabled]="busy" [attr.aria-label]="'Delete '+name(r)" (click)="open(r,'delete')"><i class="bx bx-trash" aria-hidden="true"></i></button></ng-container
-                ><span class="small-muted" *ngIf="!canManage(r)">Read only</span></hlm-td
-            ></hlm-trow
-        ></hlm-table
-    >
-    <app-empty-state
-        *ngIf="!filtered.length && !error"
-        [title]="query || filter !== 'all' ? 'No matching records' : 'Ready for a fresh start'"
-        description="Records will appear here when they are available. Try refreshing or adjusting your filters."
-        icon="search"
+    <app-data-table
+        *ngIf="!error"
+        [records]="records"
+        [preset]="tables[kind]"
+        [actions]="recordActions"
     />
-    <div class="pagination-row" *ngIf="filtered.length">
-        <span>{{ filtered.length }} records · {{ currentPage }} / {{ pages }}</span>
-        <div class="action-row">
+    <ng-template #recordActions let-r
+        ><ng-container *ngIf="canManage(r); else readOnly">
             <button
                 hlmBtn
                 variant="outline"
                 size="sm"
-                [disabled]="currentPage === 1"
-                (click)="page = currentPage - 1"
+                *ngIf="kind === 'courses'"
+                (click)="edit.emit(r)"
+                [disabled]="busy"
             >
-                Previous</button
-            ><button
+                Edit
+            </button>
+            <button
                 hlmBtn
                 variant="outline"
                 size="sm"
-                [disabled]="currentPage === pages"
-                (click)="page = currentPage + 1"
+                *ngIf="kind === 'people'"
+                (click)="open(r, 'role')"
+                [disabled]="busy"
             >
-                Next
+                Change role
             </button>
-        </div>
-    </div>
+            <button
+                hlmBtn
+                variant="outline"
+                size="sm"
+                *ngIf="allowApproval && !r.isApproved"
+                (click)="approve.emit(r._id)"
+                [disabled]="busy"
+            >
+                Publish
+            </button>
+            <button
+                hlmBtn
+                variant="ghost"
+                size="icon"
+                *ngIf="allowApproval"
+                [attr.aria-label]="'Archive ' + name(r)"
+                [disabled]="busy"
+                (click)="open(r, 'archive')"
+            >
+                <i class="bx bx-archive-in" aria-hidden="true"></i>
+            </button>
+            <button
+                hlmBtn
+                variant="ghost"
+                size="icon"
+                [attr.aria-label]="'Delete ' + name(r)"
+                [disabled]="busy"
+                (click)="open(r, 'delete')"
+            >
+                <i class="bx bx-trash" aria-hidden="true"></i>
+            </button> </ng-container
+        ><ng-template #readOnly>Read only</ng-template></ng-template
+    >
 </section>
-
-<hlm-dialog #confirmation><hlm-dialog-content *brnDialogContent="let ctx"><h2 hlmDialogTitle>{{action==='role'?'Update role':action==='archive'?'Archive course':'Confirm deletion'}}</h2><p hlmDialogDescription>{{selected?name(selected):''}} — {{action==='role'?'Choose the access this person should have.':action==='archive'?'Enrolled learners will lose access until this course is restored.':'This action cannot be undone.'}}</p><ng-container *ngIf="action==='role'"><label hlmLabel for="record-role">Platform role</label><select hlmInput id="record-role" [(ngModel)]="proposedRole"><option *ngFor="let role of ['user','trainer','manager','admin']" [value]="role">{{role|titlecase}}</option></select></ng-container><div class="action-row"><button hlmBtn type="button" variant="outline" (click)="confirmation.close(0)">Cancel</button><button hlmBtn type="button" [variant]="action==='delete'?'destructive':'default'" [disabled]="busy || confirmed || (action==='role' && proposedRole===status(selected))" (click)="confirm()">{{action==='role'?'Confirm role change':action==='archive'?'Archive course':'Delete permanently'}}</button></div></hlm-dialog-content></hlm-dialog>
+<hlm-dialog #confirmation
+    ><hlm-dialog-content *brnDialogContent="let ctx"
+        ><h2 hlmDialogTitle>
+            {{
+                action === "role"
+                    ? "Update role"
+                    : action === "archive"
+                      ? "Archive course"
+                      : "Confirm deletion"
+            }}
+        </h2>
+        <p hlmDialogDescription>
+            {{ selected ? name(selected) : "" }} —
+            {{
+                action === "role"
+                    ? "Choose the access this person should have."
+                    : action === "archive"
+                      ? "Enrolled learners will lose access until this course is restored."
+                      : "This action cannot be undone."
+            }}
+        </p>
+        <ng-container *ngIf="action === 'role'"
+            ><label hlmLabel for="record-role">Platform role</label
+            ><select hlmInput id="record-role" [(ngModel)]="proposedRole">
+                <option
+                    *ngFor="let role of ['user', 'trainer', 'manager', 'admin']"
+                    [value]="role"
+                >
+                    {{ role | titlecase }}
+                </option>
+            </select></ng-container
+        >
+        <div class="action-row">
+            <button
+                hlmBtn
+                type="button"
+                variant="outline"
+                (click)="confirmation.close(0)"
+            >
+                Cancel</button
+            ><button
+                hlmBtn
+                type="button"
+                [variant]="action === 'delete' ? 'destructive' : 'default'"
+                [disabled]="
+                    busy ||
+                    confirmed ||
+                    (action === 'role' && proposedRole === status(selected))
+                "
+                (click)="confirm()"
+            >
+                {{
+                    action === "role"
+                        ? "Confirm role change"
+                        : action === "archive"
+                          ? "Archive course"
+                          : "Delete permanently"
+                }}
+            </button>
+        </div></hlm-dialog-content
+    ></hlm-dialog
+>

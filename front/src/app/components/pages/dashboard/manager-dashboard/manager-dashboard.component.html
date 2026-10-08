@@ -13,7 +13,7 @@
         </h1>
         <p pageDescription>See the progress. Support the people behind it.</p>
         <div pageActions>
-            <div class="action-row" *ngIf="activeTab==='stats'">
+            <div class="action-row" *ngIf="activeTab === 'stats'">
                 <button
                     hlmBtn
                     variant="outline"
@@ -32,7 +32,13 @@
             </div>
         </div></app-page-heading
     >
-<app-account-security-card *ngIf="activeTab === 'stats' || activeTab === 'overview' || activeTab === 'profile'" />
+    <app-account-security-card
+        *ngIf="
+            activeTab === 'stats' ||
+            activeTab === 'overview' ||
+            activeTab === 'profile'
+        "
+    />
 
     <app-operations-overview
         *ngIf="activeTab === 'stats'"
@@ -60,7 +66,8 @@
                         class="mb-1"
                         style="font-weight: 700; color: hsl(var(--foreground))"
                     >
-                        <i class="bx bx-book-open" aria-hidden="true"></i> Assign Course to Team Members
+                        <i class="bx bx-book-open" aria-hidden="true"></i>
+                        Assign Course to Team Members
                     </h4>
                     <small class="text-muted">
                         Assign a course with an optional deadline — team members
@@ -68,7 +75,11 @@
                     </small>
                 </div>
 
-                <div *ngIf="assignSuccess" class="alert alert-success" [appToast]="assignSuccess">
+                <div
+                    *ngIf="assignSuccess"
+                    class="alert alert-success"
+                    [appToast]="assignSuccess"
+                >
                     {{ assignSuccess }}
                 </div>
                 <div *ngIf="assignError" class="alert alert-danger">
@@ -113,7 +124,7 @@
                             color: hsl(var(--foreground));
                         "
                     >
-                         Deadline
+                        Deadline
                         <small class="text-muted fw-normal">(optional)</small>
                     </label>
                     <input
@@ -133,7 +144,7 @@
                         class="text-muted mt-1 d-block"
                         style="font-size: 11px"
                     >
-                         Team members will receive a notification email when a
+                        Team members will receive a notification email when a
                         deadline is set.
                     </small>
                 </div>
@@ -147,7 +158,7 @@
                             color: hsl(var(--foreground));
                         "
                     >
-                         Select Team Members *
+                        Select Team Members *
                     </label>
                     <small
                         class="text-muted d-block mb-2"
@@ -259,7 +270,11 @@
                                     font-weight: 600;
                                 "
                             >
-                                <i class="bx bx-check-circle" aria-hidden="true"></i> Selected
+                                <i
+                                    class="bx bx-check-circle"
+                                    aria-hidden="true"
+                                ></i>
+                                Selected
                             </span>
                         </div>
                     </div>
@@ -295,8 +310,8 @@
                     "
                 >
                     <span *ngIf="!assignLoading">
-                        <i class="bx bx-book-open" aria-hidden="true"></i> Assign Course to
-                        {{ selectedUserIds.length }} Member(s)
+                        <i class="bx bx-book-open" aria-hidden="true"></i>
+                        Assign Course to {{ selectedUserIds.length }} Member(s)
                     </span>
                     <span *ngIf="assignLoading">
                         <span
@@ -309,194 +324,66 @@
         </div>
 
         <!-- ========== OVERDUE TAB ========== -->
-        <div *ngIf="activeTab === 'overdue'">
-            <app-learning-skeleton *ngIf="statsLoading" />
-            <div *ngIf="statsError" role="alert" class="product-alert">{{ statsError }} <button hlmBtn variant="outline" (click)="loadStats()">Retry</button></div>
-            <div
-                hlmCard
-                class="card p-4"
-                style="
-                    border-radius: 10px;
-                    box-shadow: none;
-                    border: 1px solid hsl(var(--border));
-                "
-            >
-                <div
-                    class="d-flex justify-content-between align-items-center mb-4"
+        <section
+            *ngIf="activeTab === 'overdue'"
+            hlmCard
+            class="surface product-section"
+        >
+            <div class="section-row">
+                <div>
+                    <h2>Overdue enrollments</h2>
+                    <p>Filter records below. Select a row to view details.</p>
+                </div>
+                <button
+                    hlmBtn
+                    variant="outline"
+                    size="sm"
+                    (click)="loadStats()"
                 >
-                    <div>
-                        <h5
-                            class="mb-1"
-                            style="
-                                font-weight: 700;
-                                color: hsl(var(--foreground));
-                            "
-                        >
-                             Overdue Enrollments
-                        </h5>
-                        <small class="text-muted"
-                            >Members who haven't completed their courses on
-                            time</small
-                        >
-                    </div>
-                    <span
-                        *ngIf="!statsLoading && !statsError && overdueEnrollments.length > 0"
-                        class="badge bg-danger"
-                        style="
-                            font-size: 13px;
-                            padding: 8px 14px;
-                            border-radius: 10px;
-                        "
-                    >
-                        {{ overdueEnrollments.length }} overdue
-                    </span>
-                </div>
-
-                <div *ngIf="deadlineSuccess" class="alert alert-success" [appToast]="deadlineSuccess">
-                    {{ deadlineSuccess }}
-                </div>
-                <div *ngIf="deadlineError" class="alert alert-danger">
-                    {{ deadlineError }}
-                </div>
-
-                <div
-                    *ngIf="!statsLoading && !statsError && overdueEnrollments.length === 0"
-                    class="text-center py-5"
-                    style="background: hsl(var(--card)); border-radius: 10px"
-                >
-                    <div style="font-size: 50px"><i class="bx bx-check-circle" aria-hidden="true"></i></div>
-                    <h5 class="text-success mt-3" style="font-weight: 700">
-                        No overdue enrollments !
-                    </h5>
-                    <p class="text-muted">
-                        Your team is on track. Great work !
-                    </p>
-                </div>
-
-                <div
-                    class="table-responsive"
-                    *ngIf="!statsLoading && !statsError && overdueEnrollments.length > 0"
-                >
-                    <app-data-pager #detailPager0 [rows]="overdueEnrollments" label="Records" />
-<table class="table table-hover align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Member</th>
-                                <th>Course</th>
-                                <th>Progress</th>
-                                <th>Set Deadline</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr [appDetailRow]="{kind:'enrollment',id:enrollment._id}" *ngFor="let enrollment of detailPager0.visible">
-                                <td>
-                                    <div
-                                        class="d-flex align-items-center gap-2"
-                                    >
-                                        <div
-                                            style="
-                                                width: 36px;
-                                                height: 36px;
-                                                border-radius: 10px;
-                                                background: hsl(var(--muted));
-                                                display: flex;
-                                                align-items: center;
-                                                justify-content: center;
-                                                color: hsl(var(--foreground));
-                                                font-weight: 700;
-                                                font-size: 13px;
-                                                flex-shrink: 0;
-                                            "
-                                        >
-                                            {{ enrollment.user.firstname[0]
-                                            }}{{ enrollment.user.lastname[0] }}
-                                        </div>
-                                        <div>
-                                            <strong style="font-size: 13px">
-                                                {{ enrollment.user.firstname }}
-                                                {{ enrollment.user.lastname }}
-                                            </strong>
-                                            <br />
-                                            <small class="text-muted">{{
-                                                enrollment.user.email
-                                            }}</small>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <strong style="font-size: 13px">{{
-                                        enrollment.course.title
-                                    }}</strong>
-                                </td>
-                                <td style="min-width: 140px">
-                                    <div
-                                        class="d-flex align-items-center gap-2"
-                                    >
-                                        <div
-                                            class="progress flex-grow-1"
-                                            style="
-                                                height: 8px;
-                                                border-radius: 10px;
-                                            "
-                                        >
-                                            <div
-                                                class="progress-bar bg-danger"
-                                                style="border-radius: 10px"
-                                                [style.width.%]="
-                                                    enrollment.progress || 0
-                                                "
-                                            ></div>
-                                        </div>
-                                        <small
-                                            ><strong
-                                                >{{
-                                                    enrollment.progress || 0
-                                                }}%</strong
-                                            ></small
-                                        >
-                                    </div>
-                                </td>
-                                <td>
-                                    <input
-                                        hlmInput
-                                        type="date"
-                                        class="form-control form-control-sm"
-                                        [(ngModel)]="selectedDeadline"
-                                        [min]="today"
-                                        style="
-                                            border-radius: 10px;
-                                            border: 1.5px solid
-                                                hsl(var(--border));
-                                            font-size: 13px;
-                                        "
-                                    />
-                                </td>
-                                <td>
-                                    <button
-                                        hlmBtn
-                                        variant="outline"
-                                        (click)="setDeadline(enrollment._id)"
-                                        style="
-                                            padding: 6px 14px;
-                                            border: none;
-                                            border-radius: 10px;
-                                            background: hsl(var(--muted));
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 12px;
-                                            cursor: pointer;
-                                        "
-                                    >
-                                        <i class="bx bx-time" aria-hidden="true"></i> Set Deadline
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                    Refresh
+                </button>
             </div>
-        </div>
+            <div *ngIf="deadlineSuccess" class="product-alert" role="status">
+                {{ deadlineSuccess }}
+            </div>
+            <div *ngIf="deadlineError" class="product-alert" role="alert">
+                {{ deadlineError }}
+            </div>
+            <app-learning-skeleton *ngIf="statsLoading" />
+            <div *ngIf="statsError" role="alert" class="product-alert">
+                {{ statsError
+                }}<button hlmBtn variant="outline" (click)="loadStats()">
+                    Retry
+                </button>
+            </div>
+            <ng-container *ngIf="!statsLoading && !statsError"
+                ><app-data-table
+                    [preset]="tables['overdue']"
+                    [records]="overdueEnrollments"
+                    [actions]="deadlineActions" /></ng-container
+            ><ng-template #deadlineActions let-enrollment
+                ><input
+                    hlmInput
+                    type="date"
+                    [attr.aria-label]="
+                        'New deadline for ' + enrollment.user?.firstname
+                    "
+                    [(ngModel)]="deadlineDrafts[enrollment._id]"
+                    [min]="today"
+                    style="width: 150px"
+                /><button
+                    hlmBtn
+                    variant="outline"
+                    size="sm"
+                    (click)="
+                        selectedDeadline = deadlineDrafts[enrollment._id] || '';
+                        setDeadline(enrollment._id)
+                    "
+                >
+                    Set Deadline
+                </button></ng-template
+            >
+        </section>
 
         <!-- ========== PROFILE TAB ========== -->
         <div *ngIf="activeTab === 'profile'">
@@ -516,56 +403,10 @@
                             border: 1px solid hsl(var(--border));
                         "
                     >
-                        <div
-                            style="
-                                position: relative;
-                                display: inline-block;
-                                margin: 0 auto 16px;
-                            "
-                        >
-                            <img
-                                *ngIf="avatarPreview"
-                                [src]="avatarPreview"
-                                alt="preview"
-                                style="
-                                    width: 100px;
-                                    height: 100px;
-                                    border-radius: 10px;
-                                    object-fit: cover;
-                                    border: 4px solid hsl(var(--border));
-                                    box-shadow: none;
-                                "
-                            />
-                            <img
-                                *ngIf="!avatarPreview && profile?.user?.avatar"
-                                [src]="
-                                    'http://localhost:5000' +
-                                    profile.user.avatar
-                                "
-                                alt="avatar"
-                                style="
-                                    width: 100px;
-                                    height: 100px;
-                                    border-radius: 10px;
-                                    object-fit: cover;
-                                    border: 4px solid hsl(var(--border));
-                                    box-shadow: none;
-                                "
-                            />
-                            <img
-                                *ngIf="!avatarPreview && !profile?.user?.avatar"
-                                src="assets/img/user/user1.jpg"
-                                alt="avatar"
-                                style="
-                                    width: 100px;
-                                    height: 100px;
-                                    border-radius: 10px;
-                                    object-fit: cover;
-                                    border: 4px solid hsl(var(--border));
-                                    box-shadow: none;
-                                "
-                            />
-                        </div>
+                        <app-avatar-picker
+                            [user]="profile?.user"
+                            (saved)="loadProfile()"
+                        />
 
                         <h5
                             style="
@@ -587,39 +428,8 @@
                                 padding: 6px 14px;
                             "
                         >
-                             Manager
+                            Manager
                         </span>
-
-                        <div class="mt-4">
-                            <input
-                                hlmInput
-                                type="file"
-                                class="form-control mb-2"
-                                accept=".jpg,.jpeg,.png,.webp"
-                                (change)="onAvatarSelected($event)"
-                                style="border-radius: 10px; font-size: 13px"
-                            />
-                            <button
-                                hlmBtn
-                                variant="outline"
-                                (click)="updateAvatar()"
-                                [disabled]="!selectedAvatar"
-                                style="
-                                    width: 100%;
-                                    padding: 10px;
-                                    border: none;
-                                    border-radius: 10px;
-                                    background: hsl(var(--muted));
-                                    color: hsl(var(--foreground));
-                                    font-weight: 600;
-                                    font-size: 13px;
-                                    cursor: pointer;
-                                "
-                                [style.opacity]="!selectedAvatar ? '0.5' : '1'"
-                            >
-                                 Update Profile Picture
-                            </button>
-                        </div>
                     </div>
 
                     <!-- Team Mini Stats -->
@@ -640,7 +450,11 @@
                                 margin-bottom: 16px;
                             "
                         >
-                            <i class="bx bx-bar-chart-alt-2" aria-hidden="true"></i> Team Quick Stats
+                            <i
+                                class="bx bx-bar-chart-alt-2"
+                                aria-hidden="true"
+                            ></i>
+                            Team Quick Stats
                         </h6>
                         <div class="row">
                             <div class="col-6 mb-3">
@@ -666,7 +480,7 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                         Team
+                                        Team
                                     </div>
                                 </div>
                             </div>
@@ -693,7 +507,11 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                        <i class="bx bx-edit" aria-hidden="true"></i> Enrollments
+                                        <i
+                                            class="bx bx-edit"
+                                            aria-hidden="true"
+                                        ></i>
+                                        Enrollments
                                     </div>
                                 </div>
                             </div>
@@ -720,7 +538,11 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                        <i class="bx bx-check-circle" aria-hidden="true"></i> Completion
+                                        <i
+                                            class="bx bx-check-circle"
+                                            aria-hidden="true"
+                                        ></i>
+                                        Completion
                                     </div>
                                 </div>
                             </div>
@@ -747,7 +569,7 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                         Progress
+                                        Progress
                                     </div>
                                 </div>
                             </div>
@@ -760,7 +582,8 @@
                     <div
                         *ngIf="profileUpdateSuccess"
                         class="alert alert-success"
-                     [appToast]="profileUpdateSuccess">
+                        [appToast]="profileUpdateSuccess"
+                    >
                         {{ profileUpdateSuccess }}
                     </div>
                     <div *ngIf="profileUpdateError" class="alert alert-danger">
@@ -784,7 +607,7 @@
                                 color: hsl(var(--foreground));
                             "
                         >
-                             Edit Profile
+                            Edit Profile
                         </h5>
 
                         <div class="row">
@@ -882,7 +705,8 @@
                             [style.opacity]="profileUpdateLoading ? '0.7' : '1'"
                         >
                             <span *ngIf="!profileUpdateLoading"
-                                ><i class="bx bx-save" aria-hidden="true"></i> Save Changes</span
+                                ><i class="bx bx-save" aria-hidden="true"></i>
+                                Save Changes</span
                             >
                             <span *ngIf="profileUpdateLoading">
                                 <span
@@ -910,13 +734,14 @@
                                 color: hsl(var(--foreground));
                             "
                         >
-                             Change Password
+                            Change Password
                         </h5>
 
                         <div
                             *ngIf="passwordSuccess"
                             class="alert alert-success"
-                         [appToast]="passwordSuccess">
+                            [appToast]="passwordSuccess"
+                        >
                             {{ passwordSuccess }}
                         </div>
                         <div *ngIf="passwordError" class="alert alert-danger">
@@ -999,8 +824,8 @@
                             "
                             [style.opacity]="passwordLoading ? '0.7' : '1'"
                         >
-                            <span *ngIf="!passwordLoading"
-                                > Change Password</span
+                            <span *ngIf="!passwordLoading">
+                                Change Password</span
                             >
                             <span *ngIf="passwordLoading">
                                 <span

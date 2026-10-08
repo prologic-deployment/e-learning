@@ -28,7 +28,11 @@ function load(file) {
                 ? angular
                 : name.endsWith("memo-last")
                   ? load("src/app/components/management/memo-last.ts")
-                  : {},
+                  : name.endsWith("table-model")
+                    ? load("src/app/components/data-table/table-model.ts")
+                    : name.endsWith("table-presets")
+                      ? load("src/app/components/data-table/table-presets.ts")
+                      : {},
         module,
         module.exports,
     );
@@ -52,9 +56,13 @@ test("derived-data cache computes once and invalidates every changed key", () =>
 });
 test("record filters/sorting reuse results without mutating inputs; pagination clamps after changes", () => {
     const C = load(
-            "src/app/components/management/record-table.component.ts",
-        ).RecordTableComponent,
+            "src/app/components/data-table/data-table.component.ts",
+        ).DataTableComponent,
         c = new C();
+    c.preset = load(
+        "src/app/components/data-table/table-presets.ts",
+    ).TABLES.courses;
+    c.size = 10;
     c.records = Array.from({ length: 18 }, (_, i) => ({
         _id: String(i),
         title: `Course ${String(i).padStart(2, "0")}`,
@@ -64,24 +72,24 @@ test("record filters/sorting reuse results without mutating inputs; pagination c
     const derived = c.filtered;
     for (let i = 0; i < 20; i++) {
         assert.equal(c.filtered, derived);
-        assert.equal(c.pages, 3);
-        assert.equal(c.rows.length, 8);
+        assert.equal(c.pages, 2);
+        assert.equal(c.visible.length, 10);
     }
-    c.sort = "reverse";
+    c.sort = "name:desc";
     assert.notEqual(c.filtered, derived);
     assert.deepEqual(
         c.records.map((r) => r._id),
         original,
     );
-    c.filter = "Published";
+    c.choices = { status: "Published" };
     assert.equal(c.filtered.length, 9);
     c.query = "17";
     assert.equal(c.filtered.length, 0);
     c.query = "";
     c.page = 3;
-    assert.equal(c.currentPage, 2);
+    assert.equal(c.current, 1);
     c.records = c.records.slice(0, 2);
-    assert.equal(c.currentPage, 1);
+    assert.equal(c.current, 1);
 });
 test("operations mapping retains authorized detail IDs and invalidates for role/filter changes", () => {
     const C = load(
@@ -112,6 +120,67 @@ test("operations mapping retains authorized detail IDs and invalidates for role/
     assert.equal(c.rows[0].id, "user-id");
     c.role = "admin";
     assert.equal(c.rows[0].id, "popular-id");
-    c.query = "no match";
-    assert.equal(c.rows.length, 0);
+    assert.equal(c.tablePreset.detail(c.rows[0]).id, "popular-id");
+});
+
+test("filters intersect categorical, inclusive dates and numeric bounds; reset and invalid ranges", () => {
+    const { DataTableComponent: C } = load(
+            "src/app/components/data-table/data-table.component.ts",
+        ),
+        c = new C();
+    c.preset = {
+        label: "Test",
+        detail: (r) => ({ kind: "course", id: r.id }),
+        columns: [
+            { key: "name", label: "Name", get: (r) => r.name },
+            { key: "state", label: "State", filter: true, get: (r) => r.state },
+            { key: "date", label: "Date", type: "date", get: (r) => r.date },
+            {
+                key: "score",
+                label: "Score",
+                type: "number",
+                range: true,
+                get: (r) => r.score,
+            },
+        ],
+    };
+    c.records = [
+        {
+            id: "1",
+            name: "Alpha",
+            state: "Open",
+            date: "2026-10-08T12:00:00",
+            score: 70,
+        },
+        {
+            id: "2",
+            name: "Beta",
+            state: "Closed",
+            date: "2026-10-08T13:00:00",
+            score: 90,
+        },
+        { id: "3", name: "Gamma", state: "Open", date: null, score: null },
+    ];
+    c.choices = { state: "Open" };
+    c.from = "2026-10-08";
+    c.to = "2026-10-08";
+    c.min = "70";
+    c.max = "70";
+    assert.deepEqual(
+        c.filtered.map((r) => r.id),
+        ["1"],
+    );
+    c.query = "Beta";
+    assert.equal(c.filtered.length, 0);
+    c.reset();
+    assert.equal(c.filtered.length, 3);
+    assert.equal(c.activeFilters, 0);
+    c.min = "90";
+    c.max = "70";
+    assert.ok(c.rangeError);
+    assert.equal(c.filtered.length, 0);
+    c.reset();
+    c.from = "2026-10-09";
+    c.to = "2026-10-08";
+    assert.ok(c.rangeError);
 });

@@ -161,14 +161,14 @@ const { chromium } = require("playwright"),
             "row action must not open details",
         );
         await close(page);
-        const search = page.getByRole("textbox", { name: "Search records" });
+        const search = page.getByRole("searchbox", { name: "Search records" });
         await search.fill("Sam");
         assert.equal(await page.locator(".detail-record-row").count(), 1);
         await search.fill("");
         const beforeNames = await page
             .locator(".detail-record-row")
             .allTextContents();
-        await page.getByLabel("Sort records").selectOption("reverse");
+        await page.getByLabel("Sort records").selectOption("name:desc");
         assert.notDeepEqual(
             await page.locator(".detail-record-row").allTextContents(),
             beforeNames,
@@ -183,7 +183,7 @@ const { chromium } = require("playwright"),
         );
         await goto("quiz-results");
         assert.equal(await page.locator(".detail-record-row").count(), 20);
-        const pager = page.locator("app-data-pager");
+        const pager = page.locator("app-data-table .pagination-row");
         await pager.getByRole("button", { name: "Next" }).click();
         assert.equal(await page.locator(".detail-record-row").count(), 5);
         await pager.getByRole("button", { name: "Previous" }).click();
@@ -217,11 +217,11 @@ const { chromium } = require("playwright"),
                 await page.getByRole("dialog").innerText(),
             ),
         );
-        fs.mkdirSync("../docs/screenshots/dashboard-details", {
+        fs.mkdirSync("../docs/product-quality/unified-tables/details", {
             recursive: true,
         });
         await page.screenshot({
-            path: "../docs/screenshots/dashboard-details/result-overview.png",
+            path: "../docs/product-quality/unified-tables/details/result-overview.png",
         });
         await page.getByRole("button", { name: /View answers/ }).click();
         assert.ok(
@@ -229,7 +229,7 @@ const { chromium } = require("playwright"),
                 900,
         );
         await page.screenshot({
-            path: "../docs/screenshots/dashboard-details/assessment-desktop.png",
+            path: "../docs/product-quality/unified-tables/details/assessment-desktop.png",
         });
         await page.setViewportSize({ width: 390, height: 844 });
         await page.waitForFunction(() => {
@@ -259,7 +259,7 @@ const { chromium } = require("playwright"),
             .getByRole("button", { name: "Close", exact: true })
             .click({ trial: true });
         await page.screenshot({
-            path: "../docs/screenshots/dashboard-details/assessment-mobile.png",
+            path: "../docs/product-quality/unified-tables/details/assessment-mobile.png",
         });
         await close(page);
         await page.setViewportSize({ width: 1440, height: 1000 });

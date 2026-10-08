@@ -17,7 +17,7 @@
             Design learning experiences. Understand their impact.
         </p>
         <div pageActions>
-            <div class="action-row" *ngIf="activeTab==='stats'">
+            <div class="action-row" *ngIf="activeTab === 'stats'">
                 <button
                     hlmBtn
                     variant="outline"
@@ -34,10 +34,22 @@
                     Export Excel
                 </button>
             </div>
-            <button *ngIf="activeTab==='courses'" hlmBtn (click)="createdCourse=null;setTab('create')">Create course</button>
+            <button
+                *ngIf="activeTab === 'courses'"
+                hlmBtn
+                (click)="createdCourse = null; setTab('create')"
+            >
+                Create course
+            </button>
         </div></app-page-heading
     >
-<app-account-security-card *ngIf="activeTab === 'stats' || activeTab === 'overview' || activeTab === 'profile'" />
+    <app-account-security-card
+        *ngIf="
+            activeTab === 'stats' ||
+            activeTab === 'overview' ||
+            activeTab === 'profile'
+        "
+    />
 
     <app-operations-overview
         *ngIf="activeTab === 'stats'"
@@ -60,262 +72,41 @@
             (edit)="editCourse($event)"
             (remove)="deleteCourse($event)"
         />
-<app-course-builder *ngIf="activeTab==='create'"/>
+        <app-course-builder *ngIf="activeTab === 'create'" />
 
         <!-- ========== QUIZ RESULTS TAB ========== -->
-        <div *ngIf="activeTab === 'quiz-results'">
-            <div *ngIf="quizResultsLoading" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status"></div>
-            </div>
-            <div *ngIf="!quizResultsLoading">
-                <div
-                    hlmCard
-                    class="card p-3"
-                    style="
-                        border-radius: 10px;
-                        box-shadow: none;
-                        border: 1px solid hsl(var(--border));
-                    "
-                >
-                    <div
-                        class="d-flex justify-content-between align-items-center mb-4"
-                    >
-                        <div>
-                            <h4
-                                class="mb-1"
-                                style="
-                                    font-weight: 700;
-                                    color: hsl(var(--foreground));
-                                "
-                            >
-                                <i class="bx bx-edit" aria-hidden="true"></i> Quiz Results
-                            </h4>
-                            <small class="text-muted">
-                                {{ quizResults.length }} total |
-                                <span class="text-success fw-bold"
-                                    >{{ passedCount }} passed</span
-                                >
-                                |
-                                <span class="text-danger fw-bold"
-                                    >{{ failedCount }} failed</span
-                                >
-                            </small>
-                        </div>
-                        <button
-                            hlmBtn
-                            variant="outline"
-                            class="btn btn-outline-primary btn-sm"
-                            style="border-radius: 10px"
-                            (click)="loadQuizResults()"
-                        >
-                             Refresh
-                        </button>
-                    </div>
-
-                    <div class="d-flex gap-2 mb-4">
-                        <button
-                            hlmBtn
-                            variant="outline"
-                            class="btn btn-sm"
-                            [class.btn-dark]="quizResultsFilter === 'all'"
-                            [class.btn-outline-dark]="
-                                quizResultsFilter !== 'all'
-                            "
-                            (click)="quizResultsFilter = 'all'"
-                        >
-                            All ({{ quizResults.length }})
-                        </button>
-                        <button
-                            hlmBtn
-                            variant="outline"
-                            class="btn btn-sm"
-                            [class.btn-success]="quizResultsFilter === 'passed'"
-                            [class.btn-outline-success]="
-                                quizResultsFilter !== 'passed'
-                            "
-                            (click)="quizResultsFilter = 'passed'"
-                        >
-                            <i class="bx bx-check-circle" aria-hidden="true"></i> Passed ({{ passedCount }})
-                        </button>
-                        <button
-                            hlmBtn
-                            variant="outline"
-                            class="btn btn-sm"
-                            [class.btn-danger]="quizResultsFilter === 'failed'"
-                            [class.btn-outline-danger]="
-                                quizResultsFilter !== 'failed'
-                            "
-                            (click)="quizResultsFilter = 'failed'"
-                        >
-                            <i class="bx bx-error-circle" aria-hidden="true"></i> Failed ({{ failedCount }})
-                        </button>
-                    </div>
-
-                    <div *ngIf="quizResultsError" class="product-alert" role="alert">{{ quizResultsError }} <button hlmBtn variant="outline" (click)="loadQuizResults()">Retry</button></div>
-                    <div
-                        *ngIf="!quizResultsError && filteredQuizResults.length === 0"
-                        class="text-center py-5"
-                    >
-                        <div style="font-size: 50px"><i class="bx bx-edit" aria-hidden="true"></i></div>
-                        <p class="text-muted mt-2">No quiz results found !</p>
-                    </div>
-
-                    <div
-                        class="table-responsive"
-                        *ngIf="filteredQuizResults.length > 0"
-                    >
-                        <app-data-pager #detailPager0 [rows]="filteredQuizResults" label="Records" />
-<table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Student</th>
-                                    <th>Course</th>
-                                    <th>Quiz / Exam</th>
-                                    <th>Type</th>
-                                    <th>Score</th>
-                                    <th>Status</th>
-                                    <th>Attempts</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr [appDetailRow]="{kind:'result',id:result.enrollmentId,query:{assessment:result.type,lesson:result.lessonId}}" *ngFor="let result of detailPager0.visible">
-                                    <td>
-                                        <div
-                                            class="d-flex align-items-center gap-2"
-                                        >
-                                            <div
-                                                style="
-                                                    width: 36px;
-                                                    height: 36px;
-                                                    border-radius: 10px;
-                                                    background: hsl(
-                                                        var(--muted)
-                                                    );
-                                                    display: flex;
-                                                    align-items: center;
-                                                    justify-content: center;
-                                                    color: hsl(
-                                                        var(--foreground)
-                                                    );
-                                                    font-weight: 700;
-                                                    font-size: 13px;
-                                                    flex-shrink: 0;
-                                                "
-                                            >
-                                                {{ result.user?.firstname?.[0]
-                                                }}{{
-                                                    result.user?.lastname?.[0]
-                                                }}
-                                            </div>
-                                            <div>
-                                                <strong style="font-size: 13px">
-                                                    {{ result.user?.firstname }}
-                                                    {{ result.user?.lastname }}
-                                                </strong>
-                                                <br />
-                                                <small class="text-muted">{{
-                                                    result.user?.email
-                                                }}</small>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <strong style="font-size: 13px">{{
-                                            result.course?.title
-                                        }}</strong>
-                                        <br />
-                                        <span
-                                            class="badge bg-primary"
-                                            style="font-size: 10px"
-                                            >{{ result.course?.category }}</span
-                                        >
-                                    </td>
-                                    <td>
-                                        <span style="font-size: 13px">{{
-                                            result.lessonTitle
-                                        }}</span>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="badge"
-                                            [class.bg-info]="
-                                                result.type !== 'final_exam'
-                                            "
-                                            [class.bg-warning]="
-                                                result.type === 'final_exam'
-                                            "
-                                            style="font-size: 11px"
-                                        >
-                                            {{
-                                                result.type === "final_exam" ? "Final exam" : result.type === "lesson_quiz2" ? "Legacy quiz" : "Lesson quiz"
-                                            }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div
-                                            class="d-flex align-items-center gap-2"
-                                        >
-                                            <div
-                                                class="progress"
-                                                style="width: 60px; height: 8px"
-                                            >
-                                                <div
-                                                    class="progress-bar"
-                                                    [class.bg-success]="
-                                                        result.score >= 70
-                                                    "
-                                                    [class.bg-danger]="
-                                                        result.score < 70
-                                                    "
-                                                    [style.width.%]="
-                                                        result.score
-                                                    "
-                                                ></div>
-                                            </div>
-                                            <strong
-                                                [class.text-success]="
-                                                    result.score >= 70
-                                                "
-                                                [class.text-danger]="
-                                                    result.score < 70
-                                                "
-                                            >
-                                                {{ result.score }}%
-                                            </strong>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="badge"
-                                            [class.bg-success]="result.passed"
-                                            [class.bg-danger]="!result.passed"
-                                        >
-                                            {{
-                                                result.passed
-                                                    ? "Passed"
-                                                    : "Failed"
-                                            }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-secondary"
-                                            >{{ result.attempts }}x</span
-                                        >
-                                    </td>
-                                    <td>
-                                        <small class="text-muted">{{
-                                            result.completedAt
-                                                | date: "dd/MM/yyyy HH:mm"
-                                        }}</small>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+        <section
+            *ngIf="activeTab === 'quiz-results'"
+            hlmCard
+            class="surface product-section"
+        >
+            <div class="section-row">
+                <div>
+                    <h2>Assessment results</h2>
+                    <p>Filter records below. Select a row to view details.</p>
                 </div>
+                <button
+                    hlmBtn
+                    variant="outline"
+                    size="sm"
+                    (click)="loadQuizResults()"
+                >
+                    Refresh
+                </button>
             </div>
-        </div>
+            <app-learning-skeleton *ngIf="quizResultsLoading" />
+            <div *ngIf="quizResultsError" role="alert" class="product-alert">
+                {{ quizResultsError
+                }}<button hlmBtn variant="outline" (click)="loadQuizResults()">
+                    Retry
+                </button>
+            </div>
+            <ng-container *ngIf="!quizResultsLoading && !quizResultsError"
+                ><app-data-table
+                    [preset]="tables['results']"
+                    [records]="quizResults"
+            /></ng-container>
+        </section>
 
         <!-- ========== PROFILE TAB ========== -->
         <div *ngIf="activeTab === 'profile'">
@@ -334,56 +125,10 @@
                             border: 1px solid hsl(var(--border));
                         "
                     >
-                        <div
-                            style="
-                                position: relative;
-                                display: inline-block;
-                                margin: 0 auto 16px;
-                            "
-                        >
-                            <img
-                                *ngIf="avatarPreview"
-                                [src]="avatarPreview"
-                                alt="preview"
-                                style="
-                                    width: 100px;
-                                    height: 100px;
-                                    border-radius: 10px;
-                                    object-fit: cover;
-                                    border: 4px solid hsl(var(--border));
-                                    box-shadow: none;
-                                "
-                            />
-                            <img
-                                *ngIf="!avatarPreview && profile?.user?.avatar"
-                                [src]="
-                                    'http://localhost:5000' +
-                                    profile.user.avatar
-                                "
-                                alt="avatar"
-                                style="
-                                    width: 100px;
-                                    height: 100px;
-                                    border-radius: 10px;
-                                    object-fit: cover;
-                                    border: 4px solid hsl(var(--border));
-                                    box-shadow: none;
-                                "
-                            />
-                            <img
-                                *ngIf="!avatarPreview && !profile?.user?.avatar"
-                                src="assets/img/user/user1.jpg"
-                                alt="avatar"
-                                style="
-                                    width: 100px;
-                                    height: 100px;
-                                    border-radius: 10px;
-                                    object-fit: cover;
-                                    border: 4px solid hsl(var(--border));
-                                    box-shadow: none;
-                                "
-                            />
-                        </div>
+                        <app-avatar-picker
+                            [user]="profile?.user"
+                            (saved)="loadProfile()"
+                        />
                         <h5
                             style="
                                 font-weight: 700;
@@ -404,38 +149,9 @@
                                 padding: 6px 14px;
                             "
                         >
-                            <i class="bx bx-graduation" aria-hidden="true"></i> Trainer
+                            <i class="bx bx-graduation" aria-hidden="true"></i>
+                            Trainer
                         </span>
-                        <div class="mt-4">
-                            <input
-                                hlmInput
-                                type="file"
-                                class="form-control mb-2"
-                                accept=".jpg,.jpeg,.png,.webp"
-                                (change)="onAvatarSelected($event)"
-                                style="border-radius: 10px; font-size: 13px"
-                            />
-                            <button
-                                hlmBtn
-                                variant="outline"
-                                (click)="updateAvatar()"
-                                [disabled]="!selectedAvatar"
-                                style="
-                                    width: 100%;
-                                    padding: 10px;
-                                    border: none;
-                                    border-radius: 10px;
-                                    background: hsl(var(--muted));
-                                    color: hsl(var(--foreground));
-                                    font-weight: 600;
-                                    font-size: 13px;
-                                    cursor: pointer;
-                                "
-                                [style.opacity]="!selectedAvatar ? '0.5' : '1'"
-                            >
-                                 Update Profile Picture
-                            </button>
-                        </div>
                     </div>
 
                     <div
@@ -455,7 +171,11 @@
                                 margin-bottom: 16px;
                             "
                         >
-                            <i class="bx bx-bar-chart-alt-2" aria-hidden="true"></i> Quick Stats
+                            <i
+                                class="bx bx-bar-chart-alt-2"
+                                aria-hidden="true"
+                            ></i>
+                            Quick Stats
                         </h6>
                         <div class="row">
                             <div class="col-6 mb-3">
@@ -481,7 +201,11 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                        <i class="bx bx-book-open" aria-hidden="true"></i> Courses
+                                        <i
+                                            class="bx bx-book-open"
+                                            aria-hidden="true"
+                                        ></i>
+                                        Courses
                                     </div>
                                 </div>
                             </div>
@@ -508,7 +232,11 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                        <i class="bx bx-check-circle" aria-hidden="true"></i> Approved
+                                        <i
+                                            class="bx bx-check-circle"
+                                            aria-hidden="true"
+                                        ></i>
+                                        Approved
                                     </div>
                                 </div>
                             </div>
@@ -535,7 +263,7 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                         Students
+                                        Students
                                     </div>
                                 </div>
                             </div>
@@ -562,7 +290,11 @@
                                             color: hsl(var(--muted-foreground));
                                         "
                                     >
-                                        <i class="bx bx-trophy" aria-hidden="true"></i> Rate
+                                        <i
+                                            class="bx bx-trophy"
+                                            aria-hidden="true"
+                                        ></i>
+                                        Rate
                                     </div>
                                 </div>
                             </div>
@@ -574,7 +306,8 @@
                     <div
                         *ngIf="profileUpdateSuccess"
                         class="alert alert-success"
-                     [appToast]="profileUpdateSuccess">
+                        [appToast]="profileUpdateSuccess"
+                    >
                         {{ profileUpdateSuccess }}
                     </div>
                     <div *ngIf="profileUpdateError" class="alert alert-danger">
@@ -597,7 +330,7 @@
                                 color: hsl(var(--foreground));
                             "
                         >
-                             Edit Profile
+                            Edit Profile
                         </h5>
                         <div class="row">
                             <div class="col-lg-6">
@@ -691,7 +424,8 @@
                             [style.opacity]="profileUpdateLoading ? '0.7' : '1'"
                         >
                             <span *ngIf="!profileUpdateLoading"
-                                ><i class="bx bx-save" aria-hidden="true"></i> Save Changes</span
+                                ><i class="bx bx-save" aria-hidden="true"></i>
+                                Save Changes</span
                             >
                             <span *ngIf="profileUpdateLoading">
                                 <span
@@ -718,12 +452,13 @@
                                 color: hsl(var(--foreground));
                             "
                         >
-                             Change Password
+                            Change Password
                         </h5>
                         <div
                             *ngIf="passwordSuccess"
                             class="alert alert-success"
-                         [appToast]="passwordSuccess">
+                            [appToast]="passwordSuccess"
+                        >
                             {{ passwordSuccess }}
                         </div>
                         <div *ngIf="passwordError" class="alert alert-danger">
@@ -802,8 +537,8 @@
                             "
                             [style.opacity]="passwordLoading ? '0.7' : '1'"
                         >
-                            <span *ngIf="!passwordLoading"
-                                > Change Password</span
+                            <span *ngIf="!passwordLoading">
+                                Change Password</span
                             >
                             <span *ngIf="passwordLoading">
                                 <span

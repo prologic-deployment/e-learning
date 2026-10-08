@@ -1,100 +1,20 @@
-.record-table {
-    overflow: visible;
-    width: 100%;
-}
-.record-table hlm-trow {
-    gap: 18px;
-    width: 100%;
-    align-items: center;
-}
-.record-table hlm-th {
-    font-size: 10px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-}
-.record-table hlm-td {
-    font-size: 12px;
-    padding-block: 18px;
-    min-height: 70px;
-}
-.name-cell {
-    flex: 1;
+:host {
+    display: block;
     min-width: 0;
-    gap: 12px;
 }
-.name-cell strong {
-    display: block;
-    font-weight: 550;
+.section-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
 }
-.name-cell small {
-    display: block;
-    font-size: 10px;
+.section-row h2 {
+    font-size: 20px;
+    margin: 0 0 6px;
+}
+.section-row p {
+    font-size: 13px;
+    margin: 0;
     color: hsl(var(--muted-foreground));
-    margin-top: 6px;
-    overflow-wrap: anywhere;
 }
-.record-avatar {
-    width: 34px;
-    height: 34px;
-    background: hsl(var(--secondary));
-    border-radius: 8px;
-    display: grid;
-    place-items: center;
-    flex-shrink: 0;
-    font-size: 17px;
-}
-.status-cell {
-    width: 105px;
-}
-.status-cell [hlmBadge] {
-    font-size: 10px;
-}
-.detail-cell {
-    width: 100px;
-}
-.actions-cell {
-    width: 145px;
-    justify-content: flex-end;
-    gap: 5px;
-}
-.actions-cell button {
-    font-size: 10px;
-}
-.filter-bar input {
-    min-width: 150px;
-}
-.filter-bar select {
-    font-size: 11px;
-    min-width: 120px;
-}
-@media (max-width: 1000px) {
-    .filter-bar {
-        flex-wrap: wrap;
-    }
-    .record-table .table-heading {
-        display: none;
-    }
-    .record-table hlm-trow {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 4px 10px;
-        padding-block: 15px;
-    }
-    .record-table hlm-td {
-        width: auto;
-        padding: 6px 0;
-        min-height: 0;
-    }
-    .name-cell {
-        grid-column: 1/-1;
-    }
-    .actions-cell {
-        grid-column: 1/-1;
-        justify-content: flex-start;
-    }
-    .detail-cell {
-        justify-content: flex-end;
-    }
-}
-.record-table hlm-trow:not(.table-heading):hover{background:hsl(var(--muted));color:hsl(var(--foreground))}.record-table hlm-trow{border-color:hsl(var(--border))}.actions-cell{width:auto;min-width:150px;flex-wrap:wrap}.record-table hlm-trow:focus-within{background:hsl(var(--muted))}

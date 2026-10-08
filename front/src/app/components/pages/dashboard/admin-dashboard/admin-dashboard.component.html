@@ -4,7 +4,7 @@
             {{
                 activeTab === "stats"
                     ? "A clearer view of your platform."
-                    : (activeTab === "users" || activeTab === "staff-list")
+                    : activeTab === "users" || activeTab === "staff-list"
                       ? "People & access"
                       : activeTab === "courses"
                         ? "Course library"
@@ -19,13 +19,36 @@
         </h1>
         <p pageDescription>Make learning work better for everyone.</p>
         <div pageActions>
-            <button *ngIf="activeTab==='users' || activeTab==='staff-list'" hlmBtn (click)="setTab('staff')">
+            <button
+                *ngIf="activeTab === 'users' || activeTab === 'staff-list'"
+                hlmBtn
+                (click)="setTab('staff')"
+            >
                 Create staff account +
             </button>
-            <button *ngIf="activeTab==='courses'" hlmBtn (click)="clearCourseForm();setTab('create')">Create course</button><button *ngIf="activeTab==='staff'" hlmBtn variant="outline" (click)="setTab('staff-list')">Staff list</button>
+            <button
+                *ngIf="activeTab === 'courses'"
+                hlmBtn
+                (click)="clearCourseForm(); setTab('create')"
+            >
+                Create course</button
+            ><button
+                *ngIf="activeTab === 'staff'"
+                hlmBtn
+                variant="outline"
+                (click)="setTab('staff-list')"
+            >
+                Staff list
+            </button>
         </div></app-page-heading
     >
-<app-account-security-card *ngIf="activeTab === 'stats' || activeTab === 'overview' || activeTab === 'profile'" />
+    <app-account-security-card
+        *ngIf="
+            activeTab === 'stats' ||
+            activeTab === 'overview' ||
+            activeTab === 'profile'
+        "
+    />
 
     <app-operations-overview
         *ngIf="activeTab === 'stats'"
@@ -40,7 +63,7 @@
         <app-record-table
             *ngIf="activeTab === 'users' || activeTab === 'staff-list'"
             kind="people"
-            [records]="activeTab==='staff-list'?staffUsers:users"
+            [records]="activeTab === 'staff-list' ? staffUsers : users"
             [loading]="usersLoading"
             [error]="usersError"
             [busy]="userActionLoading"
@@ -48,268 +71,101 @@
             (remove)="deleteUser($event)"
             (roleChange)="changeRole($event.id, $event.role)"
         />
-<app-record-table *ngIf="activeTab==='courses'" [records]="courses" [loading]="coursesLoading" [error]="coursesError" [allowApproval]="true" (refresh)="loadCourses()" (edit)="editExistingCourse($event)" (approve)="approveCourse($event)" (archive)="archiveCourse($event)" (remove)="deleteCourse($event)"/>
-        <div *ngIf="activeTab === 'archived'">
-            <app-learning-skeleton *ngIf="archivedLoading" />
-            <div *ngIf="archivedError" role="alert" class="product-alert">{{archivedError}} <button hlmBtn variant="outline" (click)="loadArchivedCourses()">Retry</button></div>
-            <div
-                style="
-                    background: hsl(var(--card));
-                    border-radius: 10px;
-                    padding: 28px;
-                    border: 1px solid hsl(var(--border));
-                    box-shadow: none;
-                "
-            >
-                <div
-                    class="d-flex justify-content-between align-items-center mb-4"
-                >
-                    <div>
-                        <h5
-                            style="
-                                font-weight: 700;
-                                color: hsl(var(--foreground));
-                                margin: 0;
-                            "
-                        >
-                            🗄 Cours Archivés
-                        </h5>
-                        <p
-                            style="
-                                font-size: 13px;
-                                color: hsl(var(--muted-foreground));
-                                margin: 0;
-                            "
-                        >
-                            {{ archivedCourses.length }} cours archivés
-                        </p>
-                    </div>
+        <app-record-table
+            *ngIf="activeTab === 'courses'"
+            [records]="courses"
+            [loading]="coursesLoading"
+            [error]="coursesError"
+            [allowApproval]="true"
+            (refresh)="loadCourses()"
+            (edit)="editExistingCourse($event)"
+            (approve)="approveCourse($event)"
+            (archive)="archiveCourse($event)"
+            (remove)="deleteCourse($event)"
+        />
+        <section
+            *ngIf="activeTab === 'archived'"
+            hlmCard
+            class="surface product-section"
+        >
+            <div class="section-row">
+                <div>
+                    <h2>Archived courses</h2>
+                    <p>Filter records below. Select a row to view details.</p>
                 </div>
-                <div
-                    *ngIf="!archivedLoading && !archivedError && archivedCourses.length === 0"
-                    class="text-center py-5"
+                <button
+                    hlmBtn
+                    variant="outline"
+                    size="sm"
+                    (click)="loadArchivedCourses()"
                 >
-                    <div style="font-size: 48px; margin-bottom: 12px">🗄</div>
-                    <h6
-                        style="
-                            font-weight: 700;
-                            color: hsl(var(--foreground));
-                            margin-bottom: 8px;
-                        "
-                    >
-                        Aucun cours archivé
-                    </h6>
-                    <p style="color: hsl(var(--muted-foreground)); margin: 0">
-                        Les cours archivés apparaîtront ici
-                    </p>
-                </div>
-                <div
-                    class="table-responsive"
-                    *ngIf="!archivedLoading && !archivedError && archivedCourses.length > 0"
-                >
-                    <app-data-pager #detailPager0 [rows]="archivedCourses" label="Records" />
-<table class="table align-middle" style="font-size: 13px">
-                        <thead>
-                            <tr
-                                style="
-                                    border-bottom: 2px solid hsl(var(--border));
-                                "
-                            >
-                                <th
-                                    style="
-                                        color: hsl(var(--foreground));
-                                        font-weight: 600;
-                                        font-size: 11px;
-                                        text-transform: uppercase;
-                                        border: none;
-                                        padding: 10px 8px;
-                                    "
-                                >
-                                    Cours
-                                </th>
-                                <th
-                                    style="
-                                        color: hsl(var(--foreground));
-                                        font-weight: 600;
-                                        font-size: 11px;
-                                        text-transform: uppercase;
-                                        border: none;
-                                        padding: 10px 8px;
-                                    "
-                                >
-                                    Formateur
-                                </th>
-                                <th
-                                    style="
-                                        color: hsl(var(--foreground));
-                                        font-weight: 600;
-                                        font-size: 11px;
-                                        text-transform: uppercase;
-                                        border: none;
-                                        padding: 10px 8px;
-                                    "
-                                >
-                                    Catégorie
-                                </th>
-                                <th
-                                    style="
-                                        color: hsl(var(--foreground));
-                                        font-weight: 600;
-                                        font-size: 11px;
-                                        text-transform: uppercase;
-                                        border: none;
-                                        padding: 10px 8px;
-                                    "
-                                >
-                                    Archivé le
-                                </th>
-                                <th
-                                    style="
-                                        color: hsl(var(--foreground));
-                                        font-weight: 600;
-                                        font-size: 11px;
-                                        text-transform: uppercase;
-                                        border: none;
-                                        padding: 10px 8px;
-                                    "
-                                >
-                                    Actions
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr
-                                [appDetailRow]="{kind:'course',id:course._id}" *ngFor="let course of detailPager0.visible"
-                                style="
-                                    border-bottom: 1px solid hsl(var(--border));
-                                "
-                            >
-                                <td style="border: none; padding: 14px 8px">
-                                    <div
-                                        style="
-                                            font-weight: 600;
-                                            color: hsl(var(--muted-foreground));
-                                        "
-                                    >
-                                        {{ course.title }}
-                                    </div>
-                                    <div
-                                        style="
-                                            font-size: 11px;
-                                            color: hsl(var(--foreground));
-                                            margin-top: 2px;
-                                        "
-                                    >
-                                        Archivé — accès restreint
-                                    </div>
-                                </td>
-                                <td
-                                    style="
-                                        border: none;
-                                        padding: 14px 8px;
-                                        color: hsl(var(--muted-foreground));
-                                    "
-                                >
-                                    {{ course.trainer?.firstname }}
-                                    {{ course.trainer?.lastname }}
-                                </td>
-                                <td style="border: none; padding: 14px 8px">
-                                    <span
-                                        style="
-                                            background: hsl(var(--muted));
-                                            color: hsl(var(--muted-foreground));
-                                            padding: 4px 10px;
-                                            border-radius: 10px;
-                                            font-size: 11px;
-                                            font-weight: 600;
-                                        "
-                                    >
-                                        {{ course.category }}
-                                    </span>
-                                </td>
-                                <td style="border: none; padding: 14px 8px">
-                                    <span
-                                        style="
-                                            font-size: 12px;
-                                            color: hsl(var(--foreground));
-                                        "
-                                    >
-                                        {{
-                                            course.archivedAt
-                                                | date: "dd/MM/yyyy"
-                                        }}
-                                    </span>
-                                </td>
-                                <td style="border: none; padding: 14px 8px">
-                                    <div style="display: flex; gap: 6px">
-                                        <button
-                                            hlmBtn
-                                            variant="outline"
-                                            (click)="restoreCourse(course._id)"
-                                            title="Restaurer le cours"
-                                            style="
-                                                padding: 6px 14px;
-                                                border: 1.5px solid
-                                                    hsl(var(--border));
-                                                border-radius: 10px;
-                                                background: hsl(var(--card));
-                                                color: hsl(var(--foreground));
-                                                font-size: 12px;
-                                                font-weight: 600;
-                                                cursor: pointer;
-                                            "
-                                            onmouseover="
-                                                this.style.background =
-                                                    '#10b981';
-                                                this.style.color = 'white';
-                                            "
-                                            onmouseout="
-                                                this.style.background =
-                                                    '#f0fdf4';
-                                                this.style.color = '#10b981';
-                                            "
-                                        >
-                                             Restaurer
-                                        </button>
-                                        <button
-                                            hlmBtn
-                                            variant="outline"
-                                            (click)="deleteCourse(course._id)"
-                                            title="Supprimer définitivement"
-                                            style="
-                                                padding: 6px 14px;
-                                                border: 1.5px solid
-                                                    hsl(var(--border));
-                                                border-radius: 10px;
-                                                background: hsl(var(--card));
-                                                color: hsl(var(--destructive));
-                                                font-size: 12px;
-                                                font-weight: 600;
-                                                cursor: pointer;
-                                            "
-                                            onmouseover="
-                                                this.style.background =
-                                                    '#E63946';
-                                                this.style.color = 'white';
-                                            "
-                                            onmouseout="
-                                                this.style.background =
-                                                    '#fef2f2';
-                                                this.style.color = '#E63946';
-                                            "
-                                        >
-                                            <i class="bx bx-trash" aria-hidden="true"></i> Supprimer
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                    Refresh
+                </button>
             </div>
-        </div>
+            <app-learning-skeleton *ngIf="archivedLoading" />
+            <div *ngIf="archivedError" role="alert" class="product-alert">
+                {{ archivedError
+                }}<button
+                    hlmBtn
+                    variant="outline"
+                    (click)="loadArchivedCourses()"
+                >
+                    Retry
+                </button>
+            </div>
+            <ng-container *ngIf="!archivedLoading && !archivedError"
+                ><app-data-table
+                    [preset]="tables['archived']"
+                    [records]="archivedCourses"
+                    [actions]="archiveActions" /></ng-container
+            ><ng-template #archiveActions let-course
+                ><button
+                    hlmBtn
+                    variant="outline"
+                    size="sm"
+                    (click)="restoreCourse(course._id)"
+                >
+                    Restore</button
+                ><button
+                    hlmBtn
+                    variant="ghost"
+                    size="sm"
+                    (click)="
+                        archivedDeleteId = course._id; archiveDelete.open()
+                    "
+                >
+                    Delete
+                </button></ng-template
+            ><hlm-dialog #archiveDelete
+                ><hlm-dialog-content *brnDialogContent="let ctx"
+                    ><h2 hlmDialogTitle>Delete archived course?</h2>
+                    <p hlmDialogDescription>
+                        This permanently deletes the course and cannot be
+                        undone.
+                    </p>
+                    <div class="action-row">
+                        <button
+                            hlmBtn
+                            variant="outline"
+                            (click)="archiveDelete.close(0)"
+                        >
+                            Cancel</button
+                        ><button
+                            hlmBtn
+                            variant="destructive"
+                            (click)="
+                                archiveDelete.close(0);
+                                deleteCourse(archivedDeleteId)
+                            "
+                        >
+                            Delete permanently
+                        </button>
+                    </div></hlm-dialog-content
+                ></hlm-dialog
+            >
+        </section>
 
-<app-course-builder *ngIf="activeTab==='create'"/>
+        <app-course-builder *ngIf="activeTab === 'create'" />
 
         <!-- ========== ASSIGN USERS TAB ========== -->
         <div *ngIf="activeTab === 'assign'">
@@ -363,7 +219,8 @@
                     *ngIf="assignUserSuccess"
                     class="alert alert-success"
                     style="border-radius: 10px"
-                 [appToast]="assignUserSuccess">
+                    [appToast]="assignUserSuccess"
+                >
                     {{ assignUserSuccess }}
                 </div>
                 <div
@@ -462,7 +319,12 @@
 
                 <!-- Tableau assignments -->
                 <app-learning-skeleton *ngIf="usersLoading" />
-                <div *ngIf="usersError" role="alert" class="product-alert">{{ usersError }} <button hlmBtn variant="outline" (click)="loadUsers()">Retry</button></div>
+                <div *ngIf="usersError" role="alert" class="product-alert">
+                    {{ usersError }}
+                    <button hlmBtn variant="outline" (click)="loadUsers()">
+                        Retry
+                    </button>
+                </div>
                 <div class="mt-4">
                     <h6
                         style="
@@ -471,1306 +333,203 @@
                             margin-bottom: 16px;
                         "
                     >
-                        <i class="bx bx-task" aria-hidden="true"></i> Assignments actuels
+                        <i class="bx bx-task" aria-hidden="true"></i>
+                        Assignments actuels
                     </h6>
                     <div class="table-responsive">
-                        <app-data-pager #detailPager1 [rows]="users" label="Records" />
-<table
-                            class="table align-middle"
-                            style="font-size: 13px"
-                        >
-                            <thead>
-                                <tr
-                                    style="
-                                        border-bottom: 2px solid
-                                            hsl(var(--border));
-                                    "
-                                >
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Utilisateur
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Email
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Rôle
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Manager
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr
-                                    [appDetailRow]="{kind:'user',id:user._id}" *ngFor="let user of detailPager1.visible"
-                                    style="
-                                        border-bottom: 1px solid
-                                            hsl(var(--border));
-                                    "
-                                >
-                                    <td style="border: none; padding: 12px 8px">
-                                        <div
-                                            style="
-                                                display: flex;
-                                                align-items: center;
-                                                gap: 8px;
-                                            "
-                                        >
-                                            <div
-                                                style="
-                                                    width: 32px;
-                                                    height: 32px;
-                                                    border-radius: 10px;
-                                                    background: hsl(
-                                                        var(--muted)
-                                                    );
-                                                    display: flex;
-                                                    align-items: center;
-                                                    justify-content: center;
-                                                    color: hsl(
-                                                        var(--foreground)
-                                                    );
-                                                    font-weight: 700;
-                                                    font-size: 11px;
-                                                    flex-shrink: 0;
-                                                "
-                                            >
-                                                {{ user.firstname?.[0]
-                                                }}{{ user.lastname?.[0] }}
-                                            </div>
-                                            <span
-                                                style="
-                                                    font-weight: 600;
-                                                    color: hsl(
-                                                        var(--foreground)
-                                                    );
-                                                    font-size: 13px;
-                                                "
-                                            >
-                                                {{ user.firstname }}
-                                                {{ user.lastname }}
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td
-                                        style="
-                                            border: none;
-                                            padding: 12px 8px;
-                                            color: hsl(var(--muted-foreground));
-                                            font-size: 12px;
-                                        "
-                                    >
-                                        {{ user.email }}
-                                    </td>
-                                    <td style="border: none; padding: 12px 8px">
-                                        <span
-                                            style="
-                                                background: hsl(var(--muted));
-                                                color: hsl(var(--foreground));
-                                                padding: 3px 10px;
-                                                border-radius: 10px;
-                                                font-size: 11px;
-                                                font-weight: 600;
-                                            "
-                                        >
-                                            {{ user.role }}
-                                        </span>
-                                    </td>
-                                    <td style="border: none; padding: 12px 8px">
-                                        <span
-                                            style="
-                                                padding: 3px 10px;
-                                                border-radius: 10px;
-                                                font-size: 11px;
-                                                font-weight: 600;
-                                            "
-                                            [style.background]="
-                                                user.manager
-                                                    ? 'hsl(var(--secondary))'
-                                                    : '#fffbeb'
-                                            "
-                                            [style.color]="
-                                                user.manager
-                                                    ? '#10b981'
-                                                    : '#f59e0b'
-                                            "
-                                        >
-                                            {{
-                                                user.manager
-                                                    ? "Assigné"
-                                                    : "Non assigné"
-                                            }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <app-data-table
+                            [preset]="tables['assignments']"
+                            [records]="users"
+                        />
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- ========== CREATE STAFF TAB ========== -->
-<section *ngIf="activeTab==='staff'" hlmCard class="surface" style="max-width:800px"><h2>Invite the right people.</h2><p>Create a staff account with access appropriate to their responsibilities.</p><div *ngIf="createStaffError" role="alert" class="product-alert">{{createStaffError}}</div><form #staffForm="ngForm" (ngSubmit)="staffForm.valid && createStaff()" [attr.aria-busy]="createStaffLoading"><div class="form-grid"><app-form-field label="First name" [required]="true"><input hlmInput name="firstname" [(ngModel)]="newStaff.firstname" maxlength="100" autocomplete="given-name" required></app-form-field><app-form-field label="Last name" [required]="true"><input hlmInput name="lastname" [(ngModel)]="newStaff.lastname" maxlength="100" autocomplete="family-name" required></app-form-field></div><app-form-field label="Email address" [required]="true"><input hlmInput type="email" email name="email" [(ngModel)]="newStaff.email" autocomplete="email" required></app-form-field><app-form-field label="Initial password" [required]="true" hint="At least 8 characters, an uppercase letter and a number. Share securely, never by email."><input hlmInput type="password" name="password" [(ngModel)]="newStaff.password" autocomplete="new-password" minlength="8" maxlength="72" pattern="(?=.*[A-Z])(?=.*[0-9]).{8,}" required></app-form-field><div class="form-grid"><app-form-field label="Date of birth" [required]="true"><input hlmInput type="date" name="birth" [(ngModel)]="newStaff.dateOfBirth" required></app-form-field><app-form-field label="Staff role" [required]="true"><select hlmInput name="role" [(ngModel)]="newStaff.role" required><option value="manager">Manager</option><option value="trainer">Trainer</option><option value="admin">Administrator</option></select></app-form-field></div><button hlmBtn type="submit" [disabled]="createStaffLoading">{{createStaffLoading?'Creating account…':'Create staff account'}}</button></form></section>
-        <div *ngIf="activeTab === 'reviews'">
-            <div *ngIf="reviewsLoading" class="text-center py-5">
-                <div
-                    class="spinner-border"
-                    style="color: hsl(var(--foreground))"
-                ></div>
+        <section
+            *ngIf="activeTab === 'staff'"
+            hlmCard
+            class="surface"
+            style="max-width: 800px"
+        >
+            <h2>Invite the right people.</h2>
+            <p>
+                Create a staff account with access appropriate to their
+                responsibilities.
+            </p>
+            <div *ngIf="createStaffError" role="alert" class="product-alert">
+                {{ createStaffError }}
             </div>
-            <div *ngIf="reviewsError" role="alert" class="product-alert">{{ reviewsError }} <button hlmBtn variant="outline" (click)="loadReviews()">Retry</button></div>
-            <div *ngIf="!reviewsLoading && !reviewsError">
-                <div
-                    style="
-                        background: hsl(var(--card));
-                        border-radius: 10px;
-                        padding: 28px;
-                        border: 1px solid hsl(var(--border));
-                        box-shadow: none;
-                    "
-                >
-                    <div
-                        class="d-flex justify-content-between align-items-center mb-4"
-                    >
-                        <div>
-                            <h5
-                                style="
-                                    font-weight: 700;
-                                    color: hsl(var(--foreground));
-                                    margin: 0;
-                                "
-                            >
-                                Gestion des Avis
-                            </h5>
-                            <p
-                                style="
-                                    font-size: 13px;
-                                    color: hsl(var(--muted-foreground));
-                                    margin: 0;
-                                "
-                            >
-                                {{ reviews.length }} avis ·
-                                <span
-                                    style="
-                                        color: hsl(var(--foreground));
-                                        font-weight: 600;
-                                    "
-                                    >{{ pendingReviewsCount }} en attente</span
-                                >
-                                ·
-                                <span
-                                    style="
-                                        color: hsl(var(--foreground));
-                                        font-weight: 600;
-                                    "
-                                >
-                                    {{
-                                        reviews.length - pendingReviewsCount
-                                    }}
-                                    approuvés
-                                </span>
-                            </p>
-                        </div>
-                        <button
-                            hlmBtn
-                            variant="outline"
-                            (click)="loadReviews()"
-                            style="
-                                padding: 8px 16px;
-                                border: 1.5px solid hsl(var(--border));
-                                border-radius: 10px;
-                                background: hsl(var(--card));
-                                color: hsl(var(--muted-foreground));
-                                font-size: 12px;
-                                font-weight: 600;
-                                cursor: pointer;
-                            "
-                        >
-                             Actualiser
-                        </button>
-                    </div>
-
-                    <div
-                        style="
-                            display: flex;
-                            gap: 8px;
-                            margin-bottom: 20px;
-                            flex-wrap: wrap;
-                        "
-                    >
-                        <button
-                            hlmBtn
-                            variant="outline"
-                            (click)="reviewFilter = 'all'"
-                            style="
-                                padding: 7px 16px;
-                                border: none;
-                                border-radius: 10px;
-                                font-size: 12px;
-                                font-weight: 600;
-                                cursor: pointer;
-                                transition: all 0.2s;
-                            "
-                            [style.background]="
-                                reviewFilter === 'all'
-                                    ? 'hsl(var(--foreground))'
-                                    : 'hsl(var(--secondary))'
-                            "
-                            [style.color]="
-                                reviewFilter === 'all'
-                                    ? 'hsl(var(--card))'
-                                    : '#5C7184'
-                            "
-                        >
-                            Tous ({{ reviews.length }})
-                        </button>
-                        <button
-                            hlmBtn
-                            variant="outline"
-                            (click)="reviewFilter = 'pending'"
-                            style="
-                                padding: 7px 16px;
-                                border: none;
-                                border-radius: 10px;
-                                font-size: 12px;
-                                font-weight: 600;
-                                cursor: pointer;
-                                transition: all 0.2s;
-                            "
-                            [style.background]="
-                                reviewFilter === 'pending'
-                                    ? '#f59e0b'
-                                    : '#fffbeb'
-                            "
-                            [style.color]="
-                                reviewFilter === 'pending'
-                                    ? 'hsl(var(--card))'
-                                    : '#f59e0b'
-                            "
-                        >
-                            En attente ({{ pendingReviewsCount }})
-                        </button>
-                        <button
-                            hlmBtn
-                            variant="outline"
-                            (click)="reviewFilter = 'approved'"
-                            style="
-                                padding: 7px 16px;
-                                border: none;
-                                border-radius: 10px;
-                                font-size: 12px;
-                                font-weight: 600;
-                                cursor: pointer;
-                                transition: all 0.2s;
-                            "
-                            [style.background]="
-                                reviewFilter === 'approved'
-                                    ? '#10b981'
-                                    : 'hsl(var(--secondary))'
-                            "
-                            [style.color]="
-                                reviewFilter === 'approved'
-                                    ? 'hsl(var(--card))'
-                                    : '#10b981'
-                            "
-                        >
-                            Approuvés ({{
-                                reviews.length - pendingReviewsCount
-                            }})
-                        </button>
-                    </div>
-
-                    <div
-                        *ngIf="filteredReviews.length === 0"
-                        class="text-center py-5"
-                    >
-                        <div style="font-size: 48px; margin-bottom: 12px">
-                            <i class="bx bx-message-rounded" aria-hidden="true"></i>
-                        </div>
-                        <p style="color: hsl(var(--muted-foreground))">
-                            Aucun avis trouvé
-                        </p>
-                    </div>
-
-                    <div
-                        class="table-responsive"
-                        *ngIf="filteredReviews.length > 0"
-                    >
-                        <app-data-pager #detailPager2 [rows]="filteredReviews" label="Records" />
-<table
-                            class="table align-middle"
-                            style="font-size: 13px"
-                        >
-                            <thead>
-                                <tr
-                                    style="
-                                        border-bottom: 2px solid
-                                            hsl(var(--border));
-                                    "
-                                >
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Utilisateur
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Cours
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Note
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Commentaire
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Date
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Statut
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr
-                                    [appDetailRow]="{kind:'review',id:review._id}" *ngFor="let review of detailPager2.visible"
-                                    style="
-                                        border-bottom: 1px solid
-                                            hsl(var(--border));
-                                        transition: background 0.15s;
-                                    "
-                                    onmouseover="
-                                        this.style.background = '#fafbff'
-                                    "
-                                    onmouseout="this.style.background = 'white'"
-                                >
-                                    <td style="border: none; padding: 14px 8px">
-                                        <div
-                                            style="
-                                                display: flex;
-                                                align-items: center;
-                                                gap: 10px;
-                                            "
-                                        >
-                                            <div
-                                                style="
-                                                    width: 34px;
-                                                    height: 34px;
-                                                    border-radius: 10px;
-                                                    flex-shrink: 0;
-                                                    background: hsl(
-                                                        var(--muted)
-                                                    );
-                                                    display: flex;
-                                                    align-items: center;
-                                                    justify-content: center;
-                                                    color: hsl(
-                                                        var(--foreground)
-                                                    );
-                                                    font-weight: 700;
-                                                    font-size: 12px;
-                                                "
-                                            >
-                                                {{ review.user?.firstname?.[0]
-                                                }}{{
-                                                    review.user?.lastname?.[0]
-                                                }}
-                                            </div>
-                                            <div>
-                                                <div
-                                                    style="
-                                                        font-weight: 600;
-                                                        color: hsl(
-                                                            var(--foreground)
-                                                        );
-                                                        font-size: 13px;
-                                                    "
-                                                >
-                                                    {{ review.user?.firstname }}
-                                                    {{ review.user?.lastname }}
-                                                </div>
-                                                <div
-                                                    style="
-                                                        font-size: 11px;
-                                                        color: hsl(
-                                                            var(--foreground)
-                                                        );
-                                                    "
-                                                >
-                                                    {{ review.user?.email }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td style="border: none; padding: 14px 8px">
-                                        <div
-                                            style="
-                                                font-weight: 600;
-                                                color: hsl(var(--foreground));
-                                                font-size: 13px;
-                                                margin-bottom: 4px;
-                                            "
-                                        >
-                                            {{ review.course?.title }}
-                                        </div>
-                                        <span
-                                            style="
-                                                background: hsl(var(--muted));
-                                                color: hsl(var(--foreground));
-                                                padding: 2px 8px;
-                                                border-radius: 10px;
-                                                font-size: 10px;
-                                                font-weight: 600;
-                                            "
-                                        >
-                                            {{ review.course?.category }}
-                                        </span>
-                                    </td>
-                                    <td style="border: none; padding: 14px 8px">
-                                        <div
-                                            style="
-                                                color: hsl(var(--foreground));
-                                                font-size: 13px;
-                                            "
-                                        >
-                                            <i class="bx bx-star" aria-hidden="true"></i>
-                                        </div>
-                                        <div
-                                            style="
-                                                font-weight: 700;
-                                                color: hsl(var(--foreground));
-                                                font-size: 13px;
-                                            "
-                                        >
-                                            {{ review.rating }}/5
-                                        </div>
-                                    </td>
-                                    <td
-                                        style="
-                                            border: none;
-                                            padding: 14px 8px;
-                                            max-width: 200px;
-                                        "
-                                    >
-                                        <p
-                                            style="
-                                                font-size: 12px;
-                                                color: hsl(
-                                                    var(--muted-foreground)
-                                                );
-                                                margin: 0;
-                                                line-height: 1.5;
-                                            "
-                                        >
-                                            {{
-                                                review.comment.length > 80
-                                                    ? review.comment.substring(
-                                                          0,
-                                                          80
-                                                      ) + "..."
-                                                    : review.comment
-                                            }}
-                                        </p>
-                                    </td>
-                                    <td style="border: none; padding: 14px 8px">
-                                        <span
-                                            style="
-                                                font-size: 12px;
-                                                color: hsl(var(--foreground));
-                                            "
-                                        >
-                                            {{
-                                                review.createdAt
-                                                    | date: "dd/MM/yyyy"
-                                            }}
-                                        </span>
-                                    </td>
-                                    <td style="border: none; padding: 14px 8px">
-                                        <span
-                                            style="
-                                                padding: 4px 12px;
-                                                border-radius: 10px;
-                                                font-size: 11px;
-                                                font-weight: 600;
-                                            "
-                                            [style.background]="
-                                                review.isApproved
-                                                    ? 'hsl(var(--secondary))'
-                                                    : '#fffbeb'
-                                            "
-                                            [style.color]="
-                                                review.isApproved
-                                                    ? '#10b981'
-                                                    : '#f59e0b'
-                                            "
-                                        >
-                                            {{
-                                                review.isApproved
-                                                    ? "Approuvé"
-                                                    : "En attente"
-                                            }}
-                                        </span>
-                                    </td>
-                                    <td style="border: none; padding: 14px 8px">
-                                        <div style="display: flex; gap: 6px">
-                                            <button
-                                                hlmBtn
-                                                variant="outline"
-                                                *ngIf="!review.isApproved"
-                                                (click)="
-                                                    approveReview(review._id)
-                                                "
-                                                title="Approuver cet avis"
-                                                style="
-                                                    width: 32px;
-                                                    height: 32px;
-                                                    border: 1.5px solid
-                                                        hsl(var(--border));
-                                                    border-radius: 10px;
-                                                    background: hsl(
-                                                        var(--card)
-                                                    );
-                                                    color: hsl(
-                                                        var(--foreground)
-                                                    );
-                                                    font-size: 14px;
-                                                    cursor: pointer;
-                                                    display: flex;
-                                                    align-items: center;
-                                                    justify-content: center;
-                                                "
-                                                onmouseover="
-                                                    this.style.background =
-                                                        '#10b981';
-                                                    this.style.color = 'white';
-                                                "
-                                                onmouseout="
-                                                    this.style.background =
-                                                        '#f0fdf4';
-                                                    this.style.color =
-                                                        '#10b981';
-                                                "
-                                            >
-                                                <i class="bx bx-check" aria-hidden="true"></i>
-                                            </button>
-                                            <button
-                                                hlmBtn
-                                                variant="outline"
-                                                *ngIf="!review.isApproved"
-                                                (click)="
-                                                    rejectReview(review._id)
-                                                "
-                                                title="Rejeter cet avis"
-                                                style="
-                                                    width: 32px;
-                                                    height: 32px;
-                                                    border: 1.5px solid
-                                                        hsl(var(--border));
-                                                    border-radius: 10px;
-                                                    background: hsl(
-                                                        var(--card)
-                                                    );
-                                                    color: hsl(
-                                                        var(--foreground)
-                                                    );
-                                                    font-size: 14px;
-                                                    cursor: pointer;
-                                                    display: flex;
-                                                    align-items: center;
-                                                    justify-content: center;
-                                                "
-                                                onmouseover="
-                                                    this.style.background =
-                                                        '#f59e0b';
-                                                    this.style.color = 'white';
-                                                "
-                                                onmouseout="
-                                                    this.style.background =
-                                                        '#fffbeb';
-                                                    this.style.color =
-                                                        '#f59e0b';
-                                                "
-                                            >
-                                                <i class="bx bx-x" aria-hidden="true"></i>
-                                            </button>
-                                            <button
-                                                hlmBtn
-                                                variant="outline"
-                                                (click)="
-                                                    deleteReview(review._id)
-                                                "
-                                                title="Supprimer cet avis"
-                                                style="
-                                                    width: 32px;
-                                                    height: 32px;
-                                                    border: 1.5px solid
-                                                        hsl(var(--border));
-                                                    border-radius: 10px;
-                                                    background: hsl(
-                                                        var(--card)
-                                                    );
-                                                    color: hsl(
-                                                        var(--destructive)
-                                                    );
-                                                    font-size: 14px;
-                                                    cursor: pointer;
-                                                    display: flex;
-                                                    align-items: center;
-                                                    justify-content: center;
-                                                "
-                                                onmouseover="
-                                                    this.style.background =
-                                                        '#E63946';
-                                                    this.style.color = 'white';
-                                                "
-                                                onmouseout="
-                                                    this.style.background =
-                                                        '#fef2f2';
-                                                    this.style.color =
-                                                        '#E63946';
-                                                "
-                                            >
-                                                <i class="bx bx-trash" aria-hidden="true"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <form
+                #staffForm="ngForm"
+                (ngSubmit)="staffForm.valid && createStaff()"
+                [attr.aria-busy]="createStaffLoading"
+            >
+                <div class="form-grid">
+                    <app-form-field label="First name" [required]="true"
+                        ><input
+                            hlmInput
+                            name="firstname"
+                            [(ngModel)]="newStaff.firstname"
+                            maxlength="100"
+                            autocomplete="given-name"
+                            required /></app-form-field
+                    ><app-form-field label="Last name" [required]="true"
+                        ><input
+                            hlmInput
+                            name="lastname"
+                            [(ngModel)]="newStaff.lastname"
+                            maxlength="100"
+                            autocomplete="family-name"
+                            required
+                    /></app-form-field>
                 </div>
+                <app-form-field label="Email address" [required]="true"
+                    ><input
+                        hlmInput
+                        type="email"
+                        email
+                        name="email"
+                        [(ngModel)]="newStaff.email"
+                        autocomplete="email"
+                        required /></app-form-field
+                ><app-form-field
+                    label="Initial password"
+                    [required]="true"
+                    hint="At least 8 characters, an uppercase letter and a number. Share securely, never by email."
+                    ><input
+                        hlmInput
+                        type="password"
+                        name="password"
+                        [(ngModel)]="newStaff.password"
+                        autocomplete="new-password"
+                        minlength="8"
+                        maxlength="72"
+                        pattern="(?=.*[A-Z])(?=.*[0-9]).{8,}"
+                        required
+                /></app-form-field>
+                <div class="form-grid">
+                    <app-form-field label="Date of birth" [required]="true"
+                        ><input
+                            hlmInput
+                            type="date"
+                            name="birth"
+                            [(ngModel)]="newStaff.dateOfBirth"
+                            required /></app-form-field
+                    ><app-form-field label="Staff role" [required]="true"
+                        ><select
+                            hlmInput
+                            name="role"
+                            [(ngModel)]="newStaff.role"
+                            required
+                        >
+                            <option value="manager">Manager</option>
+                            <option value="trainer">Trainer</option>
+                            <option value="admin">Administrator</option>
+                        </select></app-form-field
+                    >
+                </div>
+                <button hlmBtn type="submit" [disabled]="createStaffLoading">
+                    {{
+                        createStaffLoading
+                            ? "Creating account…"
+                            : "Create staff account"
+                    }}
+                </button>
+            </form>
+        </section>
+        <section
+            *ngIf="activeTab === 'reviews'"
+            hlmCard
+            class="surface product-section"
+        >
+            <div class="section-row">
+                <div>
+                    <h2>Community reviews</h2>
+                    <p>Filter records below. Select a row to view details.</p>
+                </div>
+                <button
+                    hlmBtn
+                    variant="outline"
+                    size="sm"
+                    (click)="loadReviews()"
+                >
+                    Refresh
+                </button>
             </div>
-        </div>
+            <app-learning-skeleton *ngIf="reviewsLoading" />
+            <div *ngIf="reviewsError" role="alert" class="product-alert">
+                {{ reviewsError
+                }}<button hlmBtn variant="outline" (click)="loadReviews()">
+                    Retry
+                </button>
+            </div>
+            <ng-container *ngIf="!reviewsLoading && !reviewsError"
+                ><app-data-table
+                    [preset]="tables['reviews']"
+                    [records]="reviews"
+                    [actions]="reviewActions" /></ng-container
+            ><ng-template #reviewActions let-review
+                ><button
+                    *ngIf="!review.isApproved"
+                    hlmBtn
+                    variant="outline"
+                    size="sm"
+                    (click)="approveReview(review._id)"
+                >
+                    Approve</button
+                ><button
+                    *ngIf="!review.isApproved"
+                    hlmBtn
+                    variant="outline"
+                    size="sm"
+                    (click)="rejectReview(review._id)"
+                >
+                    Reject</button
+                ><button
+                    hlmBtn
+                    variant="ghost"
+                    size="sm"
+                    (click)="deleteReview(review._id)"
+                >
+                    Delete
+                </button></ng-template
+            >
+        </section>
 
         <!-- ========== QUIZ RESULTS TAB ========== -->
-        <div *ngIf="activeTab === 'quiz-results'">
-            <div *ngIf="quizResultsLoading" class="text-center py-5">
-                <div
-                    class="spinner-border"
-                    style="color: hsl(var(--foreground))"
-                ></div>
-            </div>
-            <div *ngIf="!quizResultsLoading">
-                <div
-                    style="
-                        background: hsl(var(--card));
-                        border-radius: 10px;
-                        padding: 28px;
-                        border: 1px solid hsl(var(--border));
-                        box-shadow: none;
-                    "
-                >
-                    <div
-                        class="d-flex justify-content-between align-items-center mb-4"
-                    >
-                        <div>
-                            <h5
-                                style="
-                                    font-weight: 700;
-                                    color: hsl(var(--foreground));
-                                    margin: 0;
-                                "
-                            >
-                                Résultats des Quiz
-                            </h5>
-                            <p
-                                style="
-                                    font-size: 13px;
-                                    color: hsl(var(--muted-foreground));
-                                    margin: 0;
-                                "
-                            >
-                                {{ quizResults.length }} résultats ·
-                                <span
-                                    style="
-                                        color: hsl(var(--foreground));
-                                        font-weight: 600;
-                                    "
-                                    >{{ passedCount }} réussis</span
-                                >
-                                ·
-                                <span
-                                    style="
-                                        color: hsl(var(--destructive));
-                                        font-weight: 600;
-                                    "
-                                    >{{ failedCount }} échoués</span
-                                >
-                            </p>
-                        </div>
-                        <button
-                            hlmBtn
-                            variant="outline"
-                            (click)="loadQuizResults()"
-                            style="
-                                padding: 8px 16px;
-                                border: 1.5px solid hsl(var(--border));
-                                border-radius: 10px;
-                                background: hsl(var(--card));
-                                color: hsl(var(--muted-foreground));
-                                font-size: 12px;
-                                font-weight: 600;
-                                cursor: pointer;
-                            "
-                        >
-                             Actualiser
-                        </button>
-                    </div>
-
-                    <div
-                        style="
-                            display: flex;
-                            gap: 8px;
-                            margin-bottom: 20px;
-                            flex-wrap: wrap;
-                        "
-                    >
-                        <button
-                            hlmBtn
-                            variant="outline"
-                            (click)="quizResultsFilter = 'all'"
-                            style="
-                                padding: 7px 16px;
-                                border: none;
-                                border-radius: 10px;
-                                font-size: 12px;
-                                font-weight: 600;
-                                cursor: pointer;
-                                transition: all 0.2s;
-                            "
-                            [style.background]="
-                                quizResultsFilter === 'all'
-                                    ? 'hsl(var(--foreground))'
-                                    : 'hsl(var(--secondary))'
-                            "
-                            [style.color]="
-                                quizResultsFilter === 'all'
-                                    ? 'hsl(var(--card))'
-                                    : '#5C7184'
-                            "
-                        >
-                            Tous ({{ quizResults.length }})
-                        </button>
-                        <button
-                            hlmBtn
-                            variant="outline"
-                            (click)="quizResultsFilter = 'passed'"
-                            style="
-                                padding: 7px 16px;
-                                border: none;
-                                border-radius: 10px;
-                                font-size: 12px;
-                                font-weight: 600;
-                                cursor: pointer;
-                                transition: all 0.2s;
-                            "
-                            [style.background]="
-                                quizResultsFilter === 'passed'
-                                    ? '#10b981'
-                                    : 'hsl(var(--secondary))'
-                            "
-                            [style.color]="
-                                quizResultsFilter === 'passed'
-                                    ? 'hsl(var(--card))'
-                                    : '#10b981'
-                            "
-                        >
-                            Réussis ({{ passedCount }})
-                        </button>
-                        <button
-                            hlmBtn
-                            variant="outline"
-                            (click)="quizResultsFilter = 'failed'"
-                            style="
-                                padding: 7px 16px;
-                                border: none;
-                                border-radius: 10px;
-                                font-size: 12px;
-                                font-weight: 600;
-                                cursor: pointer;
-                                transition: all 0.2s;
-                            "
-                            [style.background]="
-                                quizResultsFilter === 'failed'
-                                    ? '#E63946'
-                                    : '#fef2f2'
-                            "
-                            [style.color]="
-                                quizResultsFilter === 'failed'
-                                    ? 'hsl(var(--card))'
-                                    : '#E63946'
-                            "
-                        >
-                            Échoués ({{ failedCount }})
-                        </button>
-                    </div>
-
-                    <div *ngIf="quizResultsError" class="product-alert" role="alert">{{ quizResultsError }} <button hlmBtn variant="outline" (click)="loadQuizResults()">Retry</button></div>
-                    <div
-                        *ngIf="!quizResultsError && filteredQuizResults.length === 0"
-                        class="text-center py-5"
-                    >
-                        <div style="font-size: 48px; margin-bottom: 12px">
-                            <i class="bx bx-edit" aria-hidden="true"></i>
-                        </div>
-                        <p style="color: hsl(var(--muted-foreground))">
-                            Aucun résultat trouvé
-                        </p>
-                    </div>
-
-                    <div
-                        class="table-responsive"
-                        *ngIf="filteredQuizResults.length > 0"
-                    >
-                        <app-data-pager #detailPager3 [rows]="filteredQuizResults" label="Records" />
-<table
-                            class="table align-middle"
-                            style="font-size: 13px"
-                        >
-                            <thead>
-                                <tr
-                                    style="
-                                        border-bottom: 2px solid
-                                            hsl(var(--border));
-                                    "
-                                >
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Étudiant
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Cours
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Quiz
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Type
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Score
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Statut
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Tentatives
-                                    </th>
-                                    <th
-                                        style="
-                                            color: hsl(var(--foreground));
-                                            font-weight: 600;
-                                            font-size: 11px;
-                                            text-transform: uppercase;
-                                            border: none;
-                                            padding: 10px 8px;
-                                        "
-                                    >
-                                        Date
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr
-                                    [appDetailRow]="{kind:'result',id:result.enrollmentId,query:{assessment:result.type,lesson:result.lessonId}}" *ngFor="let result of detailPager3.visible"
-                                    style="
-                                        border-bottom: 1px solid
-                                            hsl(var(--border));
-                                        transition: background 0.15s;
-                                    "
-                                    onmouseover="
-                                        this.style.background = '#fafbff'
-                                    "
-                                    onmouseout="this.style.background = 'white'"
-                                >
-                                    <td style="border: none; padding: 14px 8px">
-                                        <div
-                                            style="
-                                                display: flex;
-                                                align-items: center;
-                                                gap: 10px;
-                                            "
-                                        >
-                                            <div
-                                                style="
-                                                    width: 34px;
-                                                    height: 34px;
-                                                    border-radius: 10px;
-                                                    flex-shrink: 0;
-                                                    background: hsl(
-                                                        var(--muted)
-                                                    );
-                                                    display: flex;
-                                                    align-items: center;
-                                                    justify-content: center;
-                                                    color: hsl(
-                                                        var(--foreground)
-                                                    );
-                                                    font-weight: 700;
-                                                    font-size: 12px;
-                                                "
-                                            >
-                                                {{ result.user?.firstname?.[0]
-                                                }}{{
-                                                    result.user?.lastname?.[0]
-                                                }}
-                                            </div>
-                                            <div>
-                                                <div
-                                                    style="
-                                                        font-weight: 600;
-                                                        color: hsl(
-                                                            var(--foreground)
-                                                        );
-                                                        font-size: 13px;
-                                                    "
-                                                >
-                                                    {{ result.user?.firstname }}
-                                                    {{ result.user?.lastname }}
-                                                </div>
-                                                <div
-                                                    style="
-                                                        font-size: 11px;
-                                                        color: hsl(
-                                                            var(--foreground)
-                                                        );
-                                                    "
-                                                >
-                                                    {{ result.user?.email }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td style="border: none; padding: 14px 8px">
-                                        <div
-                                            style="
-                                                font-weight: 600;
-                                                color: hsl(var(--foreground));
-                                                font-size: 13px;
-                                                margin-bottom: 4px;
-                                            "
-                                        >
-                                            {{ result.course?.title }}
-                                        </div>
-                                        <span
-                                            style="
-                                                background: hsl(var(--muted));
-                                                color: hsl(var(--foreground));
-                                                padding: 2px 8px;
-                                                border-radius: 10px;
-                                                font-size: 10px;
-                                                font-weight: 600;
-                                            "
-                                        >
-                                            {{ result.course?.category }}
-                                        </span>
-                                    </td>
-                                    <td
-                                        style="
-                                            border: none;
-                                            padding: 14px 8px;
-                                            color: hsl(var(--muted-foreground));
-                                            font-size: 12px;
-                                        "
-                                    >
-                                        {{ result.lessonTitle }}
-                                    </td>
-                                    <td style="border: none; padding: 14px 8px">
-                                        <span
-                                            style="
-                                                padding: 4px 10px;
-                                                border-radius: 10px;
-                                                font-size: 11px;
-                                                font-weight: 600;
-                                            "
-                                            [style.background]="
-                                                result.type !== 'final_exam'
-                                                    ? 'hsl(var(--secondary))'
-                                                    : '#fffbeb'
-                                            "
-                                            [style.color]="
-                                                result.type !== 'final_exam'
-                                                    ? '#457B9D'
-                                                    : '#f59e0b'
-                                            "
-                                        >
-                                            {{
-                                                result.type === "final_exam" ? "Final exam" : result.type === "lesson_quiz2" ? "Legacy quiz" : "Quiz"
-                                            }}
-                                        </span>
-                                    </td>
-                                    <td style="border: none; padding: 14px 8px">
-                                        <div
-                                            style="
-                                                display: flex;
-                                                align-items: center;
-                                                gap: 8px;
-                                            "
-                                        >
-                                            <div
-                                                style="
-                                                    width: 60px;
-                                                    background: hsl(
-                                                        var(--muted)
-                                                    );
-                                                    border-radius: 10px;
-                                                    height: 6px;
-                                                    overflow: hidden;
-                                                "
-                                            >
-                                                <div
-                                                    style="
-                                                        height: 100%;
-                                                        border-radius: 10px;
-                                                    "
-                                                    [style.width.%]="
-                                                        result.score
-                                                    "
-                                                    [style.background]="
-                                                        result.score >= 70
-                                                            ? 'linear-gradient(135deg, #10b981, #059669)'
-                                                            : 'linear-gradient(135deg, #E63946, #dc2626)'
-                                                    "
-                                                ></div>
-                                            </div>
-                                            <span
-                                                style="
-                                                    font-weight: 700;
-                                                    font-size: 13px;
-                                                "
-                                                [style.color]="
-                                                    result.score >= 70
-                                                        ? '#10b981'
-                                                        : '#E63946'
-                                                "
-                                            >
-                                                {{ result.score }}%
-                                            </span>
-                                        </div>
-                                    </td>
-                                    <td style="border: none; padding: 14px 8px">
-                                        <span
-                                            style="
-                                                padding: 4px 12px;
-                                                border-radius: 10px;
-                                                font-size: 11px;
-                                                font-weight: 600;
-                                            "
-                                            [style.background]="
-                                                result.passed
-                                                    ? 'hsl(var(--secondary))'
-                                                    : '#fef2f2'
-                                            "
-                                            [style.color]="
-                                                result.passed
-                                                    ? '#10b981'
-                                                    : '#E63946'
-                                            "
-                                        >
-                                            {{
-                                                result.passed
-                                                    ? "Réussi"
-                                                    : "Échoué"
-                                            }}
-                                        </span>
-                                    </td>
-                                    <td style="border: none; padding: 14px 8px">
-                                        <span
-                                            style="
-                                                background: hsl(var(--muted));
-                                                color: hsl(
-                                                    var(--muted-foreground)
-                                                );
-                                                padding: 4px 10px;
-                                                border-radius: 10px;
-                                                font-size: 11px;
-                                                font-weight: 600;
-                                            "
-                                        >
-                                            {{ result.attempts }}x
-                                        </span>
-                                    </td>
-                                    <td style="border: none; padding: 14px 8px">
-                                        <span
-                                            style="
-                                                font-size: 12px;
-                                                color: hsl(var(--foreground));
-                                            "
-                                        >
-                                            {{
-                                                result.completedAt
-                                                    | date: "dd/MM/yyyy HH:mm"
-                                            }}
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+        <section
+            *ngIf="activeTab === 'quiz-results'"
+            hlmCard
+            class="surface product-section"
+        >
+            <div class="section-row">
+                <div>
+                    <h2>Assessment results</h2>
+                    <p>Filter records below. Select a row to view details.</p>
                 </div>
+                <button
+                    hlmBtn
+                    variant="outline"
+                    size="sm"
+                    (click)="loadQuizResults()"
+                >
+                    Refresh
+                </button>
             </div>
-        </div>
+            <app-learning-skeleton *ngIf="quizResultsLoading" />
+            <div *ngIf="quizResultsError" role="alert" class="product-alert">
+                {{ quizResultsError
+                }}<button hlmBtn variant="outline" (click)="loadQuizResults()">
+                    Retry
+                </button>
+            </div>
+            <ng-container *ngIf="!quizResultsLoading && !quizResultsError"
+                ><app-data-table
+                    [preset]="tables['results']"
+                    [records]="quizResults"
+            /></ng-container>
+        </section>
     </div>
 </div>
