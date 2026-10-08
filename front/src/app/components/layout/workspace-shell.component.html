@@ -124,10 +124,8 @@
                     class="profile-trigger"
                     aria-label="Open account menu"
                 >
-                    <span class="initials">{{
-                        auth.getCurrentUser()?.firstname?.charAt(0) || '•'
-                    }}</span
-                    ><span class="profile-name">{{ auth.getCurrentUser()?.firstname }}</span
+                    <app-profile-avatar [user]="auth.currentUser$ | async" />
+                    <span class="profile-name">{{ auth.getCurrentUser()?.firstname }}</span
                     ><i class="bx bx-chevron-down"></i>
                 </button>
                 <ng-template #profileMenu

@@ -1,3 +1,4 @@
+import { mergeProfileSummary } from './profile-summary';
 import { UnsavedAuthoringService } from '../guards/unsaved-authoring.guard';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -24,6 +25,14 @@ export class AuthService {
       localStorage.removeItem('user');
       localStorage.removeItem('token');
     }
+  }
+
+  updateProfileSummary(profile: any): void {
+    const current = this.currentUserSubject.value;
+    const next = mergeProfileSummary(current, profile);
+    if (next === current) return; // Includes a response arriving after logout/account switch.
+    localStorage.setItem('user', JSON.stringify(next));
+    this.currentUserSubject.next(next);
   }
 
   // Register

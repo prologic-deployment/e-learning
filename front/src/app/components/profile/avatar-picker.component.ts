@@ -1,3 +1,4 @@
+import { AuthService } from '../../services/auth.service';
 import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -177,6 +178,7 @@ export class AvatarPickerComponent {
         private http: HttpClient,
         private change: ChangeDetectorRef,
         private toast: ToastService,
+        private auth: AuthService,
     ) {
         this.destroyRef.onDestroy(() => this.releasePreview());
     }
@@ -239,6 +241,7 @@ export class AvatarPickerComponent {
             .subscribe({
                 next: (response) => {
                     this.user = { ...this.user, ...response.user };
+                    this.auth.updateProfileSummary(response.user);
                     this.busy = false;
                     this.cancel();
                     this.toast.show('Profile photo updated.');

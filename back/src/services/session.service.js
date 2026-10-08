@@ -6,7 +6,7 @@ function session(user) {
   return {
     token: jwt.sign({ id: String(user._id), role, tokenVersion: user.tokenVersion || 0, purpose: 'session' }, config.jwtSecret,
       { algorithm: 'HS256', expiresIn: config.jwtExpiresIn, issuer: 'formapath-api', audience: 'formapath-client' }),
-    user: { id: user._id, firstname: user.firstname, lastname: user.lastname, email: user.email, role }
+    user: { id: user._id, firstname: user.firstname, lastname: user.lastname, email: user.email, avatar: user.avatar || '', role }
   };
 }
 async function authenticate(token) {

@@ -222,6 +222,7 @@ export class TrainerDashboardComponent implements OnInit {
     this.http.get(`${this.apiUrl}/profile`).subscribe({
       next: (data: any) => {
         this.profile = data;
+                this.authService.updateProfileSummary(data.user);
         this.profileData = {
           firstname: data.user?.firstname || '',
           lastname: data.user?.lastname || '',

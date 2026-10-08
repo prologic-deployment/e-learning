@@ -1,3 +1,4 @@
+import { ProfileAvatarComponent } from '../profile/profile-avatar.component';
 import { isWorkspaceRoute } from '../../services/workspace-route';
 import { BrandComponent } from '../brand/brand.component';
 import { ThemeService } from '../../services/theme.service';
@@ -19,7 +20,7 @@ interface Destination {
 @Component({
     selector: 'app-workspace-shell',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterModule, UiModule, BrandComponent],
+    imports: [ProfileAvatarComponent, CommonModule, FormsModule, RouterModule, UiModule, BrandComponent],
     templateUrl: './workspace-shell.component.html',
     styleUrls: ['./workspace-shell.component.scss'],
 })
