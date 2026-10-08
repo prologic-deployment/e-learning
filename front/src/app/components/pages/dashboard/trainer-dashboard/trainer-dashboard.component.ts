@@ -1,3 +1,4 @@
+import { memoLast } from '../../../management/memo-last';
 import { ToastService } from '../../../../services/toast.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Component, OnInit, DestroyRef, inject } from '@angular/core';
@@ -27,7 +28,7 @@ export class TrainerDashboardComponent implements OnInit {
 
   // Stats
   stats: any = null;
-  statsLoading = true;
+  statsLoading = false;
   statsError = '';
 
   // ✅ All Courses list
@@ -74,6 +75,7 @@ export class TrainerDashboardComponent implements OnInit {
   // ✅ Quiz Results
   quizResults: any[] = [];
   quizResultsLoading = false;
+  quizResultsError = '';
   quizResultsFilter = 'all';
 
   // ✅ Quiz 2
@@ -118,7 +120,6 @@ export class TrainerDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
-    this.loadStats();
     this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => this.setTab(params['tab'] || 'stats'));
   }
 
@@ -128,6 +129,7 @@ export class TrainerDashboardComponent implements OnInit {
       return;
     }
     this.activeTab = tab;
+    if (tab === 'stats' && !this.stats && !this.statsLoading) this.loadStats();
     if (tab === 'create' && !this.createdCourse) {
       this.createCourseSuccess = '';
       this.createCourseError = '';
@@ -139,6 +141,7 @@ export class TrainerDashboardComponent implements OnInit {
 
   // ========== STATS ==========
   loadStats(): void {
+    this.statsError = '';
     this.statsLoading = true;
     this.statsService.getTrainerStats().subscribe({
       next: (data) => { this.stats = data; this.statsLoading = false; },
@@ -155,16 +158,7 @@ export class TrainerDashboardComponent implements OnInit {
         this.allCourses = data.courses || data || [];
         this.allCoursesLoading = false;
       },
-      error: () => {
-        // fallback : charger tous les cours
-        this.courseService.getAllCourses().subscribe({
-          next: (data: any) => {
-            this.allCourses = data.courses || [];
-            this.allCoursesLoading = false;
-          },
-          error: () => { this.courseTableError = 'Unable to retrieve the course library.'; this.allCoursesLoading = false; }
-        });
-      }
+      error: () => {this.courseTableError = 'Unable to retrieve your course library. Please try again.';this.allCoursesLoading = false;}
     });
   }
 
@@ -535,20 +529,20 @@ export class TrainerDashboardComponent implements OnInit {
 
   // ✅ ========== QUIZ RESULTS ==========
   loadQuizResults(): void {
+    this.quizResultsError = '';
     this.quizResultsLoading = true;
     this.http.get(`${this.apiUrl}/quiz/results/all`).subscribe({
       next: (data: any) => {
         this.quizResults = data.results || [];
         this.quizResultsLoading = false;
       },
-      error: () => { this.quizResultsLoading = false; }
+      error: () => { this.quizResultsError = 'Unable to load assessment results. Please try again.'; this.quizResultsLoading = false; }
     });
   }
 
+  private resultFilter=memoLast<any[]>();
   get filteredQuizResults(): any[] {
-    if (this.quizResultsFilter === 'passed') return this.quizResults.filter(r => r.passed);
-    if (this.quizResultsFilter === 'failed') return this.quizResults.filter(r => !r.passed);
-    return this.quizResults;
+    return this.resultFilter([this.quizResults,this.quizResultsFilter],()=>this.quizResultsFilter==='all'?this.quizResults:this.quizResults.filter(r=>this.quizResultsFilter==='passed'?r.passed:!r.passed));
   }
 
   get passedCount(): number { return this.quizResults.filter(r => r.passed).length; }

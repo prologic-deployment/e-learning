@@ -119,6 +119,7 @@ exports.deleteUser = async (req, res) => {
       const courseIds = ownCourses.map(c => c._id);
 
       await Lesson.deleteMany({ course: { $in: courseIds } });
+      await require('../models/AssessmentReview').deleteMany({course:{$in:courseIds}});
       await Enrollment.deleteMany({ course: { $in: courseIds } });
       await Purchase.deleteMany({ course: { $in: courseIds } });
       await Review.deleteMany({ course: { $in: courseIds } });
@@ -127,6 +128,7 @@ exports.deleteUser = async (req, res) => {
     }
 
     await Promise.all([
+      require('../models/AssessmentReview').deleteMany({user:id}),
       Enrollment.deleteMany({ user: id }),
       Purchase.deleteMany({ user: id }),
       Review.deleteMany({ user: id }),

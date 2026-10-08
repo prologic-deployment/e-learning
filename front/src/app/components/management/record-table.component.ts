@@ -1,5 +1,6 @@
+import { memoLast } from '../management/memo-last';
 import {BrnDialogComponent} from '@spartan-ng/ui-dialog-brain';
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UiModule } from '../ui/ui.module';
@@ -7,6 +8,7 @@ import { LearningUiModule } from '../learning/learning-ui.module';
 @Component({
     selector: 'app-record-table',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, FormsModule, UiModule, LearningUiModule],
     templateUrl: './record-table.component.html',
     styleUrls: ['./record-table.component.scss'],
@@ -46,7 +48,9 @@ export class RecordTableComponent {
               ? 'Published'
               : 'Pending';
     }
+    private derive = memoLast<any[]>();
     get filtered() {
+        return this.derive([this.records,this.kind,this.query,this.filter,this.sort],()=>{
         return this.records
             .filter(
                 (r) =>
@@ -63,6 +67,8 @@ export class RecordTableComponent {
                       : new Date(b.updatedAt || b.createdAt || 0).getTime() -
                         new Date(a.updatedAt || a.createdAt || 0).getTime(),
             );
+
+        });
     }
     get pages() {
         return Math.max(1, Math.ceil(this.filtered.length / 8));

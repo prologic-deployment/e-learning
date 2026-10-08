@@ -166,7 +166,7 @@
                 ><hlm-th class="record-progress" *ngIf="role !== 'admin'"
                     >Progress</hlm-th
                 ></hlm-trow
-            ><hlm-trow *ngFor="let row of pageRows"
+            ><hlm-trow [appDetailRow]="{kind:role==='manager'?'user':'course',id:row.id}" *ngFor="let row of pageRows"
                 ><hlm-td class="record-name"
                     ><div>
                         <strong>{{ row.name }}</strong

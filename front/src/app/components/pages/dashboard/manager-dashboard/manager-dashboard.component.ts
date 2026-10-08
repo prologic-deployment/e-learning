@@ -25,7 +25,7 @@ export class ManagerDashboardComponent implements OnInit {
 
   // Stats
   stats: any = null;
-  statsLoading = true;
+  statsLoading = false;
   statsError = '';
 
   // Team
@@ -81,13 +81,16 @@ export class ManagerDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
-    this.loadStats();
     this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => this.setTab(params['tab'] || 'stats'));
   }
 
   setTab(tab: string): void {
+    if ((this.route.snapshot.queryParams['tab'] || 'stats') !== tab) {
+      this.router.navigate([], {relativeTo:this.route,queryParams:{tab},queryParamsHandling:'merge',replaceUrl:true});
+      return;
+    }
     this.activeTab = tab;
-    if (this.route.snapshot.queryParams['tab'] !== tab) this.router.navigate([], { relativeTo: this.route, queryParams: {tab}, queryParamsHandling: 'merge', replaceUrl: true });
+    if ((tab === 'stats' || tab === 'overdue') && !this.stats && !this.statsLoading) this.loadStats();
     if (tab === 'assign' && this.courses.length === 0) {
       this.loadCourses();
       this.loadTeamMembers();
@@ -97,6 +100,7 @@ export class ManagerDashboardComponent implements OnInit {
 
   // ========== STATS ==========
   loadStats(): void {
+    this.statsError = '';
     this.statsLoading = true;
     this.statsService.getManagerStats().subscribe({
       next: (data) => {

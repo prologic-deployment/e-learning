@@ -49,7 +49,7 @@
             ><hlm-th class="status-cell">{{ kind === 'people' ? 'Role' : 'Status' }}</hlm-th
             ><hlm-th class="detail-cell">{{ kind === 'people' ? 'Account' : 'Price' }}</hlm-th
             ><hlm-th class="actions-cell">Actions</hlm-th></hlm-trow
-        ><hlm-trow *ngFor="let r of rows"
+        ><hlm-trow [appDetailRow]="{kind:kind==='people'?'user':'course',id:r._id}" *ngFor="let r of rows"
             ><hlm-td class="name-cell"
                 ><span class="record-avatar"
                     ><i [class]="kind === 'people' ? 'bx bx-user' : 'bx bx-book-open'"></i

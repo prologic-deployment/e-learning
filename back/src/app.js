@@ -66,6 +66,7 @@ app.use(
 );
 
 app.use("/api/stats", statsRoutes);
+app.use("/api/details", require("./routes/detail.routes"));
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/files", fileRoutes);
 app.use("/api/auth", authRoutes);

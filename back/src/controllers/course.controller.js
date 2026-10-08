@@ -274,6 +274,7 @@ exports.deleteCourse = async (req, res) => {
     const Certificate = require("../models/Certificate");
 
     await Lesson.deleteMany({ course: id });
+    await require('../models/AssessmentReview').deleteMany({course:id});
     await Enrollment.deleteMany({ course: id });
     await Purchase.deleteMany({ course: id });
     await Review.deleteMany({ course: id });
@@ -386,8 +387,9 @@ exports.getAllCoursesForTrainer = async (req, res) => {
     const filter = userRole === "admin" ? {} : { trainer: req.user._id };
 
     const courses = await Course.find(filter)
+      .select('title description category tags price trainer isApproved isPaid createdAt updatedAt')
       .populate("trainer", "firstname lastname _id")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 }).lean();
 
     res.status(200).json({ courses });
   } catch (error) {

@@ -341,11 +341,12 @@
         ><app-learning-skeleton *ngIf="historyLoading" />
         <section hlmCard class="surface" *ngIf="!historyLoading">
             <h2>Enrollment history</h2>
-            <hlm-table
+            <app-data-pager #detailPager0 [rows]="history" label="Records" />
+<hlm-table
                 ><hlm-trow
                     ><hlm-th class="w-1/2">Course</hlm-th><hlm-th class="w-1/4">Progress</hlm-th
                     ><hlm-th class="w-1/4">Enrolled</hlm-th></hlm-trow
-                ><hlm-trow *ngFor="let e of history"
+                ><hlm-trow [appDetailRow]="{kind:'enrollment',id:e._id}" *ngFor="let e of detailPager0.visible"
                     ><hlm-td class="w-1/2">{{ e.course?.title }}</hlm-td
                     ><hlm-td class="w-1/4">{{ e.progress }}%</hlm-td
                     ><hlm-td class="w-1/4">{{ e.createdAt | date: 'mediumDate' }}</hlm-td></hlm-trow

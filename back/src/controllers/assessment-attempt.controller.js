@@ -3,7 +3,7 @@ const publicState=a=>{const q=a.paper.questions[a.index];return {attemptId:a._id
 async function finish(req,res,a){
  const locked=await Attempt.findOneAndUpdate({_id:a._id,active:true,status:'ready',index:a.paper.questions.length},{$set:{status:'grading'}},{returnDocument:'after'}).select('+paper');
  if(!locked)return res.status(409).json({message:'This attempt is already being processed. Resume it in a moment.'});
- req.body={answers:locked.answers};req.assessmentAttempt={...locked.paper,attemptsUsed:locked.attemptsUsed};req.params={...req.params,...(locked.kind==='lesson'?{lessonId:String(locked.target)}:{courseId:String(locked.target)})};
+ req.body={answers:locked.answers};req.assessmentAttempt={...locked.paper,attemptsUsed:locked.attemptsUsed,startedAt:locked.createdAt};req.params={...req.params,...(locked.kind==='lesson'?{lessonId:String(locked.target)}:{courseId:String(locked.target)})};
  const grade=locked.kind==='lesson'?require('./quiz.controller').submitLessonQuiz:require('./quiz.controller').submitFinalExam;
  let code=200,result;await grade(req,{status(n){code=n;return this;},json(value){result=value;return this;}});
  if(code!==200){await Attempt.updateOne({_id:a._id},{$set:{status:'ready'}});return res.status(code).json(result);}

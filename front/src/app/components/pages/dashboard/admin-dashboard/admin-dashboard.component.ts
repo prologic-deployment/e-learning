@@ -1,5 +1,7 @@
+import { memoLast } from '../../../management/memo-last';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {ToastService} from '../../../../services/toast.service';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, DestroyRef, inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { StatsService } from '../../../../services/stats.service';
 import { AuthService } from '../../../../services/auth.service';
@@ -18,12 +20,13 @@ import * as XLSX from 'xlsx';
 })
 export class AdminDashboardComponent implements OnInit {
 
+  private readonly destroyRef = inject(DestroyRef);
   activeTab: string = 'stats';
   currentUser: any;
   apiUrl = environment.apiUrl;
 
   stats: any = null;
-  statsLoading = true;
+  statsLoading = false;
   statsError = '';
 
   users: any[] = [];
@@ -152,7 +155,8 @@ export class AdminDashboardComponent implements OnInit {
     password: '', dateOfBirth: '', role: 'manager'
   };
   private toast=inject(ToastService);
-  get staffUsers(){return this.users.filter(u=>['admin','trainer','manager'].includes(Array.isArray(u.role)?u.role[0]:u.role));}
+  private staffFilter=memoLast<any[]>();
+  get staffUsers(){return this.staffFilter([this.users],()=>this.users.filter(u=>['admin','trainer','manager'].includes(Array.isArray(u.role)?u.role[0]:u.role)));}
   createStaffLoading = false;
   createStaffSuccess = '';
   createStaffError = '';
@@ -164,6 +168,7 @@ export class AdminDashboardComponent implements OnInit {
 
   quizResults: any[] = [];
   quizResultsLoading = false;
+  quizResultsError = '';
   quizResultsFilter = 'all';
 
   constructor(
@@ -178,10 +183,7 @@ export class AdminDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
-    this.loadStats();
-    this.route.queryParams.subscribe(params => {
-      if (params['tab']) this.setTab(params['tab']);
-    });
+    this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(params => this.setTab(params['tab'] || 'stats'));
   }
 
   setTab(tab: string): void {
@@ -190,6 +192,7 @@ export class AdminDashboardComponent implements OnInit {
       return;
     }
     this.activeTab = tab;
+    if (tab === 'stats' && !this.stats && !this.statsLoading) this.loadStats();
 
     if ((tab === 'users' || tab === 'staff-list') && this.users.length === 0) this.loadUsers();
     if (tab === 'courses' && this.courses.length === 0) this.loadCourses();
@@ -199,7 +202,7 @@ export class AdminDashboardComponent implements OnInit {
 
     if (tab === 'assign') {
       if (this.users.length === 0) this.loadUsers();
-      this.loadManagers();
+
     }
 
     if (tab === 'reviews') this.loadReviews();
@@ -249,6 +252,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   loadStats(): void {
+    this.statsError = '';
     this.statsLoading = true;
     this.statsService.getAdminStats().subscribe({
       next: (data) => { this.stats = data; this.statsLoading = false; },
@@ -260,7 +264,7 @@ export class AdminDashboardComponent implements OnInit {
     this.usersError = '';
     this.usersLoading = true;
     this.userService.getAllUsers().subscribe({
-      next: (data) => { this.users = data; this.usersLoading = false; },
+      next: (data) => { this.users = data; this.managers = data.filter((u:any)=>(Array.isArray(u.role)?u.role:[u.role]).includes('manager')); this.usersLoading = false; },
       error: (err) => { this.usersError = err.error?.message || 'Error'; this.usersLoading = false; }
     });
   }
@@ -589,12 +593,6 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
-  loadManagers(): void {
-    this.userService.getAllUsers().subscribe({
-      next: (data) => { this.managers = data.filter((u: any) => u.role === 'manager'); },
-      error: () => {}
-    });
-  }
 
   assignUserToManager(): void {
     if (!this.assignUserId || !this.assignManagerId) {
@@ -671,20 +669,20 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   loadQuizResults(): void {
+    this.quizResultsError = '';
     this.quizResultsLoading = true;
     this.http.get(`${this.apiUrl}/quiz/results/all`).subscribe({
       next: (data: any) => {
         this.quizResults = data.results || [];
         this.quizResultsLoading = false;
       },
-      error: () => { this.quizResultsLoading = false; }
+      error: () => { this.quizResultsError = 'Unable to load assessment results. Please try again.'; this.quizResultsLoading = false; }
     });
   }
 
+  private resultFilter=memoLast<any[]>();
   get filteredQuizResults(): any[] {
-    if (this.quizResultsFilter === 'passed') return this.quizResults.filter(r => r.passed);
-    if (this.quizResultsFilter === 'failed') return this.quizResults.filter(r => !r.passed);
-    return this.quizResults;
+    return this.resultFilter([this.quizResults,this.quizResultsFilter],()=>this.quizResultsFilter==='all'?this.quizResults:this.quizResults.filter(r=>this.quizResultsFilter==='passed'?r.passed:!r.passed));
   }
 
   get passedCount(): number { return this.quizResults.filter(r => r.passed).length; }
@@ -884,6 +882,8 @@ export class AdminDashboardComponent implements OnInit {
 
   // ✅ Cours archivés
   archivedCourses: any[] = [];
+  archivedLoading=false;
+  archivedError='';
 
   // ✅ Archiver un cours (au lieu de supprimer)
   archiveCourse(course: any): void {
@@ -919,13 +919,13 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   loadArchivedCourses(): void {
+    this.archivedLoading=true;this.archivedError='';
     this.http.get(`${this.apiUrl}/courses/archived`).subscribe({
       next: (data: any) => {
-        this.archivedCourses = data.courses || [];
+        this.archivedCourses = data.courses || [];this.archivedLoading=false;
       },
       error: () => {
-        // ✅ Si pas de route backend encore — utilise la liste locale
-        console.log('Archived courses loaded locally');
+        this.archivedLoading=false;this.archivedError='Unable to load archived courses. Please try again.';
       }
     });
   }

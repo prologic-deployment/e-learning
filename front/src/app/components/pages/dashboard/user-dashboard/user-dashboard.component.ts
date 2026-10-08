@@ -1,11 +1,12 @@
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { plainSystemText } from '../../../../services/system-text';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, DestroyRef, inject } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { SocketService } from '../../../../services/socket.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
-import { Subscription } from 'rxjs';
+import { Observable, finalize, shareReplay, forkJoin, Subscription } from 'rxjs';
 import * as XLSX from 'xlsx';
 
 @Component({
@@ -14,6 +15,13 @@ import * as XLSX from 'xlsx';
     styleUrls: ['./user-dashboard.component.scss'],
 })
 export class UserDashboardComponent implements OnInit, OnDestroy {
+    private readonly destroyRef=inject(DestroyRef);
+    private readonly inflight=new Map<string,Observable<any>>();
+    private read(path:string):Observable<any>{
+        const existing=this.inflight.get(path);if(existing)return existing;
+        const result=this.http.get<any>(`${this.apiUrl}/${path}`).pipe(takeUntilDestroyed(this.destroyRef),finalize(()=>this.inflight.delete(path)),shareReplay({bufferSize:1,refCount:true}));
+        this.inflight.set(path,result);return result;
+    }
     readonly systemText = plainSystemText;
     certificateDownloading = '';
     downloadCertificate(c: any) {
@@ -160,7 +168,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         });
 
         // ✅ Lire le tab depuis les queryParams
-        this.route.queryParams.subscribe((params) => {
+        this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
             const requested = params['tab'] || 'overview';
             const tab = this.tabs.some((t) => t.id === requested) ? requested : 'overview';
             const section = params['section'] || '';
@@ -175,9 +183,8 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.loadProfile();
         // ✅ Charger le count des notifications dès le début
-        this.loadUnreadCount();
+        if (this.activeTab !== 'notifications') this.loadUnreadCount();
     }
 
     ngOnDestroy(): void {
@@ -211,7 +218,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     // ✅ Toast notification
     // ✅ Charger uniquement le count
     loadUnreadCount(): void {
-        this.http.get<any>(`${this.apiUrl}/notifications`).subscribe({
+        this.read('notifications').subscribe({
             next: (data) => {
                 this.unreadCount = data.unreadCount || 0;
                 // ✅ Merge avec les notifs temps réel déjà reçues
@@ -228,7 +235,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     loadProfile(): void {
         this.errors['profile'] = '';
         this.profileLoading = true;
-        this.http.get(`${this.apiUrl}/profile`).subscribe({
+        this.read('profile').subscribe({
             next: (data: any) => {
                 this.profile = data;
                 this.avatarPreview = null;
@@ -298,17 +305,13 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     }
 
     setTab(tab: string): void {
+        if ((this.route.snapshot.queryParams['tab'] || 'overview') !== tab) {
+            this.router.navigate([], {relativeTo:this.route,queryParams:{tab},queryParamsHandling:'merge',replaceUrl:true});
+            return;
+        }
         this.activeTab = tab;
-        if (this.route.snapshot.queryParams['tab'] !== tab)
-            this.router.navigate([], {
-                relativeTo: this.route,
-                queryParams: { tab },
-                queryParamsHandling: 'merge',
-                replaceUrl: true,
-            });
 
         if (tab === 'overview') {
-            this.loadProfile();
             this.loadEnrollments();
             this.loadBadges();
         }
@@ -323,7 +326,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     loadEnrollments(): void {
         this.errors['courses'] = '';
         this.enrollmentsLoading = true;
-        this.http.get(`${this.apiUrl}/enrollments/me`).subscribe({
+        this.read('enrollments/me').subscribe({
             next: (data: any) => {
                 this.enrollments = Array.isArray(data) ? data : [];
                 this.enrollmentsLoading = false;
@@ -370,7 +373,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     loadNotifications(): void {
         this.errors['notifications'] = '';
         this.notificationsLoading = true;
-        this.http.get<any>(`${this.apiUrl}/notifications`).subscribe({
+        this.read('notifications').subscribe({
             next: (data) => {
                 // ✅ Merge notifs temps réel + notifs DB sans doublons
                 const rtIds = this.notifications
@@ -416,25 +419,10 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     }
 
     loadHistory(): void {
-        this.errors['history'] = '';
-        this.historyLoading = true;
-        this.http.get(`${this.apiUrl}/enrollments/me`).subscribe({
-            next: (data: any) => {
-                this.history = Array.isArray(data) ? data : [];
-                this.historyLoading = false;
-            },
-            error: () => {
-                this.history = [];
-                this.historyLoading = false;
-            },
-        });
-        this.http.get(`${this.apiUrl}/purchases/me`).subscribe({
-            next: (data: any) => {
-                this.purchases = Array.isArray(data) ? data : [];
-            },
-            error: () => {
-                this.purchases = [];
-            },
+        this.errors['history']='';this.historyLoading=true;
+        forkJoin({enrollments:this.read('enrollments/me'),purchases:this.read('purchases/me')}).subscribe({
+            next:({enrollments,purchases})=>{this.history=Array.isArray(enrollments)?enrollments:[];this.purchases=Array.isArray(purchases)?purchases:[];this.historyLoading=false;},
+            error:()=>{this.errors['history']='Unable to load your learning history. Please try again.';this.historyLoading=false;}
         });
     }
 

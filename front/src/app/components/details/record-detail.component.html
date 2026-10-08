@@ -1,0 +1,282 @@
+<brn-dialog #dialog (closed)="closed()" [closeOnOutsidePointerEvents]="true">
+    <brn-dialog-overlay class="record-detail-backdrop" />
+    <hlm-dialog-content *brnDialogContent class="record-detail-dialog">
+        <header class="detail-header">
+            <div class="detail-eyebrow">
+                <span>Record details</span
+                ><button
+                    *ngIf="history.length"
+                    hlmBtn
+                    variant="ghost"
+                    size="sm"
+                    (click)="back()"
+                >
+                    ← Back
+                </button>
+            </div>
+            <h2 hlmDialogTitle>
+                {{
+                    data?.title ||
+                        (error ? "Details unavailable" : "Loading record…")
+                }}
+            </h2>
+            <p hlmDialogDescription>
+                {{
+                    data?.subtitle ||
+                        "Explore this record and its related information."
+                }}
+            </p>
+            <button
+                *ngIf="data?.review"
+                hlmBtn
+                variant="outline"
+                size="sm"
+                class="review-jump"
+                (click)="scrollToAnswers()"
+            >
+                View answers ({{ data?.review?.total }}) ↓
+            </button>
+        </header>
+        <div #scrollBody class="detail-scroll" [attr.aria-busy]="loading">
+            <div *ngIf="loading" role="status" class="detail-loading">
+                <span class="detail-spinner" aria-hidden="true"></span>
+                <p>Loading details…</p>
+                <div class="skeleton-grid" aria-hidden="true">
+                    <hlm-skeleton
+                        *ngFor="let n of [1, 2, 3, 4]"
+                        class="detail-skeleton"
+                    />
+                </div>
+            </div>
+            <div *ngIf="error" role="alert" class="detail-empty">
+                <h3>Unable to open this record</h3>
+                <p>{{ error }}</p>
+                <button hlmBtn (click)="load()">Retry</button>
+            </div>
+            <ng-container *ngIf="data && !loading">
+                <p class="detail-notice" *ngIf="data.notice">
+                    <i class="bx bx-info-circle" aria-hidden="true"></i
+                    >{{ data.notice }}
+                </p>
+                <section
+                    *ngFor="let section of data.sections; trackBy: trackSection"
+                    class="detail-section"
+                    hlmCard
+                >
+                    <div class="section-heading">
+                        <h3>{{ section.title }}</h3>
+                        <span *ngIf="section.page" hlmBadge variant="secondary"
+                            >{{ section.page.total }} records</span
+                        >
+                    </div>
+                    <dl *ngIf="section.fields?.length" class="detail-fields">
+                        <div
+                            *ngFor="let f of section.fields"
+                            [class.wide]="
+                                [
+                                    'Description',
+                                    'Course description',
+                                    'Content',
+                                    'Comment',
+                                ].includes(f.label)
+                            "
+                        >
+                            <dt>{{ f.label }}</dt>
+                            <dd>{{ display(f.value) }}</dd>
+                        </div>
+                    </dl>
+                    <div *ngIf="section.items" class="related-records">
+                        <p *ngIf="!section.items.length" class="detail-empty">
+                            No records available in this section.
+                        </p>
+                        <article
+                            *ngFor="let item of section.items"
+                            class="related-record"
+                        >
+                            <div class="related-heading">
+                                <div>
+                                    <h4>
+                                        {{ item.title || "Unavailable record" }}
+                                    </h4>
+                                    <p *ngIf="item.subtitle">
+                                        {{ item.subtitle }}
+                                    </p>
+                                </div>
+                                <button
+                                    *ngIf="item.detail"
+                                    hlmBtn
+                                    variant="outline"
+                                    size="sm"
+                                    (click)="open(item.detail)"
+                                    [attr.aria-label]="
+                                        'View details: ' + item.title
+                                    "
+                                >
+                                    View details
+                                    <span aria-hidden="true">↗</span>
+                                </button>
+                            </div>
+                            <dl
+                                *ngIf="item.fields?.length"
+                                class="detail-fields compact"
+                            >
+                                <div *ngFor="let f of item.fields">
+                                    <dt>{{ f.label }}</dt>
+                                    <dd>{{ display(f.value) }}</dd>
+                                </div>
+                            </dl>
+                        </article>
+                    </div>
+                    <nav
+                        *ngIf="section.page && section.page.pages > 1"
+                        class="detail-pagination"
+                        [attr.aria-label]="section.title + ' pages'"
+                    >
+                        <button
+                            hlmBtn
+                            variant="outline"
+                            size="sm"
+                            [disabled]="section.page.current <= 1"
+                            (click)="
+                                paginate(
+                                    section.page.key,
+                                    section.page.current - 1
+                                )
+                            "
+                        >
+                            Previous</button
+                        ><span
+                            >Page {{ section.page.current }} of
+                            {{ section.page.pages }}</span
+                        ><button
+                            hlmBtn
+                            variant="outline"
+                            size="sm"
+                            [disabled]="
+                                section.page.current >= section.page.pages
+                            "
+                            (click)="
+                                paginate(
+                                    section.page.key,
+                                    section.page.current + 1
+                                )
+                            "
+                        >
+                            Next
+                        </button>
+                    </nav>
+                </section>
+                <section
+                    class="answer-review"
+                    *ngIf="data.review as review"
+                    aria-labelledby="answer-review-heading"
+                >
+                    <div class="section-heading">
+                        <div>
+                            <span class="detail-eyebrow"
+                                >Assessment evidence</span
+                            >
+                            <h3 id="answer-review-heading">
+                                Question-by-question review
+                            </h3>
+                        </div>
+                        <span hlmBadge variant="secondary"
+                            >{{ review.correct }} /
+                            {{ review.total }} correct</span
+                        >
+                    </div>
+                    <article
+                        *ngFor="
+                            let q of review.questions;
+                            trackBy: trackQuestion
+                        "
+                        class="question-card"
+                        hlmCard
+                        [class.question-correct]="q.correct"
+                    >
+                        <header class="question-heading">
+                            <span class="question-number">{{ q.number }}</span>
+                            <div>
+                                <h4>{{ q.text }}</h4>
+                                <p>
+                                    {{
+                                        q.type === "multiple"
+                                            ? "Multiple response"
+                                            : "Single response"
+                                    }}<span *ngIf="q.timeLimitSeconds">
+                                        · {{ q.timeLimitSeconds }}s limit</span
+                                    >
+                                </p>
+                            </div>
+                            <span
+                                class="answer-status"
+                                [class.correct]="q.correct"
+                                >{{
+                                    q.correct
+                                        ? "Correct"
+                                        : q.unanswered
+                                          ? "Unanswered"
+                                          : "Incorrect"
+                                }}
+                                · {{ q.earnedPoints }} /
+                                {{ q.points }} pts</span
+                            >
+                        </header>
+                        <div class="answer-comparison">
+                            <div class="student-answer">
+                                <h5>Student’s answer</h5>
+                                <ul
+                                    *ngIf="
+                                        q.studentAnswers.length;
+                                        else noAnswer
+                                    "
+                                >
+                                    <li *ngFor="let answer of q.studentAnswers">
+                                        {{ answer }}
+                                    </li>
+                                </ul>
+                                <ng-template #noAnswer
+                                    ><p>
+                                        {{
+                                            q.unanswered
+                                                ? "No answer submitted"
+                                                : "No valid option submitted"
+                                        }}
+                                    </p></ng-template
+                                >
+                            </div>
+                            <div class="correct-answer">
+                                <h5>
+                                    Correct answer{{
+                                        q.correctAnswers.length > 1 ? "s" : ""
+                                    }}
+                                </h5>
+                                <ul>
+                                    <li *ngFor="let answer of q.correctAnswers">
+                                        {{ answer }}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div *ngIf="q.explanation" class="answer-explanation">
+                            <h5>Explanation</h5>
+                            <p>{{ q.explanation }}</p>
+                        </div>
+                    </article>
+                </section>
+                <p
+                    class="detail-empty"
+                    *ngIf="!data.sections?.length && !data.review"
+                >
+                    No additional details are available for this record.
+                </p>
+            </ng-container>
+        </div>
+        <footer class="detail-footer">
+            <span>Authorized, current record data</span
+            ><button hlmBtn variant="outline" (click)="dialog.close(0)">
+                Close
+            </button>
+        </footer>
+    </hlm-dialog-content>
+</brn-dialog>

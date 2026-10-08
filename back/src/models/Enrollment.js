@@ -50,6 +50,7 @@ const enrollmentSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Lesson"
         },
+        review: { type: mongoose.Schema.Types.ObjectId, ref: 'AssessmentReview', select: false },
         score: { type: Number },
         passed: { type: Boolean },
         attempts: { type: Number, default: 1 },
@@ -64,6 +65,7 @@ const enrollmentSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Lesson"
         },
+        review: { type: mongoose.Schema.Types.ObjectId, ref: 'AssessmentReview', select: false },
         score: { type: Number },
         passed: { type: Boolean },
         attempts: { type: Number, default: 0 },
@@ -73,6 +75,7 @@ const enrollmentSchema = new mongoose.Schema(
 
     // ✅ Résultat de l'examen final
     finalExamResult: {
+      review: { type: mongoose.Schema.Types.ObjectId, ref: 'AssessmentReview', select: false },
       score: { type: Number, default: null },
       passed: { type: Boolean, default: false },
       attempts: { type: Number, default: 0 },

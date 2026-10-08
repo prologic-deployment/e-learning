@@ -9,7 +9,9 @@
     "test": "ng test",
     "preview": "node scripts/preview.cjs",
     "test:browser": "node tests/browser-smoke.cjs",
-    "test:socket": "node --test tests/socket-lifecycle.cjs tests/proxy-socket.integration.cjs"
+    "test:socket": "node --test tests/socket-lifecycle.cjs tests/proxy-socket.integration.cjs",
+    "test:tables": "node --test tests/table-derivations.cjs",
+    "test:details:browser": "node tests/dashboard-details.browser.cjs"
   },
   "private": true,
   "dependencies": {

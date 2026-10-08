@@ -50,6 +50,8 @@
         />
 <app-record-table *ngIf="activeTab==='courses'" [records]="courses" [loading]="coursesLoading" [error]="coursesError" [allowApproval]="true" (refresh)="loadCourses()" (edit)="editExistingCourse($event)" (approve)="approveCourse($event)" (archive)="archiveCourse($event)" (remove)="deleteCourse($event)"/>
         <div *ngIf="activeTab === 'archived'">
+            <app-learning-skeleton *ngIf="archivedLoading" />
+            <div *ngIf="archivedError" role="alert" class="product-alert">{{archivedError}} <button hlmBtn variant="outline" (click)="loadArchivedCourses()">Retry</button></div>
             <div
                 style="
                     background: hsl(var(--card));
@@ -84,7 +86,7 @@
                     </div>
                 </div>
                 <div
-                    *ngIf="archivedCourses.length === 0"
+                    *ngIf="!archivedLoading && !archivedError && archivedCourses.length === 0"
                     class="text-center py-5"
                 >
                     <div style="font-size: 48px; margin-bottom: 12px">🗄</div>
@@ -103,9 +105,10 @@
                 </div>
                 <div
                     class="table-responsive"
-                    *ngIf="archivedCourses.length > 0"
+                    *ngIf="!archivedLoading && !archivedError && archivedCourses.length > 0"
                 >
-                    <table class="table align-middle" style="font-size: 13px">
+                    <app-data-pager #detailPager0 [rows]="archivedCourses" label="Records" />
+<table class="table align-middle" style="font-size: 13px">
                         <thead>
                             <tr
                                 style="
@@ -176,7 +179,7 @@
                         </thead>
                         <tbody>
                             <tr
-                                *ngFor="let course of archivedCourses"
+                                [appDetailRow]="{kind:'course',id:course._id}" *ngFor="let course of detailPager0.visible"
                                 style="
                                     border-bottom: 1px solid hsl(var(--border));
                                 "
@@ -458,6 +461,8 @@
                 </button>
 
                 <!-- Tableau assignments -->
+                <app-learning-skeleton *ngIf="usersLoading" />
+                <div *ngIf="usersError" role="alert" class="product-alert">{{ usersError }} <button hlmBtn variant="outline" (click)="loadUsers()">Retry</button></div>
                 <div class="mt-4">
                     <h6
                         style="
@@ -469,7 +474,8 @@
                         <i class="bx bx-task" aria-hidden="true"></i> Assignments actuels
                     </h6>
                     <div class="table-responsive">
-                        <table
+                        <app-data-pager #detailPager1 [rows]="users" label="Records" />
+<table
                             class="table align-middle"
                             style="font-size: 13px"
                         >
@@ -532,7 +538,7 @@
                             </thead>
                             <tbody>
                                 <tr
-                                    *ngFor="let user of users"
+                                    [appDetailRow]="{kind:'user',id:user._id}" *ngFor="let user of detailPager1.visible"
                                     style="
                                         border-bottom: 1px solid
                                             hsl(var(--border));
@@ -649,7 +655,8 @@
                     style="color: hsl(var(--foreground))"
                 ></div>
             </div>
-            <div *ngIf="!reviewsLoading">
+            <div *ngIf="reviewsError" role="alert" class="product-alert">{{ reviewsError }} <button hlmBtn variant="outline" (click)="loadReviews()">Retry</button></div>
+            <div *ngIf="!reviewsLoading && !reviewsError">
                 <div
                     style="
                         background: hsl(var(--card));
@@ -826,7 +833,8 @@
                         class="table-responsive"
                         *ngIf="filteredReviews.length > 0"
                     >
-                        <table
+                        <app-data-pager #detailPager2 [rows]="filteredReviews" label="Records" />
+<table
                             class="table align-middle"
                             style="font-size: 13px"
                         >
@@ -925,7 +933,7 @@
                             </thead>
                             <tbody>
                                 <tr
-                                    *ngFor="let review of filteredReviews"
+                                    [appDetailRow]="{kind:'review',id:review._id}" *ngFor="let review of detailPager2.visible"
                                     style="
                                         border-bottom: 1px solid
                                             hsl(var(--border));
@@ -1397,8 +1405,9 @@
                         </button>
                     </div>
 
+                    <div *ngIf="quizResultsError" class="product-alert" role="alert">{{ quizResultsError }} <button hlmBtn variant="outline" (click)="loadQuizResults()">Retry</button></div>
                     <div
-                        *ngIf="filteredQuizResults.length === 0"
+                        *ngIf="!quizResultsError && filteredQuizResults.length === 0"
                         class="text-center py-5"
                     >
                         <div style="font-size: 48px; margin-bottom: 12px">
@@ -1413,7 +1422,8 @@
                         class="table-responsive"
                         *ngIf="filteredQuizResults.length > 0"
                     >
-                        <table
+                        <app-data-pager #detailPager3 [rows]="filteredQuizResults" label="Records" />
+<table
                             class="table align-middle"
                             style="font-size: 13px"
                         >
@@ -1524,7 +1534,7 @@
                             </thead>
                             <tbody>
                                 <tr
-                                    *ngFor="let result of filteredQuizResults"
+                                    [appDetailRow]="{kind:'result',id:result.enrollmentId,query:{assessment:result.type,lesson:result.lessonId}}" *ngFor="let result of detailPager3.visible"
                                     style="
                                         border-bottom: 1px solid
                                             hsl(var(--border));
@@ -1636,20 +1646,18 @@
                                                 font-weight: 600;
                                             "
                                             [style.background]="
-                                                result.type === 'lesson_quiz'
+                                                result.type !== 'final_exam'
                                                     ? 'hsl(var(--secondary))'
                                                     : '#fffbeb'
                                             "
                                             [style.color]="
-                                                result.type === 'lesson_quiz'
+                                                result.type !== 'final_exam'
                                                     ? '#457B9D'
                                                     : '#f59e0b'
                                             "
                                         >
                                             {{
-                                                result.type === "lesson_quiz"
-                                                    ? "Quiz"
-                                                    : "Examen Final"
+                                                result.type === "final_exam" ? "Final exam" : result.type === "lesson_quiz2" ? "Legacy quiz" : "Quiz"
                                             }}
                                         </span>
                                     </td>

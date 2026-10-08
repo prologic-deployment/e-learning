@@ -1,3 +1,4 @@
+const {saveAssessmentReview} = require('../utils/assessmentReview');
 const Lesson = require("../models/Lesson");
 const Course = require("../models/Course");
 const Enrollment = require("../models/Enrollment");
@@ -208,6 +209,9 @@ exports.submitLessonQuiz = async (req, res) => {
       });
     }
 
+    const reviewTarget = enrollment.quizResults.find(r => String(r.lesson) === lessonId);
+    reviewTarget.review = await saveAssessmentReview(enrollment, req.assessmentAttempt || lesson.quiz, answers, req.assessmentAttempt?.startedAt);
+
     if (passed) {
       const alreadyCompleted = enrollment.lessonsCompleted
         .map(l => l.toString())
@@ -289,6 +293,8 @@ exports.submitLessonQuiz2 = async (req, res) => {
       });
     }
 
+    enrollment.quiz2Results.find(r => String(r.lesson) === lessonId).review = await saveAssessmentReview(enrollment, lesson.quiz2, answers);
+
     // Legacy quiz2-only lessons use the same completion rules as primary quizzes.
     if (passed && !lesson.quiz?.questions?.length) {
       if (!enrollment.lessonsCompleted.some(id => String(id) === String(lessonId))) enrollment.lessonsCompleted.push(lessonId);
@@ -361,6 +367,7 @@ exports.submitFinalExam = async (req, res) => {
     const passed = score >= (req.assessmentAttempt?.noteMinimale || course.finalExam.noteMinimale || 70);
 
     enrollment.finalExamResult = {
+      review: await saveAssessmentReview(enrollment, req.assessmentAttempt || course.finalExam, answers, req.assessmentAttempt?.startedAt),
       score,
       passed,
       attempts: enrollment.finalExamAttempts,
@@ -472,22 +479,27 @@ exports.getAllQuizResults = async (req, res) => {
       ...courseFilter,
       $or: [
         { 'quizResults.0': { $exists: true } },
-        { 'finalExamResult.score': { $exists: true } }
+        { 'quiz2Results.0': { $exists: true } },
+        { 'finalExamResult.score': { $type: 'number' } }
       ]
     })
+      .select('user course quizResults.lesson quizResults.score quizResults.passed quizResults.attempts quizResults.completedAt quiz2Results.lesson quiz2Results.score quiz2Results.passed quiz2Results.attempts quiz2Results.completedAt finalExamResult.lesson finalExamResult.score finalExamResult.passed finalExamResult.attempts finalExamResult.completedAt')
       .populate('user', 'firstname lastname email')
       .populate('course', 'title category trainer')
-      .populate('quizResults.lesson', 'title');
+      .populate({path:'quizResults.lesson',select:'title',transform:(doc,id)=>doc||{_id:id,title:'Deleted lesson'}})
+      .populate({path:'quiz2Results.lesson',select:'title',transform:(doc,id)=>doc||{_id:id,title:'Deleted lesson'}}).lean();
 
     const results = [];
 
     enrollments.forEach(enrollment => {
-      enrollment.quizResults.forEach(qr => {
+      [...(enrollment.quizResults || []).map(q=>({...q,quizKey:'quiz'})), ...(enrollment.quiz2Results || []).map(q=>({...q,quizKey:'quiz2'}))].forEach(qr => {
+        if (typeof qr.score !== 'number') return;
         results.push({
+          enrollmentId: enrollment._id, lessonId: qr.lesson?._id, quizKey: qr.quizKey,
           user: enrollment.user,
           course: enrollment.course,
           lessonTitle: qr.lesson?.title || 'Lesson Quiz',
-          type: 'lesson_quiz',
+          type: qr.quizKey === 'quiz2' ? 'lesson_quiz2' : 'lesson_quiz',
           score: qr.score,
           passed: qr.passed,
           attempts: qr.attempts,
@@ -495,10 +507,11 @@ exports.getAllQuizResults = async (req, res) => {
         });
       });
 
-      if (enrollment.finalExamResult?.score !== undefined) {
+      if (typeof enrollment.finalExamResult?.score === 'number') {
         results.push({
           user: enrollment.user,
           course: enrollment.course,
+          enrollmentId: enrollment._id,
           lessonTitle: 'Final Exam',
           type: 'final_exam',
           score: enrollment.finalExamResult.score,

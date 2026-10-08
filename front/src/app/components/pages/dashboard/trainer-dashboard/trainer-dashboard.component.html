@@ -151,8 +151,9 @@
                         </button>
                     </div>
 
+                    <div *ngIf="quizResultsError" class="product-alert" role="alert">{{ quizResultsError }} <button hlmBtn variant="outline" (click)="loadQuizResults()">Retry</button></div>
                     <div
-                        *ngIf="filteredQuizResults.length === 0"
+                        *ngIf="!quizResultsError && filteredQuizResults.length === 0"
                         class="text-center py-5"
                     >
                         <div style="font-size: 50px"><i class="bx bx-edit" aria-hidden="true"></i></div>
@@ -163,7 +164,8 @@
                         class="table-responsive"
                         *ngIf="filteredQuizResults.length > 0"
                     >
-                        <table class="table table-hover align-middle">
+                        <app-data-pager #detailPager0 [rows]="filteredQuizResults" label="Records" />
+<table class="table table-hover align-middle">
                             <thead class="table-light">
                                 <tr>
                                     <th>Student</th>
@@ -177,7 +179,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let result of filteredQuizResults">
+                                <tr [appDetailRow]="{kind:'result',id:result.enrollmentId,query:{assessment:result.type,lesson:result.lessonId}}" *ngFor="let result of detailPager0.visible">
                                     <td>
                                         <div
                                             class="d-flex align-items-center gap-2"
@@ -238,7 +240,7 @@
                                         <span
                                             class="badge"
                                             [class.bg-info]="
-                                                result.type === 'lesson_quiz'
+                                                result.type !== 'final_exam'
                                             "
                                             [class.bg-warning]="
                                                 result.type === 'final_exam'
@@ -246,9 +248,7 @@
                                             style="font-size: 11px"
                                         >
                                             {{
-                                                result.type === "lesson_quiz"
-                                                    ? "Lesson Quiz"
-                                                    : "Final Exam"
+                                                result.type === "final_exam" ? "Final exam" : result.type === "lesson_quiz2" ? "Legacy quiz" : "Lesson quiz"
                                             }}
                                         </span>
                                     </td>

@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { memoLast } from '../management/memo-last';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UiModule } from '../ui/ui.module';
@@ -6,6 +7,7 @@ import { LearningUiModule } from '../learning/learning-ui.module';
 @Component({
     selector: 'app-operations-overview',
     standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, FormsModule, UiModule, LearningUiModule],
     templateUrl: './operations-overview.component.html',
     styleUrls: ['./operations-overview.component.scss'],
@@ -44,11 +46,14 @@ export class OperationsOverviewComponent {
                     { label: 'Completion rate', value: s.completionRate, suffix: '%' },
                 ];
     }
+    private derive = memoLast<any[]>();
     get rows() {
+        return this.derive([this.stats,this.role,this.query,this.sort],()=>{
         if (!this.stats) return [];
         const rows =
             this.role === 'manager'
                 ? (this.stats.memberStats || []).map((r: any) => ({
+                      id:r.user._id,
                       name: `${r.user.firstname} ${r.user.lastname}`,
                       detail: r.user.email,
                       total: r.totalCourses,
@@ -58,12 +63,14 @@ export class OperationsOverviewComponent {
                   }))
                 : this.role === 'admin'
                   ? (this.stats.topCourses || []).map((r: any) => ({
+                        id:r.courseId,
                         name: r.courseTitle,
                         detail: 'Course enrollments',
                         total: r.enrollments,
                         status: 'Popular course',
                     }))
                   : (this.stats.courseStats || []).map((r: any) => ({
+                        id:r.course.id,
                         name: r.course.title,
                         detail: 'Your course',
                         total: r.totalEnrollments,
@@ -82,6 +89,8 @@ export class OperationsOverviewComponent {
                       ? (b.progress || 0) - (a.progress || 0)
                       : b.total - a.total,
             );
+
+        });
     }
     get pages() {
         return Math.max(1, Math.ceil(this.rows.length / 6));

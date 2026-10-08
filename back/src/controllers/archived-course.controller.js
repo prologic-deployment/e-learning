@@ -6,9 +6,9 @@ const Course = require("../models/Course");
 exports.getArchivedCourses = async (req, res) => {
   try {
     const courses = await Course.find({ isArchived: true })
-      .select("+isArchived +archivedAt")
+      .select("title description category tags price trainer isApproved isPaid createdAt updatedAt +isArchived +archivedAt")
       .populate("trainer", "firstname lastname")
-      .sort({ archivedAt: -1 });
+      .sort({ archivedAt: -1 }).lean();
 
     res.status(200).json({ courses });
   } catch (error) {
