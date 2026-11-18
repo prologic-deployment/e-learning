@@ -4,7 +4,7 @@ const Enrollment = require("../models/Enrollment");
 const Certificate = require("../models/Certificate");
 const { createNotification } = require("../services/notification.service");
 const { sendEmail } = require("../services/email.service");
-const generateCertificatePDF = require("../utils/generateCertificatePDF");
+const { completeIfEligible } = require("../services/certificate.service");
 const { checkCompletionBadges, checkQuizBadges, checkCertificateBadges } = require("../services/badge.service");
 const config = require("../config/env");
 
@@ -272,9 +272,19 @@ exports.submitLessonQuiz = async (req, res) => {
 
     await enrollment.save();
 
+    // ✅ Course finished (all quiz lessons passed + final exam if any)
+    // → enrollment completed + branded certificate (single service)
+    let certificate = null;
+    if (passed) {
+      certificate = await completeIfEligible(enrollment)
+        .catch(err => { console.error('⚠️ Certificate error:', err.message); return null; });
+    }
+
     res.status(200).json({
       score,
       passed,
+      courseCompleted: !!certificate,
+      certificateId: certificate?._id || null,
       correct,
       total,
       attemptsUsed: used + 1,
@@ -339,8 +349,18 @@ exports.submitLessonQuiz2 = async (req, res) => {
 
     await enrollment.save();
 
+    // ✅ Course finished (all quiz lessons passed + final exam if any)
+    // → enrollment completed + branded certificate (single service)
+    let certificate = null;
+    if (passed) {
+      certificate = await completeIfEligible(enrollment)
+        .catch(err => { console.error('⚠️ Certificate error:', err.message); return null; });
+    }
+
     res.status(200).json({
       score, passed, correct, total,
+      courseCompleted: !!certificate,
+      certificateId: certificate?._id || null,
       attemptsUsed: used + 1,
       maxAttempts,
       noteMinimale: lesson.quiz2.noteMinimale || 70,
@@ -414,82 +434,29 @@ exports.submitFinalExam = async (req, res) => {
 
       checkCompletionBadges(req.user._id, enrollment).catch(console.error);
       checkQuizBadges(req.user._id, score).catch(console.error);
-
-      const User = require("../models/User");
-      const user = await User.findById(req.user._id).select("firstname lastname email");
-
-      const existing = await Certificate.findOne({
-        user: req.user._id,
-        course: courseId
-      });
-
-      if (!existing) {
-        try {
-          const { fileName, serial, verificationCode } = await generateCertificatePDF(
-            `${user.firstname} ${user.lastname}`,
-            course.title,
-            new Date()
-          );
-
-          const certificateUrl = `/uploads/certificates/${fileName}`;
-
-          await Certificate.create({
-            user: req.user._id,
-            course: courseId,
-            trainer: course.trainer,
-            date: new Date(),
-            certificateUrl,
-            serial,
-            verificationCode,
-            isValid: true
-          });
-
-          checkCertificateBadges(req.user._id).catch(console.error);
-
-          await createNotification(
-            req.user._id,
-            "BADGE_EARNED",
-            "🎓 Félicitations ! Certificat obtenu !",
-            `Vous avez réussi l'examen final du cours "${course.title}" avec un score de ${score}% !`,
-            { courseId }
-          );
-
-          sendEmail({
-            to: user.email,
-            subject: "🎓 Félicitations ! Certificat obtenu !",
-            html: `
-              <div style="font-family: Arial; max-width: 600px; margin: 0 auto;">
-                <h2>Félicitations ${user.firstname} ! 🎓</h2>
-                <p>Vous avez réussi l'examen final du cours <strong>${course.title}</strong>
-                avec un score de <strong>${score}%</strong> !</p>
-                <p>Votre certificat est disponible dans votre dashboard.</p>
-                <a href="${config.frontendUrl}/dashboard"
-                   style="background:#2c3e50; color:white; padding:10px 20px;
-                   text-decoration:none; border-radius:5px;
-                   display:inline-block; margin-top:15px;">
-                  🏅 Voir mon certificat
-                </a>
-              </div>
-            `
-          }).catch(err => console.error('❌ Email error:', err.message));
-        } catch (certError) {
-          console.error('⚠️ Certificate error:', certError.message);
-        }
-      }
     }
 
     await enrollment.save();
 
+    // ✅ Course finished (all quiz lessons passed + final exam if any)
+    // → enrollment completed + branded certificate (single service)
+    let certificate = null;
+    if (passed) {
+      certificate = await completeIfEligible(enrollment)
+        .catch(err => { console.error('⚠️ Certificate error:', err.message); return null; });
+    }
+
     res.status(200).json({
       score,
       passed,
+      certificateId: certificate?._id || null,
       correct,
       total,
       attemptsUsed: enrollment.finalExamAttempts,
       maxAttempts,
       noteMinimale: course.finalExam.noteMinimale || 70,
       message: passed ? "🎓 Exam passed ! Certificate generated !" : "❌ Exam failed, try again !",
-      certificate: passed ? "generated" : null
+      certificate: certificate ? "generated" : null
     });
   } catch (error) {
     console.error('submitFinalExam error:', error.message);

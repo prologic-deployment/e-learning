@@ -17,6 +17,8 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
   activeTab = 'overview';
   currentUser: any;
   apiUrl = environment.apiUrl;
+  backendUrl = environment.backendUrl;   // public assets (avatars)
+  downloadingCertId = '';
 
   // Profile
   profile: any = null;
@@ -285,6 +287,33 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     this.http.get(`${this.apiUrl}/certificates/me`).subscribe({
       next: (data: any) => { this.certificates = data; this.certificatesLoading = false; },
       error: () => { this.certificatesLoading = false; }
+    });
+  }
+
+  /**
+   * Certificates are served by the authenticated GET /api/files/certificate/:id
+   * (a plain link cannot send the Bearer token), so fetch the PDF as a blob
+   * and hand it to the browser.
+   */
+  downloadCertificate(cert: any): void {
+    this.downloadingCertId = cert._id;
+    this.http.get(`${this.apiUrl}/files/certificate/${cert._id}`, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const title = (cert.course?.title || 'course').replace(/[^\w\-]+/g, '_').slice(0, 60);
+        a.href = url;
+        a.download = `Prologic_Academy_Certificate_${title}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 10000);
+        this.downloadingCertId = '';
+      },
+      error: () => {
+        this.downloadingCertId = '';
+        alert('The certificate could not be downloaded. Please try again.');
+      }
     });
   }
 

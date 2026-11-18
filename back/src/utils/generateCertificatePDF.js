@@ -1,142 +1,186 @@
+/**
+ * Certificate of completion — Prologic Academy brand (dark blue + black).
+ *
+ * A4 landscape PDF written to back/uploads/certificates/<file>.pdf.
+ * Layout: dark ink side band (logo + verification details) with a blue edge,
+ * and a white main area (holder name, course, details, signatures, seal).
+ *
+ * Fonts are the PDF built-ins (Helvetica family) so no font files are needed.
+ */
 const PDFDocument = require("pdfkit");
 const path = require("path");
 const fs = require("fs");
-const crypto = require("crypto");
 
-const generateCertificatePDF = (employeeName, courseName, date) => {
+const INK = "#0B0D12";
+const BLUE = "#1E3A8A";
+const BLUE_SOFT = "#EEF2FB";
+const MUTED = "#5B6270";
+const LINE = "#D6DEF3";
+
+const CERT_DIR = path.join(__dirname, "../../uploads/certificates");
+
+/** The Prologic Academy mark (blue square, white "P" with a play notch) */
+function drawMark(doc, x, y, size) {
+  const k = size / 40;
+  doc.save();
+  doc.rect(x, y, size, size).fill(BLUE);
+  // P: stem + bowl  (same geometry as the website logo SVG, 40×40 grid)
+  doc.path(`M${x + 9 * k} ${y + 7 * k} h${15 * k} a${9 * k} ${9 * k} 0 0 1 0 ${18 * k} h${-7 * k} v${8 * k} h${-8 * k} Z`)
+     .fill("#FFFFFF");
+  // play-triangle counter
+  doc.polygon([x + 17 * k, y + 11.5 * k], [x + 17 * k, y + 20.5 * k], [x + 24 * k, y + 16 * k]).fill(BLUE);
+  doc.restore();
+}
+
+/** Round seal with a check mark */
+function drawSeal(doc, cx, cy, r) {
+  doc.save();
+  doc.circle(cx, cy, r).fill(BLUE);
+  doc.circle(cx, cy, r - 6).lineWidth(1).stroke("#FFFFFF");
+  doc.lineWidth(5).lineCap("round").lineJoin("round")
+     .moveTo(cx - r * 0.38, cy + r * 0.02)
+     .lineTo(cx - r * 0.1, cy + r * 0.3)
+     .lineTo(cx + r * 0.42, cy - r * 0.28)
+     .stroke("#FFFFFF");
+  doc.font("Helvetica-Bold").fontSize(7).fillColor("#FFFFFF")
+     .text("VERIFIED", cx - r, cy + r * 0.48, { width: r * 2, align: "center", characterSpacing: 1.5 });
+  doc.restore();
+}
+
+/**
+ * @param {object} d
+ * @param {string} d.name            holder full name
+ * @param {string} d.courseTitle
+ * @param {string} [d.category]
+ * @param {string} [d.subCategory]
+ * @param {string} [d.trainerName]
+ * @param {number} [d.lessonsCount]
+ * @param {number|null} [d.score]   final exam score (%), null when the course has no exam
+ * @param {Date}   d.date
+ * @param {string} d.serial
+ * @param {string} d.verificationCode
+ * @param {string} [d.verifyUrl]
+ * @returns {Promise<{fileName: string, filePath: string}>}
+ */
+function generateCertificatePDF(d) {
   return new Promise((resolve, reject) => {
+    fs.mkdirSync(CERT_DIR, { recursive: true });
+    const fileName = `certificate_${d.serial}.pdf`;
+    const filePath = path.join(CERT_DIR, fileName);
+
     const doc = new PDFDocument({
+      size: "A4",
       layout: "landscape",
-      size: "A4"
+      margin: 0,
+      info: {
+        Title: `Certificate of completion — ${d.courseTitle}`,
+        Author: "Prologic Academy",
+        Subject: `${d.name} — ${d.courseTitle}`
+      }
     });
-
-    const fileName = `certificate_${Date.now()}.pdf`;
-    const filePath = path.join(__dirname, "../../uploads/certificates", fileName);
-
-    // ✅ Integrity: unique serial + HMAC code so certificates can be verified
-    // as genuinely issued by this platform (verification endpoint checks the HMAC).
-    const serial = `CERT-${new Date(date).getFullYear()}-${crypto.randomBytes(6).toString("hex").toUpperCase()}`;
-    const secret = process.env.JWT_SECRET || "dev-only-secret";
-    const verificationCode = crypto
-      .createHmac("sha256", secret)
-      .update(`${serial}|${employeeName}|${courseName}`)
-      .digest("hex")
-      .substring(0, 16)
-      .toUpperCase();
-
-    // Créer le dossier si n'existe pas
-    fs.mkdirSync(path.dirname(filePath), { recursive: true });
-
     const stream = fs.createWriteStream(filePath);
     doc.pipe(stream);
 
-    // ========== DESIGN DU CERTIFICAT ==========
+    const W = doc.page.width;   // 841.89
+    const H = doc.page.height;  // 595.28
+    const BAND = 232;
+    const date = new Date(d.date || Date.now());
+    const dateText = date.toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" });
 
-    // Fond
-    doc.rect(0, 0, doc.page.width, doc.page.height).fill("#f9f6f0");
+    // ---------- background ----------
+    doc.rect(0, 0, W, H).fill("#FFFFFF");
 
-    // Bordure dorée
-    doc
-      .rect(20, 20, doc.page.width - 40, doc.page.height - 40)
-      .lineWidth(4)
-      .stroke("#C9A84C");
+    // ---------- side band (ink) ----------
+    doc.rect(0, 0, BAND, H).fill(INK);
+    doc.rect(BAND, 0, 6, H).fill(BLUE);
+    // faint grid in the band
+    doc.save().opacity(0.06);
+    for (let gx = 24; gx < BAND; gx += 24) doc.moveTo(gx, 0).lineTo(gx, H).lineWidth(0.5).stroke("#FFFFFF");
+    for (let gy = 24; gy < H; gy += 24) doc.moveTo(0, gy).lineTo(BAND, gy).lineWidth(0.5).stroke("#FFFFFF");
+    doc.restore();
 
-    // Bordure intérieure
-    doc
-      .rect(30, 30, doc.page.width - 60, doc.page.height - 60)
-      .lineWidth(1)
-      .stroke("#C9A84C");
+    // logo
+    drawMark(doc, 36, 44, 46);
+    doc.font("Helvetica-Bold").fontSize(17).fillColor("#FFFFFF").text("PROLOGIC", 92, 52, { characterSpacing: 0.6 });
+    doc.font("Helvetica-Bold").fontSize(7.5).fillColor("#9DB4EE").text("ACADEMY", 93, 73, { characterSpacing: 3.6 });
 
-    // Titre
-    doc
-      .font("Helvetica-Bold")
-      .fontSize(40)
-      .fillColor("#2c3e50")
-      .text("CERTIFICAT DE COMPLETION", 0, 80, { align: "center" });
+    // verification block
+    const vx = 36, vw = BAND - 64;
+    let vy = 300;
+    const label = (t) => { doc.font("Helvetica-Bold").fontSize(7).fillColor("#9DB4EE").text(t, vx, vy, { width: vw, characterSpacing: 1.6 }); vy += 12; };
+    const value = (t, size = 10) => { doc.font("Helvetica").fontSize(size).fillColor("#FFFFFF").text(t, vx, vy, { width: vw }); vy = doc.y + 12; };
+    label("CERTIFICATE NO.");   value(d.serial);
+    label("VERIFICATION CODE"); value(d.verificationCode);
+    label("ISSUED ON");         value(dateText);
+    if (d.verifyUrl) {
+      label("VERIFY ONLINE");
+      doc.font("Helvetica").fontSize(7.5).fillColor("#C7D2EE").text(d.verifyUrl, vx, vy, { width: vw, link: d.verifyUrl });
+    }
 
-    // Ligne décorative
-    doc
-      .moveTo(100, 140)
-      .lineTo(doc.page.width - 100, 140)
-      .lineWidth(2)
-      .stroke("#C9A84C");
+    // ---------- main area ----------
+    const X = BAND + 64;
+    const MW = W - X - 60;
 
-    // Texte principal
-    doc
-      .font("Helvetica")
-      .fontSize(18)
-      .fillColor("#555")
-      .text("Ce certificat est décerné à", 0, 170, { align: "center" });
+    doc.rect(X, 64, 34, 4).fill(BLUE);
+    doc.font("Helvetica-Bold").fontSize(12).fillColor(BLUE)
+       .text("CERTIFICATE OF COMPLETION", X, 80, { characterSpacing: 3 });
 
-    // Nom de l'employé
-    doc
-      .font("Helvetica-Bold")
-      .fontSize(36)
-      .fillColor("#C9A84C")
-      .text(employeeName, 0, 210, { align: "center" });
+    doc.font("Helvetica").fontSize(13).fillColor(MUTED).text("This certifies that", X, 126);
 
-    // Ligne décorative sous le nom
-    doc
-      .moveTo(200, 260)
-      .lineTo(doc.page.width - 200, 260)
-      .lineWidth(1)
-      .stroke("#C9A84C");
+    // holder name (shrinks to fit one line)
+    let nameSize = 40;
+    doc.font("Helvetica-Bold");
+    while (nameSize > 22 && doc.fontSize(nameSize).widthOfString(d.name) > MW) nameSize -= 2;
+    doc.fontSize(nameSize).fillColor(INK).text(d.name, X, 148, { width: MW, lineBreak: false });
+    doc.moveTo(X, 148 + nameSize + 10).lineTo(X + MW, 148 + nameSize + 10).lineWidth(1).stroke(LINE);
 
-    // Texte cours
-    doc
-      .font("Helvetica")
-      .fontSize(18)
-      .fillColor("#555")
-      .text("pour avoir complété avec succès le cours", 0, 280, { align: "center" });
+    doc.font("Helvetica").fontSize(13).fillColor(MUTED)
+       .text("has successfully completed the course", X, 148 + nameSize + 26);
 
-    // Nom du cours
-    doc
-      .font("Helvetica-Bold")
-      .fontSize(28)
-      .fillColor("#2c3e50")
-      .text(courseName, 0, 315, { align: "center" });
+    // course title (up to two lines)
+    doc.font("Helvetica-Bold").fontSize(22).fillColor(BLUE)
+       .text(d.courseTitle, X, 148 + nameSize + 48, { width: MW, height: 60, ellipsis: true, lineGap: 2 });
 
-    // Date
-    doc
-      .font("Helvetica")
-      .fontSize(14)
-      .fillColor("#888")
-      .text(`Délivré le : ${new Date(date).toLocaleDateString("fr-FR")}`, 0, 375, { align: "center" });
+    // ---------- details row ----------
+    const details = [
+      ["CATEGORY", [d.category, d.subCategory].filter(Boolean).join(" · ") || "IT training"],
+      ["LESSONS", d.lessonsCount ? `${d.lessonsCount} completed` : "All completed"],
+      ["FINAL EXAM", d.score != null ? `${d.score}%  passed` : "Not required"],
+      ["COMPLETED ON", dateText]
+    ];
+    const rowY = 352;
+    const colW = MW / details.length;
+    doc.rect(X, rowY - 14, MW, 62).fill(BLUE_SOFT);
+    details.forEach(([k, v], i) => {
+      const cx = X + 16 + i * colW;
+      doc.font("Helvetica-Bold").fontSize(7).fillColor(BLUE).text(k, cx, rowY, { width: colW - 24, characterSpacing: 1.4 });
+      doc.font("Helvetica-Bold").fontSize(10.5).fillColor(INK).text(v, cx, rowY + 14, { width: colW - 24, height: 28, ellipsis: true });
+    });
 
-    // ✅ Serial + verification code printed on the certificate
-    doc
-      .font("Helvetica")
-      .fontSize(10)
-      .fillColor("#888")
-      .text(`N° ${serial} — Code de vérification : ${verificationCode}`, 0, 398, { align: "center" });
+    // ---------- signatures ----------
+    const sy = 480;
+    const sigW = 170;
+    doc.moveTo(X, sy).lineTo(X + sigW, sy).lineWidth(1).stroke(INK);
+    doc.font("Helvetica-Bold").fontSize(11).fillColor(INK).text(d.trainerName || "Course trainer", X, sy + 8, { width: sigW });
+    doc.font("Helvetica").fontSize(9).fillColor(MUTED).text("Trainer", X, sy + 24, { width: sigW });
 
-    // Ligne signature
-    doc
-      .moveTo(150, 430)
-      .lineTo(350, 430)
-      .lineWidth(1)
-      .stroke("#2c3e50");
+    const s2 = X + sigW + 36;
+    doc.moveTo(s2, sy).lineTo(s2 + sigW, sy).lineWidth(1).stroke(INK);
+    doc.font("Helvetica-Bold").fontSize(11).fillColor(INK).text("Prologic Academy", s2, sy + 8, { width: sigW });
+    doc.font("Helvetica").fontSize(9).fillColor(MUTED).text("Training director", s2, sy + 24, { width: sigW });
 
-    doc
-      .moveTo(doc.page.width - 350, 430)
-      .lineTo(doc.page.width - 150, 430)
-      .lineWidth(1)
-      .stroke("#2c3e50");
+    drawSeal(doc, X + MW - 46, sy + 6, 44);
 
-    doc
-      .font("Helvetica")
-      .fontSize(12)
-      .fillColor("#555")
-      .text("Signature du Formateur", 150, 440)
-      .text("Signature du Directeur", doc.page.width - 350, 440);
-
-    // ==========================================
+    // footer note
+    doc.font("Helvetica").fontSize(7.5).fillColor("#8A909C")
+       .text("Prologic Academy · prologic.com.tn — This certificate can be verified with its number and code.",
+             X, H - 36, { width: MW });
 
     doc.end();
-
-    stream.on("finish", () => resolve({ fileName, filePath, serial, verificationCode }));
+    stream.on("finish", () => resolve({ fileName, filePath }));
     stream.on("error", reject);
   });
-};
+}
 
 module.exports = generateCertificatePDF;
+module.exports.CERT_DIR = CERT_DIR;

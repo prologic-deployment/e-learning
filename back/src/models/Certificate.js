@@ -20,6 +20,8 @@ const certificateSchema = new mongoose.Schema({
   // ✅ Integrity: unique serial + HMAC verification code (anti-forgery)
   serial: { type: String, unique: true, sparse: true },
   verificationCode: { type: String, default: null },
+  // final exam score (%) printed on the certificate; null when the course has no exam
+  score: { type: Number, default: null },
   isValid: { type: Boolean, default: true }
 }, { timestamps: true });
 

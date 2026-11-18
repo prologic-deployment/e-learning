@@ -4,6 +4,7 @@ const Purchase = require("../models/Purchase");
 const Course = require("../models/Course");  
 const { invalidateCache } = require("../middlewares/cache.middleware");  
 const { checkEnrollmentBadges } = require("../services/badge.service");
+const { completeIfEligible } = require("../services/certificate.service");
 
 
 
@@ -47,10 +48,14 @@ exports.updateProgress = async (req, res) => {
       );
     }
 
-    enrollment.completed = totalLessons > 0 &&
-      enrollment.lessonsCompleted.length >= totalLessons;
-
     await enrollment.save();
+
+    // ✅ Completion is decided by the certificate service (all quiz lessons
+    // passed AND the final exam passed when the course has one). Previously
+    // finishing the lessons alone marked the course "completed", which let a
+    // learner claim a certificate without passing the final exam.
+    await completeIfEligible(enrollment)
+      .catch(err => console.error('⚠️ Certificate error:', err.message));
     checkEnrollmentBadges(req.user._id).catch(console.error);
 
     await invalidateCache('cache:GET:/api/enrollments:*');

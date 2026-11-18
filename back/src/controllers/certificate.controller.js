@@ -2,98 +2,44 @@ const Certificate = require("../models/Certificate");
 const Enrollment = require("../models/Enrollment");
 const Course = require("../models/Course");
 const User = require("../models/User");
-const generateCertificatePDF = require("../utils/generateCertificatePDF");
+const { isEligible, issueCertificate, hasFinalExam } = require("../services/certificate.service");
 const { createNotification } = require("../services/notification.service");
 const { sendEmail } = require("../services/email.service");
 const { checkCertificateBadges } = require("../services/badge.service");
 const config = require("../config/env");
 
-// Générer un certificat
+// Générer / récupérer son certificat (POST /api/certificates/generate)
+// ✅ Same eligibility rule as automatic issuing: all quiz lessons passed AND
+// the final exam passed when the course has one.
 exports.generateCertificate = async (req, res) => {
   try {
     const { courseId } = req.body;
+    if (!courseId) return res.status(400).json({ message: "courseId is required" });
 
-    const enrollment = await Enrollment.findOne({
-      user: req.user._id,
-      course: courseId,
-      completed: true
-    });
+    const [enrollment, course] = await Promise.all([
+      Enrollment.findOne({ user: req.user._id, course: courseId }),
+      Course.findById(courseId).select("title trainer finalExam")
+    ]);
+    if (!course) return res.status(404).json({ message: "Course not found" });
 
-    if (!enrollment) {
+    if (!(await isEligible(enrollment, course))) {
       return res.status(400).json({
-        message: "You must complete the course 100% before getting a certificate"
+        message: hasFinalExam(course)
+          ? "Complete every lesson and pass the final exam to get your certificate"
+          : "Complete every lesson to get your certificate"
       });
     }
 
-    const existing = await Certificate.findOne({
-      user: req.user._id,
-      course: courseId
-    });
+    const score = hasFinalExam(course) ? (enrollment.finalExamResult?.score ?? null) : null;
+    const { certificate, created } = await issueCertificate({ userId: req.user._id, courseId, score });
 
-    if (existing) {
-      return res.status(400).json({
-        message: "Certificate already generated",
-        certificate: existing
-      });
-    }
-
-    const user = await User.findById(req.user._id).select("firstname lastname email");
-    const course = await Course.findById(courseId).populate("trainer", "email");
-
-    const employeeName = `${user.firstname} ${user.lastname}`;
-    const courseName = course.title;
-
-    const { fileName, serial, verificationCode } = await generateCertificatePDF(
-      employeeName,
-      courseName,
-      new Date()
-    );
-
-    const certificateUrl = `/uploads/certificates/${fileName}`;
-
-    const certificate = await Certificate.create({
-      user: req.user._id,
-      course: courseId,
-      trainer: course.trainer._id,
-      date: new Date(),
-      certificateUrl,
-      serial,
-      verificationCode,
-      isValid: true
-    });
-
-    // 🔔 Notification in-app
-    await createNotification(
-      req.user._id,
-      "BADGE_EARNED",
-      "🎓 Félicitations ! Certificat obtenu !",
-      `Vous avez complété le cours "${courseName}" et obtenu votre certificat !`,
-      { courseId }
-    );
-
-    // 📧 Email
-    await sendEmail({
-      to: user.email,
-      subject: "🎓 Félicitations ! Certificat obtenu !",
-      html: `
-        <h2>Félicitations ${user.firstname} ! 🎓</h2>
-        <p>Vous avez complété avec succès le cours <strong>${courseName}</strong>.</p>
-        <p>Votre certificat est maintenant disponible dans votre dashboard.</p>
-        <br>
-        <a href="${config.frontendUrl}/dashboard"
-           style="background:#2c3e50;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;">
-          Voir mon certificat
-        </a>
-      `
-    });
-
-    res.status(201).json({
-      message: "Certificate generated successfully 🎓",
+    res.status(created ? 201 : 200).json({
+      message: created ? "Certificate generated successfully" : "Certificate already issued",
       certificate,
-      downloadUrl: certificateUrl
+      downloadUrl: `/api/files/certificate/${certificate._id}`
     });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
+    res.status(500).json({ message: "Server error" });
   }
 };
 

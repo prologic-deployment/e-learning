@@ -681,14 +681,16 @@
                       [style.color]="cert.isValid ? '#10b981' : '#ef4444'">
                       {{ cert.isValid ? 'Valide' : 'Révoqué' }}
                     </span>
-                    <a *ngIf="cert.certificateUrl"
-                      [href]="'http://localhost:5000' + cert.certificateUrl"
-                      target="_blank"
-                      style="padding: 6px 14px; border: 1.5px solid #1E3A8A;
-                        border-radius: 10px; color: #1E3A8A; text-decoration: none;
-                        font-size: 12px; font-weight: 600;">
-                      <i class="bx bx-file"></i> Télécharger
-                    </a>
+                    <button type="button" *ngIf="cert.isValid"
+                      (click)="downloadCertificate(cert)"
+                      [disabled]="downloadingCertId === cert._id"
+                      style="padding: 6px 14px; border: 1.5px solid #1E3A8A; background: white;
+                        color: #1E3A8A; font-size: 12px; font-weight: 600; cursor: pointer;
+                        display: inline-flex; align-items: center; gap: 4px;">
+                      <i class="bx" [ngClass]="downloadingCertId === cert._id ? 'bx-loader-alt bx-spin' : 'bx-download'"></i>
+                      {{ downloadingCertId === cert._id ? 'Preparing…' : 'Download PDF' }}
+                    </button>
+                    <span *ngIf="cert.serial" style="font-size: 11px; color: #8A909C;">{{ cert.serial }}</span>
                   </div>
                 </div>
               </div>
@@ -852,7 +854,7 @@
                 style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
                   border: 3px solid #1E3A8A;">
               <img *ngIf="!avatarPreview && profile?.user?.avatar"
-                [src]="'http://localhost:5000' + profile.user.avatar" alt="avatar"
+                [src]="backendUrl + profile.user.avatar" alt="avatar"
                 style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
                   border: 3px solid #1E3A8A;">
               <img *ngIf="!avatarPreview && !profile?.user?.avatar"

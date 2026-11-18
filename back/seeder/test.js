@@ -28,6 +28,7 @@ const Category = require('../src/models/Category');
 const config = require('../src/config/env');
 const { COLORS, log, step, count, seedCategories } = require('./lib/common');
 const { seedBadges } = require('./production');
+const { renderPdf } = require('../src/services/certificate.service');
 
 const USERS = require('./data/users');
 const COURSES = [...require('./data/courses'), ...require('./data/courses-infra')];
@@ -40,11 +41,24 @@ const daysFromNow = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
 
 async function wipe() {
   log(COLORS.yellow, '🧹 Wiping collections...');
+
+  // Certificate PDFs live in a folder shared by every database the server
+  // uses — delete ONLY the files referenced by this database's certificates.
+  const fs = require('fs');
+  const path = require('path');
+  const { CERT_DIR } = require('../src/utils/generateCertificatePDF');
+  const owned = (await Certificate.find({ certificateUrl: { $ne: null } }).select('certificateUrl').lean())
+    .map(c => path.join(CERT_DIR, path.basename(c.certificateUrl)))
+    .filter(p => fs.existsSync(p));
+
   const collections = [User, Course, Lesson, Enrollment, Purchase, Review, Certificate, Notification, Cart, CV, Category, Badge];
   for (const Model of collections) {
     const r = await Model.deleteMany({});
     step(`${Model.modelName}: ${r.deletedCount} removed`);
   }
+
+  owned.forEach(p => fs.unlinkSync(p));
+  step(`certificate PDFs of this database: ${owned.length} removed`);
 }
 
 // ── seeders ──────────────────────────────────────────────────────────────────
@@ -204,27 +218,17 @@ async function seedEnrollmentsAndActivity() {
       enrollment.progress = 100;
       await enrollment.save();
 
-      // ✅ Certificate with HMAC verification code (matches production logic)
-      const crypto = require('crypto');
-      const serial = `CERT-${new Date().getFullYear()}-${crypto.randomBytes(6).toString('hex').toUpperCase()}`;
-      const name = `${user.firstname} ${user.lastname}`;
-      const verificationCode = crypto
-        .createHmac('sha256', process.env.JWT_SECRET || config.jwtSecret)
-        .update(`${serial}|${name}|${course.title}`)
-        .digest('hex')
-        .substring(0, 16)
-        .toUpperCase();
-
-      await Certificate.create({
+      // ✅ Real branded PDF in uploads/certificates, through the same service
+      // as production (serial + HMAC code + verification link)
+      const cert = await Certificate.create({
         user: user._id,
         course: course._id,
         trainer: course.trainer,
         date: daysAgo(2),
-        certificateUrl: null, // PDF generated on demand in this flow
-        serial,
-        verificationCode,
+        score: 85,
         isValid: true
       });
+      await renderPdf(cert, { score: 85 });
     }
 
     // Deadlines
