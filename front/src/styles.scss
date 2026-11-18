@@ -3469,10 +3469,10 @@ a:hover { color: var(--brand); }
     box-shadow: 12px 12px 0 var(--brand);
 }
 
-/* ---------- Footer: clear, with a dark-blue top rule ---------- */
+/* ---------- Footer: clear, no top rule ---------- */
 .footer-area {
     background: var(--page) !important;
-    border-top: 4px solid var(--brand);
+    border-top: 0;
 }
 .footer-area, .footer-area span, .footer-area h3 { color: var(--text) !important; }
 .footer-area p, .footer-area li { color: var(--text-muted) !important; }
