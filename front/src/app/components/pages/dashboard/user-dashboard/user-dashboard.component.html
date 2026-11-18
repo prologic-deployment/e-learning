@@ -23,8 +23,8 @@
       </div>
       <div class="col-lg-4 text-end d-flex gap-2 justify-content-end mt-3 mt-lg-0">
         <button (click)="goToCourses()"
-          style="padding: 10px 20px; border: 1.5px solid #C2410C; border-radius: 12px;
-            color: #C2410C; background: white; font-weight: 600; font-size: 13px;
+          style="padding: 10px 20px; border: 1.5px solid #1E3A8A; border-radius: 12px;
+            color: #1E3A8A; background: white; font-weight: 600; font-size: 13px;
             cursor: pointer; transition: all 0.2s;">
           📚 Explorer
         </button>
@@ -50,7 +50,7 @@
                 font-size: 13px; font-weight: 600; cursor: pointer;
                 transition: all 0.2s; white-space: nowrap;"
               [style.background]="activeTab === tab.id ? 'white' : 'transparent'"
-              [style.color]="activeTab === tab.id ? '#C2410C' : '#64748b'"
+              [style.color]="activeTab === tab.id ? '#1E3A8A' : '#64748b'"
               [style.boxShadow]="activeTab === tab.id ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
               {{ tab.icon }} {{ tab.label }}
               <span *ngIf="tab.id === 'notifications' && unreadCount > 0"
@@ -80,10 +80,10 @@
               box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
               <div class="d-flex align-items-center justify-content-between mb-3">
                 <div style="width: 44px; height: 44px; border-radius: 12px;
-                  background: #FFF1EA; display: flex; align-items: center;
+                  background: #EEF2FB; display: flex; align-items: center;
                   justify-content: center; font-size: 20px;">📚</div>
-                <span style="font-size: 11px; font-weight: 600; color: #C2410C;
-                  background: #FFF1EA; padding: 4px 10px; border-radius: 20px;">
+                <span style="font-size: 11px; font-weight: 600; color: #1E3A8A;
+                  background: #EEF2FB; padding: 4px 10px; border-radius: 20px;">
                   Total
                 </span>
               </div>
@@ -209,8 +209,8 @@
               </div>
               <span style="padding: 4px 12px; border-radius: 20px; font-size: 11px;
                 font-weight: 600;"
-                [style.background]="enrollment.completed ? '#f0fdf4' : '#FFF1EA'"
-                [style.color]="enrollment.completed ? '#10b981' : '#C2410C'">
+                [style.background]="enrollment.completed ? '#f0fdf4' : '#EEF2FB'"
+                [style.color]="enrollment.completed ? '#10b981' : '#1E3A8A'">
                 {{ enrollment.completed ? 'Terminé' : 'En cours' }}
               </span>
             </div>
@@ -292,8 +292,8 @@
                 </div>
                 <span style="padding: 4px 12px; border-radius: 20px; font-size: 11px;
                   font-weight: 700; margin-left: 12px; flex-shrink: 0;"
-                  [style.background]="enrollment.completed ? '#f0fdf4' : '#FFF1EA'"
-                  [style.color]="enrollment.completed ? '#10b981' : '#C2410C'">
+                  [style.background]="enrollment.completed ? '#f0fdf4' : '#EEF2FB'"
+                  [style.color]="enrollment.completed ? '#10b981' : '#1E3A8A'">
                   {{ enrollment.completed ? 'Terminé' : 'En cours' }}
                 </span>
               </div>
@@ -314,7 +314,7 @@
                     Progression
                   </span>
                   <span style="font-size: 12px; font-weight: 700;"
-                    [style.color]="enrollment.completed ? '#10b981' : '#C2410C'">
+                    [style.color]="enrollment.completed ? '#10b981' : '#1E3A8A'">
                     {{ enrollment.progress }}%
                   </span>
                 </div>
@@ -365,7 +365,7 @@
 
           <div class="d-flex align-items-center gap-3 mb-4">
             <div style="width: 44px; height: 44px; border-radius: 12px;
-              background: #FFF1EA; display: flex; align-items: center;
+              background: #EEF2FB; display: flex; align-items: center;
               justify-content: center; font-size: 20px;">📚</div>
             <div>
               <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
@@ -442,9 +442,9 @@
                     <span style="padding: 4px 12px; border-radius: 20px;
                       font-size: 11px; font-weight: 700;"
                       [style.background]="enrollment.completed ? '#f0fdf4' :
-                        enrollment.progress > 0 ? '#FFF1EA' : '#f8fafc'"
+                        enrollment.progress > 0 ? '#EEF2FB' : '#f8fafc'"
                       [style.color]="enrollment.completed ? '#10b981' :
-                        enrollment.progress > 0 ? '#C2410C' : '#94a3b8'">
+                        enrollment.progress > 0 ? '#1E3A8A' : '#94a3b8'">
                       {{ enrollment.completed ? 'Terminé' :
                         enrollment.progress > 0 ? 'En cours' : 'Non commencé' }}
                     </span>
@@ -457,7 +457,7 @@
                   <td style="padding: 14px 8px; border: none;">
                     <button (click)="goToCourse(enrollment.course?._id)"
                       style="padding: 6px 14px; border: 1.5px solid #e2e8f0;
-                        border-radius: 8px; background: white; color: #C2410C;
+                        border-radius: 8px; background: white; color: #1E3A8A;
                         font-size: 12px; font-weight: 600; cursor: pointer;">
                       ▶
                     </button>
@@ -524,7 +524,7 @@
                     </span>
                   </td>
                   <td style="padding: 14px 8px; border: none;">
-                    <span style="background: #FFF1EA; color: #C2410C; padding: 4px 10px;
+                    <span style="background: #EEF2FB; color: #1E3A8A; padding: 4px 10px;
                       border-radius: 8px; font-size: 11px; font-weight: 600;">
                       {{ purchase.paymentMethod || 'Online' }}
                     </span>
@@ -599,7 +599,7 @@
 
               <div style="width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 16px;
                 display: flex; align-items: center; justify-content: center; font-size: 36px;"
-                [style.background]="item.badge?.color ? item.badge.color + '22' : '#FFF1EA'">
+                [style.background]="item.badge?.color ? item.badge.color + '22' : '#EEF2FB'">
                 {{ item.badge?.icon || '🏅' }}
               </div>
 
@@ -661,7 +661,7 @@
 
               <div class="d-flex align-items-start gap-3">
                 <div style="width: 52px; height: 52px; border-radius: 14px;
-                  background: linear-gradient(135deg, #C2410C22, #0B0D1222);
+                  background: linear-gradient(135deg, #1E3A8A22, #0B0D1222);
                   display: flex; align-items: center; justify-content: center;
                   font-size: 26px; flex-shrink: 0;">
                   🎓
@@ -684,8 +684,8 @@
                     <a *ngIf="cert.certificateUrl"
                       [href]="'http://localhost:5000' + cert.certificateUrl"
                       target="_blank"
-                      style="padding: 6px 14px; border: 1.5px solid #C2410C;
-                        border-radius: 10px; color: #C2410C; text-decoration: none;
+                      style="padding: 6px 14px; border: 1.5px solid #1E3A8A;
+                        border-radius: 10px; color: #1E3A8A; text-decoration: none;
                         font-size: 12px; font-weight: 600;">
                       📄 Télécharger
                     </a>
@@ -712,7 +712,7 @@
               🔔 Notifications
             </h5>
             <p style="font-size: 13px; color: #64748b; margin: 0;">
-              <span *ngIf="unreadCount > 0" style="color: #C2410C; font-weight: 600;">
+              <span *ngIf="unreadCount > 0" style="color: #1E3A8A; font-weight: 600;">
                 {{ unreadCount }} non lue(s)
               </span>
               <span *ngIf="unreadCount === 0">Tout est lu ✅</span>
@@ -751,8 +751,8 @@
         <div *ngFor="let notif of notifications" class="mb-3"
           style="background: white; border-radius: 16px; padding: 20px;
             border: 1px solid; transition: all 0.2s; position: relative; overflow: hidden;"
-          [style.borderColor]="!notif.isRead ? '#C2410C' : '#f0f0f0'"
-          [style.boxShadow]="!notif.isRead ? '0 4px 20px rgba(255, 90, 31,0.1)' : 'none'">
+          [style.borderColor]="!notif.isRead ? '#1E3A8A' : '#f0f0f0'"
+          [style.boxShadow]="!notif.isRead ? '0 4px 20px rgba(30, 58, 138,0.1)' : 'none'">
 
           <!-- ✅ Barre colorée à gauche si non lu -->
           <div *ngIf="!notif.isRead"
@@ -768,7 +768,7 @@
               <!-- ✅ Icône dynamique selon le type -->
               <div style="width: 46px; height: 46px; border-radius: 14px; flex-shrink: 0;
                 display: flex; align-items: center; justify-content: center; font-size: 22px;"
-                [style.background]="!notif.isRead ? '#FFF1EA' : '#f8fafc'">
+                [style.background]="!notif.isRead ? '#EEF2FB' : '#f8fafc'">
                 {{ getNotifIcon(notif.type) }}
               </div>
 
@@ -793,7 +793,7 @@
                   <!-- ✅ Badge type -->
                   <span *ngIf="notif.type"
                     style="font-size: 10px; font-weight: 600; padding: 2px 8px;
-                      border-radius: 20px; background: #FFF1EA; color: #C2410C;">
+                      border-radius: 20px; background: #EEF2FB; color: #1E3A8A;">
                     {{ notif.type?.replace('_', ' ') }}
                   </span>
                   <!-- ✅ Badge temps réel -->
@@ -811,16 +811,16 @@
               <!-- Point bleu -->
               <div *ngIf="!notif.isRead"
                 style="width: 10px; height: 10px; border-radius: 50%;
-                  background: #C2410C; flex-shrink: 0;">
+                  background: #1E3A8A; flex-shrink: 0;">
               </div>
               <!-- Bouton Lu -->
               <button *ngIf="!notif.isRead && notif._id"
                 (click)="markAsRead(notif._id)"
                 style="padding: 6px 14px; border: 1.5px solid #e2e8f0;
-                  border-radius: 8px; background: white; color: #C2410C;
+                  border-radius: 8px; background: white; color: #1E3A8A;
                   font-size: 12px; font-weight: 600; cursor: pointer;
                   white-space: nowrap;"
-                onmouseover="this.style.background='#FFF1EA'"
+                onmouseover="this.style.background='#EEF2FB'"
                 onmouseout="this.style.background='white'">
                 ✓ Lu
               </button>
@@ -850,15 +850,15 @@
             <div style="position: relative; display: inline-block; margin-bottom: 16px;">
               <img *ngIf="avatarPreview" [src]="avatarPreview" alt="preview"
                 style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
-                  border: 3px solid #C2410C;">
+                  border: 3px solid #1E3A8A;">
               <img *ngIf="!avatarPreview && profile?.user?.avatar"
                 [src]="'http://localhost:5000' + profile.user.avatar" alt="avatar"
                 style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
-                  border: 3px solid #C2410C;">
+                  border: 3px solid #1E3A8A;">
               <img *ngIf="!avatarPreview && !profile?.user?.avatar"
                 src="assets/img/user/user1.jpg" alt="avatar"
                 style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
-                  border: 3px solid #C2410C;">
+                  border: 3px solid #1E3A8A;">
             </div>
 
             <div style="font-weight: 700; color: #0f172a; font-size: 18px; margin-bottom: 4px;">
@@ -899,7 +899,7 @@
               <div class="col-6">
                 <div style="background: #f8fafc; border-radius: 12px; padding: 14px;
                   text-align: center;">
-                  <div style="font-size: 22px; font-weight: 800; color: #C2410C;">
+                  <div style="font-size: 22px; font-weight: 800; color: #1E3A8A;">
                     {{ profile?.stats?.totalEnrolledCourses || 0 }}
                   </div>
                   <div style="font-size: 11px; color: #64748b;">Cours</div>
@@ -1004,7 +1004,7 @@
               style="width: 100%; padding: 13px; border: none; border-radius: 12px;
                 font-size: 14px; font-weight: 600; color: white; cursor: pointer;
                 background: #0B0D12;
-                box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);"
+                box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);"
               [style.opacity]="profileUpdateLoading ? '0.7' : '1'">
               <span *ngIf="!profileUpdateLoading">💾 Sauvegarder</span>
               <span *ngIf="profileUpdateLoading">

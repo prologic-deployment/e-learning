@@ -46,7 +46,7 @@
               margin-bottom: 24px;">
               <div class="d-flex align-items-center gap-3 mb-3">
                 <div style="width: 40px; height: 40px; border-radius: 12px;
-                  background: #FFF1EA; display: flex; align-items: center;
+                  background: #EEF2FB; display: flex; align-items: center;
                   justify-content: center; font-size: 18px;">📋</div>
                 <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
                   Course Description
@@ -102,14 +102,14 @@
                 <div *ngFor="let lesson of lessons; let i = index" class="mb-3">
                   <div style="border: 1px solid; border-radius: 14px; overflow: hidden;
                     transition: all 0.2s;"
-                    [style.borderColor]="currentLessonIndex === i ? '#C2410C' : '#e2e8f0'"
+                    [style.borderColor]="currentLessonIndex === i ? '#1E3A8A' : '#e2e8f0'"
                     [style.boxShadow]="currentLessonIndex === i ?
-                      '0 4px 20px rgba(255, 90, 31,0.15)' : 'none'">
+                      '0 4px 20px rgba(30, 58, 138,0.15)' : 'none'">
 
                     <!-- Lesson Header -->
                     <div style="display: flex; justify-content: space-between;
                       align-items: center; padding: 14px 16px; cursor: pointer;"
-                      [style.background]="currentLessonIndex === i ? '#FFF1EA' : '#f8fafc'"
+                      [style.background]="currentLessonIndex === i ? '#EEF2FB' : '#f8fafc'"
                       (click)="selectLesson(i)">
 
                       <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
@@ -125,14 +125,14 @@
 
                         <div>
                           <div style="font-weight: 600; font-size: 14px;"
-                            [style.color]="currentLessonIndex === i ? '#C2410C' : '#0f172a'">
+                            [style.color]="currentLessonIndex === i ? '#1E3A8A' : '#0f172a'">
                             {{ lesson.title }}
                           </div>
                           <div style="display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap;">
                             <span style="font-size: 10px; font-weight: 600; padding: 2px 8px;
                               border-radius: 20px;"
-                              [style.background]="lesson.contentType === 'video' ? '#FFF1EA' : '#dbeafe'"
-                              [style.color]="lesson.contentType === 'video' ? '#C2410C' : '#3b82f6'">
+                              [style.background]="lesson.contentType === 'video' ? '#EEF2FB' : '#dbeafe'"
+                              [style.color]="lesson.contentType === 'video' ? '#1E3A8A' : '#3b82f6'">
                               {{ lesson.contentType === 'video' ? '🎬 Vidéo' : '📄 PDF' }}
                             </span>
                             <span *ngIf="lesson.quiz?.questions?.length > 0"
@@ -270,19 +270,19 @@
                           <div (click)="quizAnswers[qi] = oi"
                             style="display: flex; align-items: center; gap: 10px; padding: 10px 14px;
                               border-radius: 10px; cursor: pointer; transition: all 0.2s; border: 2px solid;"
-                            [style.background]="quizAnswers[qi] === oi ? '#FFF1EA' : 'white'"
-                            [style.borderColor]="quizAnswers[qi] === oi ? '#C2410C' : '#e2e8f0'">
+                            [style.background]="quizAnswers[qi] === oi ? '#EEF2FB' : 'white'"
+                            [style.borderColor]="quizAnswers[qi] === oi ? '#1E3A8A' : '#e2e8f0'">
                             <div style="width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
                               border: 2px solid; display: flex; align-items: center;
                               justify-content: center;"
-                              [style.borderColor]="quizAnswers[qi] === oi ? '#C2410C' : '#94a3b8'"
-                              [style.background]="quizAnswers[qi] === oi ? '#C2410C' : 'white'">
+                              [style.borderColor]="quizAnswers[qi] === oi ? '#1E3A8A' : '#94a3b8'"
+                              [style.background]="quizAnswers[qi] === oi ? '#1E3A8A' : 'white'">
                               <div *ngIf="quizAnswers[qi] === oi"
                                 style="width: 8px; height: 8px; border-radius: 50%; background: white;">
                               </div>
                             </div>
                             <span style="font-size: 14px;"
-                              [style.color]="quizAnswers[qi] === oi ? '#C2410C' : '#374151'"
+                              [style.color]="quizAnswers[qi] === oi ? '#1E3A8A' : '#374151'"
                               [style.fontWeight]="quizAnswers[qi] === oi ? '600' : '400'">
                               {{ opt }}
                             </span>
@@ -647,14 +647,14 @@
               <p style="color: #64748b; margin-bottom: 8px;">
                 Purchase this course to access the full content.
               </p>
-              <p style="font-size: 22px; font-weight: 800; color: #C2410C; margin-bottom: 24px;">
+              <p style="font-size: 22px; font-weight: 800; color: #1E3A8A; margin-bottom: 24px;">
                 {{ course.price }} TND
               </p>
               <a [routerLink]="['/courses-details', course._id]"
                 style="display: inline-block; padding: 14px 32px; border: none;
                   border-radius: 14px; background: #0B0D12;
                   color: white; font-size: 15px; font-weight: 700; text-decoration: none;
-                  box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);">
+                  box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);">
                 🛒 Add to Cart
               </a>
             </div>
@@ -669,7 +669,7 @@
               box-shadow: 0 4px 24px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
 
               <!-- Progress Header -->
-              <div style="padding: 24px; background: #FFF4EE;
+              <div style="padding: 24px; background: #F3F6FC;
                 border-bottom: 1px solid #e2e8f0;">
                 <div style="font-size: 13px; color: #64748b; font-weight: 600;
                   margin-bottom: 8px;">Progression</div>

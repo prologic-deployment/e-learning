@@ -100,7 +100,7 @@
                     Password
                   </label>
                   <a routerLink="/forgot-password"
-                    style="font-size: 12px; color: #C2410C;
+                    style="font-size: 12px; color: #1E3A8A;
                       font-weight: 600; text-decoration: none;">
                     Forgot password?
                   </a>
@@ -124,7 +124,7 @@
                   border-radius: 10px; font-size: 15px; font-weight: 600;
                   color: white; cursor: pointer; margin-top: 8px;
                   background: #0B0D12;
-                  box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);
+                  box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);
                   transition: opacity 0.2s;"
                 [style.opacity]="loginLoading ? '0.7' : '1'">
                 <span *ngIf="!loginLoading">🔑 Sign In</span>
@@ -140,7 +140,7 @@
             <p class="text-center mt-4 mb-0" style="font-size: 13px; color: #64748b;">
               Not a member ?
               <a (click)="activeTab = 'register'"
-                style="color: #C2410C; font-weight: 600;
+                style="color: #1E3A8A; font-weight: 600;
                   text-decoration: none; cursor: pointer;">
                 Create an account
               </a>
@@ -333,11 +333,11 @@
                     style="flex: 1; padding: 12px; border-radius: 10px;
                       border: 2px solid; cursor: pointer; text-align: center;
                       transition: all 0.2s;"
-                    [style.borderColor]="registerData.role === 'user' ? '#C2410C' : '#e2e8f0'"
-                    [style.background]="registerData.role === 'user' ? '#FFF1EA' : 'white'">
+                    [style.borderColor]="registerData.role === 'user' ? '#1E3A8A' : '#e2e8f0'"
+                    [style.background]="registerData.role === 'user' ? '#EEF2FB' : 'white'">
                     <div style="font-size: 24px;">👤</div>
                     <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
-                      [style.color]="registerData.role === 'user' ? '#C2410C' : '#64748b'">
+                      [style.color]="registerData.role === 'user' ? '#1E3A8A' : '#64748b'">
                       Student
                     </div>
                   </div>
@@ -345,11 +345,11 @@
                     style="flex: 1; padding: 12px; border-radius: 10px;
                       border: 2px solid; cursor: pointer; text-align: center;
                       transition: all 0.2s;"
-                    [style.borderColor]="registerData.role === 'trainer' ? '#C2410C' : '#e2e8f0'"
-                    [style.background]="registerData.role === 'trainer' ? '#FFF1EA' : 'white'">
+                    [style.borderColor]="registerData.role === 'trainer' ? '#1E3A8A' : '#e2e8f0'"
+                    [style.background]="registerData.role === 'trainer' ? '#EEF2FB' : 'white'">
                     <div style="font-size: 24px;">🎓</div>
                     <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
-                      [style.color]="registerData.role === 'trainer' ? '#C2410C' : '#64748b'">
+                      [style.color]="registerData.role === 'trainer' ? '#1E3A8A' : '#64748b'">
                       Trainer
                     </div>
                   </div>
@@ -363,7 +363,7 @@
                   border-radius: 10px; font-size: 15px; font-weight: 600;
                   color: white; cursor: pointer;
                   background: #0B0D12;
-                  box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);"
+                  box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);"
                 [style.opacity]="registerLoading ? '0.7' : '1'">
                 <span *ngIf="!registerLoading">📝 Create Account</span>
                 <span *ngIf="registerLoading">
@@ -377,7 +377,7 @@
             <p class="text-center mt-4 mb-0" style="font-size: 13px; color: #64748b;">
               Already have an account ?
               <a (click)="activeTab = 'login'"
-                style="color: #C2410C; font-weight: 600;
+                style="color: #1E3A8A; font-weight: 600;
                   text-decoration: none; cursor: pointer;">
                 Sign in
               </a>

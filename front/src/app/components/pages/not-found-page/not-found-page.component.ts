@@ -17,7 +17,7 @@ import { Component } from '@angular/core';
            style="display: inline-block; padding: 13px 32px; border-radius: 10px;
                   background: #0B0D12; color: white;
                   text-decoration: none; font-weight: 600; font-size: 15px;
-                  box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);">
+                  box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);">
           ← Retour à l'accueil
         </a>
       </div>

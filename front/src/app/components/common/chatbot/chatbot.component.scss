@@ -15,7 +15,7 @@
   background: #0B0D12;
   color: white;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(255, 90, 31, 0.5);
+  box-shadow: 0 4px 20px rgba(30, 58, 138, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,7 @@
 
   &:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 25px rgba(255, 90, 31, 0.7);
+    box-shadow: 0 6px 25px rgba(30, 58, 138, 0.7);
   }
 
   &.open {
@@ -200,7 +200,7 @@
 .sources-section {
   margin-top: 10px;
   padding-top: 8px;
-  border-top: 1px solid #FFF1EA;
+  border-top: 1px solid #EEF2FB;
 }
 
 .source-chip {
@@ -210,18 +210,18 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: #C2410C;
+    color: #1E3A8A;
     text-decoration: none;
     font-size: 12px;
     font-weight: 600;
-    background: #FFF1EA;
+    background: #EEF2FB;
     padding: 4px 10px;
     border-radius: 20px;
-    border: 1px solid #FFD9C7;
+    border: 1px solid #D6DEF3;
     transition: all 0.2s;
 
     &:hover {
-      background: #C2410C;
+      background: #1E3A8A;
       color: white;
     }
   }
@@ -255,9 +255,9 @@
 
 .suggestion-chip {
   flex-shrink: 0;
-  background: #FFF1EA;
-  border: 1px solid #FFD9C7;
-  color: #C2410C;
+  background: #EEF2FB;
+  border: 1px solid #D6DEF3;
+  color: #1E3A8A;
   font-size: 11px;
   font-weight: 600;
   padding: 5px 12px;
@@ -267,7 +267,7 @@
   white-space: nowrap;
 
   &:hover {
-    background: #C2410C;
+    background: #1E3A8A;
     color: white;
   }
 }
@@ -297,8 +297,8 @@
   overflow-y: auto;
 
   &:focus {
-    border-color: #C2410C;
-    box-shadow: 0 0 0 3px rgba(255, 90, 31, 0.1);
+    border-color: #1E3A8A;
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
   }
 
   &:disabled {
@@ -323,7 +323,7 @@
 
   &:hover:not(:disabled) {
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(255, 90, 31, 0.4);
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.4);
   }
 
   &:disabled {

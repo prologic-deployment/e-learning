@@ -6,6 +6,70 @@ import { Subject, Subscription } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { COURSE_CATEGORIES, CourseCategory } from '../../../shared/categories';
+
+/** One entry of the signed-in user menu */
+interface MenuItem {
+  label: string;
+  icon: string;          // Boxicons class
+  route: string;
+  tab?: string;          // ?tab= query param for dashboards
+  badge?: 'unread';      // show the unread notification count
+}
+
+/** Menu entries per role — rendered by the user dropdown */
+const ROLE_MENUS: { [role: string]: { title: string; items: MenuItem[] }[] } = {
+  user: [
+    { title: 'Learning', items: [
+      { label: 'Dashboard', icon: 'bx bx-grid-alt', route: '/dashboard', tab: 'overview' },
+      { label: 'My courses', icon: 'bx bx-book-open', route: '/dashboard', tab: 'courses' },
+      { label: 'Certificates', icon: 'bx bx-award', route: '/dashboard', tab: 'certificates' },
+      { label: 'Badges', icon: 'bx bx-medal', route: '/dashboard', tab: 'badges' },
+      { label: 'History', icon: 'bx bx-history', route: '/dashboard', tab: 'history' }
+    ]},
+    { title: 'Account', items: [
+      { label: 'Notifications', icon: 'bx bx-bell', route: '/dashboard', tab: 'notifications', badge: 'unread' },
+      { label: 'My CV', icon: 'bx bx-id-card', route: '/cv' },
+      { label: 'Cart', icon: 'bx bx-cart', route: '/cart' },
+      { label: 'Profile & settings', icon: 'bx bx-cog', route: '/dashboard', tab: 'profile' }
+    ]}
+  ],
+  admin: [
+    { title: 'Platform', items: [
+      { label: 'Statistics', icon: 'bx bx-bar-chart-alt-2', route: '/admin-dashboard', tab: 'stats' },
+      { label: 'Users', icon: 'bx bx-group', route: '/admin-dashboard', tab: 'users' },
+      { label: 'Courses', icon: 'bx bx-book-open', route: '/admin-dashboard', tab: 'courses' },
+      { label: 'Create course', icon: 'bx bx-plus-circle', route: '/admin-dashboard', tab: 'create' }
+    ]},
+    { title: 'Management', items: [
+      { label: 'Reviews', icon: 'bx bx-message-square-dots', route: '/admin-dashboard', tab: 'reviews' },
+      { label: 'Assign users', icon: 'bx bx-transfer-alt', route: '/admin-dashboard', tab: 'assign' },
+      { label: 'Create staff', icon: 'bx bx-user-plus', route: '/admin-dashboard', tab: 'staff' },
+      { label: 'Quiz results', icon: 'bx bx-task', route: '/admin-dashboard', tab: 'quiz-results' }
+    ]}
+  ],
+  trainer: [
+    { title: 'Teaching', items: [
+      { label: 'Statistics', icon: 'bx bx-bar-chart-alt-2', route: '/trainer-dashboard', tab: 'stats' },
+      { label: 'My courses', icon: 'bx bx-book-open', route: '/trainer-dashboard', tab: 'courses' },
+      { label: 'Create course', icon: 'bx bx-plus-circle', route: '/trainer-dashboard', tab: 'create' },
+      { label: 'Quiz results', icon: 'bx bx-task', route: '/trainer-dashboard', tab: 'quiz-results' }
+    ]},
+    { title: 'Account', items: [
+      { label: 'Profile & settings', icon: 'bx bx-cog', route: '/trainer-dashboard', tab: 'profile' }
+    ]}
+  ],
+  manager: [
+    { title: 'My team', items: [
+      { label: 'Team statistics', icon: 'bx bx-bar-chart-alt-2', route: '/manager-dashboard', tab: 'stats' },
+      { label: 'Assign courses', icon: 'bx bx-transfer-alt', route: '/manager-dashboard', tab: 'assign' },
+      { label: 'Overdue', icon: 'bx bx-time-five', route: '/manager-dashboard', tab: 'overdue' }
+    ]},
+    { title: 'Account', items: [
+      { label: 'Profile & settings', icon: 'bx bx-cog', route: '/manager-dashboard', tab: 'profile' }
+    ]}
+  ]
+};
 
 @Component({
   selector: 'app-navbar',
@@ -17,6 +81,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   showUserMenu = false;
   showGuestMenu = false;
   showCategoryMenu = false;
+  /** Category highlighted in the mega menu (drives the subcategory column) */
+  readonly menuCategories: CourseCategory[] = COURSE_CATEGORIES;
+  activeCategory: CourseCategory = COURSE_CATEGORIES[0];
   classApplied = false;
   isSticky: boolean = false;
   currentUser: any = null;
@@ -125,6 +192,28 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn() && !!this.authService.getCurrentUser();
+  }
+
+  /** Sections of the user dropdown for the signed-in user's role */
+  get userMenuSections(): { title: string; items: MenuItem[] }[] {
+    const role = Array.isArray(this.currentUser?.role) ? this.currentUser.role[0] : this.currentUser?.role;
+    return ROLE_MENUS[role] || ROLE_MENUS['user'];
+  }
+
+  get roleLabel(): string {
+    const role = Array.isArray(this.currentUser?.role) ? this.currentUser.role[0] : this.currentUser?.role;
+    return ({ user: 'Learner', admin: 'Administrator', trainer: 'Trainer', manager: 'Manager' } as any)[role] || 'Member';
+  }
+
+  toggleCategoryMenu(): void {
+    this.showCategoryMenu = !this.showCategoryMenu;
+    this.showUserMenu = false;
+    this.activeCategory = this.menuCategories[0];
+  }
+
+  closeMenus(): void {
+    this.showCategoryMenu = false;
+    this.showUserMenu = false;
   }
 
   getDashboardRoute(): string {

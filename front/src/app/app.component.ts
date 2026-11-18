@@ -117,14 +117,14 @@ declare let $: any;
     getNotifColor(type: string): string {
     const colors: any = {
       'BADGE_EARNED': '#f59e0b',
-      'NEW_COURSE': '#C2410C',
+      'NEW_COURSE': '#1E3A8A',
       'DEADLINE_REMINDER': '#ef4444',
       'CERTIFICATE': '#10b981',
-      'COURSE_ASSIGNED': '#C2410C',
+      'COURSE_ASSIGNED': '#1E3A8A',
       'QUIZ_PASSED': '#10b981',
-      'INFO': '#C2410C'
+      'INFO': '#1E3A8A'
     };
-    return colors[type] || '#C2410C';
+    return colors[type] || '#1E3A8A';
   }
 
     playNotificationSound(): void {

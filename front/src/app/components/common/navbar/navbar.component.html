@@ -5,7 +5,7 @@
 
       <!-- Logo -->
       <a class="navbar-brand" routerLink="/" aria-label="Prologic Academy — home">
-        <app-brand-logo theme="dark" [height]="38"></app-brand-logo>
+        <app-brand-logo [height]="38"></app-brand-logo>
       </a>
 
       <!-- Burger mobile -->
@@ -19,332 +19,53 @@
 
       <div class="collapse navbar-collapse">
 
-        <!-- ✅ Categories Menu -->
-        <div style="position: relative;" class="me-3">
+        <!-- ✅ Categories Menu — two-column mega menu -->
+        <div class="hdr-menu me-1">
           <button class="nav-text-btn" [class.open]="showCategoryMenu"
-            (click)="showCategoryMenu = !showCategoryMenu">
+            (click)="toggleCategoryMenu()"
+            aria-haspopup="true" [attr.aria-expanded]="showCategoryMenu">
+            <i class="bx bx-category"></i>
             Categories
             <i class="bx" [ngClass]="showCategoryMenu ? 'bx-chevron-up' : 'bx-chevron-down'"></i>
           </button>
 
-          <div *ngIf="showCategoryMenu"
-            style="position: fixed; inset: 0; z-index: 9990;"
-            (click)="showCategoryMenu = false">
-          </div>
+          <div *ngIf="showCategoryMenu" class="hdr-backdrop" (click)="closeMenus()"></div>
 
-          <div *ngIf="showCategoryMenu"
-            style="position: absolute; left: 0; top: 50px; z-index: 9991;
-              width: 680px; background: white; border-radius: 16px;
-              box-shadow: 0 20px 60px rgba(0,0,0,0.12);
-              border: 1px solid #e2e8f0; overflow: hidden;">
-
-            <!-- Header -->
-            <div style="padding: 16px 20px;
-              background: #FFF4EE;
-              border-bottom: 1px solid #e2e8f0;">
-              <div style="color: #1e293b; font-weight: 700; font-size: 14px;">
-                📚 Browse Categories
-              </div>
-              <div style="color: #64748b; font-size: 12px; margin-top: 2px;">
-                Find the perfect course for you
-              </div>
-            </div>
-
-            <!-- Grid -->
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr);
-              gap: 1px; background: #e2e8f0;">
-
-              <!-- Development -->
-              <div style="background: white; padding: 16px;">
-                <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Development'}"
-                  (click)="showCategoryMenu = false"
-                  style="display: flex; align-items: center; gap: 10px;
-                    text-decoration: none; margin-bottom: 10px;">
-                  <span style="font-size: 22px;">💻</span>
-                  <div>
-                    <div style="color: #1e293b; font-weight: 700; font-size: 13px;">
-                      Development
-                    </div>
-                    <div style="color: #94a3b8; font-size: 11px; margin-top: 2px;">
-                      Web, Mobile, Game Dev
-                    </div>
-                  </div>
+          <div *ngIf="showCategoryMenu" class="hdr-panel cat-menu" role="menu">
+            <!-- Left: categories -->
+            <ul class="cat-menu__list">
+              <li *ngFor="let cat of menuCategories">
+                <a class="cat-menu__cat" [class.active]="activeCategory === cat"
+                  [routerLink]="['/courses-grid']" [queryParams]="{category: cat.name}"
+                  (mouseenter)="activeCategory = cat" (focus)="activeCategory = cat"
+                  (click)="closeMenus()" role="menuitem">
+                  <span class="cat-menu__icon"><i [class]="cat.icon"></i></span>
+                  <span class="cat-menu__text">
+                    <strong>{{ cat.name }}</strong>
+                    <small>{{ cat.description }}</small>
+                  </span>
+                  <i class="bx bx-chevron-right cat-menu__chev"></i>
                 </a>
-                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Development', tag: 'web'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">
-                    🌐 Web Dev
-                  </a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Development', tag: 'mobile'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">
-                    📱 Mobile
-                  </a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Development', tag: 'python'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">
-                    🐍 Python
-                  </a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Development', tag: 'javascript'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">
-                    ⚡ JavaScript
-                  </a>
-                </div>
-              </div>
+              </li>
+            </ul>
 
-              <!-- Business -->
-              <div style="background: white; padding: 16px;">
-                <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Business'}"
-                  (click)="showCategoryMenu = false"
-                  style="display: flex; align-items: center; gap: 10px;
-                    text-decoration: none; margin-bottom: 10px;">
-                  <span style="font-size: 22px;">💼</span>
-                  <div>
-                    <div style="color: #1e293b; font-weight: 700; font-size: 13px;">
-                      Business
-                    </div>
-                    <div style="color: #94a3b8; font-size: 11px; margin-top: 2px;">
-                      Entrepreneurship, Management
-                    </div>
-                  </div>
-                </a>
-                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Business', tag: 'entrepreneurship'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">🚀 Entrepreneurship</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Business', tag: 'management'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">👔 Management</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Business', tag: 'sales'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">💹 Sales</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Business', tag: 'strategy'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">🎯 Strategy</a>
-                </div>
-              </div>
-
-              <!-- Finance -->
-              <div style="background: white; padding: 16px;">
-                <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Finance'}"
-                  (click)="showCategoryMenu = false"
-                  style="display: flex; align-items: center; gap: 10px;
-                    text-decoration: none; margin-bottom: 10px;">
-                  <span style="font-size: 22px;">💰</span>
-                  <div>
-                    <div style="color: #1e293b; font-weight: 700; font-size: 13px;">Finance</div>
-                    <div style="color: #94a3b8; font-size: 11px; margin-top: 2px;">
-                      Accounting, Trading, Investment
-                    </div>
-                  </div>
-                </a>
-                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Finance', tag: 'accounting'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">📊 Accounting</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Finance', tag: 'trading'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">📈 Trading</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Finance', tag: 'investment'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">💎 Investment</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Finance', tag: 'crypto'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">🪙 Crypto</a>
-                </div>
-              </div>
-
-              <!-- IT & Software -->
-              <div style="background: white; padding: 16px;">
-                <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'IT & Software'}"
-                  (click)="showCategoryMenu = false"
-                  style="display: flex; align-items: center; gap: 10px;
-                    text-decoration: none; margin-bottom: 10px;">
-                  <span style="font-size: 22px;">🖥️</span>
-                  <div>
-                    <div style="color: #1e293b; font-weight: 700; font-size: 13px;">IT & Software</div>
-                    <div style="color: #94a3b8; font-size: 11px; margin-top: 2px;">
-                      Security, Networks, Cloud
-                    </div>
-                  </div>
-                </a>
-                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'IT & Software', tag: 'security'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">🔐 Cybersecurity</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'IT & Software', tag: 'network'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">🌐 Networking</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'IT & Software', tag: 'cloud'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">☁️ Cloud</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'IT & Software', tag: 'linux'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">🐧 Linux</a>
-                </div>
-              </div>
-
-              <!-- Design -->
-              <div style="background: white; padding: 16px;">
-                <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Design'}"
-                  (click)="showCategoryMenu = false"
-                  style="display: flex; align-items: center; gap: 10px;
-                    text-decoration: none; margin-bottom: 10px;">
-                  <span style="font-size: 22px;">🎨</span>
-                  <div>
-                    <div style="color: #1e293b; font-weight: 700; font-size: 13px;">Design</div>
-                    <div style="color: #94a3b8; font-size: 11px; margin-top: 2px;">
-                      UI/UX, Graphic, Motion
-                    </div>
-                  </div>
-                </a>
-                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Design', tag: 'uiux'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">🖌️ UI/UX</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Design', tag: 'graphic'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">🖼️ Graphic</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Design', tag: 'figma'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">⚡ Figma</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Design', tag: 'motion'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">🎬 Motion</a>
-                </div>
-              </div>
-
-              <!-- Marketing -->
-              <div style="background: white; padding: 16px;">
-                <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Marketing'}"
-                  (click)="showCategoryMenu = false"
-                  style="display: flex; align-items: center; gap: 10px;
-                    text-decoration: none; margin-bottom: 10px;">
-                  <span style="font-size: 22px;">📣</span>
-                  <div>
-                    <div style="color: #1e293b; font-weight: 700; font-size: 13px;">Marketing</div>
-                    <div style="color: #94a3b8; font-size: 11px; margin-top: 2px;">
-                      Digital, SEO, Social Media
-                    </div>
-                  </div>
-                </a>
-                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Marketing', tag: 'seo'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">🔍 SEO</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Marketing', tag: 'social'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">📱 Social Media</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Marketing', tag: 'email'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">📧 Email</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Marketing', tag: 'ads'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">💡 Google Ads</a>
-                </div>
-              </div>
-
-              <!-- Data Science -->
-              <div style="background: white; padding: 16px;">
-                <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Data Science'}"
-                  (click)="showCategoryMenu = false"
-                  style="display: flex; align-items: center; gap: 10px;
-                    text-decoration: none; margin-bottom: 10px;">
-                  <span style="font-size: 22px;">📊</span>
-                  <div>
-                    <div style="color: #1e293b; font-weight: 700; font-size: 13px;">Data Science</div>
-                    <div style="color: #94a3b8; font-size: 11px; margin-top: 2px;">
-                      ML, AI, Analytics
-                    </div>
-                  </div>
-                </a>
-                <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Data Science', tag: 'ml'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">🤖 Machine Learning</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Data Science', tag: 'ai'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">🧠 AI</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Data Science', tag: 'analytics'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">📈 Analytics</a>
-                  <a [routerLink]="['/courses-grid']" [queryParams]="{category: 'Data Science', tag: 'deeplearning'}"
-                    (click)="showCategoryMenu = false"
-                    style="color: #64748b; font-size: 11px; text-decoration: none;
-                      background: #f1f5f9; padding: 3px 10px; border-radius: 20px;
-                      font-weight: 500; display: inline-block;">⚡ Deep Learning</a>
-                </div>
-              </div>
-
-             
-
-            </div>
-
-            <!-- Footer -->
-            <div style="padding: 12px 20px; background: #f8fafc;
-              border-top: 1px solid #e2e8f0; text-align: center;">
-              <a [routerLink]="['/courses-grid']" (click)="showCategoryMenu = false"
-                style="color: #C2410C; font-size: 13px; font-weight: 600; text-decoration: none;">
-                View All Courses →
+            <!-- Right: subcategories of the highlighted category -->
+            <div class="cat-menu__subs">
+              <p class="cat-menu__eyebrow">{{ activeCategory.name }}</p>
+              <a *ngFor="let sub of activeCategory.subcategories" class="cat-menu__sub"
+                [routerLink]="['/courses-grid']"
+                [queryParams]="{category: activeCategory.name, subCategory: sub}"
+                (click)="closeMenus()" role="menuitem">
+                {{ sub }}
+              </a>
+              <a class="cat-menu__all" [routerLink]="['/courses-grid']"
+                [queryParams]="{category: activeCategory.name}" (click)="closeMenus()">
+                All {{ activeCategory.name }} courses <i class="bx bx-right-arrow-alt"></i>
+              </a>
+              <a class="cat-menu__browse" routerLink="/courses-grid" (click)="closeMenus()">
+                <i class="bx bx-grid-alt"></i> Browse the full catalogue
               </a>
             </div>
-
           </div>
         </div>
 
@@ -384,7 +105,7 @@
 
               <span style="font-size: 13px; color: #1e293b; font-weight: 500; flex: 1;">
                 <!-- ✅ Highlight la partie tapée -->
-                <span style="color: #C2410C; font-weight: 700;">
+                <span style="color: #1E3A8A; font-weight: 700;">
                   {{ suggestion.substring(0, searchQuery.length) }}
                 </span>
                 <span>{{ suggestion.substring(searchQuery.length) }}</span>
@@ -398,12 +119,12 @@
               style="display: flex; align-items: center; justify-content: center;
                 gap: 8px; padding: 10px 16px; cursor: pointer;
                 background: #f8fafc; border-top: 1px solid #e2e8f0;"
-              onmouseover="this.style.background='#FFF1EA'"
+              onmouseover="this.style.background='#EEF2FB'"
               onmouseout="this.style.background='#f8fafc'">
-              <span style="font-size: 13px; color: #C2410C; font-weight: 600;">
+              <span style="font-size: 13px; color: #1E3A8A; font-weight: 600;">
                 Voir tous les résultats pour "{{ searchQuery }}"
               </span>
-              <span style="color: #C2410C;">→</span>
+              <span style="color: #1E3A8A;">→</span>
             </div>
           </div>
         </div>
@@ -431,287 +152,53 @@
 
 
           <!-- ✅ User Dropdown Menu -->
-          <div class="option-item" *ngIf="isLoggedIn()" style="position: relative;">
+          <div class="option-item hdr-menu" *ngIf="isLoggedIn()">
 
-            <button class="user-menu-btn"
-              (click)="showUserMenu = !showUserMenu; showNotifPanel = false">
+            <button class="user-menu-btn" [class.open]="showUserMenu"
+              (click)="showUserMenu = !showUserMenu; showCategoryMenu = false; showNotifPanel = false"
+              aria-haspopup="true" [attr.aria-expanded]="showUserMenu">
               <span class="user-avatar">
                 {{ currentUser?.firstname?.[0] }}{{ currentUser?.lastname?.[0] }}
+                <span *ngIf="unreadCount > 0" class="user-avatar__dot" aria-hidden="true"></span>
               </span>
               <span class="user-name">{{ currentUser?.firstname }}</span>
               <i class="bx" [ngClass]="showUserMenu ? 'bx-chevron-up' : 'bx-chevron-down'"></i>
             </button>
 
-            <div *ngIf="showUserMenu"
-              style="position: fixed; inset: 0; z-index: 9997;"
-              (click)="showUserMenu = false">
-            </div>
+            <div *ngIf="showUserMenu" class="hdr-backdrop" (click)="closeMenus()"></div>
 
-            <div *ngIf="showUserMenu"
-              style="position: absolute; right: 0; top: 50px; z-index: 9998;
-                width: 250px; background: white; border-radius: 16px;
-                box-shadow: 0 10px 40px rgba(0,0,0,0.12);
-                border: 1px solid #e2e8f0; overflow: hidden;">
-
-              <!-- Header -->
-              <div style="padding: 16px;
-                background: #FFF4EE;
-                border-bottom: 1px solid #e2e8f0;">
-                <div class="d-flex align-items-center gap-3">
-                  <div style="width: 44px; height: 44px; border-radius: 50%;
-                    background: #0B0D12;
-                    display: flex; align-items: center; justify-content: center;
-                    font-weight: 700; font-size: 16px; color: white; flex-shrink: 0;">
-                    {{ currentUser?.firstname?.[0] }}{{ currentUser?.lastname?.[0] }}
-                  </div>
-                  <div>
-                    <div style="color: #1e293b; font-weight: 700; font-size: 14px;">
-                      {{ currentUser?.firstname }} {{ currentUser?.lastname }}
-                    </div>
-                    <div style="color: #94a3b8; font-size: 11px; text-transform: capitalize;">
-                      {{ currentUser?.role }}
-                    </div>
-                  </div>
-                </div>
+            <div *ngIf="showUserMenu" class="hdr-panel user-menu" role="menu">
+              <!-- Identity -->
+              <div class="user-menu__head">
+                <span class="user-menu__avatar">
+                  {{ currentUser?.firstname?.[0] }}{{ currentUser?.lastname?.[0] }}
+                </span>
+                <span class="user-menu__who">
+                  <strong>{{ currentUser?.firstname }} {{ currentUser?.lastname }}</strong>
+                  <small>{{ currentUser?.email }}</small>
+                  <span class="user-menu__role">{{ roleLabel }}</span>
+                </span>
               </div>
 
-              <!-- ✅ Menu USER -->
-              <ng-container *ngIf="currentUser?.role === 'user'">
-                <div style="padding: 6px 0; border-bottom: 1px solid #f1f5f9;">
-                  <a [routerLink]="['/dashboard']" [queryParams]="{tab: 'overview'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;
-                      transition: background 0.15s;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>📊</span> Dashboard
-                  </a>
-                  <a [routerLink]="['/dashboard']" [queryParams]="{tab: 'courses'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;
-                      transition: background 0.15s;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>📚</span> My Courses
-                  </a>
-                  <a [routerLink]="['/dashboard']" [queryParams]="{tab: 'badges'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>🏅</span> My Badges
-                  </a>
-                  <a [routerLink]="['/dashboard']" [queryParams]="{tab: 'certificates'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>🎓</span> My Certificates
-                  </a>
-                  <a [routerLink]="['/dashboard']" [queryParams]="{tab: 'history'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>📜</span> History
-                  </a>
-                </div>
-                <div style="padding: 6px 0; border-bottom: 1px solid #f1f5f9;">
-                  <a [routerLink]="['/dashboard']" [queryParams]="{tab: 'profile'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>👤</span> My Profile
-                  </a>
-                  <a [routerLink]="['/dashboard']" [queryParams]="{tab: 'notifications'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>🔔</span> Notifications
-                    <span *ngIf="unreadCount > 0"
-                      style="margin-left: auto; background: #ef4444; color: white;
-                        border-radius: 10px; padding: 1px 7px; font-size: 10px; font-weight: 700;">
-                      {{ unreadCount }}
-                    </span>
-                  </a>
-                </div>
-              </ng-container>
-
-              <!-- ✅ Menu ADMIN -->
-              <ng-container *ngIf="currentUser?.role === 'admin'">
-                <div style="padding: 6px 0; border-bottom: 1px solid #f1f5f9;">
-                  <a [routerLink]="['/admin-dashboard']" [queryParams]="{tab: 'stats'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>📊</span> Stats
-                  </a>
-                  <a [routerLink]="['/admin-dashboard']" [queryParams]="{tab: 'users'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>👥</span> Users
-                  </a>
-                  <a [routerLink]="['/admin-dashboard']" [queryParams]="{tab: 'courses'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>📚</span> Courses
-                  </a>
-                  <a [routerLink]="['/admin-dashboard']" [queryParams]="{tab: 'create'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>➕</span> Create Course
-                  </a>
-                  <a [routerLink]="['/admin-dashboard']" [queryParams]="{tab: 'reviews'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>💬</span> Reviews
-                  </a>
-                  <a [routerLink]="['/admin-dashboard']" [queryParams]="{tab: 'assign'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>🔗</span> Assign Users
-                  </a>
-                  <a [routerLink]="['/admin-dashboard']" [queryParams]="{tab: 'staff'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>👔</span> Create Staff
-                  </a>
-                  <a [routerLink]="['/admin-dashboard']" [queryParams]="{tab: 'quiz-results'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>📝</span> Quiz Results
-                  </a>
-                </div>
-              </ng-container>
-
-              <!-- ✅ Menu TRAINER -->
-              <ng-container *ngIf="currentUser?.role === 'trainer'">
-                <div style="padding: 6px 0; border-bottom: 1px solid #f1f5f9;">
-                  <a [routerLink]="['/trainer-dashboard']" [queryParams]="{tab: 'stats'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>📊</span> Stats
-                  </a>
-                  <a [routerLink]="['/trainer-dashboard']" [queryParams]="{tab: 'courses'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>📚</span> All Courses
-                  </a>
-                  <a [routerLink]="['/trainer-dashboard']" [queryParams]="{tab: 'create'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>➕</span> Create Course
-                  </a>
-                  <a [routerLink]="['/trainer-dashboard']" [queryParams]="{tab: 'quiz-results'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>📝</span> Quiz Results
-                  </a>
-                  <a [routerLink]="['/trainer-dashboard']" [queryParams]="{tab: 'profile'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>👤</span> My Profile
-                  </a>
-                </div>
-              </ng-container>
-
-              <!-- ✅ Menu MANAGER -->
-              <ng-container *ngIf="currentUser?.role === 'manager'">
-                <div style="padding: 6px 0; border-bottom: 1px solid #f1f5f9;">
-                  <a [routerLink]="['/manager-dashboard']" [queryParams]="{tab: 'stats'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>📊</span> Stats
-                  </a>
-                  <a [routerLink]="['/manager-dashboard']" [queryParams]="{tab: 'assign'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>📚</span> Assign Course
-                  </a>
-                  <a [routerLink]="['/manager-dashboard']" [queryParams]="{tab: 'overdue'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>⚠️</span> Overdue
-                  </a>
-                  <a [routerLink]="['/manager-dashboard']" [queryParams]="{tab: 'profile'}"
-                    (click)="showUserMenu = false"
-                    style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                      text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
-                    onmouseout="this.style.background='transparent'; this.style.color='#374151'">
-                    <span>👤</span> My Profile
-                  </a>
-                </div>
-              </ng-container>
-
-              <!-- ✅ Logout — tous les rôles -->
-              <div style="padding: 6px 0;">
-                <a (click)="logout(); showUserMenu = false"
-                  style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-                    text-decoration: none; color: #ef4444; font-size: 13px; font-weight: 600;
-                    cursor: pointer; transition: background 0.15s;"
-                  onmouseover="this.style.background='#fef2f2'"
-                  onmouseout="this.style.background='transparent'">
-                  <span>🚪</span> Logout
+              <!-- Role sections -->
+              <div *ngFor="let section of userMenuSections" class="user-menu__section">
+                <p class="user-menu__title">{{ section.title }}</p>
+                <a *ngFor="let item of section.items" class="user-menu__item"
+                  [routerLink]="[item.route]"
+                  [queryParams]="item.tab ? {tab: item.tab} : null"
+                  (click)="closeMenus()" role="menuitem">
+                  <i [class]="item.icon"></i>
+                  <span>{{ item.label }}</span>
+                  <span *ngIf="item.badge === 'unread' && unreadCount > 0" class="user-menu__badge">
+                    {{ unreadCount }}
+                  </span>
                 </a>
               </div>
 
+              <!-- Sign out -->
+              <button type="button" class="user-menu__logout" (click)="logout(); closeMenus()">
+                <i class="bx bx-log-out"></i> Sign out
+              </button>
             </div>
           </div>
 
