@@ -4,8 +4,8 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light" [class.active]="classApplied">
 
       <!-- Logo -->
-      <a class="navbar-brand" routerLink="/">
-        <img src="assets/img/about/about1.png" alt="logo" style="height: 70px; width: auto;margin-top:10px;">
+      <a class="navbar-brand" routerLink="/" aria-label="Prologic Academy — home">
+        <app-brand-logo theme="dark" [height]="38"></app-brand-logo>
       </a>
 
       <!-- Burger mobile -->
@@ -21,17 +21,10 @@
 
         <!-- ✅ Categories Menu -->
         <div style="position: relative;" class="me-3">
-          <button
-            (click)="showCategoryMenu = !showCategoryMenu"
-            style="background: linear-gradient(135deg, #667eea, #764ba2);
-              border: none; border-radius: 25px; padding: 8px 16px;
-              cursor: pointer; display: flex; align-items: center; gap: 8px;
-              color: white; font-size: 13px; font-weight: 600;">
-            <i class="flaticon-menu" style="font-size: 14px;"></i>
+          <button class="nav-text-btn" [class.open]="showCategoryMenu"
+            (click)="showCategoryMenu = !showCategoryMenu">
             Categories
-            <span style="font-size: 9px; opacity: 0.8;">
-              {{ showCategoryMenu ? '▲' : '▼' }}
-            </span>
+            <i class="bx" [ngClass]="showCategoryMenu ? 'bx-chevron-up' : 'bx-chevron-down'"></i>
           </button>
 
           <div *ngIf="showCategoryMenu"
@@ -47,7 +40,7 @@
 
             <!-- Header -->
             <div style="padding: 16px 20px;
-              background: linear-gradient(135deg, #f0f4ff, #faf5ff);
+              background: #FFF4EE;
               border-bottom: 1px solid #e2e8f0;">
               <div style="color: #1e293b; font-weight: 700; font-size: 14px;">
                 📚 Browse Categories
@@ -347,7 +340,7 @@
             <div style="padding: 12px 20px; background: #f8fafc;
               border-top: 1px solid #e2e8f0; text-align: center;">
               <a [routerLink]="['/courses-grid']" (click)="showCategoryMenu = false"
-                style="color: #667eea; font-size: 13px; font-weight: 600; text-decoration: none;">
+                style="color: #C2410C; font-size: 13px; font-weight: 600; text-decoration: none;">
                 View All Courses →
               </a>
             </div>
@@ -356,7 +349,7 @@
         </div>
 
         <!-- ✅ Search avec autocomplétion -->
-        <div class="search-box-wrapper" style="position: relative; flex: 1; max-width: 400px;">
+        <div class="search-box-wrapper" style="position: relative; flex: 1; max-width: 560px;">
           <form class="search-box" (ngSubmit)="goToSearch()">
             <input type="text" class="input-search"
               placeholder="Search for anything..."
@@ -391,7 +384,7 @@
 
               <span style="font-size: 13px; color: #1e293b; font-weight: 500; flex: 1;">
                 <!-- ✅ Highlight la partie tapée -->
-                <span style="color: #667eea; font-weight: 700;">
+                <span style="color: #C2410C; font-weight: 700;">
                   {{ suggestion.substring(0, searchQuery.length) }}
                 </span>
                 <span>{{ suggestion.substring(searchQuery.length) }}</span>
@@ -405,12 +398,12 @@
               style="display: flex; align-items: center; justify-content: center;
                 gap: 8px; padding: 10px 16px; cursor: pointer;
                 background: #f8fafc; border-top: 1px solid #e2e8f0;"
-              onmouseover="this.style.background='#f0f4ff'"
+              onmouseover="this.style.background='#FFF1EA'"
               onmouseout="this.style.background='#f8fafc'">
-              <span style="font-size: 13px; color: #667eea; font-weight: 600;">
+              <span style="font-size: 13px; color: #C2410C; font-weight: 600;">
                 Voir tous les résultats pour "{{ searchQuery }}"
               </span>
-              <span style="color: #667eea;">→</span>
+              <span style="color: #C2410C;">→</span>
             </div>
           </div>
         </div>
@@ -420,7 +413,7 @@
           <li class="nav-item">
             <a routerLink="/courses-grid" class="nav-link"
               routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-              📚 Courses
+              Courses
             </a>
           </li>
           <app-chatbot></app-chatbot>
@@ -440,20 +433,13 @@
           <!-- ✅ User Dropdown Menu -->
           <div class="option-item" *ngIf="isLoggedIn()" style="position: relative;">
 
-            <button
-              (click)="showUserMenu = !showUserMenu; showNotifPanel = false"
-              style="background: linear-gradient(135deg, #667eea, #764ba2);
-                border: none; border-radius: 25px; padding: 6px 14px 6px 8px;
-                cursor: pointer; display: flex; align-items: center; gap: 8px;
-                color: white; font-size: 13px; font-weight: 600;">
-              <div style="width: 30px; height: 30px; border-radius: 50%;
-                background: rgba(255,255,255,0.25); display: flex;
-                align-items: center; justify-content: center;
-                font-weight: 700; font-size: 12px; color: white;">
+            <button class="user-menu-btn"
+              (click)="showUserMenu = !showUserMenu; showNotifPanel = false">
+              <span class="user-avatar">
                 {{ currentUser?.firstname?.[0] }}{{ currentUser?.lastname?.[0] }}
-              </div>
-              <span>{{ currentUser?.firstname }}</span>
-              <span style="font-size: 9px; opacity: 0.8;">{{ showUserMenu ? '▲' : '▼' }}</span>
+              </span>
+              <span class="user-name">{{ currentUser?.firstname }}</span>
+              <i class="bx" [ngClass]="showUserMenu ? 'bx-chevron-up' : 'bx-chevron-down'"></i>
             </button>
 
             <div *ngIf="showUserMenu"
@@ -469,11 +455,11 @@
 
               <!-- Header -->
               <div style="padding: 16px;
-                background: linear-gradient(135deg, #f0f4ff, #faf5ff);
+                background: #FFF4EE;
                 border-bottom: 1px solid #e2e8f0;">
                 <div class="d-flex align-items-center gap-3">
                   <div style="width: 44px; height: 44px; border-radius: 50%;
-                    background: linear-gradient(135deg, #667eea, #764ba2);
+                    background: #0B0D12;
                     display: flex; align-items: center; justify-content: center;
                     font-weight: 700; font-size: 16px; color: white; flex-shrink: 0;">
                     {{ currentUser?.firstname?.[0] }}{{ currentUser?.lastname?.[0] }}
@@ -497,7 +483,7 @@
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;
                       transition: background 0.15s;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>📊</span> Dashboard
                   </a>
@@ -506,7 +492,7 @@
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;
                       transition: background 0.15s;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>📚</span> My Courses
                   </a>
@@ -514,7 +500,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>🏅</span> My Badges
                   </a>
@@ -522,7 +508,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>🎓</span> My Certificates
                   </a>
@@ -530,7 +516,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>📜</span> History
                   </a>
@@ -540,7 +526,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>👤</span> My Profile
                   </a>
@@ -548,7 +534,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>🔔</span> Notifications
                     <span *ngIf="unreadCount > 0"
@@ -567,7 +553,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>📊</span> Stats
                   </a>
@@ -575,7 +561,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>👥</span> Users
                   </a>
@@ -583,7 +569,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>📚</span> Courses
                   </a>
@@ -591,7 +577,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>➕</span> Create Course
                   </a>
@@ -599,7 +585,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>💬</span> Reviews
                   </a>
@@ -607,7 +593,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>🔗</span> Assign Users
                   </a>
@@ -615,7 +601,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>👔</span> Create Staff
                   </a>
@@ -623,7 +609,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>📝</span> Quiz Results
                   </a>
@@ -637,7 +623,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>📊</span> Stats
                   </a>
@@ -645,7 +631,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>📚</span> All Courses
                   </a>
@@ -653,7 +639,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>➕</span> Create Course
                   </a>
@@ -661,7 +647,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>📝</span> Quiz Results
                   </a>
@@ -669,7 +655,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>👤</span> My Profile
                   </a>
@@ -683,7 +669,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>📊</span> Stats
                   </a>
@@ -691,7 +677,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>📚</span> Assign Course
                   </a>
@@ -699,7 +685,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>⚠️</span> Overdue
                   </a>
@@ -707,7 +693,7 @@
                     (click)="showUserMenu = false"
                     style="display: flex; align-items: center; gap: 10px; padding: 10px 16px;
                       text-decoration: none; color: #374151; font-size: 13px; font-weight: 500;"
-                    onmouseover="this.style.background='#f8fafc'; this.style.color='#667eea'"
+                    onmouseover="this.style.background='#f8fafc'; this.style.color='#C2410C'"
                     onmouseout="this.style.background='transparent'; this.style.color='#374151'">
                     <span>👤</span> My Profile
                   </a>
@@ -730,19 +716,11 @@
           </div>
 
           <!-- ✅ Si non connecté -->
-          <div class="option-item" *ngIf="!isLoggedIn()">
+          <div class="option-item d-flex gap-2" *ngIf="!isLoggedIn()">
             <a routerLink="/profile-authentication" [queryParams]="{tab: 'login'}"
-              style="background: linear-gradient(135deg, #667eea, #764ba2);
-                border: none; border-radius: 25px; padding: 8px 20px;
-                cursor: pointer; display: flex; align-items: center; gap: 8px;
-                color: white; font-size: 13px; font-weight: 600; text-decoration: none;">
-              <div style="width: 28px; height: 28px; border-radius: 50%;
-                background: rgba(255,255,255,0.25); display: flex;
-                align-items: center; justify-content: center; font-size: 13px;">
-                👤
-              </div>
-              <span>Sign In</span>
-            </a>
+              class="btn-ghost">Log in</a>
+            <a routerLink="/profile-authentication" [queryParams]="{tab: 'register'}"
+              class="btn-accent">Join for free</a>
           </div>
 
               <!-- <div style="padding: 6px 0;">

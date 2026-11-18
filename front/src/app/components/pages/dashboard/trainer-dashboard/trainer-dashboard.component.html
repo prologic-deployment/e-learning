@@ -12,13 +12,13 @@
       <div class="col-lg-4 text-end" *ngIf="stats">
         <button (click)="exportPDF()"
           style="padding: 8px 16px; border: none; border-radius: 10px; margin-right: 8px;
-            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            background: #0B0D12;
             color: white; font-weight: 600; font-size: 13px; cursor: pointer;">
           📄 Export PDF
         </button>
         <button (click)="exportExcel()"
           style="padding: 8px 16px; border: none; border-radius: 10px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #0B0D12;
             color: white; font-weight: 600; font-size: 13px; cursor: pointer;">
           📊 Export Excel
         </button>
@@ -65,28 +65,28 @@
         <div class="row mb-3">
           <div class="col-lg-3 col-md-6 mb-3">
             <div style="background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-              border: 1px solid #f0f0f0; padding: 20px; border-left: 4px solid #667eea;">
+              border: 1px solid #f0f0f0; padding: 20px; border-left: 4px solid #C2410C;">
               <div class="d-flex align-items-center justify-content-between">
                 <div>
                   <p class="text-muted mb-1" style="font-size: 12px; font-weight: 600;
                     text-transform: uppercase; letter-spacing: 0.5px;">My Courses</p>
                   <h3 style="font-weight: 800; color: #1e293b; margin: 0;">{{ stats.overview.totalCourses }}</h3>
                 </div>
-                <div style="width: 50px; height: 50px; border-radius: 12px; background: #667eea22;
+                <div style="width: 50px; height: 50px; border-radius: 12px; background: #C2410C22;
                   display: flex; align-items: center; justify-content: center; font-size: 22px;">📚</div>
               </div>
             </div>
           </div>
           <div class="col-lg-3 col-md-6 mb-3">
             <div style="background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-              border: 1px solid #f0f0f0; padding: 20px; border-left: 4px solid #43e97b;">
+              border: 1px solid #f0f0f0; padding: 20px; border-left: 4px solid #FF5A1F;">
               <div class="d-flex align-items-center justify-content-between">
                 <div>
                   <p class="text-muted mb-1" style="font-size: 12px; font-weight: 600;
                     text-transform: uppercase; letter-spacing: 0.5px;">Approved</p>
                   <h3 style="font-weight: 800; color: #1e293b; margin: 0;">{{ stats.overview.approvedCourses }}</h3>
                 </div>
-                <div style="width: 50px; height: 50px; border-radius: 12px; background: #43e97b22;
+                <div style="width: 50px; height: 50px; border-radius: 12px; background: #FF5A1F22;
                   display: flex; align-items: center; justify-content: center; font-size: 22px;">✅</div>
               </div>
             </div>
@@ -165,7 +165,7 @@
                   </td>
                   <td>
                     <span class="badge"
-                      style="background: linear-gradient(135deg, #667eea, #764ba2); font-size: 12px; padding: 5px 10px;">
+                      style="background: #0B0D12; font-size: 12px; padding: 5px 10px;">
                       {{ item.totalEnrollments }}
                     </span>
                   </td>
@@ -182,7 +182,7 @@
                     <div class="d-flex align-items-center gap-2">
                       <div class="progress flex-grow-1" style="height: 8px; border-radius: 10px;">
                         <div class="progress-bar"
-                          style="background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 10px;"
+                          style="background: #0B0D12; border-radius: 10px;"
                           [style.width.%]="item.averageProgress"></div>
                       </div>
                       <small><strong>{{ item.averageProgress }}%</strong></small>
@@ -202,11 +202,11 @@
                 <small class="text-muted">{{ item.totalEnrollments }} students</small>
               </div>
               <div class="progress" style="height: 22px; border-radius: 10px; overflow: hidden;">
-                <div class="progress-bar" style="background: linear-gradient(135deg, #43e97b, #38f9d7);"
+                <div class="progress-bar" style="background: #0B0D12;"
                   [style.width.%]="item.totalEnrollments > 0 ? (item.completedEnrollments / item.totalEnrollments * 100) : 0">
                   <small *ngIf="item.completedEnrollments > 0">✅ {{ item.completedEnrollments }}</small>
                 </div>
-                <div class="progress-bar" style="background: linear-gradient(135deg, #667eea, #764ba2);"
+                <div class="progress-bar" style="background: #0B0D12;"
                   [style.width.%]="item.totalEnrollments > 0 ? ((item.totalEnrollments - item.completedEnrollments) / item.totalEnrollments * 100) : 0">
                   <small *ngIf="(item.totalEnrollments - item.completedEnrollments) > 0">
                     🔄 {{ item.totalEnrollments - item.completedEnrollments }}
@@ -215,7 +215,7 @@
               </div>
               <div class="d-flex gap-3 mt-1">
                 <small style="color: #10b981;">■ Completed</small>
-                <small style="color: #667eea;">■ In Progress</small>
+                <small style="color: #C2410C;">■ In Progress</small>
                 <small style="color: #ef4444;">📉 Dropout: {{ getDropoutRate(item) }}%</small>
               </div>
             </div>
@@ -274,7 +274,7 @@
                   <td>
                     <div class="d-flex align-items-center gap-2">
                       <div style="width: 30px; height: 30px; border-radius: 50%;
-                        background: linear-gradient(135deg, #43e97b, #38f9d7);
+                        background: #0B0D12;
                         display: flex; align-items: center; justify-content: center;
                         color: white; font-weight: 700; font-size: 11px; flex-shrink: 0;">
                         {{ course.trainer?.firstname?.[0] }}{{ course.trainer?.lastname?.[0] }}
@@ -282,7 +282,7 @@
                       <small>{{ course.trainer?.firstname }} {{ course.trainer?.lastname }}</small>
                     </div>
                     <span *ngIf="course.trainer?._id === currentUser?._id"
-                      style="background: #f0f4ff; color: #667eea; padding: 2px 8px;
+                      style="background: #FFF1EA; color: #C2410C; padding: 2px 8px;
                         border-radius: 10px; font-size: 10px; font-weight: 600;
                         display: inline-block; margin-top: 4px;">
                       ✨ My Course
@@ -392,8 +392,8 @@
         <button (click)="createCourse()" [disabled]="createCourseLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 10px;
             font-size: 15px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4); margin-top: 8px;"
+            background: #0B0D12;
+            box-shadow: 0 4px 15px rgba(255, 90, 31,0.4); margin-top: 8px;"
           [style.opacity]="createCourseLoading ? '0.7' : '1'">
           <span *ngIf="!createCourseLoading">➕ Create Course</span>
           <span *ngIf="createCourseLoading">
@@ -408,7 +408,7 @@
         <!-- Course header -->
         <div class="card p-4 mb-4"
           style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-            border: 1px solid #f0f0f0; background: linear-gradient(135deg, #f0f4ff, #faf5ff);">
+            border: 1px solid #f0f0f0; background: #FFF4EE;">
           <div class="d-flex justify-content-between align-items-center">
             <div>
               <h5 style="font-weight: 700; color: #1e293b; margin: 0;">📚 {{ createdCourse.title }}</h5>
@@ -425,7 +425,7 @@
             <div class="d-flex gap-2">
               <button (click)="updateCourse()" [disabled]="createCourseLoading"
                 style="padding: 8px 16px; border: none; border-radius: 10px;
-                  background: linear-gradient(135deg, #667eea, #764ba2);
+                  background: #0B0D12;
                   color: white; font-weight: 600; font-size: 13px; cursor: pointer;"
                 [style.opacity]="createCourseLoading ? '0.7' : '1'">
                 <span *ngIf="!createCourseLoading">💾 Update Course</span>
@@ -453,7 +453,7 @@
             <h5 class="mb-0" style="font-weight: 700; color: #1e293b;">
               📖 Lessons
               <span class="badge ms-2"
-                style="background: linear-gradient(135deg, #667eea, #764ba2); font-size: 12px;">
+                style="background: #0B0D12; font-size: 12px;">
                 {{ lessons.length }}
               </span>
             </h5>
@@ -525,15 +525,15 @@
             <!-- ✅ QUIZ 1 FORM -->
             <div *ngIf="showQuizForm && selectedLessonId === lesson._id"
               class="p-4 mb-3"
-              style="background: white; border-radius: 16px; border: 2px solid #667eea;
-                box-shadow: 0 4px 20px rgba(102,126,234,0.15);">
+              style="background: white; border-radius: 16px; border: 2px solid #C2410C;
+                box-shadow: 0 4px 20px rgba(255, 90, 31,0.15);">
 
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 style="font-weight: 700; color: #1e293b; margin: 0;">
                   📝 Quiz 1 — {{ lesson.title }}
                 </h5>
                 <span class="badge"
-                  style="background: linear-gradient(135deg, #667eea, #764ba2); font-size: 11px;">
+                  style="background: #0B0D12; font-size: 11px;">
                   QCM — {{ newQuiz.questions.length }} question(s)
                 </span>
               </div>
@@ -565,7 +565,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <div class="d-flex align-items-center gap-2">
                     <span style="width: 28px; height: 28px; border-radius: 50%;
-                      background: linear-gradient(135deg, #667eea, #764ba2);
+                      background: #0B0D12;
                       color: white; font-weight: 700; font-size: 13px;
                       display: inline-flex; align-items: center; justify-content: center;">
                       {{ qi + 1 }}
@@ -631,8 +631,8 @@
               </div>
 
               <button (click)="addQuizQuestion()"
-                style="width: 100%; padding: 12px; border: 2px dashed #667eea;
-                  border-radius: 10px; background: #f0f4ff; color: #667eea;
+                style="width: 100%; padding: 12px; border: 2px dashed #C2410C;
+                  border-radius: 10px; background: #FFF1EA; color: #C2410C;
                   font-weight: 600; font-size: 14px; cursor: pointer; margin-bottom: 16px;">
                 ➕ Add Another Question
               </button>
@@ -641,8 +641,8 @@
                 <button [disabled]="quizLoading" (click)="saveQuiz()"
                   style="flex: 1; padding: 13px; border: none; border-radius: 10px;
                     font-size: 15px; font-weight: 600; color: white; cursor: pointer;
-                    background: linear-gradient(135deg, #667eea, #764ba2);
-                    box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+                    background: #0B0D12;
+                    box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);"
                   [style.opacity]="quizLoading ? '0.7' : '1'">
                   <span *ngIf="!quizLoading">💾 Save Quiz 1</span>
                   <span *ngIf="quizLoading">
@@ -818,8 +818,8 @@
           <button (click)="addLesson()" [disabled]="lessonLoading"
             style="width: 100%; padding: 13px; border: none; border-radius: 10px;
               font-size: 15px; font-weight: 600; color: white; cursor: pointer;
-              background: linear-gradient(135deg, #667eea, #764ba2);
-              box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+              background: #0B0D12;
+              box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);"
             [style.opacity]="lessonLoading ? '0.7' : '1'">
             <span *ngIf="!lessonLoading">➕ Add Lesson</span>
             <span *ngIf="lessonLoading">
@@ -835,11 +835,11 @@
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="mb-0" style="font-weight: 700; color: #1e293b;">🎓 Final Exam</h5>
             <div class="d-flex gap-2" *ngIf="!showFinalExamForm">
-              <button style="border-radius: 8px; border: 2px solid #667eea; color: #667eea;
+              <button style="border-radius: 8px; border: 2px solid #C2410C; color: #C2410C;
                 font-weight: 600; background: transparent; padding: 6px 14px;
                 cursor: pointer; font-size: 13px;"
                 (click)="editFinalExam()">✏️ Edit</button>
-              <button style="border-radius: 8px; border: 2px solid #667eea; color: #667eea;
+              <button style="border-radius: 8px; border: 2px solid #C2410C; color: #C2410C;
                 font-weight: 600; background: transparent; padding: 6px 14px;
                 cursor: pointer; font-size: 13px;"
                 (click)="openFinalExamForm()">➕ Add Final Exam</button>
@@ -880,7 +880,7 @@
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="d-flex align-items-center gap-2">
                   <span style="width: 28px; height: 28px; border-radius: 50%;
-                    background: linear-gradient(135deg, #43e97b, #38f9d7);
+                    background: #0B0D12;
                     color: white; font-weight: 700; font-size: 13px;
                     display: inline-flex; align-items: center; justify-content: center;">
                     {{ qi + 1 }}
@@ -946,7 +946,7 @@
             </div>
 
             <button (click)="addFinalExamQuestion()"
-              style="width: 100%; padding: 12px; border: 2px dashed #43e97b;
+              style="width: 100%; padding: 12px; border: 2px dashed #FF5A1F;
                 border-radius: 10px; background: #f0fff4; color: #10b981;
                 font-weight: 600; font-size: 14px; cursor: pointer; margin-bottom: 16px;">
               ➕ Add Another Question
@@ -956,7 +956,7 @@
               <button [disabled]="finalExamLoading" (click)="saveFinalExam()"
                 style="flex: 1; padding: 13px; border: none; border-radius: 10px;
                   font-size: 15px; font-weight: 600; color: white; cursor: pointer;
-                  background: linear-gradient(135deg, #43e97b, #38f9d7);"
+                  background: #0B0D12;"
                 [style.opacity]="finalExamLoading ? '0.7' : '1'">
                 <span *ngIf="!finalExamLoading">💾 Save Final Exam</span>
                 <span *ngIf="finalExamLoading">
@@ -971,8 +971,8 @@
 
         <div class="text-center mb-4">
           <a [routerLink]="['/courses-details', createdCourse._id]"
-            style="display: inline-block; padding: 12px 30px; border: 2px solid #667eea;
-              border-radius: 25px; color: #667eea; font-weight: 600; text-decoration: none;">
+            style="display: inline-block; padding: 12px 30px; border: 2px solid #C2410C;
+              border-radius: 25px; color: #C2410C; font-weight: 600; text-decoration: none;">
             👁️ Preview Course
           </a>
         </div>
@@ -1034,7 +1034,7 @@
                   <td>
                     <div class="d-flex align-items-center gap-2">
                       <div style="width: 36px; height: 36px; border-radius: 50%;
-                        background: linear-gradient(135deg, #667eea, #764ba2);
+                        background: #0B0D12;
                         display: flex; align-items: center; justify-content: center;
                         color: white; font-weight: 700; font-size: 13px; flex-shrink: 0;">
                         {{ result.user?.firstname?.[0] }}{{ result.user?.lastname?.[0] }}
@@ -1110,22 +1110,22 @@
             <div style="position: relative; display: inline-block; margin: 0 auto 16px;">
               <img *ngIf="avatarPreview" [src]="avatarPreview" alt="preview"
                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-                  border: 4px solid #667eea; box-shadow: 0 4px 20px rgba(102,126,234,0.3);">
+                  border: 4px solid #C2410C; box-shadow: 0 4px 20px rgba(255, 90, 31,0.3);">
               <img *ngIf="!avatarPreview && profile?.user?.avatar"
                 [src]="'http://localhost:5000' + profile.user.avatar" alt="avatar"
                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-                  border: 4px solid #667eea; box-shadow: 0 4px 20px rgba(102,126,234,0.3);">
+                  border: 4px solid #C2410C; box-shadow: 0 4px 20px rgba(255, 90, 31,0.3);">
               <img *ngIf="!avatarPreview && !profile?.user?.avatar"
                 src="assets/img/user/user1.jpg" alt="avatar"
                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;
-                  border: 4px solid #667eea; box-shadow: 0 4px 20px rgba(102,126,234,0.3);">
+                  border: 4px solid #C2410C; box-shadow: 0 4px 20px rgba(255, 90, 31,0.3);">
             </div>
             <h5 style="font-weight: 700; color: #1e293b;">
               {{ profile?.user?.firstname }} {{ profile?.user?.lastname }}
             </h5>
             <p class="text-muted" style="font-size: 13px;">{{ profile?.user?.email }}</p>
             <span class="badge"
-              style="background: linear-gradient(135deg, #667eea, #764ba2); font-size: 12px; padding: 6px 14px;">
+              style="background: #0B0D12; font-size: 12px; padding: 6px 14px;">
               🎓 Trainer
             </span>
             <div class="mt-4">
@@ -1134,7 +1134,7 @@
                 style="border-radius: 10px; font-size: 13px;">
               <button (click)="updateAvatar()" [disabled]="!selectedAvatar"
                 style="width: 100%; padding: 10px; border: none; border-radius: 10px;
-                  background: linear-gradient(135deg, #667eea, #764ba2);
+                  background: #0B0D12;
                   color: white; font-weight: 600; font-size: 13px; cursor: pointer;"
                 [style.opacity]="!selectedAvatar ? '0.5' : '1'">
                 📷 Update Profile Picture
@@ -1148,8 +1148,8 @@
             <h6 style="font-weight: 700; color: #1e293b; margin-bottom: 16px;">📊 Quick Stats</h6>
             <div class="row">
               <div class="col-6 mb-3">
-                <div class="text-center p-2" style="background: #f0f4ff; border-radius: 12px;">
-                  <div style="font-size: 22px; font-weight: 800; color: #667eea;">{{ stats.overview.totalCourses }}</div>
+                <div class="text-center p-2" style="background: #FFF1EA; border-radius: 12px;">
+                  <div style="font-size: 22px; font-weight: 800; color: #C2410C;">{{ stats.overview.totalCourses }}</div>
                   <div style="font-size: 11px; color: #64748b;">📚 Courses</div>
                 </div>
               </div>
@@ -1215,8 +1215,8 @@
             <button (click)="updateProfile()" [disabled]="profileUpdateLoading"
               style="width: 100%; padding: 13px; border: none; border-radius: 10px;
                 font-size: 15px; font-weight: 600; color: white; cursor: pointer;
-                background: linear-gradient(135deg, #667eea, #764ba2);
-                box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+                background: #0B0D12;
+                box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);"
               [style.opacity]="profileUpdateLoading ? '0.7' : '1'">
               <span *ngIf="!profileUpdateLoading">💾 Save Changes</span>
               <span *ngIf="profileUpdateLoading">

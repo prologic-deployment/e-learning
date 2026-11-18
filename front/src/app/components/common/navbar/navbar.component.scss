@@ -8,7 +8,7 @@
         width: 100%;
         z-index: 999;
         position: fixed !important;
-        background-color: var(--whiteColor) !important;
+        background-color: var(--ink, #0B0D12) !important;
         box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.09);
         animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
     }
@@ -1714,7 +1714,7 @@
   }
 
   &:hover .cat-name {
-    color: #667eea;
+    color: #C2410C;
   }
 }
 
@@ -1734,8 +1734,8 @@
     transition: all 0.2s;
 
     &:hover {
-      background: rgba(102,126,234,0.3);
-      color: #667eea;
+      background: rgba(255, 90, 31,0.3);
+      color: #C2410C;
     }
   }
 }
@@ -1786,7 +1786,7 @@
     transition: all 0.2s;
 
     &:hover {
-      background: #667eea;
+      background: #C2410C;
       color: white;
     }
   }

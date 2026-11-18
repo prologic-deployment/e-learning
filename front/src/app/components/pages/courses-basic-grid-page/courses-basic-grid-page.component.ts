@@ -186,15 +186,15 @@ export class CoursesBasicGridPageComponent implements OnInit {
 
   getCourseColor(category: string): string {
     const colors: any = {
-      'Development': 'linear-gradient(135deg, #667eea, #764ba2)',
-      'Business': 'linear-gradient(135deg, #f093fb, #f5576c)',
-      'Finance': 'linear-gradient(135deg, #4facfe, #00f2fe)',
-      'IT & Software': 'linear-gradient(135deg, #43e97b, #38f9d7)',
-      'Design': 'linear-gradient(135deg, #fa709a, #fee140)',
-      'Marketing': 'linear-gradient(135deg, #a18cd1, #fbc2eb)',
-      'Data Science': 'linear-gradient(135deg, #ffecd2, #fcb69f)'
+      'Development': '#0B0D12',
+      'Business': '#1B2230',
+      'Finance': '#232A36',
+      'IT & Software': '#14181F',
+      'Design': '#2B1810',
+      'Marketing': '#3A1C0E',
+      'Data Science': '#1E2633'
     };
-    return colors[category] || 'linear-gradient(135deg, #667eea, #764ba2)';
+    return colors[category] || '#0B0D12';
   }
 
   getCourseImage(category: string): string {

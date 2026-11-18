@@ -37,7 +37,7 @@
           font-size: 13px; font-weight: 600; cursor: pointer;
           transition: all 0.2s; white-space: nowrap;"
         [style.background]="activeTab === tab.id ? 'white' : 'transparent'"
-        [style.color]="activeTab === tab.id ? '#667eea' : '#64748b'"
+        [style.color]="activeTab === tab.id ? '#C2410C' : '#64748b'"
         [style.boxShadow]="activeTab === tab.id ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
         {{ tab.icon }} {{ tab.label }}
       </button>
@@ -56,7 +56,7 @@
 
         <div class="d-flex align-items-center gap-3 mb-4">
           <div style="width: 44px; height: 44px; border-radius: 12px;
-            background: #ede9fe; display: flex; align-items: center;
+            background: #FFF1EA; display: flex; align-items: center;
             justify-content: center; font-size: 20px;">👤</div>
           <div>
             <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
@@ -144,8 +144,8 @@
         <button (click)="saveCV()" [disabled]="saveLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+            background: #0B0D12;
+            box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);"
           [style.opacity]="saveLoading ? '0.7' : '1'">
           <span *ngIf="!saveLoading">💾 Sauvegarder</span>
           <span *ngIf="saveLoading">
@@ -236,8 +236,8 @@
         <button (click)="addExperience()" [disabled]="expLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+            background: #0B0D12;
+            box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);"
           [style.opacity]="expLoading ? '0.7' : '1'">
           <span *ngIf="!expLoading">➕ Ajouter l'expérience</span>
           <span *ngIf="expLoading">
@@ -267,7 +267,7 @@
               <div style="font-weight: 700; color: #0f172a; font-size: 15px;">
                 {{ exp.titre }}
               </div>
-              <div style="color: #667eea; font-weight: 600; font-size: 13px;
+              <div style="color: #C2410C; font-weight: 600; font-size: 13px;
                 margin: 4px 0;">
                 {{ exp.entreprise }}
               </div>
@@ -356,8 +356,8 @@
         <button (click)="addFormation()" [disabled]="formLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+            background: #0B0D12;
+            box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);"
           [style.opacity]="formLoading ? '0.7' : '1'">
           <span *ngIf="!formLoading">➕ Ajouter la formation</span>
           <span *ngIf="formLoading">
@@ -454,8 +454,8 @@
         <button (click)="addCompetence()" [disabled]="compLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+            background: #0B0D12;
+            box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);"
           [style.opacity]="compLoading ? '0.7' : '1'">
           <span *ngIf="!compLoading">➕ Ajouter la compétence</span>
           <span *ngIf="compLoading">
@@ -551,8 +551,8 @@
         <button (click)="addLangue()" [disabled]="langLoading"
           style="width: 100%; padding: 13px; border: none; border-radius: 12px;
             font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+            background: #0B0D12;
+            box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);"
           [style.opacity]="langLoading ? '0.7' : '1'">
           <span *ngIf="!langLoading">➕ Ajouter la langue</span>
           <span *ngIf="langLoading">
@@ -580,11 +580,11 @@
               <span style="padding: 3px 10px; border-radius: 20px; font-size: 11px;
                 font-weight: 600;"
                 [style.background]="lang.niveau === 'Natif' ? '#fef3c7' :
-                  lang.niveau === 'Bilingue' ? '#ede9fe' :
+                  lang.niveau === 'Bilingue' ? '#FFF1EA' :
                   lang.niveau === 'Avancé' ? '#dbeafe' :
                   lang.niveau === 'Intermédiaire' ? '#dcfce7' : '#f1f5f9'"
                 [style.color]="lang.niveau === 'Natif' ? '#f59e0b' :
-                  lang.niveau === 'Bilingue' ? '#8b5cf6' :
+                  lang.niveau === 'Bilingue' ? '#C2410C' :
                   lang.niveau === 'Avancé' ? '#3b82f6' :
                   lang.niveau === 'Intermédiaire' ? '#10b981' : '#64748b'">
                 {{ lang.niveau }}
@@ -634,7 +634,7 @@
               <button (click)="addHobby()" [disabled]="hobbyLoading"
                 style="width: 100%; padding: 13px; border: none; border-radius: 12px;
                   font-size: 14px; font-weight: 600; color: white; cursor: pointer;
-                  background: linear-gradient(135deg, #667eea, #764ba2);"
+                  background: #0B0D12;"
                 [style.opacity]="hobbyLoading ? '0.7' : '1'">
                 <span *ngIf="!hobbyLoading">➕ Ajouter</span>
                 <span *ngIf="hobbyLoading">

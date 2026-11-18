@@ -20,9 +20,9 @@
       <div class="col-lg-4 col-md-6 mb-4">
         <div style="background: white; border-radius: 20px; padding: 32px 24px; text-align: center;
           box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;
-          border-top: 4px solid #667eea; height: 100%;">
+          border-top: 4px solid #C2410C; height: 100%;">
           <div style="width: 60px; height: 60px; border-radius: 50%;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: #0B0D12;
             display: flex; align-items: center; justify-content: center;
             font-size: 24px; margin: 0 auto 16px;">📍</div>
           <h5 style="font-weight: 700; color: #1e293b; margin-bottom: 10px;">Notre Adresse</h5>
@@ -39,12 +39,12 @@
           box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;
           border-top: 4px solid #10b981; height: 100%;">
           <div style="width: 60px; height: 60px; border-radius: 50%;
-            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            background: #0B0D12;
             display: flex; align-items: center; justify-content: center;
             font-size: 24px; margin: 0 auto 16px;">📞</div>
           <h5 style="font-weight: 700; color: #1e293b; margin-bottom: 10px;">Téléphone</h5>
           <p style="color: #64748b; font-size: 14px; line-height: 1.7; margin: 0;">
-            <a href="tel:+21671155500" style="color: #667eea; font-weight: 600; text-decoration: none;">
+            <a href="tel:+21671155500" style="color: #C2410C; font-weight: 600; text-decoration: none;">
               (216) 71 155.500
             </a><br>
             <span style="font-size: 12px;">Lun - Ven : 8h00 - 17h30</span>
@@ -63,11 +63,11 @@
           <h5 style="font-weight: 700; color: #1e293b; margin-bottom: 10px;">Email</h5>
           <p style="color: #64748b; font-size: 14px; line-height: 1.7; margin: 0;">
             <a href="mailto:prologic&#64;prologic.com.tn"
-              style="color: #667eea; font-weight: 600; text-decoration: none;">
+              style="color: #C2410C; font-weight: 600; text-decoration: none;">
               prologic&#64;prologic.com.tn
             </a><br>
             <a href="https://www.prologic.com.tn" target="_blank"
-              style="color: #667eea; font-size: 12px; text-decoration: none;">
+              style="color: #C2410C; font-size: 12px; text-decoration: none;">
               www.prologic.com.tn
             </a>
           </p>
@@ -99,19 +99,19 @@
           <div class="d-flex gap-3 flex-wrap">
             <a href="https://www.facebook.com/prologic.tn" target="_blank"
               style="display: flex; align-items: center; gap: 8px; padding: 10px 16px;
-                border-radius: 10px; background: #f0f4ff; color: #667eea;
+                border-radius: 10px; background: #FFF1EA; color: #C2410C;
                 text-decoration: none; font-size: 13px; font-weight: 600;">
               <i class='bx bxl-facebook' style="font-size: 18px;"></i> Facebook
             </a>
             <a href="https://www.linkedin.com/company/prologic-tunisie" target="_blank"
               style="display: flex; align-items: center; gap: 8px; padding: 10px 16px;
-                border-radius: 10px; background: #f0f4ff; color: #667eea;
+                border-radius: 10px; background: #FFF1EA; color: #C2410C;
                 text-decoration: none; font-size: 13px; font-weight: 600;">
               <i class='bx bxl-linkedin' style="font-size: 18px;"></i> LinkedIn
             </a>
             <a href="https://www.prologic.com.tn" target="_blank"
               style="display: flex; align-items: center; gap: 8px; padding: 10px 16px;
-                border-radius: 10px; background: #f0f4ff; color: #667eea;
+                border-radius: 10px; background: #FFF1EA; color: #C2410C;
                 text-decoration: none; font-size: 13px; font-weight: 600;">
               <i class='bx bx-globe' style="font-size: 18px;"></i> Site Web
             </a>
@@ -190,8 +190,8 @@
               <button (click)="sendMessage()" [disabled]="contactLoading"
                 style="width: 100%; padding: 14px; border: none; border-radius: 10px;
                   font-size: 15px; font-weight: 600; color: white; cursor: pointer;
-                  background: linear-gradient(135deg, #667eea, #764ba2);
-                  box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+                  background: #0B0D12;
+                  box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);"
                 [style.opacity]="contactLoading ? '0.7' : '1'">
                 <span *ngIf="!contactLoading">📨 Envoyer le Message</span>
                 <span *ngIf="contactLoading">

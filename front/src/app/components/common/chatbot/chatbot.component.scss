@@ -12,10 +12,10 @@
   height: 60px;
   border-radius: 50%;
   border: none;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: #0B0D12;
   color: white;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
+  box-shadow: 0 4px 20px rgba(255, 90, 31, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,7 +24,7 @@
 
   &:hover {
     transform: scale(1.1);
-    box-shadow: 0 6px 25px rgba(102, 126, 234, 0.7);
+    box-shadow: 0 6px 25px rgba(255, 90, 31, 0.7);
   }
 
   &.open {
@@ -76,7 +76,7 @@
 
 // ✅ Header
 .chat-header {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: #0B0D12;
   color: white;
   padding: 14px 16px;
   display: flex;
@@ -157,7 +157,7 @@
 .bot-msg-avatar {
   width: 30px;
   height: 30px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: #0B0D12;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -182,7 +182,7 @@
 }
 
 .user-bubble {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: #0B0D12;
   color: white;
   border-bottom-right-radius: 4px;
 
@@ -200,7 +200,7 @@
 .sources-section {
   margin-top: 10px;
   padding-top: 8px;
-  border-top: 1px solid #f0f4ff;
+  border-top: 1px solid #FFF1EA;
 }
 
 .source-chip {
@@ -210,18 +210,18 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    color: #667eea;
+    color: #C2410C;
     text-decoration: none;
     font-size: 12px;
     font-weight: 600;
-    background: #f0f4ff;
+    background: #FFF1EA;
     padding: 4px 10px;
     border-radius: 20px;
-    border: 1px solid #e0e7ff;
+    border: 1px solid #FFD9C7;
     transition: all 0.2s;
 
     &:hover {
-      background: #667eea;
+      background: #C2410C;
       color: white;
     }
   }
@@ -255,9 +255,9 @@
 
 .suggestion-chip {
   flex-shrink: 0;
-  background: #f0f4ff;
-  border: 1px solid #e0e7ff;
-  color: #667eea;
+  background: #FFF1EA;
+  border: 1px solid #FFD9C7;
+  color: #C2410C;
   font-size: 11px;
   font-weight: 600;
   padding: 5px 12px;
@@ -267,7 +267,7 @@
   white-space: nowrap;
 
   &:hover {
-    background: #667eea;
+    background: #C2410C;
     color: white;
   }
 }
@@ -297,8 +297,8 @@
   overflow-y: auto;
 
   &:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: #C2410C;
+    box-shadow: 0 0 0 3px rgba(255, 90, 31, 0.1);
   }
 
   &:disabled {
@@ -311,7 +311,7 @@
   height: 40px;
   border-radius: 12px;
   border: none;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: #0B0D12;
   color: white;
   cursor: pointer;
   font-size: 16px;
@@ -323,7 +323,7 @@
 
   &:hover:not(:disabled) {
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 12px rgba(255, 90, 31, 0.4);
   }
 
   &:disabled {

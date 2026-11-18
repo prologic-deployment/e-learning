@@ -24,7 +24,7 @@
             (click)="activeTab = 'login'"
             style="flex: 1; padding: 10px 20px; border: none; border-radius: 50px;
               font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;"
-            [style.background]="activeTab === 'login' ? 'linear-gradient(135deg, #667eea, #764ba2)' : 'transparent'"
+            [style.background]="activeTab === 'login' ? '#0B0D12' : 'transparent'"
             [style.color]="activeTab === 'login' ? 'white' : '#64748b'">
             🔑 Login
           </button>
@@ -32,7 +32,7 @@
             (click)="activeTab = 'register'"
             style="flex: 1; padding: 10px 20px; border: none; border-radius: 50px;
               font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;"
-            [style.background]="activeTab === 'register' ? 'linear-gradient(135deg, #667eea, #764ba2)' : 'transparent'"
+            [style.background]="activeTab === 'register' ? '#0B0D12' : 'transparent'"
             [style.color]="activeTab === 'register' ? 'white' : '#64748b'">
             📝 Register
           </button>
@@ -55,7 +55,7 @@
             <!-- Header -->
             <div class="text-center mb-4">
               <div style="width: 70px; height: 70px;
-                background: linear-gradient(135deg, #667eea, #764ba2);
+                background: #0B0D12;
                 border-radius: 50%; display: flex; align-items: center;
                 justify-content: center; margin: 0 auto 15px;">
                 <span style="font-size: 28px;">🔑</span>
@@ -100,7 +100,7 @@
                     Password
                   </label>
                   <a routerLink="/forgot-password"
-                    style="font-size: 12px; color: #667eea;
+                    style="font-size: 12px; color: #C2410C;
                       font-weight: 600; text-decoration: none;">
                     Forgot password?
                   </a>
@@ -123,8 +123,8 @@
                 style="width: 100%; padding: 13px; border: none;
                   border-radius: 10px; font-size: 15px; font-weight: 600;
                   color: white; cursor: pointer; margin-top: 8px;
-                  background: linear-gradient(135deg, #667eea, #764ba2);
-                  box-shadow: 0 4px 15px rgba(102,126,234,0.4);
+                  background: #0B0D12;
+                  box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);
                   transition: opacity 0.2s;"
                 [style.opacity]="loginLoading ? '0.7' : '1'">
                 <span *ngIf="!loginLoading">🔑 Sign In</span>
@@ -140,7 +140,7 @@
             <p class="text-center mt-4 mb-0" style="font-size: 13px; color: #64748b;">
               Not a member ?
               <a (click)="activeTab = 'register'"
-                style="color: #667eea; font-weight: 600;
+                style="color: #C2410C; font-weight: 600;
                   text-decoration: none; cursor: pointer;">
                 Create an account
               </a>
@@ -158,7 +158,7 @@
             <!-- Header -->
             <div class="text-center mb-4">
               <div style="width: 70px; height: 70px;
-                background: linear-gradient(135deg, #667eea, #764ba2);
+                background: #0B0D12;
                 border-radius: 50%; display: flex; align-items: center;
                 justify-content: center; margin: 0 auto 15px;">
                 <span style="font-size: 28px;">📝</span>
@@ -333,11 +333,11 @@
                     style="flex: 1; padding: 12px; border-radius: 10px;
                       border: 2px solid; cursor: pointer; text-align: center;
                       transition: all 0.2s;"
-                    [style.borderColor]="registerData.role === 'user' ? '#667eea' : '#e2e8f0'"
-                    [style.background]="registerData.role === 'user' ? '#f0f4ff' : 'white'">
+                    [style.borderColor]="registerData.role === 'user' ? '#C2410C' : '#e2e8f0'"
+                    [style.background]="registerData.role === 'user' ? '#FFF1EA' : 'white'">
                     <div style="font-size: 24px;">👤</div>
                     <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
-                      [style.color]="registerData.role === 'user' ? '#667eea' : '#64748b'">
+                      [style.color]="registerData.role === 'user' ? '#C2410C' : '#64748b'">
                       Student
                     </div>
                   </div>
@@ -345,11 +345,11 @@
                     style="flex: 1; padding: 12px; border-radius: 10px;
                       border: 2px solid; cursor: pointer; text-align: center;
                       transition: all 0.2s;"
-                    [style.borderColor]="registerData.role === 'trainer' ? '#667eea' : '#e2e8f0'"
-                    [style.background]="registerData.role === 'trainer' ? '#f0f4ff' : 'white'">
+                    [style.borderColor]="registerData.role === 'trainer' ? '#C2410C' : '#e2e8f0'"
+                    [style.background]="registerData.role === 'trainer' ? '#FFF1EA' : 'white'">
                     <div style="font-size: 24px;">🎓</div>
                     <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
-                      [style.color]="registerData.role === 'trainer' ? '#667eea' : '#64748b'">
+                      [style.color]="registerData.role === 'trainer' ? '#C2410C' : '#64748b'">
                       Trainer
                     </div>
                   </div>
@@ -362,8 +362,8 @@
                 style="width: 100%; padding: 13px; border: none;
                   border-radius: 10px; font-size: 15px; font-weight: 600;
                   color: white; cursor: pointer;
-                  background: linear-gradient(135deg, #667eea, #764ba2);
-                  box-shadow: 0 4px 15px rgba(102,126,234,0.4);"
+                  background: #0B0D12;
+                  box-shadow: 0 4px 15px rgba(255, 90, 31,0.4);"
                 [style.opacity]="registerLoading ? '0.7' : '1'">
                 <span *ngIf="!registerLoading">📝 Create Account</span>
                 <span *ngIf="registerLoading">
@@ -377,7 +377,7 @@
             <p class="text-center mt-4 mb-0" style="font-size: 13px; color: #64748b;">
               Already have an account ?
               <a (click)="activeTab = 'login'"
-                style="color: #667eea; font-weight: 600;
+                style="color: #C2410C; font-weight: 600;
                   text-decoration: none; cursor: pointer;">
                 Sign in
               </a>
