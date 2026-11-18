@@ -309,7 +309,7 @@ async function seedNotifications() {
 
 async function seedCVs() {
   if (USERS_ONLY) return;
-  log(COLORS.cyan, '\n📄 Seeding CVs (feeds the recommender)...');
+  log(COLORS.cyan, '\n📄 Seeding CVs...');
 
   const cvData = [
     {

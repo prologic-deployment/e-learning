@@ -28,7 +28,6 @@ import { AdminDashboardComponent } from './components/pages/dashboard/admin-dash
 import { ManagerDashboardComponent } from './components/pages/dashboard/manager-dashboard/manager-dashboard.component';
 import { TrainerDashboardComponent } from './components/pages/dashboard/trainer-dashboard/trainer-dashboard.component';
 import { UserDashboardComponent } from './components/pages/dashboard/user-dashboard/user-dashboard.component';
-import { RecommendationsComponent } from './components/pages/recommendations/recommendations.component';
 import { NotFoundPageComponent } from './components/pages/not-found-page/not-found-page.component';
 
 const routes: Routes = [
@@ -54,7 +53,6 @@ const routes: Routes = [
   { path: 'about-us', component: AboutUsPageComponent, canActivate: [StaffRedirectGuard] },
   { path: 'contact', component: ContactPageOneComponent, canActivate: [StaffRedirectGuard] },
   { path: 'contact-2', component: ContactPageTwoComponent, canActivate: [StaffRedirectGuard] },
-  { path: 'recommendations', component: RecommendationsComponent, canActivate: [StaffRedirectGuard] },
 
   // ✅ Pages privées user — staff bloqué
   { path: 'cart', component: CartPageComponent, canActivate: [AuthGuard, StaffRedirectGuard] },

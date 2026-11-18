@@ -31,7 +31,7 @@ Requires `MONGO_URI` in `back/.env` and a running MongoDB.
 | Certificates | 2 | with serial + HMAC verification codes |
 | Reviews | 5 | 3 approved, 2 pending (tests the moderation queue) |
 | Notifications | 12 | NEW_COURSE / DEADLINE_REMINDER / BADGE_EARNED samples |
-| CVs | 3 | powers the recommendation engine |
+| CVs | 3 | powers the CV builder |
 
 ## Test account matrix
 

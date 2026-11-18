@@ -22,7 +22,7 @@ const apiLimiter = rateLimit({
   message: { success: false, message: "Too many requests, slow down." }
 });
 
-// AI endpoints are expensive (Gemini API bill + Whisper CPU) — per user
+// AI endpoints are expensive (Gemini API bill) — per user
 const aiLimiter = rateLimit({
   ...base,
   windowMs: 60 * 60 * 1000,

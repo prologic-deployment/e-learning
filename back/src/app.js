@@ -25,7 +25,6 @@ const statsRoutes = require("./routes/stats.routes");
 const reviewRoutes = require("./routes/review.routes");
 const chatbotRoutes = require("./routes/chatbot.routes");
 const nlpRoutes = require("./routes/nlp.routes");
-const recommendationRoutes = require("./routes/recommendation.routes");
 
 // ✅ SECURITY HEADERS (XSS protection, no-sniff, frameguard, HSTS in prod…)
 app.use(
@@ -85,7 +84,6 @@ app.use("/api/certificates", certificateRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/chatbot", chatbotRoutes);
 app.use("/api/nlp", nlpRoutes);
-app.use("/api/recommendations", recommendationRoutes);
 
 app.get("/", async (req, res) => {
   const mongoose = require("mongoose");

@@ -64,14 +64,6 @@ export class CourseViewerComponent implements OnInit {
   currentUserId = '';
   hasReviewed = false;
 
-     // ✅ NLP
-  lessonSummaries: { [lessonId: string]: any } = {};
-  nlpLoading: string | null = null;
-  nlpError = '';
-  nlpSuccess = '';
-  activeSummaryId: string | null = null;
-  showTranscription: { [lessonId: string]: boolean } = {};
-
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
@@ -428,74 +420,6 @@ export class CourseViewerComponent implements OnInit {
       },
       error: () => {}
     });
-  }
-
-
- 
-
-  summarizeLesson(lessonId: string, force: boolean = false): void {
-    this.nlpLoading = lessonId;
-    this.nlpError = '';
-    this.nlpSuccess = '';
-
-    const url = force
-      ? `${this.apiUrl}/nlp/lesson/${lessonId}/summarize?force=true`
-      : `${this.apiUrl}/nlp/lesson/${lessonId}/summarize`;
-
-    this.http.post<any>(url, {}).subscribe({
-      next: (res) => {
-        this.nlpLoading = null;
-        this.nlpSuccess = res.cached
-          ? '✅ Résumé déjà disponible !'
-          : '✅ Résumé généré avec succès !';
-
-        this.lessonSummaries[lessonId] = {
-          summary: res.summary,
-          transcription: res.transcription,
-          keyPoints: res.keyPoints || [],
-          language: res.language,
-          summarizedAt: res.summarizedAt
-        };
-
-        // ✅ Mettre à jour la leçon dans la liste
-        const lesson = this.lessons.find((l: any) => l._id === lessonId);
-        if (lesson) {
-          lesson.summary = res.summary;
-          lesson.keyPoints = res.keyPoints;
-          lesson.language = res.language;
-          lesson.summarizedAt = res.summarizedAt;
-        }
-
-        this.activeSummaryId = lessonId;
-        setTimeout(() => this.nlpSuccess = '', 4000);
-      },
-      error: (err) => {
-        this.nlpLoading = null;
-        this.nlpError = err.status === 503
-          ? '⚠️ Service Whisper non disponible. Lancez Flask sur le port 5001.'
-          : err.error?.message || 'Erreur lors de la génération du résumé';
-        setTimeout(() => this.nlpError = '', 5000);
-      }
-    });
-  }
-
-  toggleLessonSummary(lessonId: string): void {
-    this.activeSummaryId = this.activeSummaryId === lessonId ? null : lessonId;
-  }
-
-  // ✅ XSS FIX: escape HTML before markdown conversion (same as chatbot)
-  formatSummary(summary: string): string {
-    if (!summary) return '';
-    const safe = summary
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-    return safe
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/^- (.+)$/gm, '<li style="margin:4px 0;">$1</li>')
-      .replace(/\n/g, '<br>');
   }
 
 

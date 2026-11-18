@@ -47,13 +47,6 @@ export class PaidCoursesSinglePageComponent implements OnInit {
   aiError = '';
   showAiSummary = false;
 
-  // ✅ NLP par leçon vidéo
-  lessonSummaries: { [lessonId: string]: any } = {};
-  nlpLoading: string | null = null;
-  nlpError = '';
-  nlpSuccess = '';
-  activeSummaryId: string | null = null;
-  showTranscription: { [lessonId: string]: boolean } = {};
 
   constructor(
     private route: ActivatedRoute,
@@ -372,91 +365,6 @@ export class PaidCoursesSinglePageComponent implements OnInit {
 
 
 
-  // ✅ Résumer une leçon vidéo
-  summarizeLesson(lessonId: string, force: boolean = false): void {
-    if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/profile-authentication']);
-      return;
-    }
-
-    this.nlpLoading = lessonId;
-    this.nlpError = '';
-    this.nlpSuccess = '';
-
-    const url = force
-      ? `${this.apiUrl}/nlp/lesson/${lessonId}/summarize?force=true`
-      : `${this.apiUrl}/nlp/lesson/${lessonId}/summarize`;
-
-    this.http.post<any>(url, {}).subscribe({
-      next: (res) => {
-        this.nlpLoading = null;
-        this.nlpSuccess = res.cached
-          ? '✅ Résumé déjà disponible !'
-          : '✅ Résumé généré avec succès !';
-
-        // ✅ Sauvegarder dans la map locale
-        this.lessonSummaries[lessonId] = {
-          summary: res.summary,
-          transcription: res.transcription,
-          keyPoints: res.keyPoints || [],
-          language: res.language,
-          summarizedAt: res.summarizedAt
-        };
-
-        // ✅ Mettre à jour la leçon dans le cours
-        if (this.course?.lessons) {
-          const lesson = this.course.lessons.find((l: any) => l._id === lessonId);
-          if (lesson) {
-            lesson.summary = res.summary;
-            lesson.transcription = res.transcription;
-            lesson.keyPoints = res.keyPoints;
-            lesson.language = res.language;
-            lesson.summarizedAt = res.summarizedAt;
-          }
-        }
-
-        this.activeSummaryId = lessonId;
-        this.cdr.detectChanges();
-        setTimeout(() => this.nlpSuccess = '', 4000);
-      },
-      error: (err) => {
-        this.nlpLoading = null;
-        if (err.status === 503) {
-          this.nlpError = '⚠️ Service Whisper non disponible. Lancez Flask sur le port 5001.';
-        } else {
-          this.nlpError = err.error?.message || 'Erreur lors de la génération du résumé';
-        }
-        setTimeout(() => this.nlpError = '', 5000);
-      }
-    });
-  }
-
-  // ✅ Afficher/masquer résumé
-  toggleLessonSummary(lessonId: string): void {
-    this.activeSummaryId = this.activeSummaryId === lessonId ? null : lessonId;
-    this.cdr.detectChanges();
-  }
-
-  // ✅ XSS FIX: escape HTML before markdown conversion (same as chatbot)
-  formatSummary(summary: string): string {
-    if (!summary) return '';
-    const safe = summary
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-    return safe
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em>$1</em>')
-      .replace(/^#{1,3} (.+)$/gm, '<h6 style="font-weight:700;color:#8b5cf6;margin-top:12px;">$1</h6>')
-      .replace(/^- (.+)$/gm, '<li style="margin:4px 0;">$1</li>')
-      .replace(/\n/g, '<br>');
-  }
-
-  // ✅ Récupérer résumé d'une leçon (depuis map locale ou leçon)
-  getLessonSummary(lesson: any): any {
-    return this.lessonSummaries[lesson._id] || (lesson.summary ? lesson : null);
-  }
 
 
   openPopup(): void { this.isOpen = true; }

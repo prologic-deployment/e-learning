@@ -53,7 +53,6 @@ import { ResetPasswordComponent } from './components/pages/reset-password/reset-
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RoleGuard } from './guards/role.guard';
 import { ChatbotComponent } from './components/common/chatbot/chatbot.component';
-import { RecommendationsComponent } from './components/pages/recommendations/recommendations.component';
 import { SocketService } from './services/socket.service';
 import { ContactPageOneComponent } from './components/pages/contact-page-one/contact-page-one.component';
 import { ContactPageTwoComponent } from './components/pages/contact-page-two/contact-page-two.component';
@@ -101,7 +100,6 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
         ResetPasswordComponent,
         UserDashboardComponent,
         ChatbotComponent,
-        RecommendationsComponent,
         ContactPageOneComponent,
         ContactPageTwoComponent,
         NotFoundPageComponent

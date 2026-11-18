@@ -246,17 +246,6 @@
                   </div>
                 </div>
 
-                <!-- Alertes NLP -->
-                <div *ngIf="nlpSuccess" class="mb-3"
-                  style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px;
-                    padding: 12px 16px; font-size: 13px; color: #10b981; font-weight: 600;">
-                  🧠 {{ nlpSuccess }}
-                </div>
-                <div *ngIf="nlpError" class="mb-3"
-                  style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px;
-                    padding: 12px 16px; font-size: 13px; color: #ef4444; font-weight: 600;">
-                  ❌ {{ nlpError }}
-                </div>
 
                 <!-- Liste des leçons -->
                 <div *ngFor="let lesson of course.lessons; let i = index" class="mb-3">
@@ -284,130 +273,12 @@
                               [style.color]="lesson.contentType === 'video' ? '#8b5cf6' : '#3b82f6'">
                               {{ lesson.contentType === 'video' ? '🎬 Vidéo' : '📄 PDF' }}
                             </span>
-                            <span *ngIf="lesson.summary || lessonSummaries[lesson._id]"
-                              style="font-size: 10px; font-weight: 600; padding: 2px 8px;
-                                border-radius: 20px; background: #faf5ff; color: #8b5cf6;">
-                              🧠 Résumé IA disponible
-                            </span>
                           </div>
-                        </div>
-                      </div>
-
-                      <!-- Boutons NLP -->
-                      <div *ngIf="lesson.contentType === 'video' && isLoggedIn() && isEnrolled"
-                        style="display: flex; gap: 8px; flex-shrink: 0; margin-left: 12px;">
-
-                        <button *ngIf="!lesson.summary && !lessonSummaries[lesson._id]"
-                          (click)="summarizeLesson(lesson._id)"
-                          [disabled]="nlpLoading === lesson._id"
-                          style="padding: 7px 14px; border: none; border-radius: 10px;
-                            font-size: 12px; font-weight: 600; color: white;
-                            cursor: pointer; white-space: nowrap;"
-                          [style.background]="nlpLoading === lesson._id ?
-                            '#94a3b8' : 'linear-gradient(135deg, #8b5cf6, #6d28d9)'"
-                          [style.opacity]="nlpLoading === lesson._id ? '0.7' : '1'">
-                          <span *ngIf="nlpLoading !== lesson._id">🧠 Résumer</span>
-                          <span *ngIf="nlpLoading === lesson._id">
-                            <span class="spinner-border spinner-border-sm me-1"></span>
-                            Analyse...
-                          </span>
-                        </button>
-
-                        <ng-container *ngIf="lesson.summary || lessonSummaries[lesson._id]">
-                          <button (click)="toggleLessonSummary(lesson._id)"
-                            style="padding: 7px 14px; border: 1.5px solid; border-radius: 10px;
-                              font-size: 12px; font-weight: 600; background: white;
-                              cursor: pointer; white-space: nowrap;"
-                            [style.color]="activeSummaryId === lesson._id ? '#8b5cf6' : '#64748b'"
-                            [style.borderColor]="activeSummaryId === lesson._id ? '#8b5cf6' : '#e2e8f0'">
-                            {{ activeSummaryId === lesson._id ? '🙈 Masquer' : '👁️ Voir résumé' }}
-                          </button>
-                          <button (click)="summarizeLesson(lesson._id, true)"
-                            [disabled]="nlpLoading === lesson._id"
-                            style="padding: 7px 10px; border: 1.5px solid #e2e8f0;
-                              border-radius: 10px; font-size: 12px; background: white;
-                              color: #64748b; cursor: pointer;" title="Régénérer">
-                            🔄
-                          </button>
-                        </ng-container>
-                      </div>
-
-                      <div *ngIf="lesson.contentType === 'video' && (!isLoggedIn() || !isEnrolled)"
-                        style="font-size: 11px; color: #94a3b8; flex-shrink: 0; margin-left: 12px;">
-                        🔒 Inscrivez-vous pour accéder au résumé IA
-                      </div>
-                    </div>
-
-                    <!-- Section résumé NLP -->
-                    <div *ngIf="activeSummaryId === lesson._id &&
-                      (lesson.summary || lessonSummaries[lesson._id])"
-                      style="padding: 20px; background: white; border-top: 1px solid #e2e8f0;">
-
-                      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
-                        <div style="width: 36px; height: 36px; border-radius: 10px;
-                          background: linear-gradient(135deg, #8b5cf6, #6d28d9);
-                          display: flex; align-items: center; justify-content: center;
-                          font-size: 16px;">🧠</div>
-                        <div>
-                          <div style="font-weight: 700; color: #0f172a; font-size: 14px;">
-                            Résumé IA — {{ lesson.title }}
-                          </div>
-                          <div style="font-size: 11px; color: #94a3b8;">
-                            <span *ngIf="(lessonSummaries[lesson._id] || lesson).language">
-                              🌐
-                              {{ (lessonSummaries[lesson._id] || lesson).language === 'fr' ? 'Français' :
-                                 (lessonSummaries[lesson._id] || lesson).language === 'ar' ? 'Arabe' : 'Anglais' }}
-                              ·
-                            </span>
-                            <span *ngIf="(lessonSummaries[lesson._id] || lesson).summarizedAt">
-                              📅 {{ (lessonSummaries[lesson._id] || lesson).summarizedAt | date:'dd/MM/yyyy HH:mm' }}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Résumé texte -->
-                      <div style="background: #faf5ff; border-radius: 12px; padding: 16px;
-                        border: 1px solid #e9d5ff; margin-bottom: 16px;">
-                        <div style="font-size: 13px; color: #374151; line-height: 1.8;"
-                          [innerHTML]="formatSummary((lessonSummaries[lesson._id] || lesson).summary)">
-                        </div>
-                      </div>
-
-                      <!-- Points clés -->
-                      <div *ngIf="(lessonSummaries[lesson._id] || lesson).keyPoints?.length > 0"
-                        style="margin-bottom: 16px;">
-                        <div style="font-size: 13px; font-weight: 700; color: #8b5cf6;
-                          margin-bottom: 10px;">🎯 Points Clés</div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                          <span *ngFor="let point of (lessonSummaries[lesson._id] || lesson).keyPoints"
-                            style="background: #f0f4ff; color: #667eea; padding: 5px 12px;
-                              border-radius: 20px; font-size: 12px; font-weight: 600;
-                              border: 1px solid #e0e7ff;">
-                            ✓ {{ point }}
-                          </span>
-                        </div>
-                      </div>
-
-                      <!-- Transcription -->
-                      <div *ngIf="(lessonSummaries[lesson._id] || lesson).transcription">
-                        <button (click)="showTranscription[lesson._id] = !showTranscription[lesson._id]"
-                          style="padding: 7px 14px; border: 1.5px solid #e2e8f0; border-radius: 10px;
-                            background: white; color: #64748b; font-size: 12px;
-                            font-weight: 600; cursor: pointer;">
-                          📝 {{ showTranscription[lesson._id] ? 'Masquer' : 'Voir' }} la transcription
-                        </button>
-                        <div *ngIf="showTranscription[lesson._id]"
-                          style="margin-top: 10px; padding: 14px; background: #f8fafc;
-                            border-radius: 10px; border: 1px solid #e2e8f0;
-                            max-height: 180px; overflow-y: auto;">
-                          <p style="font-size: 12px; color: #64748b; line-height: 1.7; margin: 0;">
-                            {{ (lessonSummaries[lesson._id] || lesson).transcription }}
-                          </p>
                         </div>
                       </div>
 
                     </div>
+
                   </div>
                 </div>
               </div>

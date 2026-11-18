@@ -5,14 +5,14 @@ import { AuthService } from '../services/auth.service';
 /**
  * Staff may now BROWSE the storefront (course pages, details, categories…) so
  * trainers and admins can preview their content. Only the homepage still
- * redirects staff to their dashboard, and learner-only areas (cart, CV,
- * recommendations) stay blocked.
+ * redirects staff to their dashboard, and learner-only areas (cart, CV)
+ * stay blocked.
  */
 @Injectable({ providedIn: 'root' })
 export class StaffRedirectGuard implements CanActivate {
 
   // Routes reserved for learners — staff are still redirected from these
-  private learnerOnlyRoutes = ['/cart', '/cv', '/recommendations'];
+  private learnerOnlyRoutes = ['/cart', '/cv'];
 
   constructor(private authService: AuthService, private router: Router) {}
 

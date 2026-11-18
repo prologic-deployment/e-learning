@@ -98,7 +98,7 @@ All seven use the password **`User1234`** and the role `user`. Phones run
 | Certificates | 2 | serial + HMAC verification code |
 | Reviews | 5 | 3 approved, 2 pending |
 | Notifications | 12 | NEW_COURSE / DEADLINE_REMINDER / BADGE_EARNED |
-| CVs | 3 | powers the recommendation engine |
+| CVs | 3 | powers the CV builder |
 
 > Gotcha: `/api/courses` responses are cached in Redis (TTL up to 30 min, keyed per
 > URL + user). After reseeding, flush it or the browser keeps serving stale lists:
