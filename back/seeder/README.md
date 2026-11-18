@@ -24,8 +24,8 @@ Requires `MONGO_URI` in `back/.env` and a running MongoDB.
 | Users | 13 | 1 admin, 2 managers, 3 trainers, 7 learners |
 | Teams | 2 | manager1 → 3 members, manager2 → 3 members (user7 teamless on purpose) |
 | Badges | 13 | auto-initialized from badge.service definitions |
-| Courses | 4 | 2 free, 2 paid; **1 pending approval** (tests admin approval flow) |
-| Lessons | 12 | each with a scored quiz (answers stored, `select:false`) |
+| Courses | 7 | tech-only categories (Development, Systems, Networking, DevOps, Cybersecurity, Data & AI); 3 free, 4 paid; **1 pending approval** (tests admin approval flow) |
+| Lessons | 21 | each with a scored quiz (answers stored, `select:false`) |
 | Enrollments | 9 | mixed states: completed / midway / just-started / deadline-soon / overdue |
 | Purchases | 2 | with payment references (paid course enrollments) |
 | Certificates | 2 | with serial + HMAC verification codes |
@@ -40,8 +40,8 @@ Requires `MONGO_URI` in `back/.env` and a running MongoDB.
 | admin@test.com | Admin123 | admin | approve pending course, moderate reviews, cache stats |
 | manager1@test.com | Manager123 | manager | team of 3; user3 has an **overdue deadline** |
 | manager2@test.com | Manager123 | manager | team of 3; try assigning a course to user7 → must fail (not your team) |
-| trainer1@test.com | Trainer123 | trainer | owns Node (free) + React (pending) courses |
-| trainer2@test.com | Trainer123 | trainer | owns Docker course (149 TND, approved) |
+| trainer1@test.com | Trainer123 | trainer | owns Node (free), React (pending) + Cybersecurity (free) courses |
+| trainer2@test.com | Trainer123 | trainer | owns Docker (149 TND), Linux (79 TND) + Networking/CCNA (119 TND) courses |
 | trainer3@test.com | Trainer123 | trainer | owns ML course (99 TND, approved) |
 | user1@test.com | User1234 | user | **completed** Node course → has certificate; bought Docker |
 | user2@test.com | User1234 | user | midway Node, bought ML |

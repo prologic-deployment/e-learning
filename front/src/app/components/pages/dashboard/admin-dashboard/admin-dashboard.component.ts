@@ -9,6 +9,7 @@ import { environment } from '../../../../../environments/environment';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import * as XLSX from 'xlsx';
+import { CATEGORY_NAMES, COURSE_CATEGORIES } from '../../../../shared/categories';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -47,21 +48,11 @@ export class AdminDashboardComponent implements OnInit {
   customCategoryInput = '';
   customSubCategoryInput = '';
 
-  categories = [
-    'Development', 'Business', 'Finance', 'IT & Software',
-    'Design', 'Marketing', 'Health & Fitness', 'Data Science'
-  ];
+  categories = [...CATEGORY_NAMES];
 
-  subCategories: { [key: string]: string[] } = {
-    'Development': ['Web Development', 'Mobile Development', 'Python', 'JavaScript', 'Java', 'Game Development'],
-    'Business': ['Entrepreneurship', 'Management', 'Sales', 'Strategy', 'Communication'],
-    'Finance': ['Accounting', 'Trading', 'Investment', 'Crypto', 'Personal Finance'],
-    'IT & Software': ['Cybersecurity', 'Networking', 'Cloud Computing', 'Linux', 'DevOps'],
-    'Design': ['UI/UX Design', 'Graphic Design', 'Figma', 'Motion Design', 'Illustration'],
-    'Marketing': ['SEO', 'Social Media', 'Email Marketing', 'Google Ads', 'Content Marketing'],
-    'Health & Fitness': ['Nutrition', 'Yoga', 'Fitness', 'Mental Health', 'Meditation'],
-    'Data Science': ['Machine Learning', 'Artificial Intelligence', 'Data Analytics', 'Deep Learning', 'NLP']
-  };
+  subCategories: { [key: string]: string[] } = Object.fromEntries(
+    COURSE_CATEGORIES.map(c => [c.name, [...c.subcategories]])
+  );
 
   get currentSubCategories(): string[] {
     if (!this.newCourse.category) return [];

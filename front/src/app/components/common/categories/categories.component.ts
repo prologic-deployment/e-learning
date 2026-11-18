@@ -1,17 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { COURSE_CATEGORIES } from '../../../shared/categories';
 
 @Component({
     selector: 'app-categories',
     templateUrl: './categories.component.html',
     styleUrls: ['./categories.component.scss']
 })
-export class CategoriesComponent implements OnInit {
-
-    constructor(
-        public router: Router
-    ) { }
-
-    ngOnInit(): void {}
-
+export class CategoriesComponent {
+    readonly categories = COURSE_CATEGORIES;
 }

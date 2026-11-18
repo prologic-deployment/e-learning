@@ -4,6 +4,7 @@ import { AuthService } from '../../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CATEGORY_NAMES, categoryColor, categoryIcon } from '../../../shared/categories';
 
 @Component({
   selector: 'app-courses-basic-grid-page',
@@ -19,6 +20,7 @@ export class CoursesBasicGridPageComponent implements OnInit {
   selectedType = '';
   selectedTag = '';
   selectedCategory = '';
+  selectedSubCategory = '';
   totalCourses = 0;
   currentPage = 1;
   totalPages = 1;
@@ -30,10 +32,7 @@ export class CoursesBasicGridPageComponent implements OnInit {
   // ✅ Reviews par cours
   reviewsMap: { [courseId: string]: { avgRating: number, total: number, reviews: any[] } | undefined } = {};
 
-  categories = [
-    'Development', 'Business', 'Finance', 'IT & Software',
-    'Design', 'Marketing', 'Data Science'
-  ];
+  categories = [...CATEGORY_NAMES];
 
   constructor(
     private courseService: CourseService,
@@ -47,6 +46,7 @@ export class CoursesBasicGridPageComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.searchQuery = params['search'] || '';
       this.selectedCategory = params['category'] || '';
+      this.selectedSubCategory = params['subCategory'] || '';
       this.selectedTag = params['tag'] || '';  // ✅ tag manquait
       this.currentPage = 1;
       this.loadCourses();
@@ -60,6 +60,7 @@ export class CoursesBasicGridPageComponent implements OnInit {
       type: this.selectedType,
       tag: this.selectedTag,
       category: this.selectedCategory,
+      subCategory: this.selectedSubCategory,
       page: this.currentPage,
       limit: 8
     }).subscribe({
@@ -124,12 +125,14 @@ export class CoursesBasicGridPageComponent implements OnInit {
 
   filterByCategory(category: string): void {
     this.selectedCategory = category;
+    this.selectedSubCategory = '';
     this.currentPage = 1;
     this.loadCourses();
   }
 
   clearCategory(): void {
     this.selectedCategory = '';
+    this.selectedSubCategory = '';
     this.currentPage = 1;
     this.loadCourses();
   }
@@ -172,29 +175,11 @@ export class CoursesBasicGridPageComponent implements OnInit {
   }
 
   getCategoryIcon(category: string): string {
-    const icons: any = {
-      'Development': '💻',
-      'Business': '💼',
-      'Finance': '💰',
-      'IT & Software': '🖥️',
-      'Design': '🎨',
-      'Marketing': '📣',
-      'Data Science': '📊'
-    };
-    return icons[category] || '📚';
+    return categoryIcon(category);
   }
 
   getCourseColor(category: string): string {
-    const colors: any = {
-      'Development': '#0B0D12',
-      'Business': '#1B2230',
-      'Finance': '#232A36',
-      'IT & Software': '#14181F',
-      'Design': '#2B1810',
-      'Marketing': '#3A1C0E',
-      'Data Science': '#1E2633'
-    };
-    return colors[category] || '#0B0D12';
+    return categoryColor(category);
   }
 
   getCourseImage(category: string): string {

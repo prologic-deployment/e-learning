@@ -26,6 +26,13 @@ const courseSchema = new mongoose.Schema(
       type: String,
       default: ''
     },
+    // ✅ Sub-category (e.g. "Kubernetes" under "DevOps") — was sent by the
+    // course forms but silently dropped because the field was missing here
+    subCategory: {
+      type: String,
+      default: '',
+      trim: true
+    },
     // ✅ contentFile gardé pour compatibilité mais on utilise les lessons
     contentFile: {
       type: String,

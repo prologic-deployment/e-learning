@@ -9,7 +9,7 @@ const config = require("../config/env");
 // ================= CREATE COURSE =================
 exports.createCourse = async (req, res) => {
   try {
-    const { title, description, tags, price, category } = req.body;
+    const { title, description, tags, price, category, subCategory } = req.body;
 
     // ✅ Normaliser le role
     const userRole = Array.isArray(req.user.role) ? req.user.role[0] : req.user.role;
@@ -21,6 +21,7 @@ exports.createCourse = async (req, res) => {
       tags: tags ? tags.split(",") : [],
       price: price || 0,
       category: category || '',
+      subCategory: subCategory || '',
       trainer: req.user._id,
       isApproved
     });
@@ -74,6 +75,12 @@ exports.getAllCourses = async (req, res) => {
     if (req.query.category) {
       const safeCat = String(req.query.category).replace(/[.*+?^${}()|[\]\\]/g, "\\$&").slice(0, 100);
       filter.category = { $regex: `^${safeCat}$`, $options: 'i' };
+    }
+
+    // ✅ Filtrage par sous-catégorie (échappé, ancré)
+    if (req.query.subCategory) {
+      const safeSub = String(req.query.subCategory).replace(/[.*+?^${}()|[\]\\]/g, "\\$&").slice(0, 100);
+      filter.subCategory = { $regex: `^${safeSub}$`, $options: 'i' };
     }
 
     // ✅ Filtrage par prix
@@ -212,7 +219,7 @@ exports.getCourseById = async (req, res) => {
 exports.updateCourse = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, tags, price, category, isApproved } = req.body;
+    const { title, description, tags, price, category, subCategory, isApproved } = req.body;
 
     // ✅ Prevent un-approved edits from publishing content changes silently
     const userRole = Array.isArray(req.user.role) ? req.user.role[0] : req.user.role;
@@ -229,6 +236,7 @@ exports.updateCourse = async (req, res) => {
     if (tags) course.tags = typeof tags === 'string' ? tags.split(",") : tags;
     if (price !== undefined) course.price = price;
     if (category) course.category = category;
+    if (subCategory !== undefined) course.subCategory = subCategory;
     // ✅ Only admins flip approval, and non-admin price changes require re-approval
     if (isApproved !== undefined && userRole === "admin") course.isApproved = isApproved;
     if (userRole !== "admin" && (title || description || tags || price !== undefined || category)) {

@@ -11,7 +11,8 @@ const COURSES = [
     title: 'Node.js & Express — API Development Masterclass',
     description:
       'Build production-grade REST APIs with Node.js and Express. Covers routing, middleware, authentication with JWT, error handling, MongoDB with Mongoose, testing and deployment. By the end you will have built and secured a complete API.',
-    category: 'Web Development',
+    category: 'Development',
+    subCategory: 'Backend & APIs',
     tags: 'nodejs,express,api,mongodb,backend',
     price: 0,
     isApproved: true,
@@ -146,7 +147,8 @@ const COURSES = [
     title: 'Docker & Kubernetes — Containerize Everything',
     description:
       'From zero to production containers. Learn Docker images, layers, volumes and networking, then orchestrate with Kubernetes: pods, deployments, services, ingress, secrets and horizontal scaling. Includes a full CI/CD pipeline example.',
-    category: 'Cloud / DevOps',
+    category: 'DevOps',
+    subCategory: 'Kubernetes',
     tags: 'docker,kubernetes,devops,cloud,ci-cd',
     price: 149,
     isApproved: true,
@@ -242,7 +244,8 @@ const COURSES = [
     title: 'Machine Learning Foundations with Python',
     description:
       'A practical introduction to machine learning. Data preparation, linear and logistic regression, decision trees, model evaluation and cross-validation, all in Python with scikit-learn. Ends with a complete end-to-end project.',
-    category: 'Data Science',
+    category: 'Data & AI',
+    subCategory: 'Machine Learning',
     tags: 'python,machine-learning,scikit-learn,data-science',
     price: 99,
     isApproved: true,
@@ -343,7 +346,8 @@ const COURSES = [
     title: 'React Fundamentals — Components, Hooks & State',
     description:
       'Modern React from the ground up: functional components, props, useState/useEffect, custom hooks, forms, lists, and thinking in components. Includes a mini-project building a course catalog UI. Pending admin approval — used to test the approval workflow.',
-    category: 'Web Development',
+    category: 'Development',
+    subCategory: 'Web Development',
     tags: 'react,javascript,frontend,hooks',
     price: 0,
     isApproved: false,

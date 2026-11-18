@@ -191,7 +191,7 @@ const USERS = {
       isActive: true,
       apprenantProfile: {
         niveauEducation: 'Bac+3',
-        domaineEtude: 'Business Intelligence',
+        domaineEtude: 'Data Engineering',
         objectifApprentissage: 'Data analysis and dashboards'
       }
     }

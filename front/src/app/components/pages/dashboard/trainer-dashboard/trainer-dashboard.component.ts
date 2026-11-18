@@ -8,6 +8,7 @@ import { environment } from '../../../../../environments/environment';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { CATEGORY_NAMES } from '../../../../shared/categories';
 
 @Component({
   selector: 'app-trainer-dashboard',
@@ -82,10 +83,7 @@ export class TrainerDashboardComponent implements OnInit {
   quizSuccess2 = '';
   quizError2 = '';
 
-  categories = [
-    'Development', 'Business', 'Finance', 'IT & Software',
-    'Design', 'Marketing', 'Health & Fitness', 'Data Science'
-  ];
+  categories = [...CATEGORY_NAMES];
 
   // Profile
   profile: any = null;

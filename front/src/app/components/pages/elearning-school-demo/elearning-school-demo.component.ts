@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../services/auth.service';
+import { categoryColor, categoryIcon } from '../../../shared/categories';
 
 @Component({
   selector: 'app-elearning-school-demo',
@@ -49,31 +50,13 @@ export class ElearningSchoolDemoComponent implements OnInit {
 
 
   getCourseColor(category: string): string {
-    const colors: any = {
-      'Development': '#0B0D12',
-      'Business': '#1B2230',
-      'Finance': '#232A36',
-      'IT & Software': '#14181F',
-      'Design': '#2B1810',
-      'Marketing': '#3A1C0E',
-      'Data Science': '#1E2633'
-    };
-    return colors[category] || '#0B0D12';
+    return categoryColor(category);
   }
 
 
     getCategoryIcon(category: string): string {
-      const icons: any = {
-        'Development': '💻',
-        'Business': '💼',
-        'Finance': '💰',
-        'IT & Software': '🖥️',
-        'Design': '🎨',
-        'Marketing': '📣',
-        'Data Science': '📊'
-      };
-      return icons[category] || '📚';
-    }
+    return categoryIcon(category);
+  }
 
 
 }

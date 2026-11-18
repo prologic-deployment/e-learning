@@ -27,7 +27,7 @@ const CV = require('../src/models/CV');
 const { initBadges } = require('../src/services/badge.service');
 
 const USERS = require('./data/users');
-const COURSES = require('./data/courses');
+const COURSES = [...require('./data/courses'), ...require('./data/courses-infra')];
 const SCENARIOS = require('./data/scenarios');
 
 const args = process.argv.slice(2);
@@ -96,6 +96,7 @@ async function seedCourses() {
       title: def.title,
       description: def.description,
       category: def.category,
+      subCategory: def.subCategory || '',
       tags: def.tags.split(',').map(t => t.trim()),
       price: def.price,
       isApproved: def.isApproved,
@@ -404,8 +405,8 @@ async function main() {
     log(COLORS.dim, '  admin@test.com        Admin123     → full admin');
     log(COLORS.dim, '  manager1@test.com     Manager123   → team of 3 learners');
     log(COLORS.dim, '  manager2@test.com     Manager123   → team of 3 learners');
-    log(COLORS.dim, '  trainer1@test.com     Trainer123   → Node + React courses');
-    log(COLORS.dim, '  trainer2@test.com     Trainer123   → Docker course (paid)');
+    log(COLORS.dim, '  trainer1@test.com     Trainer123   → Node, React + Cybersecurity courses');
+    log(COLORS.dim, '  trainer2@test.com     Trainer123   → Docker, Linux + Networking (paid)');
     log(COLORS.dim, '  trainer3@test.com     Trainer123   → ML course (paid)');
     log(COLORS.dim, '  user1@test.com        User1234     → completed course + certificate');
     log(COLORS.dim, '  user3@test.com        User1234     → overdue deadline (manager alert)');
