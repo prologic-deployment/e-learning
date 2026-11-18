@@ -80,8 +80,7 @@ const startServer = async () => {
     console.log("🏅 Initializing badges...");
     await initBadges();
 
-    // 3. Redis (optional — cache degrades gracefully)
-    console.log("✅ Connecting to Redis...");
+    // 3. Redis (optional — only when CACHE_ENABLED=true)
     await redisClient.connect();
 
     // 4. Cron job

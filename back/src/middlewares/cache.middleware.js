@@ -8,14 +8,10 @@ const cache = (ttl = 1800) => {
       return next();
     }
 
-    // Vérifier si le cache est activé
-    if (process.env.CACHE_ENABLED === 'false') {
-      return next();
-    }
-
     try {
+      // null when CACHE_ENABLED is not "true" or Redis is not ready → no cache
       const redis = redisClient.getClient();
-      if (!redis) return next(); 
+      if (!redis) return next();
 
       
       const userId = req.user?.id || req.user?._id || 'guest';
