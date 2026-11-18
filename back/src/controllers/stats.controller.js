@@ -5,6 +5,27 @@ const Purchase = require("../models/Purchase");
 const Certificate = require("../models/Certificate");
 
 // ========================================
+// PUBLIC — landing page figures (totals only, no personal data)
+// ========================================
+exports.getPublicStats = async (req, res) => {
+  try {
+    const [courses, learners, trainers, certificates] = await Promise.all([
+      Course.countDocuments({ isApproved: true }),
+      User.countDocuments({ role: "user", isActive: true }),
+      User.countDocuments({
+        role: "trainer",
+        isActive: true,
+        approvalStatus: { $nin: ["pending", "rejected"] }   // approved trainers only
+      }),
+      Certificate.countDocuments({ isValid: true })          // revoked ones excluded
+    ]);
+    res.status(200).json({ courses, learners, trainers, certificates });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// ========================================
 // DASHBOARD ADMIN
 // ========================================
 exports.getAdminStats = async (req, res) => {

@@ -32,11 +32,9 @@
         <a routerLink="/courses-grid" [queryParams]="{category: 'Cybersecurity'}">Cybersecurity</a>
       </div>
 
-      <dl class="hero__stats">
-        <div><dt>500+</dt><dd>Courses</dd></div>
-        <div><dt>10K+</dt><dd>Learners</dd></div>
-        <div><dt>50+</dt><dd>Trainers</dd></div>
-        <div><dt>95%</dt><dd>Success rate</dd></div>
+      <!-- Real totals from GET /api/stats/public (hidden if unavailable) -->
+      <dl class="hero__stats" *ngIf="stats.length">
+        <div *ngFor="let s of stats"><dt>{{ s.value }}</dt><dd>{{ s.label }}</dd></div>
       </dl>
     </div>
 
