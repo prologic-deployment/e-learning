@@ -9,11 +9,11 @@
             background: #0B0D12;
             display: flex; align-items: center; justify-content: center;
             font-size: 24px; flex-shrink: 0;">
-            👤
+            <i class="bx bx-user"></i>
           </div>
           <div>
             <h2 style="font-weight: 800; color: #0f172a; margin: 0; font-size: 26px;">
-              Bonjour, {{ currentUser?.firstname }} {{ currentUser?.lastname }} 👋
+              Bonjour, {{ currentUser?.firstname }} {{ currentUser?.lastname }} 
             </h2>
             <p style="color: #64748b; margin: 0; font-size: 14px;">
               Bienvenue sur votre espace d'apprentissage
@@ -26,7 +26,7 @@
           style="padding: 10px 20px; border: 1.5px solid #1E3A8A; border-radius: 12px;
             color: #1E3A8A; background: white; font-weight: 600; font-size: 13px;
             cursor: pointer; transition: all 0.2s;">
-          📚 Explorer
+          <i class="bx bx-book-open"></i> Explorer
         </button>
         <a routerLink="/cv"
           style="padding: 10px 20px; border: none; border-radius: 12px;
@@ -34,7 +34,7 @@
             color: white; font-weight: 600; font-size: 13px;
             cursor: pointer; text-decoration: none; display: inline-flex;
             align-items: center;">
-          📄 Mon CV
+          <i class="bx bx-file"></i> Mon CV
         </a>
       </div>
     </div>
@@ -52,7 +52,7 @@
               [style.background]="activeTab === tab.id ? 'white' : 'transparent'"
               [style.color]="activeTab === tab.id ? '#1E3A8A' : '#64748b'"
               [style.boxShadow]="activeTab === tab.id ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
-              {{ tab.icon }} {{ tab.label }}
+              <i [class]="tab.icon"></i> {{ tab.label }}
               <span *ngIf="tab.id === 'notifications' && unreadCount > 0"
                 style="background: #ef4444; color: white; padding: 1px 7px;
                   border-radius: 20px; font-size: 10px; margin-left: 4px;">
@@ -81,7 +81,7 @@
               <div class="d-flex align-items-center justify-content-between mb-3">
                 <div style="width: 44px; height: 44px; border-radius: 12px;
                   background: #EEF2FB; display: flex; align-items: center;
-                  justify-content: center; font-size: 20px;">📚</div>
+                  justify-content: center; font-size: 20px;"><i class="bx bx-book-open"></i></div>
                 <span style="font-size: 11px; font-weight: 600; color: #1E3A8A;
                   background: #EEF2FB; padding: 4px 10px; border-radius: 20px;">
                   Total
@@ -103,7 +103,7 @@
               <div class="d-flex align-items-center justify-content-between mb-3">
                 <div style="width: 44px; height: 44px; border-radius: 12px;
                   background: #dcfce7; display: flex; align-items: center;
-                  justify-content: center; font-size: 20px;">🏆</div>
+                  justify-content: center; font-size: 20px;"><i class="bx bx-trophy"></i></div>
                 <span style="font-size: 11px; font-weight: 600; color: #10b981;
                   background: #f0fdf4; padding: 4px 10px; border-radius: 20px;">
                   Terminés
@@ -125,7 +125,7 @@
               <div class="d-flex align-items-center justify-content-between mb-3">
                 <div style="width: 44px; height: 44px; border-radius: 12px;
                   background: #fef3c7; display: flex; align-items: center;
-                  justify-content: center; font-size: 20px;">📈</div>
+                  justify-content: center; font-size: 20px;"><i class="bx bx-line-chart"></i></div>
                 <span style="font-size: 11px; font-weight: 600; color: #f59e0b;
                   background: #fffbeb; padding: 4px 10px; border-radius: 20px;">
                   Moy.
@@ -147,7 +147,7 @@
               <div class="d-flex align-items-center justify-content-between mb-3">
                 <div style="width: 44px; height: 44px; border-radius: 12px;
                   background: #e0f2fe; display: flex; align-items: center;
-                  justify-content: center; font-size: 20px;">🏅</div>
+                  justify-content: center; font-size: 20px;"><i class="bx bx-medal"></i></div>
                 <span style="font-size: 11px; font-weight: 600; color: #06b6d4;
                   background: #f0fdfe; padding: 4px 10px; border-radius: 20px;">
                   Badges
@@ -184,7 +184,7 @@
           </div>
 
           <div *ngIf="enrollments.length === 0" class="text-center py-4">
-            <div style="font-size: 48px; margin-bottom: 12px;">📚</div>
+            <div style="font-size: 48px; margin-bottom: 12px;"><i class="bx bx-book-open"></i></div>
             <p style="color: #64748b; margin-bottom: 16px;">
               Aucun cours pour le moment
             </p>
@@ -228,7 +228,7 @@
                 {{ enrollment.progress }}% complété
               </span>
               <span *ngIf="enrollment.deadline" style="font-size: 11px; color: #ef4444;">
-                ⏰ {{ enrollment.deadline | date:'dd/MM/yyyy' }}
+                <i class="bx bx-alarm"></i> {{ enrollment.deadline | date:'dd/MM/yyyy' }}
               </span>
             </div>
           </div>
@@ -254,12 +254,12 @@
             style="padding: 9px 18px; border: none; border-radius: 12px;
               background: #0B0D12;
               color: white; font-weight: 600; font-size: 13px; cursor: pointer;">
-            📊 Exporter
+            <i class="bx bx-bar-chart-alt-2"></i> Exporter
           </button>
         </div>
 
         <div *ngIf="enrollments.length === 0" class="text-center py-5">
-          <div style="font-size: 56px; margin-bottom: 16px;">📚</div>
+          <div style="font-size: 56px; margin-bottom: 16px;"><i class="bx bx-book-open"></i></div>
           <h5 style="color: #0f172a; font-weight: 700;">Aucune formation</h5>
           <p style="color: #64748b; margin-bottom: 20px;">
             Inscrivez-vous à un cours pour commencer votre apprentissage
@@ -332,7 +332,7 @@
               <div *ngIf="enrollment.deadline" style="margin-bottom: 16px;">
                 <span style="font-size: 12px; color: #ef4444; font-weight: 600;
                   background: #fef2f2; padding: 4px 10px; border-radius: 8px;">
-                  ⏰ Deadline : {{ enrollment.deadline | date:'dd/MM/yyyy' }}
+                  <i class="bx bx-alarm"></i> Deadline : {{ enrollment.deadline | date:'dd/MM/yyyy' }}
                 </span>
               </div>
 
@@ -343,7 +343,7 @@
                 [style.background]="enrollment.completed ?
                   '#f0fdf4' : '#0B0D12'"
                 [style.color]="enrollment.completed ? '#10b981' : 'white'">
-                {{ enrollment.completed ? '🔁 Revoir le cours' : '▶ Continuer' }}
+                {{ enrollment.completed ? 'Revoir le cours' : 'Continuer' }}
               </button>
             </div>
           </div>
@@ -366,7 +366,7 @@
           <div class="d-flex align-items-center gap-3 mb-4">
             <div style="width: 44px; height: 44px; border-radius: 12px;
               background: #EEF2FB; display: flex; align-items: center;
-              justify-content: center; font-size: 20px;">📚</div>
+              justify-content: center; font-size: 20px;"><i class="bx bx-book-open"></i></div>
             <div>
               <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
                 Historique des formations
@@ -378,7 +378,7 @@
           </div>
 
           <div *ngIf="history.length === 0" class="text-center py-4">
-            <div style="font-size: 48px; margin-bottom: 12px;">📚</div>
+            <div style="font-size: 48px; margin-bottom: 12px;"><i class="bx bx-book-open"></i></div>
             <p style="color: #64748b;">Aucun historique disponible</p>
           </div>
 
@@ -459,7 +459,7 @@
                       style="padding: 6px 14px; border: 1.5px solid #e2e8f0;
                         border-radius: 8px; background: white; color: #1E3A8A;
                         font-size: 12px; font-weight: 600; cursor: pointer;">
-                      ▶
+                      <i class="bx bx-play"></i>
                     </button>
                   </td>
                 </tr>
@@ -475,7 +475,7 @@
           <div class="d-flex align-items-center gap-3 mb-4">
             <div style="width: 44px; height: 44px; border-radius: 12px;
               background: #dcfce7; display: flex; align-items: center;
-              justify-content: center; font-size: 20px;">🛒</div>
+              justify-content: center; font-size: 20px;"><i class="bx bx-cart"></i></div>
             <div>
               <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
                 Historique des achats
@@ -487,7 +487,7 @@
           </div>
 
           <div *ngIf="purchases.length === 0" class="text-center py-4">
-            <div style="font-size: 48px; margin-bottom: 12px;">🛒</div>
+            <div style="font-size: 48px; margin-bottom: 12px;"><i class="bx bx-cart"></i></div>
             <p style="color: #64748b;">Aucun achat pour le moment</p>
           </div>
 
@@ -572,7 +572,7 @@
         <div *ngIf="badges.length === 0"
           style="background: white; border-radius: 20px; padding: 60px;
             border: 1px solid #f0f0f0; text-align: center;">
-          <div style="font-size: 64px; margin-bottom: 16px;">🏅</div>
+          <div style="font-size: 64px; margin-bottom: 16px;"><i class="bx bx-medal"></i></div>
           <h5 style="font-weight: 700; color: #0f172a; margin-bottom: 8px;">
             Aucun badge pour le moment
           </h5>
@@ -600,7 +600,7 @@
               <div style="width: 72px; height: 72px; border-radius: 20px; margin: 0 auto 16px;
                 display: flex; align-items: center; justify-content: center; font-size: 36px;"
                 [style.background]="item.badge?.color ? item.badge.color + '22' : '#EEF2FB'">
-                {{ item.badge?.icon || '🏅' }}
+                {{ item.badge?.icon || 'bx bx-medal' }}
               </div>
 
               <div style="font-weight: 700; color: #0f172a; font-size: 15px; margin-bottom: 6px;">
@@ -613,7 +613,7 @@
 
               <div style="background: #f8fafc; padding: 6px 12px; border-radius: 8px;
                 font-size: 11px; color: #94a3b8; font-weight: 600; display: inline-block;">
-                🗓 {{ item.earnedAt | date:'dd/MM/yyyy' }}
+                <i class="bx bx-calendar"></i> {{ item.earnedAt | date:'dd/MM/yyyy' }}
               </div>
             </div>
           </div>
@@ -640,7 +640,7 @@
         <div *ngIf="certificates.length === 0"
           style="background: white; border-radius: 20px; padding: 60px;
             border: 1px solid #f0f0f0; text-align: center;">
-          <div style="font-size: 64px; margin-bottom: 16px;">🎓</div>
+          <div style="font-size: 64px; margin-bottom: 16px;"><i class="bx bx-certification"></i></div>
           <h5 style="font-weight: 700; color: #0f172a; margin-bottom: 8px;">
             Aucun certificat pour le moment
           </h5>
@@ -664,7 +664,7 @@
                   background: linear-gradient(135deg, #1E3A8A22, #0B0D1222);
                   display: flex; align-items: center; justify-content: center;
                   font-size: 26px; flex-shrink: 0;">
-                  🎓
+                  <i class="bx bx-certification"></i>
                 </div>
                 <div style="flex: 1;">
                   <div style="font-weight: 700; color: #0f172a; font-size: 15px;
@@ -687,7 +687,7 @@
                       style="padding: 6px 14px; border: 1.5px solid #1E3A8A;
                         border-radius: 10px; color: #1E3A8A; text-decoration: none;
                         font-size: 12px; font-weight: 600;">
-                      📄 Télécharger
+                      <i class="bx bx-file"></i> Télécharger
                     </a>
                   </div>
                 </div>
@@ -709,13 +709,13 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
           <div>
             <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
-              🔔 Notifications
+              <i class="bx bx-bell"></i> Notifications
             </h5>
             <p style="font-size: 13px; color: #64748b; margin: 0;">
               <span *ngIf="unreadCount > 0" style="color: #1E3A8A; font-weight: 600;">
                 {{ unreadCount }} non lue(s)
               </span>
-              <span *ngIf="unreadCount === 0">Tout est lu ✅</span>
+              <span *ngIf="unreadCount === 0">Tout est lu <i class="bx bx-check-circle"></i></span>
             </p>
           </div>
           <div class="d-flex gap-2">
@@ -723,7 +723,7 @@
               style="padding: 9px 16px; border: 1.5px solid #e2e8f0; border-radius: 12px;
                 background: white; color: #64748b; font-size: 13px;
                 font-weight: 600; cursor: pointer;">
-              🔄 Actualiser
+              <i class="bx bx-refresh"></i> Actualiser
             </button>
             <button *ngIf="unreadCount > 0" (click)="markAllAsRead()"
               style="padding: 9px 18px; border: none; border-radius: 12px;
@@ -738,7 +738,7 @@
         <div *ngIf="notifications.length === 0"
           style="background: white; border-radius: 20px; padding: 60px;
             border: 1px solid #f0f0f0; text-align: center;">
-          <div style="font-size: 64px; margin-bottom: 16px;">🔔</div>
+          <div style="font-size: 64px; margin-bottom: 16px;"><i class="bx bx-bell"></i></div>
           <h5 style="font-weight: 700; color: #0f172a; margin-bottom: 8px;">
             Aucune notification
           </h5>
@@ -769,7 +769,7 @@
               <div style="width: 46px; height: 46px; border-radius: 14px; flex-shrink: 0;
                 display: flex; align-items: center; justify-content: center; font-size: 22px;"
                 [style.background]="!notif.isRead ? '#EEF2FB' : '#f8fafc'">
-                {{ getNotifIcon(notif.type) }}
+                <i [class]="getNotifIcon(notif.type)"></i>
               </div>
 
               <div style="flex: 1;">
@@ -788,7 +788,7 @@
                 <!-- Footer info -->
                 <div class="d-flex align-items-center gap-2 flex-wrap">
                   <span style="font-size: 11px; color: #94a3b8;">
-                    🕐 {{ notif.createdAt | date:'dd/MM/yyyy HH:mm' }}
+                    <i class="bx bx-time-five"></i> {{ notif.createdAt | date:'dd/MM/yyyy HH:mm' }}
                   </span>
                   <!-- ✅ Badge type -->
                   <span *ngIf="notif.type"
@@ -800,7 +800,7 @@
                   <span *ngIf="!notif._id"
                     style="font-size: 10px; font-weight: 600; padding: 2px 8px;
                       border-radius: 20px; background: #f0fdf4; color: #10b981;">
-                    🔴 En direct
+                    <i class="bx bx-circle"></i> En direct
                   </span>
                 </div>
               </div>
@@ -870,7 +870,7 @@
             <span style="background: #0B0D12;
               color: white; padding: 5px 16px; border-radius: 20px;
               font-size: 12px; font-weight: 600;">
-              👤 {{ profile?.user?.role }}
+              <i class="bx bx-user"></i> {{ profile?.user?.role }}
             </span>
 
             <div class="mt-4">
@@ -883,7 +883,7 @@
                   background: #0B0D12;
                   color: white; font-weight: 600; font-size: 13px; cursor: pointer;"
                 [style.opacity]="!selectedAvatar ? '0.5' : '1'">
-                📷 Mettre à jour la photo
+                <i class="bx bx-camera"></i> Mettre à jour la photo
               </button>
             </div>
           </div>
@@ -893,7 +893,7 @@
             border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);"
             *ngIf="profile">
             <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 16px;">
-              📊 Statistiques
+              <i class="bx bx-bar-chart-alt-2"></i> Statistiques
             </h6>
             <div class="row g-2">
               <div class="col-6">
@@ -952,7 +952,7 @@
             border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             margin-bottom: 20px;">
             <h5 style="font-weight: 700; color: #0f172a; margin-bottom: 24px;">
-              ✏️ Modifier le profil
+              <i class="bx bx-pencil"></i> Modifier le profil
             </h5>
 
             <div class="row">
@@ -1006,7 +1006,7 @@
                 background: #0B0D12;
                 box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);"
               [style.opacity]="profileUpdateLoading ? '0.7' : '1'">
-              <span *ngIf="!profileUpdateLoading">💾 Sauvegarder</span>
+              <span *ngIf="!profileUpdateLoading"><i class="bx bx-save"></i> Sauvegarder</span>
               <span *ngIf="profileUpdateLoading">
                 <span class="spinner-border spinner-border-sm me-2"></span>
                 Mise à jour...
@@ -1018,7 +1018,7 @@
           <div style="background: white; border-radius: 20px; padding: 28px;
             border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
             <h5 style="font-weight: 700; color: #0f172a; margin-bottom: 24px;">
-              🔒 Changer le mot de passe
+              <i class="bx bx-lock-alt"></i> Changer le mot de passe
             </h5>
 
             <div *ngIf="passwordSuccess" class="alert alert-success mb-3"
@@ -1065,7 +1065,7 @@
                 background: linear-gradient(135deg, #f59e0b, #ef4444);
                 box-shadow: 0 4px 15px rgba(245,158,11,0.4);"
               [style.opacity]="passwordLoading ? '0.7' : '1'">
-              <span *ngIf="!passwordLoading">🔒 Changer le mot de passe</span>
+              <span *ngIf="!passwordLoading"><i class="bx bx-lock-alt"></i> Changer le mot de passe</span>
               <span *ngIf="passwordLoading">
                 <span class="spinner-border spinner-border-sm me-2"></span>
                 Changement...

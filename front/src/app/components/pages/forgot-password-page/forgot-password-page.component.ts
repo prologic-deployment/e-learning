@@ -3,7 +3,7 @@ import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-forgot-password',
-  templateUrl: './forgot-password-page.component.html', // ✅ nom correct
+  templateUrl: './forgot-password-page.component.html', // nom correct
   styleUrls: ['./forgot-password-page.component.scss']
 })
 export class ForgotPasswordComponent {

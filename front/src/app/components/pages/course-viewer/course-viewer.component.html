@@ -27,16 +27,16 @@
               <p>You need to enroll first to track your progress !</p>
               <button class="btn btn-primary" (click)="enrollCourse()"
                 [disabled]="enrollLoading">
-                {{ enrollLoading ? 'Enrolling...' : '📚 Enroll Now' }}
+                {{ enrollLoading ? 'Enrolling...' : 'Enroll Now' }}
               </button>
             </div>
 
             <!-- Cours complété -->
             <div *ngIf="courseCompleted" class="alert alert-success mb-4 text-center">
-              <h4>🎉 Congratulations !</h4>
+              <h4><i class="bx bx-party"></i> Congratulations !</h4>
               <p>You have successfully completed this course and earned your certificate !</p>
               <button class="btn btn-success" (click)="router.navigate(['/dashboard'])">
-                🏅 View My Certificates
+                <i class="bx bx-medal"></i> View My Certificates
               </button>
             </div>
 
@@ -47,7 +47,7 @@
               <div class="d-flex align-items-center gap-3 mb-3">
                 <div style="width: 40px; height: 40px; border-radius: 12px;
                   background: #EEF2FB; display: flex; align-items: center;
-                  justify-content: center; font-size: 18px;">📋</div>
+                  justify-content: center; font-size: 18px;"><i class="bx bx-clipboard"></i></div>
                 <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
                   Course Description
                 </h5>
@@ -86,7 +86,7 @@
                 <div class="d-flex align-items-center gap-3 mb-4">
                   <div style="width: 40px; height: 40px; border-radius: 12px;
                     background: #dbeafe; display: flex; align-items: center;
-                    justify-content: center; font-size: 18px;">📖</div>
+                    justify-content: center; font-size: 18px;"><i class="bx bx-book-reader"></i></div>
                   <div>
                     <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
                       Lessons ({{ lessons.length }})
@@ -133,17 +133,17 @@
                               border-radius: 20px;"
                               [style.background]="lesson.contentType === 'video' ? '#EEF2FB' : '#dbeafe'"
                               [style.color]="lesson.contentType === 'video' ? '#1E3A8A' : '#3b82f6'">
-                              {{ lesson.contentType === 'video' ? '🎬 Vidéo' : '📄 PDF' }}
+                              {{ lesson.contentType === 'video' ? 'Vidéo' : 'PDF' }}
                             </span>
                             <span *ngIf="lesson.quiz?.questions?.length > 0"
                               style="font-size: 10px; font-weight: 600; padding: 2px 8px;
                                 border-radius: 20px; background: #fffbeb; color: #f59e0b;">
-                              📝 Quiz
+                              <i class="bx bx-edit"></i> Quiz
                             </span>
                             <span *ngIf="isLessonCompleted(lesson._id)"
                               style="font-size: 10px; font-weight: 600; padding: 2px 8px;
                                 border-radius: 20px; background: #f0fdf4; color: #10b981;">
-                              ✅ Done
+                              <i class="bx bx-check-circle"></i> Done
                             </span>
                           </div>
                         </div>
@@ -169,7 +169,7 @@
                   <span *ngIf="isLessonCompleted(currentLesson._id)"
                     style="background: #f0fdf4; color: #10b981; padding: 4px 12px;
                       border-radius: 20px; font-size: 12px; font-weight: 600;">
-                    ✅ Completed
+                    <i class="bx bx-check-circle"></i> Completed
                   </span>
                 </div>
 
@@ -202,7 +202,7 @@
                     style="padding: 10px 24px; border: none; border-radius: 12px;
                       background: linear-gradient(135deg, #10b981, #059669);
                       color: white; font-weight: 600; font-size: 13px; cursor: pointer;">
-                    ⬇️ Download {{ isPDF ? 'PDF' : 'Video' }}
+                    <i class="bx bx-download"></i> Download {{ isPDF ? 'PDF' : 'Video' }}
                   </button>
                 </div>
 
@@ -214,7 +214,7 @@
                     style="padding: 12px 32px; border: none; border-radius: 12px;
                       background: linear-gradient(135deg, #f59e0b, #f97316);
                       color: white; font-size: 15px; font-weight: 700; cursor: pointer;">
-                    📝 Take Quiz to Continue
+                    <i class="bx bx-edit"></i> Take Quiz to Continue
                   </button>
                   <p style="color: #94a3b8; font-size: 12px; margin-top: 8px;">
                     You must pass the quiz to proceed to the next lesson.
@@ -226,7 +226,7 @@
                   <div style="background: #fffbeb; border-radius: 16px; padding: 24px;
                     border: 2px solid #fde68a;">
                     <h5 style="font-weight: 700; color: #0f172a; margin-bottom: 8px;">
-                      📝 Quiz — {{ currentLesson.title }}
+                      <i class="bx bx-edit"></i> Quiz — {{ currentLesson.title }}
                     </h5>
                     <p style="font-size: 13px; color: #64748b; margin-bottom: 20px;">
                       Minimum score: {{ currentLesson.quiz.noteMinimale }}%
@@ -239,7 +239,7 @@
                       <div *ngIf="quizPassed"
                         style="background: #f0fdf4; border-radius: 12px; padding: 20px;
                           border: 1px solid #bbf7d0;">
-                        <h5 style="color: #10b981;">🎉 Passed ! Score: {{ quizScore }}%</h5>
+                        <h5 style="color: #10b981;"><i class="bx bx-party"></i> Passed ! Score: {{ quizScore }}%</h5>
                         <p style="color: #64748b; margin: 0;">
                           You can proceed to the next lesson !
                         </p>
@@ -247,7 +247,7 @@
                       <div *ngIf="!quizPassed"
                         style="background: #fef2f2; border-radius: 12px; padding: 20px;
                           border: 1px solid #fecaca;">
-                        <h5 style="color: #ef4444;">❌ Failed ! Score: {{ quizScore }}%</h5>
+                        <h5 style="color: #ef4444;"><i class="bx bx-x-circle"></i> Failed ! Score: {{ quizScore }}%</h5>
                         <p style="color: #64748b; margin-bottom: 16px;">
                           Minimum required: {{ currentLesson.quiz.noteMinimale }}%
                         </p>
@@ -255,7 +255,7 @@
                           style="padding: 10px 24px; border: none; border-radius: 12px;
                             background: linear-gradient(135deg, #f59e0b, #f97316);
                             color: white; font-weight: 600; cursor: pointer;">
-                          🔄 Retry Quiz
+                          <i class="bx bx-refresh"></i> Retry Quiz
                         </button>
                       </div>
                     </div>
@@ -294,7 +294,7 @@
                           background: #0B0D12;
                           color: white; font-size: 15px; font-weight: 700; cursor: pointer;"
                         [style.opacity]="quizLoading ? '0.7' : '1'">
-                        <span *ngIf="!quizLoading">✅ Submit Quiz</span>
+                        <span *ngIf="!quizLoading"><i class="bx bx-check-circle"></i> Submit Quiz</span>
                         <span *ngIf="quizLoading">
                           <span class="spinner-border spinner-border-sm me-2"></span>
                           Submitting...
@@ -329,7 +329,7 @@
 
                 <div *ngIf="!canGoNext() && !showQuiz" class="text-center mt-2">
                   <small style="color: #f59e0b; font-size: 12px;">
-                    ⚠️ Complete the quiz to unlock the next lesson
+                    <i class="bx bx-error"></i> Complete the quiz to unlock the next lesson
                   </small>
                 </div>
               </div>
@@ -339,7 +339,7 @@
                 style="background: white; border-radius: 20px; padding: 32px;
                   border: 2px solid #10b981; text-align: center; margin-bottom: 24px;
                   box-shadow: 0 4px 20px rgba(16,185,129,0.15);">
-                <div style="font-size: 48px; margin-bottom: 12px;">🎓</div>
+                <div style="font-size: 48px; margin-bottom: 12px;"><i class="bx bx-certification"></i></div>
                 <h4 style="font-weight: 800; color: #0f172a; margin-bottom: 8px;">
                   Ready for the Final Exam !
                 </h4>
@@ -352,7 +352,7 @@
                     background: linear-gradient(135deg, #10b981, #059669);
                     color: white; font-size: 16px; font-weight: 700; cursor: pointer;
                     box-shadow: 0 4px 15px rgba(16,185,129,0.4);">
-                  🎓 Start Final Exam
+                  <i class="bx bx-certification"></i> Start Final Exam
                 </button>
                 <div *ngIf="!course.finalExam?.questions?.length">
                   <p style="color: #64748b;">No final exam for this course.</p>
@@ -360,7 +360,7 @@
                     style="padding: 12px 28px; border: none; border-radius: 12px;
                       background: #0B0D12;
                       color: white; font-weight: 600; cursor: pointer;">
-                    🏅 Get Certificate
+                    <i class="bx bx-medal"></i> Get Certificate
                   </button>
                 </div>
               </div>
@@ -371,7 +371,7 @@
                   border: 2px solid #10b981; margin-bottom: 24px;
                   box-shadow: 0 4px 20px rgba(16,185,129,0.1);">
                 <h4 style="font-weight: 800; color: #0f172a; margin-bottom: 8px;">
-                  🎓 Final Exam
+                  <i class="bx bx-certification"></i> Final Exam
                 </h4>
                 <p style="color: #64748b; font-size: 13px; margin-bottom: 20px;">
                   Minimum score: {{ course.finalExam.noteMinimale }}%
@@ -384,7 +384,7 @@
                   <div *ngIf="finalExamPassed"
                     style="background: #f0fdf4; border-radius: 16px; padding: 28px;
                       border: 1px solid #bbf7d0;">
-                    <div style="font-size: 48px; margin-bottom: 12px;">🎉</div>
+                    <div style="font-size: 48px; margin-bottom: 12px;"><i class="bx bx-party"></i></div>
                     <h4 style="color: #10b981; margin-bottom: 8px;">
                       Congratulations ! Score: {{ finalExamScore }}%
                     </h4>
@@ -395,14 +395,14 @@
                       style="padding: 12px 28px; border: none; border-radius: 12px;
                         background: linear-gradient(135deg, #10b981, #059669);
                         color: white; font-weight: 600; cursor: pointer;">
-                      🏅 View Certificate
+                      <i class="bx bx-medal"></i> View Certificate
                     </button>
                   </div>
                   <div *ngIf="!finalExamPassed"
                     style="background: #fef2f2; border-radius: 16px; padding: 28px;
                       border: 1px solid #fecaca;">
                     <h4 style="color: #ef4444; margin-bottom: 8px;">
-                      ❌ Failed ! Score: {{ finalExamScore }}%
+                      <i class="bx bx-x-circle"></i> Failed ! Score: {{ finalExamScore }}%
                     </h4>
                     <p style="color: #64748b; margin-bottom: 16px;">
                       Minimum required: {{ course.finalExam.noteMinimale }}%
@@ -411,7 +411,7 @@
                       style="padding: 10px 24px; border: none; border-radius: 12px;
                         background: linear-gradient(135deg, #f59e0b, #f97316);
                         color: white; font-weight: 600; cursor: pointer;">
-                      🔄 Retry Final Exam
+                      <i class="bx bx-refresh"></i> Retry Final Exam
                     </button>
                   </div>
                 </div>
@@ -449,7 +449,7 @@
                       background: linear-gradient(135deg, #10b981, #059669);
                       color: white; font-size: 15px; font-weight: 700; cursor: pointer;"
                     [style.opacity]="finalExamLoading ? '0.7' : '1'">
-                    <span *ngIf="!finalExamLoading">🎓 Submit Final Exam</span>
+                    <span *ngIf="!finalExamLoading"><i class="bx bx-certification"></i> Submit Final Exam</span>
                     <span *ngIf="finalExamLoading">
                       <span class="spinner-border spinner-border-sm me-2"></span>
                       Submitting...
@@ -469,13 +469,13 @@
                 <div class="d-flex align-items-center gap-3">
                   <div style="width: 40px; height: 40px; border-radius: 12px;
                     background: #fef3c7; display: flex; align-items: center;
-                    justify-content: center; font-size: 18px;">⭐</div>
+                    justify-content: center; font-size: 18px;"><i class="bx bx-star"></i></div>
                   <div>
                     <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
                       Reviews ({{ totalReviews }})
                     </h5>
                     <p *ngIf="avgRating > 0" style="font-size: 13px; color: #64748b; margin: 0;">
-                      {{ avgRating }}/5 ⭐
+                      {{ avgRating }}/5 <i class="bx bx-star"></i>
                     </p>
                   </div>
                 </div>
@@ -491,17 +491,17 @@
                 style="background: #f8fafc; border-radius: 14px; padding: 24px;
                   border: 1px solid #e2e8f0; margin-bottom: 20px;">
                 <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 16px;">
-                  ✍️ Leave a Review
+                  <i class="bx bx-pen"></i> Leave a Review
                 </h6>
                 <div class="mb-3">
                   <label style="font-size: 13px; font-weight: 600; color: #374151;">Rating *</label>
                   <select class="form-select mt-1" [(ngModel)]="newReview.rating"
                     style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 10px 15px; font-size: 14px;">
-                    <option [value]="5">⭐⭐⭐⭐⭐ Excellent</option>
-                    <option [value]="4">⭐⭐⭐⭐ Good</option>
-                    <option [value]="3">⭐⭐⭐ Average</option>
-                    <option [value]="2">⭐⭐ Poor</option>
-                    <option [value]="1">⭐ Very Poor</option>
+                    <option [value]="5">Excellent</option>
+                    <option [value]="4">Good</option>
+                    <option [value]="3">Average</option>
+                    <option [value]="2">Poor</option>
+                    <option [value]="1">Very Poor</option>
                   </select>
                 </div>
                 <div class="mb-4">
@@ -521,7 +521,7 @@
                     background: #0B0D12;
                     color: white; font-size: 14px; font-weight: 600; cursor: pointer;"
                   [style.opacity]="reviewLoading ? '0.7' : '1'">
-                  <span *ngIf="!reviewLoading">📤 Submit Review</span>
+                  <span *ngIf="!reviewLoading"><i class="bx bx-upload"></i> Submit Review</span>
                   <span *ngIf="reviewLoading">
                     <span class="spinner-border spinner-border-sm me-2"></span>Submitting...
                   </span>
@@ -532,7 +532,7 @@
                 style="background: #f0fdf4; border-radius: 12px; padding: 14px 16px;
                   border: 1px solid #bbf7d0; margin-bottom: 20px; font-size: 13px;
                   color: #10b981; font-weight: 600;">
-                ✅ You have already reviewed this course.
+                <i class="bx bx-check-circle"></i> You have already reviewed this course.
               </div>
 
               <!-- Edit Review -->
@@ -540,17 +540,17 @@
                 style="background: #fffbeb; border-radius: 14px; padding: 24px;
                   border: 1px solid #fde68a; margin-bottom: 20px;">
                 <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 16px;">
-                  ✏️ Edit Your Review
+                  <i class="bx bx-pencil"></i> Edit Your Review
                 </h6>
                 <div class="mb-3">
                   <label style="font-size: 13px; font-weight: 600; color: #374151;">Rating *</label>
                   <select class="form-select mt-1" [(ngModel)]="editingReview.rating"
                     style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 10px 15px; font-size: 14px;">
-                    <option [value]="5">⭐⭐⭐⭐⭐ Excellent</option>
-                    <option [value]="4">⭐⭐⭐⭐ Good</option>
-                    <option [value]="3">⭐⭐⭐ Average</option>
-                    <option [value]="2">⭐⭐ Poor</option>
-                    <option [value]="1">⭐ Very Poor</option>
+                    <option [value]="5">Excellent</option>
+                    <option [value]="4">Good</option>
+                    <option [value]="3">Average</option>
+                    <option [value]="2">Poor</option>
+                    <option [value]="1">Very Poor</option>
                   </select>
                 </div>
                 <div class="mb-4">
@@ -570,7 +570,7 @@
                       background: linear-gradient(135deg, #f59e0b, #f97316);
                       color: white; font-size: 14px; font-weight: 600; cursor: pointer;"
                     [style.opacity]="reviewLoading ? '0.7' : '1'">
-                    <span *ngIf="!reviewLoading">💾 Update</span>
+                    <span *ngIf="!reviewLoading"><i class="bx bx-save"></i> Update</span>
                     <span *ngIf="reviewLoading">
                       <span class="spinner-border spinner-border-sm me-2"></span>
                     </span>
@@ -587,7 +587,7 @@
               <!-- Reviews list -->
               <div *ngIf="reviews.length === 0" class="text-center py-4"
                 style="background: #f8fafc; border-radius: 14px; padding: 32px;">
-                <div style="font-size: 40px; margin-bottom: 12px;">💬</div>
+                <div style="font-size: 40px; margin-bottom: 12px;"><i class="bx bx-message-square-dots"></i></div>
                 <p style="color: #64748b; margin: 0;">No reviews yet !</p>
               </div>
 
@@ -619,11 +619,11 @@
                     <button (click)="editReview(review)"
                       style="padding: 5px 10px; border: 1.5px solid #fde68a;
                         border-radius: 8px; background: #fffbeb; color: #f59e0b;
-                        font-size: 12px; cursor: pointer;">✏️</button>
+                        font-size: 12px; cursor: pointer;"><i class="bx bx-pencil"></i></button>
                     <button (click)="deleteReview(review._id)"
                       style="padding: 5px 10px; border: 1.5px solid #fecaca;
                         border-radius: 8px; background: #fef2f2; color: #ef4444;
-                        font-size: 12px; cursor: pointer;">🗑️</button>
+                        font-size: 12px; cursor: pointer;"><i class="bx bx-trash"></i></button>
                   </div>
                 </div>
                 <p style="color: #64748b; font-size: 13px; line-height: 1.6;
@@ -640,7 +640,7 @@
           <div *ngIf="!canAccessContent()" class="text-center py-5">
             <div style="background: white; border-radius: 20px; padding: 48px;
               border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
-              <div style="font-size: 56px; margin-bottom: 16px;">🔒</div>
+              <div style="font-size: 56px; margin-bottom: 16px;"><i class="bx bx-lock-alt"></i></div>
               <h3 style="font-weight: 800; color: #0f172a; margin-bottom: 8px;">
                 This is a Paid Course
               </h3>
@@ -655,7 +655,7 @@
                   border-radius: 14px; background: #0B0D12;
                   color: white; font-size: 15px; font-weight: 700; text-decoration: none;
                   box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);">
-                🛒 Add to Cart
+                <i class="bx bx-cart"></i> Add to Cart
               </a>
             </div>
           </div>
@@ -692,7 +692,7 @@
 
                   <div style="display: flex; justify-content: space-between;
                     padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
-                    <span style="font-size: 13px; color: #94a3b8;">💰 Price</span>
+                    <span style="font-size: 13px; color: #94a3b8;"><i class="bx bx-money"></i> Price</span>
                     <span style="font-size: 13px; font-weight: 700; color: #0f172a;">
                       {{ course.price === 0 ? 'Free' : course.price + ' TND' }}
                     </span>
@@ -700,7 +700,7 @@
 
                   <div style="display: flex; justify-content: space-between;
                     padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
-                    <span style="font-size: 13px; color: #94a3b8;">👨‍🏫 Trainer</span>
+                    <span style="font-size: 13px; color: #94a3b8;"><i class="bx bx-chalkboard"></i> Trainer</span>
                     <span style="font-size: 13px; font-weight: 600; color: #0f172a;">
                       {{ course.trainer?.firstname }} {{ course.trainer?.lastname }}
                     </span>
@@ -708,7 +708,7 @@
 
                   <div style="display: flex; justify-content: space-between;
                     padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
-                    <span style="font-size: 13px; color: #94a3b8;">📖 Lessons</span>
+                    <span style="font-size: 13px; color: #94a3b8;"><i class="bx bx-book-reader"></i> Lessons</span>
                     <span style="font-size: 13px; font-weight: 600; color: #0f172a;">
                       {{ lessons.length }}
                     </span>
@@ -716,7 +716,7 @@
 
                   <div style="display: flex; justify-content: space-between;
                     padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
-                    <span style="font-size: 13px; color: #94a3b8;">✅ Completed</span>
+                    <span style="font-size: 13px; color: #94a3b8;"><i class="bx bx-check-circle"></i> Completed</span>
                     <span style="font-size: 13px; font-weight: 600; color: #10b981;">
                       {{ completedLessons.length }} / {{ lessons.length }}
                     </span>
@@ -724,7 +724,7 @@
 
                   <div style="display: flex; justify-content: space-between;
                     padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
-                    <span style="font-size: 13px; color: #94a3b8;">⭐ Rating</span>
+                    <span style="font-size: 13px; color: #94a3b8;"><i class="bx bx-star"></i> Rating</span>
                     <span style="font-size: 13px; font-weight: 600; color: #0f172a;">
                       {{ avgRating > 0 ? avgRating + '/5' : 'No ratings' }}
                     </span>
@@ -732,17 +732,17 @@
 
                   <div style="display: flex; justify-content: space-between;
                     padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
-                    <span style="font-size: 13px; color: #94a3b8;">🎓 Certificate</span>
+                    <span style="font-size: 13px; color: #94a3b8;"><i class="bx bx-certification"></i> Certificate</span>
                     <span style="font-size: 13px; font-weight: 600; color: #10b981;">
                       Included
                     </span>
                   </div>
 
                   <div style="display: flex; justify-content: space-between; padding: 10px 0;">
-                    <span style="font-size: 13px; color: #94a3b8;">📋 Enrolled</span>
+                    <span style="font-size: 13px; color: #94a3b8;"><i class="bx bx-clipboard"></i> Enrolled</span>
                     <span style="font-size: 13px; font-weight: 600;"
                       [style.color]="isEnrolled ? '#10b981' : '#94a3b8'">
-                      {{ isEnrolled ? 'Yes ✅' : 'No' }}
+                      {{ isEnrolled ? 'Yes ' : 'No' }}
                     </span>
                   </div>
 
@@ -756,7 +756,7 @@
                     style="width: 100%; padding: 12px; border: none; border-radius: 12px;
                       background: #0B0D12;
                       color: white; font-weight: 600; font-size: 14px; cursor: pointer;">
-                    {{ enrollLoading ? 'Enrolling...' : '📚 Enroll Now — Free' }}
+                    {{ enrollLoading ? 'Enrolling...' : 'Enroll Now — Free' }}
                   </button>
 
                   <a *ngIf="!isPurchased && course.price > 0"
@@ -765,7 +765,7 @@
                       border-radius: 12px; background: #0B0D12;
                       color: white; font-weight: 600; font-size: 14px;
                       text-align: center; text-decoration: none; cursor: pointer;">
-                    🛒 Purchase — {{ course.price }} TND
+                    <i class="bx bx-cart"></i> Purchase — {{ course.price }} TND
                   </a>
 
                   <button *ngIf="allLessonsCompleted && !courseCompleted &&
@@ -774,7 +774,7 @@
                     style="width: 100%; padding: 12px; border: none; border-radius: 12px;
                       background: linear-gradient(135deg, #10b981, #059669);
                       color: white; font-weight: 600; font-size: 14px; cursor: pointer;">
-                    🎓 Final Exam
+                    <i class="bx bx-certification"></i> Final Exam
                   </button>
 
                   <button *ngIf="canAccessContent() && contentUrl"
@@ -782,7 +782,7 @@
                     style="width: 100%; padding: 12px; border: 1.5px solid #e2e8f0;
                       border-radius: 12px; background: white; color: #64748b;
                       font-weight: 600; font-size: 14px; cursor: pointer;">
-                    ⬇️ Download Content
+                    <i class="bx bx-download"></i> Download Content
                   </button>
 
                 </div>

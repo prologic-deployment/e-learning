@@ -58,13 +58,13 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
   passwordError = '';
 
   tabs = [
-    { id: 'overview', icon: '📊', label: 'Vue d\'ensemble' },
-    { id: 'courses', icon: '📚', label: 'Mes cours' },
-    { id: 'history', icon: '📜', label: 'Historique' },
-    { id: 'badges', icon: '🏅', label: 'Badges' },
-    { id: 'certificates', icon: '🎓', label: 'Certificats' },
-    { id: 'notifications', icon: '🔔', label: 'Notifications' },
-    { id: 'profile', icon: '👤', label: 'Profil' }
+    { id: 'overview', icon: 'bx bx-bar-chart-alt-2', label: 'Vue d\'ensemble' },
+    { id: 'courses', icon: 'bx bx-book-open', label: 'Mes cours' },
+    { id: 'history', icon: 'bx bx-history', label: 'Historique' },
+    { id: 'badges', icon: 'bx bx-medal', label: 'Badges' },
+    { id: 'certificates', icon: 'bx bx-certification', label: 'Certificats' },
+    { id: 'notifications', icon: 'bx bx-bell', label: 'Notifications' },
+    { id: 'profile', icon: 'bx bx-user', label: 'Profil' }
   ];
 
   constructor(
@@ -209,7 +209,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     this.http.put(`${this.apiUrl}/profile`, this.profileData).subscribe({
       next: () => {
         this.profileUpdateLoading = false;
-        this.profileUpdateSuccess = 'Profil mis à jour ! ✅';
+        this.profileUpdateSuccess = 'Profil mis à jour ! ';
         this.loadProfile();
         setTimeout(() => this.profileUpdateSuccess = '', 3000);
       },
@@ -226,7 +226,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     formData.append('avatar', this.selectedAvatar);
     this.http.put(`${this.apiUrl}/profile/avatar`, formData).subscribe({
       next: (res: any) => {
-        this.profileUpdateSuccess = 'Avatar mis à jour ! ✅';
+        this.profileUpdateSuccess = 'Avatar mis à jour ! ';
         this.selectedAvatar = null;
         this.avatarPreview = null;
         const user = this.authService.getCurrentUser();
@@ -343,14 +343,14 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
 
   getNotifIcon(type: string): string {
     const icons: any = {
-      'BADGE_EARNED': '🏅',
-      'NEW_COURSE': '📚',
-      'DEADLINE_REMINDER': '⏰',
-      'CERTIFICATE': '🎓',
-      'COURSE_ASSIGNED': '📋',
-      'QUIZ_PASSED': '✅'
+      'BADGE_EARNED': 'bx bx-medal',
+      'NEW_COURSE': 'bx bx-book-open',
+      'DEADLINE_REMINDER': 'bx bx-alarm',
+      'CERTIFICATE': 'bx bx-certification',
+      'COURSE_ASSIGNED': 'bx bx-clipboard',
+      'QUIZ_PASSED': 'bx bx-check-circle'
     };
-    return icons[type] || '🔔';
+    return icons[type] || 'bx bx-bell';
   }
 
   getAverageProgress(): number {
@@ -394,7 +394,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     }).subscribe({
       next: () => {
         this.passwordLoading = false;
-        this.passwordSuccess = 'Mot de passe changé ! ✅';
+        this.passwordSuccess = 'Mot de passe changé ! ';
         this.passwordData = { currentPassword: '', newPassword: '', confirmPassword: '' };
         setTimeout(() => this.passwordSuccess = '', 3000);
       },

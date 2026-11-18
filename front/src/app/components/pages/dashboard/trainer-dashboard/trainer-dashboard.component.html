@@ -4,9 +4,9 @@
     <!-- Header -->
     <div class="row mb-4 align-items-center">
       <div class="col-lg-8">
-        <h2 style="font-weight: 800; color: #1e293b;">🎓 Trainer Dashboard</h2>
+        <h2 style="font-weight: 800; color: #1e293b;"><i class="bx bx-certification"></i> Trainer Dashboard</h2>
         <p class="text-muted mb-0" *ngIf="currentUser">
-          Welcome back, <strong>{{ currentUser.firstname }} {{ currentUser.lastname }}</strong> 👋
+          Welcome back, <strong>{{ currentUser.firstname }} {{ currentUser.lastname }}</strong> 
         </p>
       </div>
       <div class="col-lg-4 text-end" *ngIf="stats">
@@ -14,13 +14,13 @@
           style="padding: 8px 16px; border: none; border-radius: 10px; margin-right: 8px;
             background: #0B0D12;
             color: white; font-weight: 600; font-size: 13px; cursor: pointer;">
-          📄 Export PDF
+          <i class="bx bx-file"></i> Export PDF
         </button>
         <button (click)="exportExcel()"
           style="padding: 8px 16px; border: none; border-radius: 10px;
             background: #0B0D12;
             color: white; font-weight: 600; font-size: 13px; cursor: pointer;">
-          📊 Export Excel
+          <i class="bx bx-bar-chart-alt-2"></i> Export Excel
         </button>
       </div>
     </div>
@@ -31,23 +31,23 @@
         <ul class="nav nav-tabs flex-wrap">
           <li class="nav-item">
             <a class="nav-link" [class.active]="activeTab === 'stats'"
-              (click)="setTab('stats')">📊 My Stats</a>
+              (click)="setTab('stats')"><i class="bx bx-bar-chart-alt-2"></i> My Stats</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" [class.active]="activeTab === 'courses'"
-              (click)="setTab('courses')">📚 All Courses</a>
+              (click)="setTab('courses')"><i class="bx bx-book-open"></i> All Courses</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" [class.active]="activeTab === 'create'"
-              (click)="setTab('create')">➕ Create Course</a>
+              (click)="setTab('create')"><i class="bx bx-plus"></i> Create Course</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" [class.active]="activeTab === 'quiz-results'"
-              (click)="setTab('quiz-results')">📝 Quiz Results</a>
+              (click)="setTab('quiz-results')"><i class="bx bx-edit"></i> Quiz Results</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" [class.active]="activeTab === 'profile'"
-              (click)="setTab('profile')">👤 My Profile</a>
+              (click)="setTab('profile')"><i class="bx bx-user"></i> My Profile</a>
           </li>
         </ul>
       </div>
@@ -73,7 +73,7 @@
                   <h3 style="font-weight: 800; color: #1e293b; margin: 0;">{{ stats.overview.totalCourses }}</h3>
                 </div>
                 <div style="width: 50px; height: 50px; border-radius: 12px; background: #1E3A8A22;
-                  display: flex; align-items: center; justify-content: center; font-size: 22px;">📚</div>
+                  display: flex; align-items: center; justify-content: center; font-size: 22px;"><i class="bx bx-book-open"></i></div>
               </div>
             </div>
           </div>
@@ -87,7 +87,7 @@
                   <h3 style="font-weight: 800; color: #1e293b; margin: 0;">{{ stats.overview.approvedCourses }}</h3>
                 </div>
                 <div style="width: 50px; height: 50px; border-radius: 12px; background: #1E3A8A22;
-                  display: flex; align-items: center; justify-content: center; font-size: 22px;">✅</div>
+                  display: flex; align-items: center; justify-content: center; font-size: 22px;"><i class="bx bx-check-circle"></i></div>
               </div>
             </div>
           </div>
@@ -101,7 +101,7 @@
                   <h3 style="font-weight: 800; color: #1e293b; margin: 0;">{{ stats.overview.totalEnrollments }}</h3>
                 </div>
                 <div style="width: 50px; height: 50px; border-radius: 12px; background: #f59e0b22;
-                  display: flex; align-items: center; justify-content: center; font-size: 22px;">👥</div>
+                  display: flex; align-items: center; justify-content: center; font-size: 22px;"><i class="bx bx-group"></i></div>
               </div>
             </div>
           </div>
@@ -117,7 +117,7 @@
                   </h3>
                 </div>
                 <div style="width: 50px; height: 50px; border-radius: 12px; background: #10b98122;
-                  display: flex; align-items: center; justify-content: center; font-size: 22px;">🏆</div>
+                  display: flex; align-items: center; justify-content: center; font-size: 22px;"><i class="bx bx-trophy"></i></div>
               </div>
             </div>
           </div>
@@ -127,18 +127,18 @@
           style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
           <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <h5 class="mb-1" style="font-weight: 700; color: #1e293b;">📚 My Courses Performance</h5>
+              <h5 class="mb-1" style="font-weight: 700; color: #1e293b;"><i class="bx bx-book-open"></i> My Courses Performance</h5>
               <small class="text-muted">{{ stats.courseStats.length }} course(s)</small>
             </div>
             <button class="btn btn-outline-primary btn-sm" style="border-radius: 8px;"
-              (click)="setTab('create')">➕ New Course</button>
+              (click)="setTab('create')"><i class="bx bx-plus"></i> New Course</button>
           </div>
 
           <div *ngIf="stats.courseStats.length === 0" class="text-center py-5">
-            <div style="font-size: 50px;">📚</div>
+            <div style="font-size: 50px;"><i class="bx bx-book-open"></i></div>
             <p class="text-muted mt-2">No courses yet !</p>
             <button class="btn btn-primary" style="border-radius: 10px;"
-              (click)="setTab('create')">➕ Create Course</button>
+              (click)="setTab('create')"><i class="bx bx-plus"></i> Create Course</button>
           </div>
 
           <div class="table-responsive" *ngIf="stats.courseStats.length > 0">
@@ -160,7 +160,7 @@
                     <span class="badge"
                       [class.bg-success]="item.course.isApproved"
                       [class.bg-warning]="!item.course.isApproved" style="font-size: 11px;">
-                      {{ item.course.isApproved ? '✅ Approved' : '⏳ Pending' }}
+                      {{ item.course.isApproved ? 'Approved' : 'Pending' }}
                     </span>
                   </td>
                   <td>
@@ -195,7 +195,7 @@
           </div>
 
           <div *ngIf="stats.courseStats.length > 0" class="mt-4">
-            <h6 style="font-weight: 700; color: #1e293b; margin-bottom: 16px;">📊 Students Progress per Course</h6>
+            <h6 style="font-weight: 700; color: #1e293b; margin-bottom: 16px;"><i class="bx bx-bar-chart-alt-2"></i> Students Progress per Course</h6>
             <div *ngFor="let item of stats.courseStats" class="mb-4">
               <div class="d-flex justify-content-between mb-1">
                 <small style="font-weight: 600; color: #374151;">{{ item.course.title }}</small>
@@ -204,19 +204,19 @@
               <div class="progress" style="height: 22px; border-radius: 10px; overflow: hidden;">
                 <div class="progress-bar" style="background: #0B0D12;"
                   [style.width.%]="item.totalEnrollments > 0 ? (item.completedEnrollments / item.totalEnrollments * 100) : 0">
-                  <small *ngIf="item.completedEnrollments > 0">✅ {{ item.completedEnrollments }}</small>
+                  <small *ngIf="item.completedEnrollments > 0"><i class="bx bx-check-circle"></i> {{ item.completedEnrollments }}</small>
                 </div>
                 <div class="progress-bar" style="background: #0B0D12;"
                   [style.width.%]="item.totalEnrollments > 0 ? ((item.totalEnrollments - item.completedEnrollments) / item.totalEnrollments * 100) : 0">
                   <small *ngIf="(item.totalEnrollments - item.completedEnrollments) > 0">
-                    🔄 {{ item.totalEnrollments - item.completedEnrollments }}
+                    <i class="bx bx-refresh"></i> {{ item.totalEnrollments - item.completedEnrollments }}
                   </small>
                 </div>
               </div>
               <div class="d-flex gap-3 mt-1">
                 <small style="color: #10b981;">■ Completed</small>
                 <small style="color: #1E3A8A;">■ In Progress</small>
-                <small style="color: #ef4444;">📉 Dropout: {{ getDropoutRate(item) }}%</small>
+                <small style="color: #ef4444;"><i class="bx bx-trending-down"></i> Dropout: {{ getDropoutRate(item) }}%</small>
               </div>
             </div>
           </div>
@@ -235,22 +235,22 @@
 
           <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <h5 class="mb-1" style="font-weight: 700; color: #1e293b;">📚 All Courses</h5>
+              <h5 class="mb-1" style="font-weight: 700; color: #1e293b;"><i class="bx bx-book-open"></i> All Courses</h5>
               <small class="text-muted">{{ allCourses.length }} total courses on the platform</small>
             </div>
             <button class="btn btn-outline-primary btn-sm" style="border-radius: 8px;"
-              (click)="loadAllCourses()">🔄 Refresh</button>
+              (click)="loadAllCourses()"><i class="bx bx-refresh"></i> Refresh</button>
           </div>
 
           <div class="d-flex gap-2 mb-4">
             <input type="text" class="form-control"
-              placeholder="🔍 Search courses..."
+              placeholder="Search courses..."
               [(ngModel)]="allCoursesSearch"
               style="border-radius: 10px; border: 1.5px solid #e2e8f0; max-width: 400px;">
           </div>
 
           <div *ngIf="filteredCourses.length === 0" class="text-center py-5">
-            <div style="font-size: 50px;">📚</div>
+            <div style="font-size: 50px;"><i class="bx bx-book-open"></i></div>
             <p class="text-muted mt-2">No courses found !</p>
           </div>
 
@@ -268,7 +268,7 @@
                     <strong style="font-size: 13px; color: #1e293b;">{{ course.title }}</strong>
                     <br>
                     <small class="text-muted" *ngIf="course.tags?.length > 0">
-                      🏷️ {{ course.tags.slice(0,2).join(', ') }}
+                      <i class="bx bx-purchase-tag"></i> {{ course.tags.slice(0,2).join(', ') }}
                     </small>
                   </td>
                   <td>
@@ -285,7 +285,7 @@
                       style="background: #EEF2FB; color: #1E3A8A; padding: 2px 8px;
                         border-radius: 10px; font-size: 10px; font-weight: 600;
                         display: inline-block; margin-top: 4px;">
-                      ✨ My Course
+                      <i class="bx bx-bulb"></i> My Course
                     </span>
                   </td>
                   <td>
@@ -295,22 +295,22 @@
                     <span class="badge"
                       [class.bg-success]="course.price === 0"
                       [class.bg-info]="course.price > 0" style="font-size: 11px;">
-                      {{ course.price === 0 ? '🎁 Free' : '💰 ' + course.price + ' TND' }}
+                      {{ course.price === 0 ? 'Free' : '' + course.price + ' TND' }}
                     </span>
                   </td>
                   <td>
                     <span class="badge"
                       [class.bg-success]="course.isApproved"
                       [class.bg-warning]="!course.isApproved" style="font-size: 11px;">
-                      {{ course.isApproved ? '✅ Approved' : '⏳ Pending' }}
+                      {{ course.isApproved ? 'Approved' : 'Pending' }}
                     </span>
                   </td>
                   <td>
                     <div class="d-flex gap-1">
                       <button class="btn btn-sm btn-primary" style="border-radius: 8px;"
-                        (click)="editCourse(course)">✏️ Edit</button>
+                        (click)="editCourse(course)"><i class="bx bx-pencil"></i> Edit</button>
                       <button class="btn btn-sm btn-danger" style="border-radius: 8px;"
-                        (click)="deleteCourse(course._id)">🗑️</button>
+                        (click)="deleteCourse(course._id)"><i class="bx bx-trash"></i></button>
                     </div>
                   </td>
                 </tr>
@@ -328,11 +328,11 @@
       <div class="card p-4 mb-4" *ngIf="!createdCourse"
         style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
         <div class="mb-4">
-          <h4 class="mb-1" style="font-weight: 700; color: #1e293b;">➕ Create New Course</h4>
+          <h4 class="mb-1" style="font-weight: 700; color: #1e293b;"><i class="bx bx-plus"></i> Create New Course</h4>
           <small class="text-muted">Your course will be reviewed by an admin before being published.</small>
         </div>
         <div class="alert alert-info" style="border-radius: 10px; border: none; background: #f0f9ff;">
-          ℹ️ Fill in all required fields and add lessons after creation.
+          <i class="bx bx-info-circle"></i> Fill in all required fields and add lessons after creation.
         </div>
         <div *ngIf="createCourseSuccess" class="alert alert-success">{{ createCourseSuccess }}</div>
         <div *ngIf="createCourseError" class="alert alert-danger">{{ createCourseError }}</div>
@@ -395,7 +395,7 @@
             background: #0B0D12;
             box-shadow: 0 4px 15px rgba(30, 58, 138,0.4); margin-top: 8px;"
           [style.opacity]="createCourseLoading ? '0.7' : '1'">
-          <span *ngIf="!createCourseLoading">➕ Create Course</span>
+          <span *ngIf="!createCourseLoading"><i class="bx bx-plus"></i> Create Course</span>
           <span *ngIf="createCourseLoading">
             <span class="spinner-border spinner-border-sm me-2"></span>Creating...
           </span>
@@ -411,14 +411,14 @@
             border: 1px solid #f0f0f0; background: #F3F6FC;">
           <div class="d-flex justify-content-between align-items-center">
             <div>
-              <h5 style="font-weight: 700; color: #1e293b; margin: 0;">📚 {{ createdCourse.title }}</h5>
+              <h5 style="font-weight: 700; color: #1e293b; margin: 0;"><i class="bx bx-book-open"></i> {{ createdCourse.title }}</h5>
               <div class="mt-2 d-flex gap-2">
                 <span class="badge bg-primary" style="font-size: 11px;">{{ createdCourse.category }}</span>
                 <span class="badge"
                   [class.bg-success]="createdCourse.isApproved"
                   [class.bg-warning]="!createdCourse.isApproved"
                   style="font-size: 11px;">
-                  {{ createdCourse.isApproved ? '✅ Approved' : '⏳ Pending' }}
+                  {{ createdCourse.isApproved ? 'Approved' : 'Pending' }}
                 </span>
               </div>
             </div>
@@ -428,7 +428,7 @@
                   background: #0B0D12;
                   color: white; font-weight: 600; font-size: 13px; cursor: pointer;"
                 [style.opacity]="createCourseLoading ? '0.7' : '1'">
-                <span *ngIf="!createCourseLoading">💾 Update Course</span>
+                <span *ngIf="!createCourseLoading"><i class="bx bx-save"></i> Update Course</span>
                 <span *ngIf="createCourseLoading">
                   <span class="spinner-border spinner-border-sm me-2"></span>Saving...
                 </span>
@@ -451,7 +451,7 @@
           style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
           <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="mb-0" style="font-weight: 700; color: #1e293b;">
-              📖 Lessons
+              <i class="bx bx-book-reader"></i> Lessons
               <span class="badge ms-2"
                 style="background: #0B0D12; font-size: 12px;">
                 {{ lessons.length }}
@@ -461,7 +461,7 @@
 
           <div *ngIf="lessons.length === 0" class="text-center py-4"
             style="background: #f8f9fa; border-radius: 12px; border: 2px dashed #dee2e6;">
-            <div style="font-size: 35px;">📖</div>
+            <div style="font-size: 35px;"><i class="bx bx-book-reader"></i></div>
             <p class="text-muted mt-2 mb-0">No lessons yet — add your first lesson below !</p>
           </div>
 
@@ -474,19 +474,19 @@
                 <strong style="font-size: 14px; color: #1e293b;">{{ i + 1 }}. {{ lesson.title }}</strong>
                 <div class="mt-1 d-flex gap-1 flex-wrap">
                   <span *ngIf="lesson.contentType" class="badge bg-info" style="font-size: 10px;">
-                    {{ lesson.contentType === 'video' ? '🎬 Video' : '📄 PDF' }}
+                    {{ lesson.contentType === 'video' ? 'Video' : 'PDF' }}
                   </span>
                   <span *ngIf="lesson.quiz?.questions?.length > 0" class="badge bg-success" style="font-size: 10px;">
-                    ✅ Quiz 1 ({{ lesson.quiz.questions.length }}q)
+                    <i class="bx bx-check-circle"></i> Quiz 1 ({{ lesson.quiz.questions.length }}q)
                   </span>
                   <span *ngIf="!lesson.quiz?.questions?.length" class="badge bg-warning" style="font-size: 10px;">
-                    ⚠️ No Quiz 1
+                    <i class="bx bx-error"></i> No Quiz 1
                   </span>
                   <span *ngIf="lesson.quiz2?.questions?.length > 0" class="badge bg-success" style="font-size: 10px;">
-                    ✅ Quiz 2 ({{ lesson.quiz2.questions.length }}q)
+                    <i class="bx bx-check-circle"></i> Quiz 2 ({{ lesson.quiz2.questions.length }}q)
                   </span>
                   <span *ngIf="!lesson.quiz2?.questions?.length" class="badge bg-secondary" style="font-size: 10px;">
-                    ➕ No Quiz 2
+                    <i class="bx bx-plus"></i> No Quiz 2
                   </span>
                 </div>
               </div>
@@ -495,30 +495,30 @@
                 <!-- Quiz 1 buttons -->
                 <ng-container *ngIf="lesson.quiz?.questions?.length > 0; else addQuiz1Btn">
                   <button class="btn btn-sm btn-outline-primary" style="border-radius: 8px;"
-                    (click)="editQuiz(lesson)">✏️ Quiz 1</button>
+                    (click)="editQuiz(lesson)"><i class="bx bx-pencil"></i> Quiz 1</button>
                   <button class="btn btn-sm btn-outline-danger" style="border-radius: 8px;"
-                    (click)="deleteQuiz(lesson._id)">🗑️ Q1</button>
+                    (click)="deleteQuiz(lesson._id)"><i class="bx bx-trash"></i> Q1</button>
                 </ng-container>
                 <ng-template #addQuiz1Btn>
                   <button class="btn btn-sm btn-outline-primary" style="border-radius: 8px;"
-                    (click)="openQuizForm(lesson._id)">➕ Quiz 1</button>
+                    (click)="openQuizForm(lesson._id)"><i class="bx bx-plus"></i> Quiz 1</button>
                 </ng-template>
 
                 <!-- Quiz 2 buttons -->
                 <ng-container *ngIf="lesson.quiz2?.questions?.length > 0; else addQuiz2Btn">
                   <button class="btn btn-sm btn-outline-info" style="border-radius: 8px;"
-                    (click)="editQuiz2(lesson)">✏️ Quiz 2</button>
+                    (click)="editQuiz2(lesson)"><i class="bx bx-pencil"></i> Quiz 2</button>
                   <button class="btn btn-sm btn-outline-danger" style="border-radius: 8px;"
-                    (click)="deleteQuiz2(lesson._id)">🗑️ Q2</button>
+                    (click)="deleteQuiz2(lesson._id)"><i class="bx bx-trash"></i> Q2</button>
                 </ng-container>
                 <ng-template #addQuiz2Btn>
                   <button class="btn btn-sm btn-outline-info" style="border-radius: 8px;"
-                    (click)="openQuizForm2(lesson._id)">➕ Quiz 2</button>
+                    (click)="openQuizForm2(lesson._id)"><i class="bx bx-plus"></i> Quiz 2</button>
                 </ng-template>
 
                 <!-- Delete lesson -->
                 <button class="btn btn-sm btn-danger" style="border-radius: 8px;"
-                  (click)="deleteLesson(lesson._id)">🗑️ Lesson</button>
+                  (click)="deleteLesson(lesson._id)"><i class="bx bx-trash"></i> Lesson</button>
               </div>
             </div>
 
@@ -530,7 +530,7 @@
 
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 style="font-weight: 700; color: #1e293b; margin: 0;">
-                  📝 Quiz 1 — {{ lesson.title }}
+                  <i class="bx bx-edit"></i> Quiz 1 — {{ lesson.title }}
                 </h5>
                 <span class="badge"
                   style="background: #0B0D12; font-size: 11px;">
@@ -542,7 +542,7 @@
 
               <div class="mb-4" style="background: #f8f9fa; border-radius: 10px; padding: 14px;">
                 <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                  🎯 Minimum Score to Pass (%)
+                  <i class="bx bx-target-lock"></i> Minimum Score to Pass (%)
                 </label>
                 <div class="d-flex align-items-center gap-3 mt-2">
                   <input type="number" class="form-control"
@@ -573,7 +573,7 @@
                     <strong style="color: #374151; font-size: 14px;">Question {{ qi + 1 }}</strong>
                   </div>
                   <button *ngIf="newQuiz.questions.length > 1" class="btn btn-sm btn-danger"
-                    style="border-radius: 8px;" (click)="removeQuizQuestion(qi)">🗑️ Remove</button>
+                    style="border-radius: 8px;" (click)="removeQuizQuestion(qi)"><i class="bx bx-trash"></i> Remove</button>
                 </div>
 
                 <div class="mb-3">
@@ -590,7 +590,7 @@
                 <div>
                   <label style="font-size: 12px; font-weight: 600; color: #64748b;
                     text-transform: uppercase; letter-spacing: 0.5px;">
-                    Answer Options — Select the correct one 🔘
+                    Answer Options — Select the correct one <i class="bx bx-radio-circle"></i>
                   </label>
                   <small class="d-block text-muted mb-2" style="font-size: 11px;">At least 2 options required.</small>
                   <div *ngFor="let opt of q.options; let oi = index; trackBy: trackByIndex" class="mb-2">
@@ -621,11 +621,11 @@
                       <span *ngIf="newQuiz.questions[qi].correctAnswer === oi"
                         style="background: #10b981; color: white; padding: 4px 10px;
                           border-radius: 20px; font-size: 11px; font-weight: 600;
-                          white-space: nowrap; flex-shrink: 0;">✅ Correct</span>
+                          white-space: nowrap; flex-shrink: 0;"><i class="bx bx-check-circle"></i> Correct</span>
                     </div>
                   </div>
                   <small class="text-muted mt-1 d-block" style="font-size: 11px;">
-                    💡 Click the circle to select the correct answer
+                    <i class="bx bx-bulb"></i> Click the circle to select the correct answer
                   </small>
                 </div>
               </div>
@@ -634,7 +634,7 @@
                 style="width: 100%; padding: 12px; border: 2px dashed #1E3A8A;
                   border-radius: 10px; background: #EEF2FB; color: #1E3A8A;
                   font-weight: 600; font-size: 14px; cursor: pointer; margin-bottom: 16px;">
-                ➕ Add Another Question
+                <i class="bx bx-plus"></i> Add Another Question
               </button>
 
               <div class="d-flex gap-2">
@@ -644,7 +644,7 @@
                     background: #0B0D12;
                     box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);"
                   [style.opacity]="quizLoading ? '0.7' : '1'">
-                  <span *ngIf="!quizLoading">💾 Save Quiz 1</span>
+                  <span *ngIf="!quizLoading"><i class="bx bx-save"></i> Save Quiz 1</span>
                   <span *ngIf="quizLoading">
                     <span class="spinner-border spinner-border-sm me-2"></span>Saving...
                   </span>
@@ -662,7 +662,7 @@
 
               <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 style="font-weight: 700; color: #1e293b; margin: 0;">
-                  📝 Quiz 2 — {{ lesson.title }}
+                  <i class="bx bx-edit"></i> Quiz 2 — {{ lesson.title }}
                 </h5>
                 <span class="badge bg-info" style="font-size: 11px;">
                   QCM — {{ newQuiz2.questions.length }} question(s)
@@ -673,7 +673,7 @@
 
               <div class="mb-4" style="background: #f8f9fa; border-radius: 10px; padding: 14px;">
                 <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                  🎯 Minimum Score to Pass (%)
+                  <i class="bx bx-target-lock"></i> Minimum Score to Pass (%)
                 </label>
                 <div class="d-flex align-items-center gap-3 mt-2">
                   <input type="number" class="form-control"
@@ -704,7 +704,7 @@
                     <strong style="color: #374151; font-size: 14px;">Question {{ qi + 1 }}</strong>
                   </div>
                   <button *ngIf="newQuiz2.questions.length > 1" class="btn btn-sm btn-danger"
-                    style="border-radius: 8px;" (click)="removeQuizQuestion2(qi)">🗑️ Remove</button>
+                    style="border-radius: 8px;" (click)="removeQuizQuestion2(qi)"><i class="bx bx-trash"></i> Remove</button>
                 </div>
 
                 <div class="mb-3">
@@ -721,7 +721,7 @@
                 <div>
                   <label style="font-size: 12px; font-weight: 600; color: #64748b;
                     text-transform: uppercase; letter-spacing: 0.5px;">
-                    Answer Options — Select the correct one 🔘
+                    Answer Options — Select the correct one <i class="bx bx-radio-circle"></i>
                   </label>
                   <small class="d-block text-muted mb-2" style="font-size: 11px;">At least 2 options required.</small>
                   <div *ngFor="let opt of q.options; let oi = index; trackBy: trackByIndex" class="mb-2">
@@ -752,11 +752,11 @@
                       <span *ngIf="newQuiz2.questions[qi].correctAnswer === oi"
                         style="background: #10b981; color: white; padding: 4px 10px;
                           border-radius: 20px; font-size: 11px; font-weight: 600;
-                          white-space: nowrap; flex-shrink: 0;">✅ Correct</span>
+                          white-space: nowrap; flex-shrink: 0;"><i class="bx bx-check-circle"></i> Correct</span>
                     </div>
                   </div>
                   <small class="text-muted mt-1 d-block" style="font-size: 11px;">
-                    💡 Click the circle to select the correct answer
+                    <i class="bx bx-bulb"></i> Click the circle to select the correct answer
                   </small>
                 </div>
               </div>
@@ -765,7 +765,7 @@
                 style="width: 100%; padding: 12px; border: 2px dashed #06b6d4;
                   border-radius: 10px; background: #f0fdff; color: #06b6d4;
                   font-weight: 600; font-size: 14px; cursor: pointer; margin-bottom: 16px;">
-                ➕ Add Another Question
+                <i class="bx bx-plus"></i> Add Another Question
               </button>
 
               <div class="d-flex gap-2">
@@ -775,7 +775,7 @@
                     background: linear-gradient(135deg, #06b6d4, #0284c7);
                     box-shadow: 0 4px 15px rgba(6,182,212,0.4);"
                   [style.opacity]="quizLoading2 ? '0.7' : '1'">
-                  <span *ngIf="!quizLoading2">💾 Save Quiz 2</span>
+                  <span *ngIf="!quizLoading2"><i class="bx bx-save"></i> Save Quiz 2</span>
                   <span *ngIf="quizLoading2">
                     <span class="spinner-border spinner-border-sm me-2"></span>Saving...
                   </span>
@@ -791,7 +791,7 @@
         <!-- Add Lesson -->
         <div class="card p-4 mb-4"
           style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
-          <h5 class="mb-4" style="font-weight: 700; color: #1e293b;">➕ Add Lesson</h5>
+          <h5 class="mb-4" style="font-weight: 700; color: #1e293b;"><i class="bx bx-plus"></i> Add Lesson</h5>
           <div *ngIf="lessonError" class="alert alert-danger">{{ lessonError }}</div>
 
           <div class="mb-3">
@@ -821,7 +821,7 @@
               background: #0B0D12;
               box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);"
             [style.opacity]="lessonLoading ? '0.7' : '1'">
-            <span *ngIf="!lessonLoading">➕ Add Lesson</span>
+            <span *ngIf="!lessonLoading"><i class="bx bx-plus"></i> Add Lesson</span>
             <span *ngIf="lessonLoading">
               <span class="spinner-border spinner-border-sm me-2"></span>Adding...
             </span>
@@ -833,16 +833,16 @@
           style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
 
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="mb-0" style="font-weight: 700; color: #1e293b;">🎓 Final Exam</h5>
+            <h5 class="mb-0" style="font-weight: 700; color: #1e293b;"><i class="bx bx-certification"></i> Final Exam</h5>
             <div class="d-flex gap-2" *ngIf="!showFinalExamForm">
               <button style="border-radius: 8px; border: 2px solid #1E3A8A; color: #1E3A8A;
                 font-weight: 600; background: transparent; padding: 6px 14px;
                 cursor: pointer; font-size: 13px;"
-                (click)="editFinalExam()">✏️ Edit</button>
+                (click)="editFinalExam()"><i class="bx bx-pencil"></i> Edit</button>
               <button style="border-radius: 8px; border: 2px solid #1E3A8A; color: #1E3A8A;
                 font-weight: 600; background: transparent; padding: 6px 14px;
                 cursor: pointer; font-size: 13px;"
-                (click)="openFinalExamForm()">➕ Add Final Exam</button>
+                (click)="openFinalExamForm()"><i class="bx bx-plus"></i> Add Final Exam</button>
             </div>
           </div>
 
@@ -850,14 +850,14 @@
 
           <div *ngIf="!showFinalExamForm" class="text-center py-4"
             style="background: #f8f9fa; border-radius: 12px; border: 2px dashed #dee2e6;">
-            <div style="font-size: 35px;">🎓</div>
+            <div style="font-size: 35px;"><i class="bx bx-certification"></i></div>
             <p class="text-muted mt-2 mb-0">No final exam yet — click Add to create one !</p>
           </div>
 
           <div *ngIf="showFinalExamForm">
             <div class="mb-4 mt-3" style="background: #f8f9fa; border-radius: 10px; padding: 14px;">
               <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                🎯 Minimum Score to Pass (%)
+                <i class="bx bx-target-lock"></i> Minimum Score to Pass (%)
               </label>
               <div class="d-flex align-items-center gap-3 mt-2">
                 <input type="number" class="form-control"
@@ -888,7 +888,7 @@
                   <strong style="color: #374151; font-size: 14px;">Question {{ qi + 1 }}</strong>
                 </div>
                 <button *ngIf="newFinalExam.questions.length > 1" class="btn btn-sm btn-danger"
-                  style="border-radius: 8px;" (click)="removeFinalExamQuestion(qi)">🗑️ Remove</button>
+                  style="border-radius: 8px;" (click)="removeFinalExamQuestion(qi)"><i class="bx bx-trash"></i> Remove</button>
               </div>
 
               <div class="mb-3">
@@ -905,7 +905,7 @@
               <div>
                 <label style="font-size: 12px; font-weight: 600; color: #64748b;
                   text-transform: uppercase; letter-spacing: 0.5px;">
-                  Answer Options — Select the correct one 🔘
+                  Answer Options — Select the correct one <i class="bx bx-radio-circle"></i>
                 </label>
                 <small class="d-block text-muted mb-2" style="font-size: 11px;">At least 2 options required.</small>
                 <div *ngFor="let opt of q.options; let oi = index; trackBy: trackByIndex" class="mb-2">
@@ -936,11 +936,11 @@
                     <span *ngIf="newFinalExam.questions[qi].correctAnswer === oi"
                       style="background: #10b981; color: white; padding: 4px 10px;
                         border-radius: 20px; font-size: 11px; font-weight: 600;
-                        white-space: nowrap; flex-shrink: 0;">✅ Correct</span>
+                        white-space: nowrap; flex-shrink: 0;"><i class="bx bx-check-circle"></i> Correct</span>
                   </div>
                 </div>
                 <small class="text-muted mt-1 d-block" style="font-size: 11px;">
-                  💡 Click the circle to select the correct answer
+                  <i class="bx bx-bulb"></i> Click the circle to select the correct answer
                 </small>
               </div>
             </div>
@@ -949,7 +949,7 @@
               style="width: 100%; padding: 12px; border: 2px dashed #1E3A8A;
                 border-radius: 10px; background: #f0fff4; color: #10b981;
                 font-weight: 600; font-size: 14px; cursor: pointer; margin-bottom: 16px;">
-              ➕ Add Another Question
+              <i class="bx bx-plus"></i> Add Another Question
             </button>
 
             <div class="d-flex gap-2">
@@ -958,7 +958,7 @@
                   font-size: 15px; font-weight: 600; color: white; cursor: pointer;
                   background: #0B0D12;"
                 [style.opacity]="finalExamLoading ? '0.7' : '1'">
-                <span *ngIf="!finalExamLoading">💾 Save Final Exam</span>
+                <span *ngIf="!finalExamLoading"><i class="bx bx-save"></i> Save Final Exam</span>
                 <span *ngIf="finalExamLoading">
                   <span class="spinner-border spinner-border-sm me-2"></span>Saving...
                 </span>
@@ -973,7 +973,7 @@
           <a [routerLink]="['/courses-details', createdCourse._id]"
             style="display: inline-block; padding: 12px 30px; border: 2px solid #1E3A8A;
               border-radius: 25px; color: #1E3A8A; font-weight: 600; text-decoration: none;">
-            👁️ Preview Course
+            <i class="bx bx-show"></i> Preview Course
           </a>
         </div>
       </div>
@@ -990,7 +990,7 @@
 
           <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <h4 class="mb-1" style="font-weight: 700; color: #1e293b;">📝 Quiz Results</h4>
+              <h4 class="mb-1" style="font-weight: 700; color: #1e293b;"><i class="bx bx-edit"></i> Quiz Results</h4>
               <small class="text-muted">
                 {{ quizResults.length }} total |
                 <span class="text-success fw-bold">{{ passedCount }} passed</span> |
@@ -998,7 +998,7 @@
               </small>
             </div>
             <button class="btn btn-outline-primary btn-sm" style="border-radius: 8px;"
-              (click)="loadQuizResults()">🔄 Refresh</button>
+              (click)="loadQuizResults()"><i class="bx bx-refresh"></i> Refresh</button>
           </div>
 
           <div class="d-flex gap-2 mb-4">
@@ -1009,15 +1009,15 @@
             <button class="btn btn-sm"
               [class.btn-success]="quizResultsFilter === 'passed'"
               [class.btn-outline-success]="quizResultsFilter !== 'passed'"
-              (click)="quizResultsFilter = 'passed'">✅ Passed ({{ passedCount }})</button>
+              (click)="quizResultsFilter = 'passed'"><i class="bx bx-check-circle"></i> Passed ({{ passedCount }})</button>
             <button class="btn btn-sm"
               [class.btn-danger]="quizResultsFilter === 'failed'"
               [class.btn-outline-danger]="quizResultsFilter !== 'failed'"
-              (click)="quizResultsFilter = 'failed'">❌ Failed ({{ failedCount }})</button>
+              (click)="quizResultsFilter = 'failed'"><i class="bx bx-x-circle"></i> Failed ({{ failedCount }})</button>
           </div>
 
           <div *ngIf="filteredQuizResults.length === 0" class="text-center py-5">
-            <div style="font-size: 50px;">📝</div>
+            <div style="font-size: 50px;"><i class="bx bx-edit"></i></div>
             <p class="text-muted mt-2">No quiz results found !</p>
           </div>
 
@@ -1059,7 +1059,7 @@
                       [class.bg-info]="result.type === 'lesson_quiz'"
                       [class.bg-warning]="result.type === 'final_exam'"
                       style="font-size: 11px;">
-                      {{ result.type === 'lesson_quiz' ? '📝 Lesson Quiz' : '🎓 Final Exam' }}
+                      {{ result.type === 'lesson_quiz' ? 'Lesson Quiz' : 'Final Exam' }}
                     </span>
                   </td>
                   <td>
@@ -1082,7 +1082,7 @@
                     <span class="badge"
                       [class.bg-success]="result.passed"
                       [class.bg-danger]="!result.passed">
-                      {{ result.passed ? '✅ Passed' : '❌ Failed' }}
+                      {{ result.passed ? 'Passed' : 'Failed' }}
                     </span>
                   </td>
                   <td><span class="badge bg-secondary">{{ result.attempts }}x</span></td>
@@ -1126,7 +1126,7 @@
             <p class="text-muted" style="font-size: 13px;">{{ profile?.user?.email }}</p>
             <span class="badge"
               style="background: #0B0D12; font-size: 12px; padding: 6px 14px;">
-              🎓 Trainer
+              <i class="bx bx-certification"></i> Trainer
             </span>
             <div class="mt-4">
               <input type="file" class="form-control mb-2" accept=".jpg,.jpeg,.png,.webp"
@@ -1137,7 +1137,7 @@
                   background: #0B0D12;
                   color: white; font-weight: 600; font-size: 13px; cursor: pointer;"
                 [style.opacity]="!selectedAvatar ? '0.5' : '1'">
-                📷 Update Profile Picture
+                <i class="bx bx-camera"></i> Update Profile Picture
               </button>
             </div>
           </div>
@@ -1145,30 +1145,30 @@
           <div class="card p-4 mt-3"
             style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;"
             *ngIf="stats">
-            <h6 style="font-weight: 700; color: #1e293b; margin-bottom: 16px;">📊 Quick Stats</h6>
+            <h6 style="font-weight: 700; color: #1e293b; margin-bottom: 16px;"><i class="bx bx-bar-chart-alt-2"></i> Quick Stats</h6>
             <div class="row">
               <div class="col-6 mb-3">
                 <div class="text-center p-2" style="background: #EEF2FB; border-radius: 12px;">
                   <div style="font-size: 22px; font-weight: 800; color: #1E3A8A;">{{ stats.overview.totalCourses }}</div>
-                  <div style="font-size: 11px; color: #64748b;">📚 Courses</div>
+                  <div style="font-size: 11px; color: #64748b;"><i class="bx bx-book-open"></i> Courses</div>
                 </div>
               </div>
               <div class="col-6 mb-3">
                 <div class="text-center p-2" style="background: #f0fdf4; border-radius: 12px;">
                   <div style="font-size: 22px; font-weight: 800; color: #10b981;">{{ stats.overview.approvedCourses }}</div>
-                  <div style="font-size: 11px; color: #64748b;">✅ Approved</div>
+                  <div style="font-size: 11px; color: #64748b;"><i class="bx bx-check-circle"></i> Approved</div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="text-center p-2" style="background: #fffbeb; border-radius: 12px;">
                   <div style="font-size: 22px; font-weight: 800; color: #f59e0b;">{{ stats.overview.totalEnrollments }}</div>
-                  <div style="font-size: 11px; color: #64748b;">👥 Students</div>
+                  <div style="font-size: 11px; color: #64748b;"><i class="bx bx-group"></i> Students</div>
                 </div>
               </div>
               <div class="col-6">
                 <div class="text-center p-2" style="background: #f0fdfa; border-radius: 12px;">
                   <div style="font-size: 22px; font-weight: 800; color: #06b6d4;">{{ stats.overview.completionRate }}%</div>
-                  <div style="font-size: 11px; color: #64748b;">🏆 Rate</div>
+                  <div style="font-size: 11px; color: #64748b;"><i class="bx bx-trophy"></i> Rate</div>
                 </div>
               </div>
             </div>
@@ -1181,7 +1181,7 @@
 
           <div class="card p-4 mb-4"
             style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
-            <h5 class="mb-4" style="font-weight: 700; color: #1e293b;">✏️ Edit Profile</h5>
+            <h5 class="mb-4" style="font-weight: 700; color: #1e293b;"><i class="bx bx-pencil"></i> Edit Profile</h5>
             <div class="row">
               <div class="col-lg-6">
                 <div class="mb-3">
@@ -1218,7 +1218,7 @@
                 background: #0B0D12;
                 box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);"
               [style.opacity]="profileUpdateLoading ? '0.7' : '1'">
-              <span *ngIf="!profileUpdateLoading">💾 Save Changes</span>
+              <span *ngIf="!profileUpdateLoading"><i class="bx bx-save"></i> Save Changes</span>
               <span *ngIf="profileUpdateLoading">
                 <span class="spinner-border spinner-border-sm me-2"></span>Updating...
               </span>
@@ -1227,7 +1227,7 @@
 
           <div class="card p-4"
             style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
-            <h5 class="mb-4" style="font-weight: 700; color: #1e293b;">🔒 Change Password</h5>
+            <h5 class="mb-4" style="font-weight: 700; color: #1e293b;"><i class="bx bx-lock-alt"></i> Change Password</h5>
             <div *ngIf="passwordSuccess" class="alert alert-success">{{ passwordSuccess }}</div>
             <div *ngIf="passwordError" class="alert alert-danger">{{ passwordError }}</div>
             <div class="mb-3">
@@ -1255,7 +1255,7 @@
                 background: linear-gradient(135deg, #f59e0b, #ef4444);
                 box-shadow: 0 4px 15px rgba(245,158,11,0.4);"
               [style.opacity]="passwordLoading ? '0.7' : '1'">
-              <span *ngIf="!passwordLoading">🔒 Change Password</span>
+              <span *ngIf="!passwordLoading"><i class="bx bx-lock-alt"></i> Change Password</span>
               <span *ngIf="passwordLoading">
                 <span class="spinner-border spinner-border-sm me-2"></span>Changing...
               </span>

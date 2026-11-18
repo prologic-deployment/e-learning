@@ -121,12 +121,12 @@
 
             <div class="col-12" *ngIf="contactSuccess">
               <div class="alert alert-success" style="border-radius: 10px;">
-                ✅ {{ contactSuccess }}
+                <i class="bx bx-check-circle"></i> {{ contactSuccess }}
               </div>
             </div>
             <div class="col-12" *ngIf="contactError">
               <div class="alert alert-danger" style="border-radius: 10px;">
-                ❌ {{ contactError }}
+                <i class="bx bx-x-circle"></i> {{ contactError }}
               </div>
             </div>
 
@@ -134,7 +134,7 @@
               <button (click)="sendMessage()" [disabled]="contactLoading"
                 class="default-btn"
                 [style.opacity]="contactLoading ? '0.7' : '1'">
-                <span *ngIf="!contactLoading">📨 Envoyer le Message</span>
+                <span *ngIf="!contactLoading"><i class="bx bx-envelope"></i> Envoyer le Message</span>
                 <span *ngIf="contactLoading">
                   <span class="spinner-border spinner-border-sm me-2"></span>Envoi...
                 </span>

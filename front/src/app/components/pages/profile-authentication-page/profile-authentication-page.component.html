@@ -26,7 +26,7 @@
               font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;"
             [style.background]="activeTab === 'login' ? '#0B0D12' : 'transparent'"
             [style.color]="activeTab === 'login' ? 'white' : '#64748b'">
-            🔑 Login
+            <i class="bx bx-key"></i> Login
           </button>
           <button
             (click)="activeTab = 'register'"
@@ -34,7 +34,7 @@
               font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s;"
             [style.background]="activeTab === 'register' ? '#0B0D12' : 'transparent'"
             [style.color]="activeTab === 'register' ? 'white' : '#64748b'">
-            📝 Register
+            <i class="bx bx-edit"></i> Register
           </button>
         </div>
       </div>
@@ -58,7 +58,7 @@
                 background: #0B0D12;
                 border-radius: 50%; display: flex; align-items: center;
                 justify-content: center; margin: 0 auto 15px;">
-                <span style="font-size: 28px;">🔑</span>
+                <span style="font-size: 28px;"><i class="bx bx-key"></i></span>
               </div>
               <h2 style="font-weight: 700; color: #1e293b; font-size: 24px;">
                 Sign in to your account
@@ -127,7 +127,7 @@
                   box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);
                   transition: opacity 0.2s;"
                 [style.opacity]="loginLoading ? '0.7' : '1'">
-                <span *ngIf="!loginLoading">🔑 Sign In</span>
+                <span *ngIf="!loginLoading"><i class="bx bx-key"></i> Sign In</span>
                 <span *ngIf="loginLoading">
                   <span class="spinner-border spinner-border-sm me-2"></span>
                   Signing in...
@@ -161,7 +161,7 @@
                 background: #0B0D12;
                 border-radius: 50%; display: flex; align-items: center;
                 justify-content: center; margin: 0 auto 15px;">
-                <span style="font-size: 28px;">📝</span>
+                <span style="font-size: 28px;"><i class="bx bx-edit"></i></span>
               </div>
               <h2 style="font-weight: 700; color: #1e293b; font-size: 24px;">
                 Create your account
@@ -191,7 +191,7 @@
                         '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
                     <small *ngIf="isInvalid('firstname')"
                       style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
-                      ⚠️ Le prénom est obligatoire
+                      <i class="bx bx-error"></i> Le prénom est obligatoire
                     </small>
                   </div>
                 </div>
@@ -210,7 +210,7 @@
                         '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
                     <small *ngIf="isInvalid('lastname')"
                       style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
-                      ⚠️ Le nom est obligatoire
+                      <i class="bx bx-error"></i> Le nom est obligatoire
                     </small>
                   </div>
                 </div>
@@ -231,7 +231,7 @@
                     '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
                 <small *ngIf="isInvalid('email')"
                   style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
-                  ⚠️ Veuillez entrer une adresse email valide
+                  <i class="bx bx-error"></i> Veuillez entrer une adresse email valide
                 </small>
               </div>
 
@@ -249,7 +249,7 @@
                     '1.5px solid #ef4444' : '1.5px solid #e2e8f0'">
                 <small *ngIf="isInvalid('dateOfBirth')"
                   style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
-                  ⚠️ La date de naissance est obligatoire
+                  <i class="bx bx-error"></i> La date de naissance est obligatoire
                 </small>
               </div>
 
@@ -277,7 +277,7 @@
                 </div>
                 <small *ngIf="isInvalid('phone')"
                   style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
-                  ⚠️ Veuillez entrer un numéro valide (8 chiffres)
+                  <i class="bx bx-error"></i> Veuillez entrer un numéro valide (8 chiffres)
                 </small>
               </div>
 
@@ -319,7 +319,7 @@
 
                 <small *ngIf="isInvalid('password')"
                   style="color: #ef4444; font-size: 11px; margin-top: 4px; display: block;">
-                  ⚠️ Le mot de passe doit contenir au moins 8 caractères
+                  <i class="bx bx-error"></i> Le mot de passe doit contenir au moins 8 caractères
                 </small>
               </div>
 
@@ -335,7 +335,7 @@
                       transition: all 0.2s;"
                     [style.borderColor]="registerData.role === 'user' ? '#1E3A8A' : '#e2e8f0'"
                     [style.background]="registerData.role === 'user' ? '#EEF2FB' : 'white'">
-                    <div style="font-size: 24px;">👤</div>
+                    <div style="font-size: 24px;"><i class="bx bx-user"></i></div>
                     <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
                       [style.color]="registerData.role === 'user' ? '#1E3A8A' : '#64748b'">
                       Student
@@ -347,7 +347,7 @@
                       transition: all 0.2s;"
                     [style.borderColor]="registerData.role === 'trainer' ? '#1E3A8A' : '#e2e8f0'"
                     [style.background]="registerData.role === 'trainer' ? '#EEF2FB' : 'white'">
-                    <div style="font-size: 24px;">🎓</div>
+                    <div style="font-size: 24px;"><i class="bx bx-certification"></i></div>
                     <div style="font-size: 13px; font-weight: 600; margin-top: 4px;"
                       [style.color]="registerData.role === 'trainer' ? '#1E3A8A' : '#64748b'">
                       Trainer
@@ -365,7 +365,7 @@
                   background: #0B0D12;
                   box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);"
                 [style.opacity]="registerLoading ? '0.7' : '1'">
-                <span *ngIf="!registerLoading">📝 Create Account</span>
+                <span *ngIf="!registerLoading"><i class="bx bx-edit"></i> Create Account</span>
                 <span *ngIf="registerLoading">
                   <span class="spinner-border spinner-border-sm me-2"></span>
                   Creating...

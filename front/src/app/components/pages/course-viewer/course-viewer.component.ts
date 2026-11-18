@@ -181,7 +181,7 @@ export class CourseViewerComponent implements OnInit {
     this.http.post(`${this.apiUrl}/enrollments/${this.course._id}/enroll`, {}).subscribe({
       next: () => {
         this.enrollLoading = false;
-        this.enrollSuccess = 'Enrolled successfully ! 🎉';
+        this.enrollSuccess = 'Enrolled successfully ! ';
         this.isEnrolled = true;
         this.cdr.detectChanges();
       },
@@ -328,7 +328,7 @@ export class CourseViewerComponent implements OnInit {
     this.http.post(`${this.apiUrl}/reviews/course/${this.course._id}`, this.newReview).subscribe({
       next: () => {
         this.reviewLoading = false;
-        this.reviewSuccess = 'Review added ! ✅';
+        this.reviewSuccess = 'Review added ! ';
         this.newReview = { rating: 5, comment: '' };
         this.loadReviews(this.course._id);
         setTimeout(() => this.reviewSuccess = '', 3000);
@@ -355,7 +355,7 @@ export class CourseViewerComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.reviewLoading = false;
-        this.reviewSuccess = 'Review updated ! ✅';
+        this.reviewSuccess = 'Review updated ! ';
         this.editingReview = null;
         this.loadReviews(this.course._id);
         setTimeout(() => this.reviewSuccess = '', 3000);
@@ -387,7 +387,7 @@ export class CourseViewerComponent implements OnInit {
   }
 
   getStars(rating: number): string {
-    return '⭐'.repeat(Math.round(rating));
+    return '★'.repeat(Math.round(rating));
   }
 
   downloadContent(): void {

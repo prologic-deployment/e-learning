@@ -4,9 +4,9 @@
     <!-- Header -->
     <div class="row mb-4 align-items-center">
       <div class="col-lg-8">
-        <h2 style="font-weight: 800; color: #1e293b;">👔 Manager Dashboard</h2>
+        <h2 style="font-weight: 800; color: #1e293b;"><i class="bx bx-briefcase"></i> Manager Dashboard</h2>
         <p class="text-muted mb-0" *ngIf="currentUser">
-          Welcome back, <strong>{{ currentUser.firstname }} {{ currentUser.lastname }}</strong> 👋
+          Welcome back, <strong>{{ currentUser.firstname }} {{ currentUser.lastname }}</strong> 
         </p>
       </div>
       <div class="col-lg-4 text-end">
@@ -14,13 +14,13 @@
           style="padding: 8px 16px; border: none; border-radius: 10px; margin-right: 8px;
             background: #0B0D12;
             color: white; font-weight: 600; font-size: 13px; cursor: pointer;">
-          📄 Export PDF
+          <i class="bx bx-file"></i> Export PDF
         </button>
         <button (click)="exportExcel()"
           style="padding: 8px 16px; border: none; border-radius: 10px;
             background: #0B0D12;
             color: white; font-weight: 600; font-size: 13px; cursor: pointer;">
-          📊 Export Excel
+          <i class="bx bx-bar-chart-alt-2"></i> Export Excel
         </button>
       </div>
     </div>
@@ -31,19 +31,19 @@
         <ul class="nav nav-tabs flex-wrap">
           <li class="nav-item">
             <a class="nav-link" [class.active]="activeTab === 'stats'"
-              (click)="setTab('stats')">📊 Team Stats</a>
+              (click)="setTab('stats')"><i class="bx bx-bar-chart-alt-2"></i> Team Stats</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" [class.active]="activeTab === 'assign'"
-              (click)="setTab('assign')">📚 Assign Course</a>
+              (click)="setTab('assign')"><i class="bx bx-book-open"></i> Assign Course</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" [class.active]="activeTab === 'overdue'"
-              (click)="setTab('overdue')">⚠️ Overdue</a>
+              (click)="setTab('overdue')"><i class="bx bx-error"></i> Overdue</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" [class.active]="activeTab === 'profile'"
-              (click)="setTab('profile')">👤 My Profile</a>
+              (click)="setTab('profile')"><i class="bx bx-user"></i> My Profile</a>
           </li>
         </ul>
       </div>
@@ -73,7 +73,7 @@
                   </h3>
                 </div>
                 <div style="width: 50px; height: 50px; border-radius: 12px; background: #1E3A8A22;
-                  display: flex; align-items: center; justify-content: center; font-size: 22px;">👥</div>
+                  display: flex; align-items: center; justify-content: center; font-size: 22px;"><i class="bx bx-group"></i></div>
               </div>
             </div>
           </div>
@@ -90,7 +90,7 @@
                   </h3>
                 </div>
                 <div style="width: 50px; height: 50px; border-radius: 12px; background: #1E3A8A22;
-                  display: flex; align-items: center; justify-content: center; font-size: 22px;">📝</div>
+                  display: flex; align-items: center; justify-content: center; font-size: 22px;"><i class="bx bx-edit"></i></div>
               </div>
             </div>
           </div>
@@ -107,7 +107,7 @@
                   </h3>
                 </div>
                 <div style="width: 50px; height: 50px; border-radius: 12px; background: #f59e0b22;
-                  display: flex; align-items: center; justify-content: center; font-size: 22px;">✅</div>
+                  display: flex; align-items: center; justify-content: center; font-size: 22px;"><i class="bx bx-check-circle"></i></div>
               </div>
             </div>
           </div>
@@ -124,7 +124,7 @@
                   </h3>
                 </div>
                 <div style="width: 50px; height: 50px; border-radius: 12px; background: #10b98122;
-                  display: flex; align-items: center; justify-content: center; font-size: 22px;">📈</div>
+                  display: flex; align-items: center; justify-content: center; font-size: 22px;"><i class="bx bx-line-chart"></i></div>
               </div>
             </div>
           </div>
@@ -133,11 +133,11 @@
         <!-- Filters -->
         <div class="card p-4 mb-4"
           style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
-          <h6 style="font-weight: 700; color: #1e293b; margin-bottom: 16px;">🔍 Filters</h6>
+          <h6 style="font-weight: 700; color: #1e293b; margin-bottom: 16px;"><i class="bx bx-search"></i> Filters</h6>
           <div class="row g-3">
             <div class="col-lg-5">
               <input type="text" class="form-control"
-                placeholder="🔎 Search by member name..."
+                placeholder="Search by member name..."
                 [(ngModel)]="filterMember"
                 (keyup)="applyFilters()"
                 style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 10px 15px; font-size: 14px;">
@@ -160,7 +160,7 @@
               <button (click)="resetFilters()"
                 style="width: 100%; padding: 10px; border: none; border-radius: 10px;
                   background: #f1f5f9; color: #64748b; font-weight: 600; cursor: pointer;">
-                🔄
+                <i class="bx bx-refresh"></i>
               </button>
             </div>
           </div>
@@ -172,15 +172,15 @@
 
           <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <h5 class="mb-1" style="font-weight: 700; color: #1e293b;">👥 Team Progress</h5>
+              <h5 class="mb-1" style="font-weight: 700; color: #1e293b;"><i class="bx bx-group"></i> Team Progress</h5>
               <small class="text-muted">{{ filteredTeamStats.length }} member(s)</small>
             </div>
             <button class="btn btn-outline-primary btn-sm" style="border-radius: 8px;"
-              (click)="setTab('assign')">📚 Assign Course</button>
+              (click)="setTab('assign')"><i class="bx bx-book-open"></i> Assign Course</button>
           </div>
 
           <div *ngIf="filteredTeamStats.length === 0" class="text-center py-5">
-            <div style="font-size: 50px;">👥</div>
+            <div style="font-size: 50px;"><i class="bx bx-group"></i></div>
             <p class="text-muted mt-2">No members found</p>
           </div>
 
@@ -249,8 +249,8 @@
                       [class.bg-warning]="member.averageProgress >= 30 && member.averageProgress < 70"
                       [class.bg-danger]="member.averageProgress < 30"
                       style="font-size: 11px;">
-                      {{ member.averageProgress >= 70 ? '🟢 On Track' :
-                         member.averageProgress >= 30 ? '🟡 In Progress' : '🔴 Behind' }}
+                      {{ member.averageProgress >= 70 ? 'On Track' :
+                         member.averageProgress >= 30 ? 'In Progress' : 'Behind' }}
                     </span>
                   </td>
                 </tr>
@@ -268,7 +268,7 @@
         style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
 
         <div class="mb-4">
-          <h4 class="mb-1" style="font-weight: 700; color: #1e293b;">📚 Assign Course to Team Members</h4>
+          <h4 class="mb-1" style="font-weight: 700; color: #1e293b;"><i class="bx bx-book-open"></i> Assign Course to Team Members</h4>
           <small class="text-muted">
             Assign a course with an optional deadline — team members will be notified automatically.
           </small>
@@ -279,12 +279,12 @@
 
         <!-- Course Select -->
         <div class="mb-4">
-          <label style="font-size: 13px; font-weight: 600; color: #374151;">📖 Select Course *</label>
+          <label style="font-size: 13px; font-weight: 600; color: #374151;"><i class="bx bx-book-reader"></i> Select Course *</label>
           <select class="form-select mt-1" [(ngModel)]="selectedCourseId"
             style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
             <option value="">-- Choose a course --</option>
             <option *ngFor="let course of courses" [value]="course._id">
-              {{ course.title }} ({{ course.price === 0 ? '🎁 Free' : course.price + ' TND' }})
+              {{ course.title }} ({{ course.price === 0 ? 'Free' : course.price + ' TND' }})
             </option>
           </select>
         </div>
@@ -292,20 +292,20 @@
         <!-- Deadline -->
         <div class="mb-4">
           <label style="font-size: 13px; font-weight: 600; color: #374151;">
-            📅 Deadline <small class="text-muted fw-normal">(optional)</small>
+            <i class="bx bx-calendar"></i> Deadline <small class="text-muted fw-normal">(optional)</small>
           </label>
           <input type="date" class="form-control mt-1"
             [(ngModel)]="assignDeadline" [min]="today"
             style="border-radius: 10px; border: 1.5px solid #e2e8f0; padding: 12px 15px; font-size: 14px;">
           <small class="text-muted mt-1 d-block" style="font-size: 11px;">
-            📧 Team members will receive a notification email when a deadline is set.
+            <i class="bx bx-envelope"></i> Team members will receive a notification email when a deadline is set.
           </small>
         </div>
 
         <!-- Team Members -->
         <div class="mb-4">
           <label style="font-size: 13px; font-weight: 600; color: #374151;">
-            👥 Select Team Members *
+            <i class="bx bx-group"></i> Select Team Members *
           </label>
           <small class="text-muted d-block mb-2" style="font-size: 11px;">
             {{ selectedUserIds.length }} member(s) selected
@@ -316,7 +316,7 @@
               border-radius: 12px; background: #f8f9fa;">
 
             <div *ngIf="teamMembers.length === 0" class="text-center py-4">
-              <div style="font-size: 35px;">👥</div>
+              <div style="font-size: 35px;"><i class="bx bx-group"></i></div>
               <p class="text-muted mt-2">No team members found</p>
             </div>
 
@@ -351,7 +351,7 @@
               <span *ngIf="isSelected(member._id)"
                 style="background: #10b981; color: white; padding: 3px 10px;
                   border-radius: 20px; font-size: 11px; font-weight: 600;">
-                ✅ Selected
+                <i class="bx bx-check-circle"></i> Selected
               </span>
             </div>
           </div>
@@ -365,7 +365,7 @@
             box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);"
           [style.opacity]="(assignLoading || !selectedCourseId || selectedUserIds.length === 0) ? '0.6' : '1'">
           <span *ngIf="!assignLoading">
-            📚 Assign Course to {{ selectedUserIds.length }} Member(s)
+            <i class="bx bx-book-open"></i> Assign Course to {{ selectedUserIds.length }} Member(s)
           </span>
           <span *ngIf="assignLoading">
             <span class="spinner-border spinner-border-sm me-2"></span>Assigning...
@@ -381,7 +381,7 @@
 
         <div class="d-flex justify-content-between align-items-center mb-4">
           <div>
-            <h5 class="mb-1" style="font-weight: 700; color: #1e293b;">⚠️ Overdue Enrollments</h5>
+            <h5 class="mb-1" style="font-weight: 700; color: #1e293b;"><i class="bx bx-error"></i> Overdue Enrollments</h5>
             <small class="text-muted">Members who haven't completed their courses on time</small>
           </div>
           <span *ngIf="overdueEnrollments.length > 0"
@@ -395,9 +395,9 @@
 
         <div *ngIf="overdueEnrollments.length === 0" class="text-center py-5"
           style="background: #f0fdf4; border-radius: 16px;">
-          <div style="font-size: 50px;">✅</div>
+          <div style="font-size: 50px;"><i class="bx bx-check-circle"></i></div>
           <h5 class="text-success mt-3" style="font-weight: 700;">No overdue enrollments !</h5>
-          <p class="text-muted">Your team is on track. Great work ! 🎉</p>
+          <p class="text-muted">Your team is on track. Great work ! <i class="bx bx-party"></i></p>
         </div>
 
         <div class="table-responsive" *ngIf="overdueEnrollments.length > 0">
@@ -453,7 +453,7 @@
                     style="padding: 6px 14px; border: none; border-radius: 8px;
                       background: linear-gradient(135deg, #f59e0b, #ef4444);
                       color: white; font-weight: 600; font-size: 12px; cursor: pointer;">
-                    ⏰ Set Deadline
+                    <i class="bx bx-alarm"></i> Set Deadline
                   </button>
                 </td>
               </tr>
@@ -498,7 +498,7 @@
             <span class="badge"
               style="background: #0B0D12;
                 font-size: 12px; padding: 6px 14px;">
-              👔 Manager
+              <i class="bx bx-briefcase"></i> Manager
             </span>
 
             <div class="mt-4">
@@ -511,7 +511,7 @@
                   background: #0B0D12;
                   color: white; font-weight: 600; font-size: 13px; cursor: pointer;"
                 [style.opacity]="!selectedAvatar ? '0.5' : '1'">
-                📷 Update Profile Picture
+                <i class="bx bx-camera"></i> Update Profile Picture
               </button>
             </div>
           </div>
@@ -520,14 +520,14 @@
           <div class="card p-4 mt-3"
             style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;"
             *ngIf="stats">
-            <h6 style="font-weight: 700; color: #1e293b; margin-bottom: 16px;">📊 Team Quick Stats</h6>
+            <h6 style="font-weight: 700; color: #1e293b; margin-bottom: 16px;"><i class="bx bx-bar-chart-alt-2"></i> Team Quick Stats</h6>
             <div class="row">
               <div class="col-6 mb-3">
                 <div class="text-center p-2" style="background: #EEF2FB; border-radius: 12px;">
                   <div style="font-size: 22px; font-weight: 800; color: #1E3A8A;">
                     {{ stats.overview.teamSize }}
                   </div>
-                  <div style="font-size: 11px; color: #64748b;">👥 Team</div>
+                  <div style="font-size: 11px; color: #64748b;"><i class="bx bx-group"></i> Team</div>
                 </div>
               </div>
               <div class="col-6 mb-3">
@@ -535,7 +535,7 @@
                   <div style="font-size: 22px; font-weight: 800; color: #10b981;">
                     {{ stats.overview.totalEnrollments }}
                   </div>
-                  <div style="font-size: 11px; color: #64748b;">📝 Enrollments</div>
+                  <div style="font-size: 11px; color: #64748b;"><i class="bx bx-edit"></i> Enrollments</div>
                 </div>
               </div>
               <div class="col-6">
@@ -543,7 +543,7 @@
                   <div style="font-size: 22px; font-weight: 800; color: #f59e0b;">
                     {{ stats.overview.completionRate }}%
                   </div>
-                  <div style="font-size: 11px; color: #64748b;">✅ Completion</div>
+                  <div style="font-size: 11px; color: #64748b;"><i class="bx bx-check-circle"></i> Completion</div>
                 </div>
               </div>
               <div class="col-6">
@@ -551,7 +551,7 @@
                   <div style="font-size: 22px; font-weight: 800; color: #06b6d4;">
                     {{ stats.overview.averageProgress }}%
                   </div>
-                  <div style="font-size: 11px; color: #64748b;">📈 Progress</div>
+                  <div style="font-size: 11px; color: #64748b;"><i class="bx bx-line-chart"></i> Progress</div>
                 </div>
               </div>
             </div>
@@ -567,7 +567,7 @@
           <!-- Edit Profile -->
           <div class="card p-4 mb-4"
             style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
-            <h5 class="mb-4" style="font-weight: 700; color: #1e293b;">✏️ Edit Profile</h5>
+            <h5 class="mb-4" style="font-weight: 700; color: #1e293b;"><i class="bx bx-pencil"></i> Edit Profile</h5>
 
             <div class="row">
               <div class="col-lg-6">
@@ -608,7 +608,7 @@
                 background: #0B0D12;
                 box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);"
               [style.opacity]="profileUpdateLoading ? '0.7' : '1'">
-              <span *ngIf="!profileUpdateLoading">💾 Save Changes</span>
+              <span *ngIf="!profileUpdateLoading"><i class="bx bx-save"></i> Save Changes</span>
               <span *ngIf="profileUpdateLoading">
                 <span class="spinner-border spinner-border-sm me-2"></span>Updating...
               </span>
@@ -618,7 +618,7 @@
           <!-- Change Password -->
           <div class="card p-4"
             style="border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); border: 1px solid #f0f0f0;">
-            <h5 class="mb-4" style="font-weight: 700; color: #1e293b;">🔒 Change Password</h5>
+            <h5 class="mb-4" style="font-weight: 700; color: #1e293b;"><i class="bx bx-lock-alt"></i> Change Password</h5>
 
             <div *ngIf="passwordSuccess" class="alert alert-success">{{ passwordSuccess }}</div>
             <div *ngIf="passwordError" class="alert alert-danger">{{ passwordError }}</div>
@@ -651,7 +651,7 @@
                 background: linear-gradient(135deg, #f59e0b, #ef4444);
                 box-shadow: 0 4px 15px rgba(245,158,11,0.4);"
               [style.opacity]="passwordLoading ? '0.7' : '1'">
-              <span *ngIf="!passwordLoading">🔒 Change Password</span>
+              <span *ngIf="!passwordLoading"><i class="bx bx-lock-alt"></i> Change Password</span>
               <span *ngIf="passwordLoading">
                 <span class="spinner-border spinner-border-sm me-2"></span>Changing...
               </span>

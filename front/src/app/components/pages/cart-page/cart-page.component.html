@@ -6,7 +6,7 @@
         <li><a routerLink="/">Home</a></li>
         <li>Cart</li>
       </ul>
-      <h1>Shopping Cart 🛒</h1>
+      <h1>Shopping Cart <i class="bx bx-cart"></i></h1>
     </div>
   </div>
 </div>
@@ -22,7 +22,7 @@
 
     <!-- Empty Cart -->
     <div *ngIf="!loading && (!cart || cart.items?.length === 0)" class="text-center py-5">
-      <h4 class="text-muted">Your cart is empty ! 🛒</h4>
+      <h4 class="text-muted">Your cart is empty ! <i class="bx bx-cart"></i></h4>
       <button class="btn btn-primary mt-3" routerLink="/courses-grid">
         Browse Courses
       </button>
@@ -73,10 +73,10 @@
         </ul>
         <div class="d-flex gap-3 mt-3">
           <button class="btn btn-outline-danger" (click)="clearCart()">
-            🗑️ Clear Cart
+            <i class="bx bx-trash"></i> Clear Cart
           </button>
           <button class="default-btn" routerLink="/checkout">
-            💳 Go to Payment
+            <i class="bx bx-credit-card"></i> Go to Payment
           </button>
         </div>
       </div>

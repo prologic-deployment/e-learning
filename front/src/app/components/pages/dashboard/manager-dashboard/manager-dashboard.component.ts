@@ -166,7 +166,7 @@ export class ManagerDashboardComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.assignLoading = false;
-        this.assignSuccess = 'Course assigned successfully ! 🎉';
+        this.assignSuccess = 'Course assigned successfully ! ';
         this.selectedCourseId = '';
         this.selectedUserIds = [];
         this.assignDeadline = '';
@@ -189,7 +189,7 @@ export class ManagerDashboardComponent implements OnInit {
       deadline: this.selectedDeadline
     }).subscribe({
       next: () => {
-        this.deadlineSuccess = 'Deadline set successfully ! ✅';
+        this.deadlineSuccess = 'Deadline set successfully ! ';
         this.loadStats();
       },
       error: (err) => {
@@ -224,7 +224,7 @@ export class ManagerDashboardComponent implements OnInit {
     this.http.put(`${this.apiUrl}/profile`, this.profileData).subscribe({
       next: () => {
         this.profileUpdateLoading = false;
-        this.profileUpdateSuccess = 'Profile updated successfully ! ✅';
+        this.profileUpdateSuccess = 'Profile updated successfully ! ';
         this.loadProfile();
         setTimeout(() => this.profileUpdateSuccess = '', 3000);
       },
@@ -252,7 +252,7 @@ export class ManagerDashboardComponent implements OnInit {
 
     this.http.put(`${this.apiUrl}/profile/avatar`, formData).subscribe({
       next: () => {
-        this.profileUpdateSuccess = 'Avatar updated ! ✅';
+        this.profileUpdateSuccess = 'Avatar updated ! ';
         this.loadProfile();
         this.selectedAvatar = null;
         this.avatarPreview = null;
@@ -283,7 +283,7 @@ export class ManagerDashboardComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.passwordLoading = false;
-        this.passwordSuccess = 'Password changed successfully ! ✅';
+        this.passwordSuccess = 'Password changed successfully ! ';
         this.passwordData = { currentPassword: '', newPassword: '', confirmPassword: '' };
         setTimeout(() => this.passwordSuccess = '', 3000);
       },

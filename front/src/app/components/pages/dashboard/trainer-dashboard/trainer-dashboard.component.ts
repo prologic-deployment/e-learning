@@ -202,7 +202,7 @@ export class TrainerDashboardComponent implements OnInit {
     this.http.put(`${this.apiUrl}/courses/${this.createdCourse._id}`, body).subscribe({
       next: (data: any) => {
         this.createCourseLoading = false;
-        this.createCourseSuccess = 'Course updated ! ✅';
+        this.createCourseSuccess = 'Course updated ! ';
         this.createdCourse = { ...this.createdCourse, ...body };
         setTimeout(() => this.createCourseSuccess = '', 3000);
       },
@@ -238,7 +238,7 @@ export class TrainerDashboardComponent implements OnInit {
     this.http.put(`${this.apiUrl}/profile/update`, this.profileData).subscribe({
       next: () => {
         this.profileUpdateLoading = false;
-        this.profileUpdateSuccess = 'Profile updated ! ✅';
+        this.profileUpdateSuccess = 'Profile updated ! ';
         this.loadProfile();
         setTimeout(() => this.profileUpdateSuccess = '', 3000);
       },
@@ -265,7 +265,7 @@ export class TrainerDashboardComponent implements OnInit {
     formData.append('avatar', this.selectedAvatar);
     this.http.put(`${this.apiUrl}/profile/avatar`, formData).subscribe({
       next: () => {
-        this.profileUpdateSuccess = 'Avatar updated ! ✅';
+        this.profileUpdateSuccess = 'Avatar updated ! ';
         this.loadProfile();
         this.selectedAvatar = null;
         this.avatarPreview = null;
@@ -295,7 +295,7 @@ export class TrainerDashboardComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.passwordLoading = false;
-        this.passwordSuccess = 'Password changed ! ✅';
+        this.passwordSuccess = 'Password changed ! ';
         this.passwordData = { currentPassword: '', newPassword: '', confirmPassword: '' };
         setTimeout(() => this.passwordSuccess = '', 3000);
       },
@@ -323,7 +323,7 @@ export class TrainerDashboardComponent implements OnInit {
     this.http.post(`${this.apiUrl}/courses`, body).subscribe({
       next: (data: any) => {
         this.createCourseLoading = false;
-        this.createCourseSuccess = 'Course created ! Now add lessons 📚';
+        this.createCourseSuccess = 'Course created ! Now add lessons ';
         this.createdCourse = data.course;
         this.loadLessons(data.course._id);
       },
@@ -354,7 +354,7 @@ export class TrainerDashboardComponent implements OnInit {
     this.http.post(`${this.apiUrl}/lessons/course/${this.createdCourse._id}`, formData).subscribe({
       next: () => {
         this.lessonLoading = false;
-        this.lessonSuccess = 'Lesson added ! ✅';
+        this.lessonSuccess = 'Lesson added ! ';
         this.newLesson = { title: '', content: '' };
         this.lessonFile = null;
         this.loadLessons(this.createdCourse._id);
@@ -426,10 +426,10 @@ export class TrainerDashboardComponent implements OnInit {
     this.quizSuccess = '';
 
     const emptyQ = this.newQuiz.questions.find(q => !q.texte.trim());
-    if (emptyQ) { this.quizError = '⚠️ Please fill all question texts !'; return; }
+    if (emptyQ) { this.quizError = 'Please fill all question texts !'; return; }
     for (const q of this.newQuiz.questions) {
       if (q.options.filter(o => o.trim()).length < 2) {
-        this.quizError = '⚠️ Each question must have at least 2 options !';
+        this.quizError = 'Each question must have at least 2 options !';
         return;
       }
     }
@@ -438,7 +438,7 @@ export class TrainerDashboardComponent implements OnInit {
     this.http.post(`${this.apiUrl}/quiz/lesson/${this.selectedLessonId}`, this.newQuiz).subscribe({
       next: () => {
         this.quizLoading = false;
-        this.quizSuccess = 'Quiz saved ! ✅';
+        this.quizSuccess = 'Quiz saved ! ';
         this.showQuizForm = false;
         this.newQuiz = {
           noteMinimale: 70,
@@ -503,13 +503,13 @@ export class TrainerDashboardComponent implements OnInit {
     this.finalExamSuccess = '';
 
     const emptyQ = this.newFinalExam.questions.find(q => !q.texte.trim());
-    if (emptyQ) { this.finalExamError = '⚠️ Please fill all question texts !'; return; }
+    if (emptyQ) { this.finalExamError = 'Please fill all question texts !'; return; }
 
     this.finalExamLoading = true;
     this.http.post(`${this.apiUrl}/quiz/final/${this.createdCourse._id}`, this.newFinalExam).subscribe({
       next: () => {
         this.finalExamLoading = false;
-        this.finalExamSuccess = 'Final exam saved ! 🎓';
+        this.finalExamSuccess = 'Final exam saved ! ';
         this.showFinalExamForm = false;
         this.newFinalExam = {
           noteMinimale: 70,
@@ -679,13 +679,13 @@ export class TrainerDashboardComponent implements OnInit {
     this.quizSuccess2 = '';
 
     const emptyQ = this.newQuiz2.questions.find(q => !q.texte.trim());
-    if (emptyQ) { this.quizError2 = '⚠️ Please fill all question texts !'; return; }
+    if (emptyQ) { this.quizError2 = 'Please fill all question texts !'; return; }
 
     this.quizLoading2 = true;
     this.http.post(`${this.apiUrl}/quiz/lesson/${this.selectedLessonId2}/quiz2`, this.newQuiz2).subscribe({
       next: () => {
         this.quizLoading2 = false;
-        this.quizSuccess2 = 'Quiz 2 saved ! ✅';
+        this.quizSuccess2 = 'Quiz 2 saved ! ';
         this.showQuizForm2 = false;
         this.newQuiz2 = {
           noteMinimale: 70,

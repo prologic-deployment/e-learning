@@ -3580,3 +3580,26 @@ a:hover { color: var(--brand); }
 }
 /* template offsets the search button by 8px → icon sat low */
 .navbar-area .search-box button { top: 0 !important; bottom: 0 !important; height: auto !important; }
+
+/* ---------- Icons: outlined Boxicons everywhere (emoji removed) ---------- */
+.bx { line-height: 1; vertical-align: -0.125em; }
+
+/* Icons sitting directly on dark / saturated inline backgrounds → white */
+[style*="background: #0B0D12" i] > .bx, [style*="background:#0B0D12" i] > .bx,
+[style*="background: #1E3A8A" i] > .bx, [style*="background:#1E3A8A" i] > .bx,
+[style*="background: #10B981" i] > .bx, [style*="background:#10B981" i] > .bx,
+[style*="background: #F59E0B" i] > .bx, [style*="background:#F59E0B" i] > .bx,
+.btn-ink > .bx, .btn-accent > .bx, .btn-brand > .bx, .default-btn > .bx {
+    color: #fff;
+}
+
+/* A little air between a leading icon and its label */
+button > .bx:first-child,
+a > .bx:first-child {
+    margin-right: .3em;
+}
+/* icon-only buttons stay centred */
+.navbar-area .search-box button > .bx, .chat-bubble-btn > .bx, .filters__close > .bx,
+.rate button > .bx, .cart-btn > .bx, .navbar-toggler > .bx, .user-menu-btn > .bx {
+    margin-right: 0;
+}

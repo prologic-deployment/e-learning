@@ -103,15 +103,15 @@ declare let $: any;
   // ✅ Icône selon le type
   getNotifIcon(type: string): string {
     const icons: any = {
-      'BADGE_EARNED': '🏅',
-      'NEW_COURSE': '📚',
-      'DEADLINE_REMINDER': '⏰',
-      'CERTIFICATE': '🎓',
-      'COURSE_ASSIGNED': '📋',
-      'QUIZ_PASSED': '✅',
-      'INFO': '🔔'
+      'BADGE_EARNED': 'bx bx-medal',
+      'NEW_COURSE': 'bx bx-book-open',
+      'DEADLINE_REMINDER': 'bx bx-alarm',
+      'CERTIFICATE': 'bx bx-certification',
+      'COURSE_ASSIGNED': 'bx bx-clipboard',
+      'QUIZ_PASSED': 'bx bx-check-circle',
+      'INFO': 'bx bx-bell'
     };
-    return icons[type] || '🔔';
+    return icons[type] || 'bx bx-bell';
   }
 
     getNotifColor(type: string): string {
