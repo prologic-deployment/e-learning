@@ -101,11 +101,21 @@ exports.getAllCourses = async (req, res) => {
     const skip = (page - 1) * limit;
     const total = await Course.countDocuments(filter);
 
+    // ✅ Tri (liste blanche — aucune clé arbitraire passée à Mongo)
+    const SORTS = {
+      newest: { createdAt: -1 },
+      oldest: { createdAt: 1 },
+      price_asc: { price: 1, createdAt: -1 },
+      price_desc: { price: -1, createdAt: -1 },
+      title: { title: 1 }
+    };
+    const sort = SORTS[req.query.sort] || SORTS.newest;
+
     const courses = await Course.find(filter)
       .populate("trainer", "firstname lastname") // ✅ no trainer email in listings
+      .sort(sort)
       .skip(skip)
       .limit(limit)
-      .sort({ createdAt: -1 })
       .exec();
 
     res.status(200).json({
@@ -119,6 +129,49 @@ exports.getAllCourses = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// ================= GET COURSE FACETS =================
+// Public: counts of approved courses per category / sub-category / price,
+// used by the catalogue filter sidebar.
+exports.getCourseFacets = async (req, res) => {
+  try {
+    const [byCategory, bySubCategory, byPrice] = await Promise.all([
+      Course.aggregate([
+        { $match: { isApproved: true } },
+        { $group: { _id: "$category", count: { $sum: 1 } } }
+      ]),
+      Course.aggregate([
+        { $match: { isApproved: true, subCategory: { $nin: [null, ""] } } },
+        { $group: { _id: { category: "$category", subCategory: "$subCategory" }, count: { $sum: 1 } } }
+      ]),
+      Course.aggregate([
+        { $match: { isApproved: true } },
+        { $group: { _id: { $cond: [{ $gt: ["$price", 0] }, "paid", "free"] }, count: { $sum: 1 } } }
+      ])
+    ]);
+
+    const categories = {};
+    for (const c of byCategory) if (c._id) categories[c._id] = c.count;
+
+    const subCategories = {};
+    for (const s of bySubCategory) {
+      const cat = s._id.category || "";
+      (subCategories[cat] = subCategories[cat] || {})[s._id.subCategory] = s.count;
+    }
+
+    const price = { free: 0, paid: 0 };
+    for (const p of byPrice) price[p._id] = p.count;
+
+    res.status(200).json({
+      total: price.free + price.paid,
+      categories,
+      subCategories,
+      price
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
   }
 };
 

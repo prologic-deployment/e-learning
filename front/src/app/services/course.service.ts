@@ -22,7 +22,13 @@ export class CourseService {
     if (filters?.limit) params = params.set('limit', filters.limit);
     if (filters?.category) params = params.set('category', filters.category); // ✅
     if (filters?.subCategory) params = params.set('subCategory', filters.subCategory);
+    if (filters?.sort) params = params.set('sort', filters.sort);
     return this.http.get(`${this.apiUrl}/courses`, { params });
+  }
+
+  // Filter counts for the catalogue sidebar
+  getCourseFacets(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/courses/facets`);
   }
 
   // Détail d'un cours

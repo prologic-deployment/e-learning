@@ -6,6 +6,7 @@ const upload = require("../config/multer");
 const {
   createCourse,
   getAllCourses,
+  getCourseFacets,
   getCourseById,
   updateCourse,
   deleteCourse,
@@ -19,6 +20,8 @@ const { getArchivedCourses } = require("../controllers/archived-course.controlle
 
 // ✅ single definition (was registered twice before — first one won and leaked data)
 router.get("/", cacheConfig.medium, getAllCourses);
+// ✅ Public filter counts for the catalogue — declared before GET /:id
+router.get("/facets", getCourseFacets); // not cached: counts must follow approvals immediately
 router.get("/trainer/all", protect, authorize("trainer", "admin"), getAllCoursesForTrainer);
 // ✅ Admin backoffice archived listing (frontend calls GET /courses/archived) —
 // MUST be declared before GET /:id or "archived" would be swallowed as an :id.
