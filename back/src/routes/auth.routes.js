@@ -6,7 +6,6 @@ const { loginLimiter } = require("../middlewares/rateLimiter");
 const {
   register,
   login,
-  verifyOTP,
   forgotPassword,
   resetPassword,
   changePassword
@@ -15,7 +14,6 @@ const {
 // ✅ RATE LIMITED: brute-force protection on all credential endpoints
 router.post("/register", loginLimiter, register);
 router.post("/login", loginLimiter, login);
-router.post("/verify-otp", loginLimiter, verifyOTP);
 router.post('/forgot-password', loginLimiter, forgotPassword);
 router.post('/reset-password/:token', loginLimiter, resetPassword);
 

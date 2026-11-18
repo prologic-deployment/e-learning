@@ -1,6 +1,6 @@
 /**
  * AUDIT PROBE — empirically confirms suspected bugs before fixing them.
- * Run with the API server started as:  DEV_EXPOSE_OTP=true npm start
+ * Run with the API server started as:  npm start
  */
 const { login, makeApi, check, summary } = require('./helpers/e2e');
 
@@ -18,7 +18,7 @@ const { login, makeApi, check, summary } = require('./helpers/e2e');
     trainer = makeApi(t);
     manager = makeApi(m);
     user = makeApi(u);
-    check('All 4 roles can login via OTP', true);
+    check('All 4 roles can login', true);
   } catch (e) {
     console.log('❌ Login failed:', e.message);
     process.exit(1);

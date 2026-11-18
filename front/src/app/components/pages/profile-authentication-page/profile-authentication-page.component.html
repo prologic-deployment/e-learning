@@ -16,7 +16,7 @@
   <div class="container">
 
     <!-- ✅ Toggle Tabs -->
-    <div class="row justify-content-center mb-4" *ngIf="!showOTP">
+    <div class="row justify-content-center mb-4">
       <div class="col-lg-5 col-md-8">
         <div class="d-flex rounded-pill overflow-hidden"
           style="background: #f1f5f9; padding: 4px;">
@@ -47,7 +47,7 @@
         <div *ngIf="activeTab === 'login'">
 
           <!-- ✅ Login Form -->
-          <div *ngIf="!showOTP"
+          <div
             style="background: white; border-radius: 20px;
               box-shadow: 0 10px 40px rgba(0,0,0,0.08);
               padding: 40px; border: 1px solid #f0f0f0;">
@@ -71,7 +71,6 @@
             <div *ngIf="loginError" class="alert alert-danger">{{ loginError }}</div>
             <div *ngIf="loginSuccess" class="alert alert-success">
               {{ loginSuccess }}
-              <strong *ngIf="devOtp" style="letter-spacing: 4px; font-size: 18px;">{{ devOtp }}</strong>
             </div>
 
             <form (ngSubmit)="onLogin()">
@@ -146,81 +145,6 @@
                 Create an account
               </a>
             </p>
-
-          </div>
-
-          <!-- ✅ OTP Form -->
-          <div *ngIf="showOTP"
-            style="background: white; border-radius: 20px;
-              box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-              padding: 40px; border: 1px solid #f0f0f0;">
-
-            <div class="text-center mb-4">
-              <div style="width: 70px; height: 70px;
-                background: linear-gradient(135deg, #667eea, #764ba2);
-                border-radius: 50%; display: flex; align-items: center;
-                justify-content: center; margin: 0 auto 15px;">
-                <span style="font-size: 30px;">🔐</span>
-              </div>
-              <h4 style="font-weight: 700; color: #2d3748;">Verification Code</h4>
-              <p class="text-muted" style="font-size: 13px;">
-                We sent a 6-digit code to<br>
-                <strong>{{ tempEmail }}</strong><br>
-                This code will expire in 5 minutes
-              </p>
-            </div>
-
-            <!-- ✅ DEV-ONLY: OTP shown on screen when DEV_EXPOSE_OTP=true (fake inboxes can't receive email) -->
-            <div *ngIf="devOtp" class="alert alert-info text-center" style="border: 2px dashed #4f8cff;">
-              🔧 Dev code: <strong style="letter-spacing: 4px; font-size: 18px;">{{ devOtp }}</strong>
-            </div>
-
-            <!-- ✅ Why the dev code is missing (production builds) -->
-            <div *ngIf="!devOtp && otpHint" class="alert alert-warning text-center" style="font-size: 13px;">
-              ⚠️ {{ otpHint }}
-            </div>
-
-            <div *ngIf="loginError" class="alert alert-danger text-center">
-              {{ loginError }}
-            </div>
-
-            <!-- ✅ Copy-Popup: click to show the 6-digit code and copy it -->
-            <div class="mb-4">
-              <button
-                class="otp-popup-button"
-                (click)="showOtpPopup = true">
-                <span *ngIf="!showOtpPopup">🔑 Click to see your OTP code</span>
-                <span *ngIf="showOtpPopup">📋 6-digit code — click to copy</span>
-              </button>
-            </div>
-
-            <app-otp-popup
-              *ngIf="showOtpPopup"
-              [devOtp]="devOtp"
-              (verified)="onVerifyOTPFromPopup($event)"
-              (closed)="showOtpPopup = false">
-            </app-otp-popup>
-
-            <div class="text-center mt-3">
-              <p class="text-muted" style="font-size: 13px;">
-                Didn't receive the code ?
-                <a *ngIf="resendCooldown <= 0"
-                  (click)="onResendOTP()"
-                  style="color: #667eea; font-weight: 600;
-                    text-decoration: none; cursor: pointer;">
-                  Resend Code
-                </a>
-                <span *ngIf="resendCooldown > 0"
-                  style="color: #999; font-weight: 600;">
-                  Resend available in {{ resendCooldown }}s
-                </span>
-              </p>
-              <a (click)="showOTP = false; otpCode = ''"
-                style="color: #999; font-size: 13px;
-                  text-decoration: none; cursor: pointer;">
-                ← Back to Login
-              </a>
-            </div>
 
           </div>
         </div>

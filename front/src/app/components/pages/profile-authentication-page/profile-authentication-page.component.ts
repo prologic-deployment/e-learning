@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-profile-authentication-page',
@@ -17,20 +16,6 @@ export class ProfileAuthenticationPageComponent implements OnInit {
   loginError = '';
   loginSuccess = '';
   loginLoading = false;
-
-  // ========== OTP ==========
-  showOTP = false;
-  otpCode = '';
-  otpLoading = false;
-  tempEmail = '';
-  devOtp = ''; // ✅ DEV-ONLY: OTP shown on screen when DEV_EXPOSE_OTP=true (fake inboxes can't receive email)
-  showOtpPopup = false; // ✅ drives the copy-paste OTP popup (<app-otp-popup>)
-  // ✅ Which API this bundle actually calls + why no code arrived — both are
-  // needed to debug a production build where the dev code doesn't show up.
-  apiUrl = environment.apiUrl;
-  otpHint = '';
-  resendCooldown = 0;   // ✅ seconds remaining before resend is allowed
-  private resendTimer: any = null;
 
   // ========== REGISTER ==========
   registerData = {
@@ -82,73 +67,20 @@ export class ProfileAuthenticationPageComponent implements OnInit {
     this.loginSuccess = '';
     this.loginLoading = true;
 
+    // ✅ Single-step login: the API returns the session token directly, the
+    // AuthService stores it, and the user goes straight to their dashboard.
     this.authService.login(this.loginData).subscribe({
-      next: (res: any) => {
-        console.log('🔍 Login response:', res); // ✅
-        console.log('🔍 Token:', res.token);    // ✅
-        console.log('🔍 User:', res.user);      // ✅
+      next: () => {
         this.loginLoading = false;
-        if (res.token) {
+        if (this.authService.isLoggedIn()) {
           this.redirectByRole();
         } else {
-          this.showOTP = true;
-          this.tempEmail = this.loginData.email;
-          // ✅ DEV-ONLY: surface the OTP on screen when the backend exposes it,
-          // so manual testing works without a real inbox.
-          // Older deployed backends return the code in `data` (a string) instead
-          // of `devOtp` — accept both so the popup works against production too.
-          this.devOtp = res.devOtp || (typeof res.data === 'string' ? res.data : '') || '';
-          this.otpHint = this.devOtp
-            ? ''
-            : `No dev code in the API response from ${this.apiUrl}. On the server set ` +
-              `DEV_EXPOSE_OTP=true in back/.env, deploy the latest code and restart the process.`;
-          this.loginSuccess = this.devOtp
-            ? `OTP sent — dev code: ${this.devOtp}`
-            : 'OTP sent ! Check your email.';
-          this.startResendCooldown();
+          this.loginError = 'Login failed. Please try again.';
         }
       },
       error: (err) => {
         this.loginLoading = false;
         this.loginError = err.error?.message || 'Login failed. Please try again.';
-      }
-    });
-  }
-
-  // ✅ UX: 60s cooldown on the resend button (also protects the backend from
-  // OTP email bombing)
-  startResendCooldown(): void {
-    this.resendCooldown = 60;
-    if (this.resendTimer) clearInterval(this.resendTimer);
-    this.resendTimer = setInterval(() => {
-      this.resendCooldown -= 1;
-      if (this.resendCooldown <= 0) {
-        clearInterval(this.resendTimer);
-        this.resendTimer = null;
-      }
-    }, 1000);
-  }
-
-  onResendOTP(): void {
-    if (this.resendCooldown > 0 || this.loginLoading) return;
-    this.onLogin();
-  }
-
-  onVerifyOTP(): void {
-    this.otpLoading = true;
-    this.loginError = '';
-
-    this.authService.verifyOTP({
-      email: this.tempEmail,
-      otp: this.otpCode
-    }).subscribe({
-      next: () => {
-        this.otpLoading = false;
-        setTimeout(() => { this.redirectByRole(); }, 100);
-      },
-      error: (err) => {
-        this.otpLoading = false;
-        this.loginError = err.error?.message || 'Invalid OTP. Please try again.';
       }
     });
   }
@@ -190,8 +122,7 @@ export class ProfileAuthenticationPageComponent implements OnInit {
 
     const role = this.authService.getRole();
 
-    // ✅ Admin, Manager, Trainer → dashboard direct
-    // ✅ User → accueil
+    // ✅ Every role lands on its own dashboard right after sign-in
     switch (role) {
       case 'admin':
         this.router.navigate(['/admin-dashboard']);
@@ -203,7 +134,7 @@ export class ProfileAuthenticationPageComponent implements OnInit {
         this.router.navigate(['/trainer-dashboard']);
         break;
       default:
-        this.router.navigate(['/']);
+        this.router.navigate(['/dashboard']);
         break;
     }
   }
@@ -252,11 +183,6 @@ export class ProfileAuthenticationPageComponent implements OnInit {
 
 
 
-  // Called by the popup's (verified) event when the user taps Verify (or presses Enter)
-  onVerifyOTPFromPopup($event: string): void {
-    this.otpCode = $event;
-    this.onVerifyOTP();
-  }
   getPasswordLabel(): string {
     const s = this.getPasswordStrength();
     if (s <= 1) return 'Mot de passe faible';

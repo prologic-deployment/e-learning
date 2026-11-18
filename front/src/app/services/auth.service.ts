@@ -34,20 +34,8 @@ export class AuthService {
   login(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/login`, data).pipe(
       tap((res: any) => {
-        // Admin -> token direct
-        if (res.token && res.user) {
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('user', JSON.stringify(res.user));
-          this.currentUserSubject.next(res.user);
-        }
-      })
-    );
-  }
-
-  verifyOTP(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/verify-otp`, data).pipe(
-      tap((res: any) => {
-        // Accept both response shapes (data wrapper or flat)
+        // Single-step login: the session token comes back directly.
+        // Accept both response shapes (data wrapper or flat).
         const token = res.data?.token || res.token;
         const user = res.data?.user || res.user;
 

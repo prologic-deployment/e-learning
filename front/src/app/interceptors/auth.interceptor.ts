@@ -18,7 +18,6 @@ export class AuthInterceptor implements HttpInterceptor {
   private publicRoutes = [
     '/api/auth/login',
     '/api/auth/register',
-    '/api/auth/verify-otp',
     '/api/auth/forgot-password',
     '/api/auth/reset-password'
   ];

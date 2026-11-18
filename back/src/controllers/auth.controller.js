@@ -2,7 +2,7 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-const { sendOTPEmail, sendEmail } = require('../services/email.service');
+const { sendEmail } = require('../services/email.service');
 const config = require('../config/env');
 
 const signToken = (user) =>
@@ -92,101 +92,15 @@ exports.login = async (req, res) => {
 
     // ✅ Normalize role (legacy accounts may still hold an array)
     const userRole = Array.isArray(user.role) ? user.role[0] : user.role;
-
-    if (Array.isArray(user.role)) {
-      await User.findByIdAndUpdate(user._id, { role: userRole });
-    }
-
-    // ✅ SECURITY: every role (including admin) goes through OTP — no single-factor
-    // bypass for the highest-privilege account.
-    const otp = crypto.randomInt(100000, 999999).toString();
-    const hashedOtp = await bcrypt.hash(otp, 10);
-
-    user.otp = hashedOtp;
-    user.otpExpires = new Date(Date.now() + 5 * 60 * 1000);
-    user.otpAttempts = 0;
-    user.otpBlockedUntil = null;
-
-    await user.save();
-
-    sendOTPEmail(user.email, otp).catch(err =>
-      console.error('❌ OTP email error:', err.message)
-    );
-
-    // ✅ TESTING AID: fake @test.com inboxes can't receive OTP emails, so when
-    // DEV_EXPOSE_OTP=true the code is returned so manual testing can complete
-    // the flow. Applies to every NODE_ENV, including production: since the OTP
-    // is the second factor for all accounts (admin included), enabling this
-    // under NODE_ENV=production makes login single-factor. Each exposure is
-    // logged so it is visible in production logs.
-    const payload = {
-      success: true,
-      message: "OTP sent to your email"
-    };
-    if (config.devExposeOtp) {
-      payload.devOtp = otp;
-      console.warn(
-        `🚨 OTP exposed in login response for ${user.email}` +
-        (config.isProd ? ' (NODE_ENV=production — 2FA bypassed)' : '')
-      );
-    }
-
-    res.status(200).json(payload);
-
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      // ✅ prod/preprod: never leak internals to the client
-      message: config.prodLike ? "Server error" : error.message
-    });
-  }
-};
-
-// ===== VERIFY OTP =====
-exports.verifyOTP = async (req, res) => {
-  try {
-    const { email, otp } = req.body;
-    const user = await User.findOne({ email }).select("+otp");
-
-    if (!user) {
-      return res.status(400).json({ success: false, message: "User not found" });
-    }
-
-    if (!user.otp || !user.otpExpires || user.otpExpires < Date.now()) {
-      return res.status(400).json({ success: false, message: "OTP expired" });
-    }
-
-    if (user.otpBlockedUntil && user.otpBlockedUntil > Date.now()) {
-      return res.status(403).json({
-        success: false,
-        message: "Too many attempts. Try later."
-      });
-    }
-
-    const isValidOtp = await bcrypt.compare(otp, user.otp);
-    if (!isValidOtp) {
-      user.otpAttempts += 1;
-      if (user.otpAttempts >= 3) {
-        user.otpBlockedUntil = Date.now() + 10 * 60 * 1000;
-        user.otpAttempts = 0;
-      }
-      await user.save();
-      return res.status(400).json({ success: false, message: "Invalid OTP" });
-    }
-
-    user.otp = null;
-    user.otpExpires = null;
-    user.otpAttempts = 0;
-    user.otpBlockedUntil = null;
-
-    // ✅ Normaliser le role
-    const userRole = Array.isArray(user.role) ? user.role[0] : user.role;
     if (Array.isArray(user.role)) {
       user.role = userRole;
     }
 
     await user.save();
 
+    // ✅ Single-step login: valid credentials issue the session token directly
+    // (no OTP step). Brute force is still limited by loginLimiter (per IP) and
+    // the per-account lockout above (5 failures → 10 min).
     const token = signToken({ _id: user._id, role: userRole, tokenVersion: user.tokenVersion || 0 });
 
     res.status(200).json({
@@ -203,10 +117,11 @@ exports.verifyOTP = async (req, res) => {
         }
       }
     });
+
   } catch (error) {
-    console.error("verifyOTP error:", error);
     res.status(500).json({
       success: false,
+      // ✅ prod/preprod: never leak internals to the client
       message: config.prodLike ? "Server error" : error.message
     });
   }

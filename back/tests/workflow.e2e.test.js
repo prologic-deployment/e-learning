@@ -5,7 +5,7 @@
  *   USER:    register → login → enroll → blocked exam → pass quizzes →
  *            unlock exam → pass exam → completion + certificate
  *   Cleanup: trainer deletes course → cascade wipes lessons/enrollments
- * Run with the API server started as:  DEV_EXPOSE_OTP=true npm start
+ * Run with the API server started as:  npm start
  */
 const { login, makeApi, check, summary } = require('./helpers/e2e');
 
@@ -139,7 +139,7 @@ const { login, makeApi, check, summary } = require('./helpers/e2e');
 
   const learnerTok = await login(email, 'Learner123');
   const learner = makeApi(learnerTok);
-  check('Learner logs in via OTP', !!learnerTok);
+  check('Learner logs in', !!learnerTok);
 
   const forbidden = await learner('POST', '/api/courses', { title: 'Nope', description: 'Nope' });
   check('USER cannot create course (403)', forbidden.status === 403);
