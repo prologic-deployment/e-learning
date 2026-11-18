@@ -180,7 +180,7 @@ export class PaidCoursesSinglePageComponent implements OnInit {
     this.http.post(`${this.apiUrl}/reviews/course/${this.course._id}`, this.newReview).subscribe({
       next: () => {
         this.reviewLoading = false;
-        this.reviewSuccess = 'Review submitted and pending approval ! ⏳';
+        this.reviewSuccess = 'Review submitted and pending approval ! ';
         this.newReview = { rating: 5, comment: '' };
         this.loadReviews(this.course._id);
         setTimeout(() => this.reviewSuccess = '', 4000);
@@ -207,7 +207,7 @@ export class PaidCoursesSinglePageComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.reviewLoading = false;
-        this.reviewSuccess = 'Review updated ! ✅';
+        this.reviewSuccess = 'Review updated ! ';
         this.editingReview = null;
         this.loadReviews(this.course._id);
         setTimeout(() => this.reviewSuccess = '', 3000);
@@ -231,7 +231,7 @@ export class PaidCoursesSinglePageComponent implements OnInit {
   }
 
   getStars(rating: number): string {
-    return '⭐'.repeat(Math.round(rating));
+    return '★'.repeat(Math.round(rating));
   }
 
   enrollCourse(): void {
@@ -249,7 +249,7 @@ export class PaidCoursesSinglePageComponent implements OnInit {
     this.http.post(`${this.apiUrl}/enrollments/${this.course._id}/enroll`, {}).subscribe({
       next: () => {
         this.enrollLoading = false;
-        this.enrollSuccess = 'Enrolled successfully ! 🎉';
+        this.enrollSuccess = 'Enrolled successfully ! ';
         this.isEnrolled = true;
       },
       error: (err) => {
@@ -274,7 +274,7 @@ export class PaidCoursesSinglePageComponent implements OnInit {
     this.cartService.addToCart(this.course._id).subscribe({
       next: () => {
         this.cartLoading = false;
-        this.cartSuccess = 'Course added to cart ! 🛒';
+        this.cartSuccess = 'Course added to cart ! ';
         setTimeout(() => this.cartSuccess = '', 3000);
       },
       error: (err) => {
@@ -344,6 +344,72 @@ export class PaidCoursesSinglePageComponent implements OnInit {
 
   getCourseColor(category: string): string {
     return categoryColor(category);
+  }
+
+  // ---------- view helpers for the course landing page ----------
+
+  /** Add to cart, then go straight to the cart */
+  buyNow(): void {
+    if (!this.authService.isLoggedIn()) {
+      this.router.navigate(['/profile-authentication'], { queryParams: { returnUrl: this.router.url } });
+      return;
+    }
+    this.cartLoading = true;
+    this.cartError = '';
+    this.cartService.addToCart(this.course._id).subscribe({
+      next: () => { this.cartLoading = false; this.router.navigate(['/cart']); },
+      error: (err) => {
+        this.cartLoading = false;
+        // already in cart → still go to the cart
+        if (err.status === 400) { this.router.navigate(['/cart']); return; }
+        this.cartError = err.error?.message || 'Error adding to cart';
+      }
+    });
+  }
+
+  get lessons(): any[] {
+    return (this.course?.lessons || []).filter((l: any) => l && typeof l === 'object');
+  }
+
+  get lessonCount(): number {
+    return this.course?.lessons?.length || 0;
+  }
+
+  get examQuestions(): number {
+    const fe = this.course?.finalExam;
+    return fe?.questionsCount ?? fe?.questions?.length ?? 0;
+  }
+
+  get rounded(): number {
+    return Math.round((Number(this.avgRating) || 0) * 10) / 10;
+  }
+
+  /** Boxicons classes for 5 rating stars (full / half / empty) */
+  stars(value: number): string[] {
+    const v = Number(value) || 0;
+    return [1, 2, 3, 4, 5].map(i => v >= i ? 'bx bxs-star' : v >= i - 0.5 ? 'bx bxs-star-half' : 'bx bx-star');
+  }
+
+  /** Share of reviews per star value (5 → 1), for the rating bars */
+  get ratingBreakdown(): { stars: number; pct: number; count: number }[] {
+    const total = this.reviews.length || 1;
+    return [5, 4, 3, 2, 1].map(s => {
+      const count = this.reviews.filter(r => Math.round(r.rating) === s).length;
+      return { stars: s, count, pct: Math.round((count / total) * 100) };
+    });
+  }
+
+  lessonIcon(type: string): string {
+    return type === 'video' ? 'bx bx-play-circle' : type === 'pdf' ? 'bx bx-file' : 'bx bx-book-content';
+  }
+
+  initials(first?: string, last?: string): string {
+    return `${(first || '').charAt(0)}${(last || '').charAt(0)}`.toUpperCase() || '?';
+  }
+
+  setRating(target: 'new' | 'edit', value: number): void {
+    if (target === 'new') this.newReview.rating = value;
+    else if (this.editingReview) this.editingReview.rating = value;
   }
 
 

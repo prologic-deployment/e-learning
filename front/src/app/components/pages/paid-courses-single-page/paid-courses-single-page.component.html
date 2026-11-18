@@ -1,838 +1,309 @@
-<!-- Loading -->
-<div *ngIf="loading" class="text-center ptb-100">
-  <p>Loading course...</p>
+<!-- Loading / error -->
+<div class="state" *ngIf="loading">
+  <i class="bx bx-loader-alt bx-spin"></i> Loading course…
+</div>
+<div class="state state--error" *ngIf="error && !loading">
+  <i class="bx bx-error-circle"></i> {{ error }}
+  <a routerLink="/courses-grid" class="btn-outline">Back to courses</a>
 </div>
 
-<!-- Error -->
-<div *ngIf="error" class="container ptb-100">
-  <div class="alert alert-danger">{{ error }}</div>
-</div>
-
-<!-- Course Details -->
-<div *ngIf="course && !loading">
-
-  <div class="courses-details-area pb-100 pt-50">
-    <div class="container">
-      <div class="row">
-
-        <!-- Content -->
-        <div class="col-lg-8 col-md-12">
-          <div class="courses-details-desc style-two">
-
-            <!-- Tabs -->
-            <ul class="nav nav-tabs mb-4">
-              <li class="nav-item">
-                <a class="nav-link" [class.active]="activeTab === 'overview'"
-                  (click)="activeTab = 'overview'" style="cursor:pointer;">
-                  📋 Overview
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" [class.active]="activeTab === 'instructor'"
-                  (click)="activeTab = 'instructor'" style="cursor:pointer;">
-                  👤 Instructor
-                </a>
-              </li>
-            </ul>
-
-            <!-- ========== OVERVIEW TAB ========== -->
-            <div *ngIf="activeTab === 'overview'" class="courses-overview">
-
-              <!-- Description -->
-              <div style="background: white; border-radius: 20px; padding: 28px;
-                border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-                margin-bottom: 24px;">
-                <div class="d-flex align-items-center gap-3 mb-3">
-                  <div style="width: 44px; height: 44px; border-radius: 12px;
-                    background: #EEF2FB; display: flex; align-items: center;
-                    justify-content: center; font-size: 20px;">📋</div>
-                  <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
-                    Description du cours
-                  </h5>
-                </div>
-                <p style="color: #64748b; font-size: 14px; line-height: 1.8; margin: 0;">
-                  {{ course.description }}
-                </p>
-              </div>
-
-              <!-- AI Summary (cours entier) -->
-              <div style="background: white; border-radius: 20px; padding: 28px;
-                border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-                margin-bottom: 24px;">
-
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <div class="d-flex align-items-center gap-3">
-                    <div style="width: 44px; height: 44px; border-radius: 12px;
-                      background: #fef3c7; display: flex; align-items: center;
-                      justify-content: center; font-size: 20px;">🤖</div>
-                    <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
-                      Analyse IA du cours
-                    </h5>
-                  </div>
-
-                  <button *ngIf="isLoggedIn() && isEnrolled"
-                    (click)="generateSummary()" [disabled]="aiLoading"
-                    style="padding: 9px 18px; border: none; border-radius: 12px;
-                      background: #0B0D12;
-                      color: white; font-size: 13px; font-weight: 600; cursor: pointer;"
-                    [style.opacity]="aiLoading ? '0.7' : '1'">
-                    <span *ngIf="!aiLoading">✨ Générer l'analyse</span>
-                    <span *ngIf="aiLoading">
-                      <span class="spinner-border spinner-border-sm me-2"></span>
-                      Analyse en cours...
-                    </span>
-                  </button>
-
-                  <div *ngIf="!isLoggedIn() || !isEnrolled" class="text-end">
-                    <button style="padding: 9px 18px; border: 1.5px solid #e2e8f0;
-                      border-radius: 12px; background: white; color: #94a3b8;
-                      font-size: 13px; font-weight: 600; cursor: not-allowed;" disabled>
-                      🔒 Analyse IA
-                    </button>
-                    <small style="display: block; color: #94a3b8; font-size: 11px; margin-top: 4px;">
-                      {{ !isLoggedIn() ? 'Connectez-vous pour débloquer' : 'Inscrivez-vous pour débloquer' }}
-                    </small>
-                  </div>
-                </div>
-
-                <div *ngIf="!isLoggedIn() || !isEnrolled"
-                  style="background: #f8fafc; border-radius: 14px; padding: 32px;
-                    text-align: center; border: 2px dashed #e2e8f0;">
-                  <div style="font-size: 40px; margin-bottom: 12px;">🔒</div>
-                  <p style="color: #64748b; font-size: 14px; margin: 0;">
-                    {{ !isLoggedIn()
-                      ? 'Connectez-vous et inscrivez-vous pour débloquer l\'analyse IA'
-                      : 'Inscrivez-vous à ce cours pour débloquer l\'analyse IA' }}
-                  </p>
-                </div>
-
-                <div *ngIf="aiError" class="alert alert-danger mt-3"
-                  style="border-radius: 10px;">{{ aiError }}</div>
-
-                <div *ngIf="showAiSummary && aiSummary && !aiLoading && isEnrolled" class="mt-4">
-
-                  <div style="background: #F3F6FC;
-                    border-radius: 14px; padding: 20px; margin-bottom: 20px;
-                    border-left: 4px solid #1E3A8A;">
-                    <h6 style="font-weight: 700; color: #1E3A8A; margin-bottom: 10px;">
-                      📝 Résumé IA
-                    </h6>
-                    <p style="color: #374151; font-size: 14px; line-height: 1.8; margin: 0;">
-                      {{ aiSummary.summary }}
-                    </p>
-                  </div>
-
-                  <div class="row mb-4">
-                    <div class="col-md-4 mb-3">
-                      <div style="background: white; border-radius: 16px; padding: 20px;
-                        text-align: center; border: 1px solid #f0f0f0;
-                        box-shadow: 0 4px 16px rgba(0,0,0,0.05);">
-                        <div style="font-size: 32px; margin-bottom: 8px;">🎯</div>
-                        <div style="font-size: 12px; color: #94a3b8; font-weight: 600;
-                          text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
-                          Niveau
-                        </div>
-                        <span style="padding: 5px 14px; border-radius: 20px; font-size: 13px;
-                          font-weight: 700;"
-                          [style.background]="aiSummary.level === 'Débutant' ? '#f0fdf4' :
-                            aiSummary.level === 'Intermédiaire' ? '#fffbeb' : '#fef2f2'"
-                          [style.color]="aiSummary.level === 'Débutant' ? '#10b981' :
-                            aiSummary.level === 'Intermédiaire' ? '#f59e0b' : '#ef4444'">
-                          {{ aiSummary.level }}
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                      <div style="background: white; border-radius: 16px; padding: 20px;
-                        text-align: center; border: 1px solid #f0f0f0;
-                        box-shadow: 0 4px 16px rgba(0,0,0,0.05);">
-                        <div style="font-size: 32px; margin-bottom: 8px;">⏱️</div>
-                        <div style="font-size: 12px; color: #94a3b8; font-weight: 600;
-                          text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
-                          Durée estimée
-                        </div>
-                        <div style="font-size: 15px; font-weight: 700; color: #1E3A8A;">
-                          {{ aiSummary.duration }}
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                      <div style="background: white; border-radius: 16px; padding: 20px;
-                        text-align: center; border: 1px solid #f0f0f0;
-                        box-shadow: 0 4px 16px rgba(0,0,0,0.05);">
-                        <div style="font-size: 32px; margin-bottom: 8px;">👥</div>
-                        <div style="font-size: 12px; color: #94a3b8; font-weight: 600;
-                          text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">
-                          Public cible
-                        </div>
-                        <div style="font-size: 13px; font-weight: 600; color: #0f172a;">
-                          {{ aiSummary.targetAudience }}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div style="background: white; border-radius: 16px; padding: 24px;
-                    border: 1px solid #f0f0f0; box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-                    margin-bottom: 20px;">
-                    <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 16px;">
-                      💡 Concepts Clés
-                    </h6>
-                    <div class="row">
-                      <div class="col-md-4 mb-3" *ngFor="let concept of aiSummary.concepts">
-                        <div style="background: #f8fafc; border-radius: 12px; padding: 16px;
-                          border-left: 3px solid #1E3A8A; height: 100%;">
-                          <div style="font-weight: 700; color: #0f172a; font-size: 13px;
-                            margin-bottom: 6px;">{{ concept.title }}</div>
-                          <div style="font-size: 12px; color: #64748b; line-height: 1.6;">
-                            {{ concept.description }}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-6 mb-3">
-                      <div style="background: white; border-radius: 16px; padding: 24px;
-                        border: 1px solid #f0f0f0; box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-                        height: 100%;">
-                        <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 14px;">
-                          📋 Prérequis
-                        </h6>
-                        <div *ngFor="let pre of aiSummary.prerequisites"
-                          style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
-                          <span style="color: #f59e0b; font-size: 14px; flex-shrink: 0;">⚡</span>
-                          <span style="font-size: 13px; color: #64748b;">{{ pre }}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                      <div style="background: white; border-radius: 16px; padding: 24px;
-                        border: 1px solid #f0f0f0; box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-                        height: 100%;">
-                        <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 14px;">
-                          🎓 Objectifs
-                        </h6>
-                        <div *ngFor="let obj of aiSummary.objectives"
-                          style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
-                          <span style="color: #10b981; font-size: 14px; flex-shrink: 0;">✓</span>
-                          <span style="font-size: 13px; color: #64748b;">{{ obj }}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-              <!-- ✅ Contenu du cours — Leçons avec NLP -->
-              <div *ngIf="course.lessons?.length > 0"
-                style="background: white; border-radius: 20px; padding: 28px;
-                  border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-                  margin-bottom: 24px;">
-
-                <div class="d-flex align-items-center gap-3 mb-4">
-                  <div style="width: 44px; height: 44px; border-radius: 12px;
-                    background: #EEF2FB; display: flex; align-items: center;
-                    justify-content: center; font-size: 20px;">📖</div>
-                  <div>
-                    <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
-                      Contenu du cours
-                    </h5>
-                    <p style="font-size: 13px; color: #64748b; margin: 0;">
-                      {{ course.lessons.length }} leçon(s)
-                    </p>
-                  </div>
-                </div>
-
-
-                <!-- Liste des leçons -->
-                <div *ngFor="let lesson of course.lessons; let i = index" class="mb-3">
-                  <div style="border: 1px solid #e2e8f0; border-radius: 14px; overflow: hidden;">
-
-                    <!-- Lesson Header -->
-                    <div style="display: flex; justify-content: space-between;
-                      align-items: center; padding: 14px 18px; background: #f8fafc;">
-
-                      <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
-                        <div style="width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
-                          background: #0B0D12;
-                          display: flex; align-items: center; justify-content: center;
-                          font-size: 13px; font-weight: 700; color: white;">
-                          {{ i + 1 }}
-                        </div>
-                        <div>
-                          <div style="font-weight: 600; color: #0f172a; font-size: 14px;">
-                            {{ lesson.title }}
-                          </div>
-                          <div style="display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap;">
-                            <span style="font-size: 10px; font-weight: 600; padding: 2px 8px;
-                              border-radius: 20px;"
-                              [style.background]="lesson.contentType === 'video' ? '#EEF2FB' : '#dbeafe'"
-                              [style.color]="lesson.contentType === 'video' ? '#1E3A8A' : '#3b82f6'">
-                              {{ lesson.contentType === 'video' ? '🎬 Vidéo' : '📄 PDF' }}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-
-              <!-- What you'll learn -->
-              <div style="background: white; border-radius: 20px; padding: 28px;
-                border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-                margin-bottom: 24px;">
-                <div class="d-flex align-items-center gap-3 mb-4">
-                  <div style="width: 44px; height: 44px; border-radius: 12px;
-                    background: #dcfce7; display: flex; align-items: center;
-                    justify-content: center; font-size: 20px;">🎯</div>
-                  <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
-                    Ce que vous apprendrez
-                  </h5>
-                </div>
-                <div class="row">
-                  <div class="col-md-6 mb-3" *ngFor="let item of [
-                    'Accès à tous les supports de cours',
-                    'Quiz interactifs par leçon',
-                    'Examen final complet',
-                    'Certificat de réussite 🎓',
-                    'Accès à vie au contenu',
-                    'Contenu PDF & Vidéo'
-                  ]">
-                    <div style="display: flex; align-items: center; gap: 10px; padding: 12px 16px;
-                      background: #f8fafc; border-radius: 12px; border: 1px solid #f0f0f0;">
-                      <span style="width: 24px; height: 24px; border-radius: 50%;
-                        background: #dcfce7; display: flex; align-items: center;
-                        justify-content: center; font-size: 12px; flex-shrink: 0;
-                        color: #10b981; font-weight: 700;">✓</span>
-                      <span style="font-size: 13px; color: #374151; font-weight: 500;">
-                        {{ item }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Tags -->
-              <div *ngIf="course.tags?.length > 0"
-                style="background: white; border-radius: 20px; padding: 28px;
-                  border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-                  margin-bottom: 24px;">
-                <div class="d-flex align-items-center gap-3 mb-4">
-                  <div style="width: 44px; height: 44px; border-radius: 12px;
-                    background: #EEF2FB; display: flex; align-items: center;
-                    justify-content: center; font-size: 20px;">🏷️</div>
-                  <h5 style="font-weight: 700; color: #0f172a; margin: 0;">Tags</h5>
-                </div>
-                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                  <span *ngFor="let tag of course.tags"
-                    style="background: #f1f5f9; color: #64748b; padding: 6px 14px;
-                      border-radius: 20px; font-size: 12px; font-weight: 600;
-                      border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.2s;"
-                    onmouseover="this.style.background='#1E3A8A'; this.style.color='white'"
-                    onmouseout="this.style.background='#f1f5f9'; this.style.color='#64748b'">
-                    # {{ tag }}
-                  </span>
-                </div>
-              </div>
-
-              <!-- Reviews -->
-              <div style="background: white; border-radius: 20px; padding: 28px;
-                border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-                margin-bottom: 24px;">
-
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                  <div class="d-flex align-items-center gap-3">
-                    <div style="width: 44px; height: 44px; border-radius: 12px;
-                      background: #fef3c7; display: flex; align-items: center;
-                      justify-content: center; font-size: 20px;">⭐</div>
-                    <div>
-                      <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
-                        Avis des apprenants
-                      </h5>
-                      <p style="font-size: 13px; color: #64748b; margin: 0;">
-                        {{ totalReviews }} avis
-                      </p>
-                    </div>
-                  </div>
-                  <div *ngIf="avgRating > 0" style="text-align: center;">
-                    <div style="font-size: 32px; font-weight: 800; color: #0f172a; line-height: 1;">
-                      {{ avgRating }}
-                    </div>
-                    <div style="color: #fbbf24; font-size: 16px;">★★★★★</div>
-                    <div style="font-size: 11px; color: #94a3b8;">/5</div>
-                  </div>
-                </div>
-
-                <div *ngIf="reviewSuccess" class="alert alert-success mb-3"
-                  style="border-radius: 10px;">{{ reviewSuccess }}</div>
-                <div *ngIf="reviewError" class="alert alert-danger mb-3"
-                  style="border-radius: 10px;">{{ reviewError }}</div>
-
-                <div *ngIf="!isLoggedIn()"
-                  style="background: #f8fafc; border-radius: 14px; padding: 20px;
-                    text-align: center; border: 1px solid #e2e8f0; margin-bottom: 20px;">
-                  <p style="color: #64748b; font-size: 14px; margin-bottom: 14px;">
-                    🔑 Connectez-vous pour laisser un avis
-                  </p>
-                  <div class="d-flex gap-2 justify-content-center">
-                    <a routerLink="/profile-authentication"
-                      style="padding: 8px 20px; border: none; border-radius: 10px;
-                        background: #0B0D12;
-                        color: white; font-size: 13px; font-weight: 600; text-decoration: none;">
-                      Se connecter
-                    </a>
-                    <a routerLink="/profile-authentication" [queryParams]="{tab: 'register'}"
-                      style="padding: 8px 20px; border: 2px solid #1E3A8A; border-radius: 10px;
-                        color: #1E3A8A; font-size: 13px; font-weight: 600;
-                        text-decoration: none; background: white;">
-                      S'inscrire
-                    </a>
-                  </div>
-                </div>
-
-                <div *ngIf="isLoggedIn() && isEnrolled && !hasReviewed && !editingReview"
-                  style="background: #f8fafc; border-radius: 14px; padding: 24px;
-                    border: 1px solid #e2e8f0; margin-bottom: 20px;">
-                  <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 16px;">
-                    ✍️ Laisser un avis
-                  </h6>
-                  <div class="mb-3">
-                    <label style="font-size: 13px; font-weight: 600; color: #374151;">Note *</label>
-                    <select class="form-select mt-1" [(ngModel)]="newReview.rating"
-                      style="border-radius: 10px; border: 1.5px solid #e2e8f0;
-                        padding: 10px 15px; font-size: 14px;">
-                      <option [value]="5">⭐⭐⭐⭐⭐ Excellent</option>
-                      <option [value]="4">⭐⭐⭐⭐ Bien</option>
-                      <option [value]="3">⭐⭐⭐ Moyen</option>
-                      <option [value]="2">⭐⭐ Insuffisant</option>
-                      <option [value]="1">⭐ Très mauvais</option>
-                    </select>
-                  </div>
-                  <div class="mb-4">
-                    <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                      Commentaire *
-                    </label>
-                    <textarea class="form-control mt-1" rows="3"
-                      placeholder="Partagez votre expérience..."
-                      [(ngModel)]="newReview.comment" maxlength="500"
-                      style="border-radius: 10px; border: 1.5px solid #e2e8f0;
-                        padding: 12px 15px; font-size: 14px; resize: none;">
-                    </textarea>
-                    <small style="color: #94a3b8; font-size: 11px;">
-                      {{ newReview.comment.length }}/500
-                    </small>
-                  </div>
-                  <button (click)="submitReview()" [disabled]="reviewLoading"
-                    style="width: 100%; padding: 12px; border: none; border-radius: 12px;
-                      background: #0B0D12;
-                      color: white; font-size: 14px; font-weight: 600; cursor: pointer;"
-                    [style.opacity]="reviewLoading ? '0.7' : '1'">
-                    <span *ngIf="!reviewLoading">📤 Soumettre l'avis</span>
-                    <span *ngIf="reviewLoading">
-                      <span class="spinner-border spinner-border-sm me-2"></span>Envoi...
-                    </span>
-                  </button>
-                </div>
-
-                <div *ngIf="isLoggedIn() && isEnrolled && hasReviewed && !editingReview"
-                  style="background: #f0fdf4; border-radius: 12px; padding: 14px 16px;
-                    border: 1px solid #bbf7d0; margin-bottom: 20px; font-size: 13px;
-                    color: #10b981; font-weight: 600;">
-                  ✅ Vous avez déjà laissé un avis.
-                </div>
-
-                <div *ngIf="isLoggedIn() && !isEnrolled"
-                  style="background: #fffbeb; border-radius: 12px; padding: 14px 16px;
-                    border: 1px solid #fde68a; margin-bottom: 20px; font-size: 13px;
-                    color: #f59e0b; font-weight: 600;">
-                  📚 Inscrivez-vous à ce cours pour laisser un avis
-                </div>
-
-                <div *ngIf="editingReview"
-                  style="background: #fffbeb; border-radius: 14px; padding: 24px;
-                    border: 1px solid #fde68a; margin-bottom: 20px;">
-                  <h6 style="font-weight: 700; color: #0f172a; margin-bottom: 16px;">
-                    ✏️ Modifier votre avis
-                  </h6>
-                  <div class="mb-3">
-                    <label style="font-size: 13px; font-weight: 600; color: #374151;">Note *</label>
-                    <select class="form-select mt-1" [(ngModel)]="editingReview.rating"
-                      style="border-radius: 10px; border: 1.5px solid #e2e8f0;
-                        padding: 10px 15px; font-size: 14px;">
-                      <option [value]="5">⭐⭐⭐⭐⭐ Excellent</option>
-                      <option [value]="4">⭐⭐⭐⭐ Bien</option>
-                      <option [value]="3">⭐⭐⭐ Moyen</option>
-                      <option [value]="2">⭐⭐ Insuffisant</option>
-                      <option [value]="1">⭐ Très mauvais</option>
-                    </select>
-                  </div>
-                  <div class="mb-4">
-                    <label style="font-size: 13px; font-weight: 600; color: #374151;">
-                      Commentaire *
-                    </label>
-                    <textarea class="form-control mt-1" rows="3"
-                      [(ngModel)]="editingReview.comment" maxlength="500"
-                      style="border-radius: 10px; border: 1.5px solid #e2e8f0;
-                        padding: 12px 15px; font-size: 14px; resize: none;">
-                    </textarea>
-                    <small style="color: #94a3b8; font-size: 11px;">
-                      {{ editingReview.comment.length }}/500
-                    </small>
-                  </div>
-                  <div class="d-flex gap-2">
-                    <button (click)="updateReview()" [disabled]="reviewLoading"
-                      style="flex: 1; padding: 12px; border: none; border-radius: 12px;
-                        background: linear-gradient(135deg, #f59e0b, #f97316);
-                        color: white; font-size: 14px; font-weight: 600; cursor: pointer;"
-                      [style.opacity]="reviewLoading ? '0.7' : '1'">
-                      <span *ngIf="!reviewLoading">💾 Mettre à jour</span>
-                      <span *ngIf="reviewLoading">
-                        <span class="spinner-border spinner-border-sm me-2"></span>
-                      </span>
-                    </button>
-                    <button (click)="editingReview = null"
-                      style="padding: 12px 20px; border: 1.5px solid #e2e8f0;
-                        border-radius: 12px; background: white; color: #64748b;
-                        font-size: 14px; font-weight: 600; cursor: pointer;">
-                      Annuler
-                    </button>
-                  </div>
-                </div>
-
-                <div *ngIf="reviews.length === 0" class="text-center py-4"
-                  style="background: #f8fafc; border-radius: 14px; padding: 40px;">
-                  <div style="font-size: 48px; margin-bottom: 12px;">💬</div>
-                  <p style="color: #64748b; margin: 0;">Aucun avis pour le moment !</p>
-                </div>
-
-                <div *ngFor="let review of reviews; let last = last" class="mb-3"
-                  style="background: #f8fafc; border-radius: 14px; padding: 20px;
-                    border: 1px solid #f0f0f0;"
-                  [style.marginBottom]="!last ? '12px' : '0'">
-                  <div class="d-flex justify-content-between align-items-start">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                      <div style="width: 44px; height: 44px; border-radius: 50%;
-                        display: flex; align-items: center; justify-content: center;
-                        font-weight: 700; color: white; font-size: 15px; flex-shrink: 0;"
-                        [style.background]="getCourseColor(course.category)">
-                        {{ review.user?.firstname?.[0] }}{{ review.user?.lastname?.[0] }}
-                      </div>
-                      <div>
-                        <div style="font-weight: 700; color: #0f172a; font-size: 14px;">
-                          {{ review.user?.firstname }} {{ review.user?.lastname }}
-                        </div>
-                        <div style="color: #fbbf24; font-size: 14px; margin: 2px 0;">
-                          {{ getStars(review.rating) }}
-                        </div>
-                        <div style="font-size: 11px; color: #94a3b8;">
-                          {{ review.createdAt | date:'dd/MM/yyyy' }}
-                        </div>
-                      </div>
-                    </div>
-                    <div class="d-flex gap-2"
-                      *ngIf="isLoggedIn() && review.user?._id?.toString() === currentUserId?.toString()">
-                      <button (click)="editReview(review)"
-                        style="padding: 6px 12px; border: 1.5px solid #fde68a;
-                          border-radius: 8px; background: #fffbeb; color: #f59e0b;
-                          font-size: 12px; font-weight: 600; cursor: pointer;">✏️</button>
-                      <button (click)="deleteReview(review._id)"
-                        style="padding: 6px 12px; border: 1.5px solid #fecaca;
-                          border-radius: 8px; background: #fef2f2; color: #ef4444;
-                          font-size: 12px; font-weight: 600; cursor: pointer;">🗑️</button>
-                    </div>
-                  </div>
-                  <p style="color: #64748b; font-size: 13px; line-height: 1.6;
-                    margin-top: 12px; margin-bottom: 0;">
-                    {{ review.comment }}
-                  </p>
-                </div>
-
-              </div>
-
-            </div>
-
-            <!-- ========== INSTRUCTOR TAB ========== -->
-            <div *ngIf="activeTab === 'instructor'">
-              <div style="background: white; border-radius: 20px; padding: 32px;
-                border: 1px solid #f0f0f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05);">
-
-                <div class="d-flex align-items-center gap-3 mb-4">
-                  <div style="width: 44px; height: 44px; border-radius: 12px;
-                    background: #dbeafe; display: flex; align-items: center;
-                    justify-content: center; font-size: 20px;">👨‍🏫</div>
-                  <h5 style="font-weight: 700; color: #0f172a; margin: 0;">
-                    Votre Formateur
-                  </h5>
-                </div>
-
-                <div style="display: flex; align-items: center; gap: 24px;
-                  flex-wrap: wrap; margin-bottom: 28px;">
-                  <div style="width: 96px; height: 96px; border-radius: 24px; flex-shrink: 0;
-                    display: flex; align-items: center; justify-content: center;
-                    font-size: 36px; font-weight: 800; color: white;"
-                    [style.background]="getCourseColor(course.category)">
-                    {{ course.trainer?.firstname?.[0] }}{{ course.trainer?.lastname?.[0] }}
-                  </div>
-                  <div>
-                    <div style="font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
-                      {{ course.trainer?.firstname }} {{ course.trainer?.lastname }}
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                      <span style="background: #f0fdf4; color: #10b981; padding: 4px 12px;
-                        border-radius: 20px; font-size: 12px; font-weight: 600;">
-                        🎓 Formateur certifié
-                      </span>
-                      <span style="background: #EEF2FB; color: #1E3A8A; padding: 4px 12px;
-                        border-radius: 20px; font-size: 12px; font-weight: 600;">
-                        📂 {{ course.category }}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div style="height: 1px; background: #f1f5f9; margin-bottom: 24px;"></div>
-
-                <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 28px;">
-                  <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 38px; height: 38px; border-radius: 10px;
-                      background: #EEF2FB; display: flex; align-items: center;
-                      justify-content: center; font-size: 16px; flex-shrink: 0;">✉️</div>
-                    <div>
-                      <div style="font-size: 11px; color: #94a3b8; font-weight: 600;
-                        text-transform: uppercase; letter-spacing: 0.5px;">Email</div>
-                      <div style="font-size: 14px; color: #0f172a; font-weight: 600;">
-                        {{ course.trainer?.email }}
-                      </div>
-                    </div>
-                  </div>
-                  <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="width: 38px; height: 38px; border-radius: 10px;
-                      background: #f0fdf4; display: flex; align-items: center;
-                      justify-content: center; font-size: 16px; flex-shrink: 0;">🏆</div>
-                    <div>
-                      <div style="font-size: 11px; color: #94a3b8; font-weight: 600;
-                        text-transform: uppercase; letter-spacing: 0.5px;">Spécialité</div>
-                      <div style="font-size: 14px; color: #0f172a; font-weight: 600;">
-                        Expert en {{ course.category }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div style="background: #F3F6FC;
-                  border-radius: 16px; padding: 20px; text-align: center; border: 1px solid #D6DEF3;">
-                  <p style="font-size: 13px; color: #64748b; margin-bottom: 14px;">
-                    Vous avez des questions sur ce cours ?
-                  </p>
-                  <a routerLink="/contact"
-                    style="display: inline-block; padding: 10px 24px; border: none;
-                      border-radius: 12px; font-size: 13px; font-weight: 600;
-                      color: white; text-decoration: none;
-                      background: #0B0D12;
-                      box-shadow: 0 4px 15px rgba(30, 58, 138,0.3);">
-                    📩 Contacter Prologic
-                  </a>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Sidebar -->
-        <div class="col-lg-4 col-md-12" style="margin-top: 100px;">
-          <div style="position: sticky; top: 20px;">
-
-            <div style="background: white; border-radius: 24px; overflow: hidden;
-              box-shadow: 0 4px 24px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
-
-              <!-- Hero Section -->
-              <div style="padding: 32px 24px; text-align: center;
-                background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
-                <div style="width: 72px; height: 72px; border-radius: 20px;
-                  background: white; border: 1px solid #e2e8f0;
-                  display: flex; align-items: center; justify-content: center;
-                  font-size: 36px; margin: 0 auto 16px;
-                  box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
-                  <i [class]="getCategoryIcon(course.category)"></i>
-                </div>
-                <div style="font-size: 28px; font-weight: 800; color: #0f172a; margin-bottom: 6px;">
-                  {{ course.price === 0 ? 'Gratuit' : course.price + ' TND' }}
-                </div>
-                <div *ngIf="avgRating > 0" style="font-size: 13px; color: #64748b;">
-                  ⭐ {{ avgRating }}/5 · {{ totalReviews }} avis
-                </div>
-                <div *ngIf="avgRating === 0" style="font-size: 13px; color: #94a3b8;">
-                  Pas encore noté
-                </div>
-              </div>
-
-              <!-- Info items -->
-              <div style="padding: 24px;">
-                <div style="display: flex; flex-direction: column; gap: 0; margin-top: 8px;">
-
-                  <div style="display: flex; justify-content: space-between; align-items: center;
-                    padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
-                    <span style="font-size: 13px; color: #94a3b8;">👨‍🏫 Formateur</span>
-                    <span style="font-size: 13px; color: #0f172a; font-weight: 600;">
-                      {{ course.trainer?.firstname }} {{ course.trainer?.lastname }}
-                    </span>
-                  </div>
-
-                  <div style="display: flex; justify-content: space-between; align-items: center;
-                    padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
-                    <span style="font-size: 13px; color: #94a3b8;">📂 Catégorie</span>
-                    <span style="font-size: 13px; color: #0f172a; font-weight: 600;">
-                      {{ course.category }}
-                    </span>
-                  </div>
-
-                  <div style="display: flex; justify-content: space-between; align-items: center;
-                    padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
-                    <span style="font-size: 13px; color: #94a3b8;">💰 Prix</span>
-                    <span style="font-size: 14px; color: #0f172a; font-weight: 700;">
-                      {{ course.price === 0 ? 'Gratuit' : course.price + ' TND' }}
-                    </span>
-                  </div>
-
-                  <div style="display: flex; justify-content: space-between; align-items: center;
-                    padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
-                    <span style="font-size: 13px; color: #94a3b8;">🎓 Certificat</span>
-                    <span style="font-size: 13px; color: #0f172a; font-weight: 600;">Inclus</span>
-                  </div>
-
-                  <div style="display: flex; justify-content: space-between; align-items: center;
-                    padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
-                    <span style="font-size: 13px; color: #94a3b8;">♾️ Accès</span>
-                    <span style="font-size: 13px; color: #0f172a; font-weight: 600;">À vie</span>
-                  </div>
-
-                  <div style="display: flex; justify-content: space-between; align-items: center;
-                    padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
-                    <span style="font-size: 13px; color: #94a3b8;">⭐ Note</span>
-                    <span style="font-size: 13px; color: #0f172a; font-weight: 600;">
-                      {{ avgRating > 0 ? avgRating + '/5 (' + totalReviews + ' avis)' : 'Pas encore noté' }}
-                    </span>
-                  </div>
-
-                  <div style="display: flex; justify-content: space-between; align-items: center;
-                    padding: 12px 0;">
-                    <span style="font-size: 13px; color: #94a3b8;">📡 Statut</span>
-                    <span style="font-size: 13px; font-weight: 600;"
-                      [style.color]="course.isApproved ? '#10b981' : '#f59e0b'">
-                      {{ course.isApproved ? 'Disponible' : 'En attente' }}
-                    </span>
-                  </div>
-                </div>
-
-                <!-- Alerts -->
-                <div *ngIf="cartSuccess" class="alert alert-success mt-3"
-                  style="border-radius: 10px; font-size: 13px;">{{ cartSuccess }}</div>
-                <div *ngIf="cartError" class="alert alert-danger mt-3"
-                  style="border-radius: 10px; font-size: 13px;">{{ cartError }}</div>
-                <div *ngIf="enrollSuccess" class="alert alert-success mt-3"
-                  style="border-radius: 10px; font-size: 13px;">{{ enrollSuccess }}</div>
-                <div *ngIf="enrollError" class="alert alert-danger mt-3"
-                  style="border-radius: 10px; font-size: 13px;">{{ enrollError }}</div>
-
-                <!-- CTA Buttons -->
-                <div class="mt-4">
-
-                  <!-- Inscrit -->
-                  <div *ngIf="isLoggedIn() && isEnrolled">
-                    <a [routerLink]="['/course', course._id]"
-                      style="display: block; width: 100%; padding: 14px; border: none;
-                        border-radius: 14px; font-size: 15px; font-weight: 700;
-                        color: white; cursor: pointer; text-align: center; text-decoration: none;
-                        background: linear-gradient(135deg, #10b981, #059669);
-                        box-shadow: 0 4px 15px rgba(16,185,129,0.4);">
-                      ▶ Continuer l'apprentissage
-                    </a>
-                    <div style="display: flex; align-items: center; justify-content: center;
-                      gap: 6px; margin-top: 10px;">
-                      <span style="width: 8px; height: 8px; border-radius: 50%;
-                        background: #10b981;"></span>
-                      <span style="font-size: 12px; color: #10b981; font-weight: 600;">
-                        Vous êtes inscrit à ce cours
-                      </span>
-                    </div>
-                  </div>
-
-                  <!-- Non connecté -->
-                  <div *ngIf="!isLoggedIn()">
-                    <div style="background: #f8fafc; border-radius: 12px; padding: 14px;
-                      text-align: center; margin-bottom: 16px; border: 1px solid #e2e8f0;">
-                      <span style="font-size: 13px; color: #64748b;">
-                        🔒 Connectez-vous pour vous inscrire
-                      </span>
-                    </div>
-                    <a routerLink="/profile-authentication"
-                      style="display: block; width: 100%; padding: 14px; border: none;
-                        border-radius: 14px; font-size: 15px; font-weight: 700;
-                        color: white; text-align: center; text-decoration: none; margin-bottom: 10px;
-                        background: #0B0D12;
-                        box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);">
-                      🔑 Se connecter
-                    </a>
-                    <a routerLink="/profile-authentication" [queryParams]="{tab: 'register'}"
-                      style="display: block; width: 100%; padding: 13px; border: 2px solid #1E3A8A;
-                        border-radius: 14px; font-size: 14px; font-weight: 600;
-                        color: #1E3A8A; text-align: center; text-decoration: none; background: white;">
-                      📝 Créer un compte
-                    </a>
-                  </div>
-
-                  <!-- Cours gratuit -->
-                  <button *ngIf="isLoggedIn() && !isEnrolled && course.price === 0"
-                    (click)="enrollAndView()" [disabled]="enrollLoading"
-                    style="width: 100%; padding: 14px; border: none; border-radius: 14px;
-                      font-size: 15px; font-weight: 700; color: white; cursor: pointer;
-                      background: #0B0D12;
-                      box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);"
-                    [style.opacity]="enrollLoading ? '0.7' : '1'">
-                    <span *ngIf="!enrollLoading">🎁 S'inscrire gratuitement</span>
-                    <span *ngIf="enrollLoading">
-                      <span class="spinner-border spinner-border-sm me-2"></span>Inscription...
-                    </span>
-                  </button>
-
-                  <!-- Cours payant -->
-                  <button *ngIf="isLoggedIn() && !isEnrolled && course.price > 0"
-                    (click)="addToCart()" [disabled]="cartLoading"
-                    style="width: 100%; padding: 14px; border: none; border-radius: 14px;
-                      font-size: 15px; font-weight: 700; color: white; cursor: pointer;
-                      background: #0B0D12;
-                      box-shadow: 0 4px 15px rgba(30, 58, 138,0.4);"
-                    [style.opacity]="cartLoading ? '0.7' : '1'">
-                    <span *ngIf="!cartLoading">
-                      🛒 Ajouter au panier — {{ course.price }} TND
-                    </span>
-                    <span *ngIf="cartLoading">
-                      <span class="spinner-border spinner-border-sm me-2"></span>Ajout...
-                    </span>
-                  </button>
-
-                  <div style="display: flex; align-items: center; justify-content: center;
-                    gap: 6px; margin-top: 14px;">
-                    <span style="font-size: 12px; color: #94a3b8;">
-                      🔒 Paiement sécurisé · Accès immédiat
-                    </span>
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+<ng-container *ngIf="course && !loading">
+
+  <!-- ================= HERO ================= -->
+  <section class="c-hero">
+    <div class="container c-hero__inner">
+      <div class="c-hero__copy">
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a routerLink="/">Home</a>
+          <i class="bx bx-chevron-right"></i>
+          <a routerLink="/courses-grid">Courses</a>
+          <ng-container *ngIf="course.category">
+            <i class="bx bx-chevron-right"></i>
+            <a [routerLink]="['/courses-grid']" [queryParams]="{category: course.category}">{{ course.category }}</a>
+          </ng-container>
+          <ng-container *ngIf="course.subCategory">
+            <i class="bx bx-chevron-right"></i>
+            <a [routerLink]="['/courses-grid']"
+               [queryParams]="{category: course.category, subCategory: course.subCategory}">{{ course.subCategory }}</a>
+          </ng-container>
+        </nav>
+
+        <h1 class="c-hero__title">{{ course.title }}</h1>
+        <p class="c-hero__lead">{{ course.description }}</p>
+
+        <ul class="c-hero__meta">
+          <li *ngIf="totalReviews > 0" class="rating">
+            <strong>{{ rounded | number:'1.1-1' }}</strong>
+            <span class="stars"><i *ngFor="let s of stars(avgRating)" [class]="s"></i></span>
+            <a href="#reviews">({{ totalReviews }} review{{ totalReviews > 1 ? 's' : '' }})</a>
+          </li>
+          <li *ngIf="totalReviews === 0"><i class="bx bx-star"></i> No reviews yet</li>
+          <li *ngIf="course.trainer">
+            <i class="bx bx-user"></i> {{ course.trainer.firstname }} {{ course.trainer.lastname }}
+          </li>
+          <li><i class="bx bx-book-open"></i> {{ lessonCount }} lesson{{ lessonCount === 1 ? '' : 's' }}</li>
+          <li><i class="bx bx-certification"></i> Certificate</li>
+          <li *ngIf="course.updatedAt"><i class="bx bx-calendar"></i> Updated {{ course.updatedAt | date:'MM/yyyy' }}</li>
+        </ul>
       </div>
     </div>
-  </div>
-</div>
+  </section>
+
+  <!-- ================= BODY ================= -->
+  <section class="c-body">
+    <div class="container c-body__grid">
+
+      <!-- ---------- Purchase card (sticky) ---------- -->
+      <aside class="buy">
+        <div class="buy__thumb" [style.background]="getCourseColor(course.category)">
+          <i [class]="getCategoryIcon(course.category)"></i>
+          <span class="buy__cat">{{ course.category || 'Course' }}</span>
+        </div>
+
+        <div class="buy__body">
+          <p class="buy__price" [class.free]="!course.price">
+            {{ course.price ? (course.price + ' TND') : 'Free' }}
+          </p>
+
+          <!-- Enrolled -->
+          <ng-container *ngIf="isLoggedIn() && isEnrolled">
+            <p class="buy__note ok"><i class="bx bx-check-circle"></i> You are enrolled in this course</p>
+            <a [routerLink]="['/course', course._id]" class="btn-accent buy__btn">
+              <i class="bx bx-play-circle"></i> Continue learning
+            </a>
+          </ng-container>
+
+          <!-- Not enrolled / logged out -->
+          <ng-container *ngIf="!isLoggedIn() || !isEnrolled">
+            <ng-container *ngIf="!course.price">
+              <button type="button" class="btn-accent buy__btn" (click)="enrollAndView()" [disabled]="enrollLoading">
+                <i class="bx" [ngClass]="enrollLoading ? 'bx-loader-alt bx-spin' : 'bx-log-in-circle'"></i>
+                {{ enrollLoading ? 'Enrolling…' : 'Enroll for free' }}
+              </button>
+            </ng-container>
+
+            <ng-container *ngIf="course.price > 0">
+              <button type="button" class="btn-accent buy__btn" (click)="addToCart()" [disabled]="cartLoading">
+                <i class="bx" [ngClass]="cartLoading ? 'bx-loader-alt bx-spin' : 'bx-cart-add'"></i>
+                {{ cartLoading ? 'Adding…' : 'Add to cart' }}
+              </button>
+              <button type="button" class="btn-outline buy__btn" (click)="buyNow()" [disabled]="cartLoading">
+                Buy now
+              </button>
+            </ng-container>
+
+            <p class="buy__hint" *ngIf="!isLoggedIn()">
+              <i class="bx bx-info-circle"></i> You'll be asked to sign in first.
+            </p>
+          </ng-container>
+
+          <!-- Feedback -->
+          <p class="msg ok" *ngIf="cartSuccess"><i class="bx bx-check-circle"></i> {{ cartSuccess }}
+            <a routerLink="/cart">View cart</a></p>
+          <p class="msg ok" *ngIf="enrollSuccess"><i class="bx bx-check-circle"></i> {{ enrollSuccess }}</p>
+          <p class="msg err" *ngIf="cartError"><i class="bx bx-error-circle"></i> {{ cartError }}</p>
+          <p class="msg err" *ngIf="enrollError"><i class="bx bx-error-circle"></i> {{ enrollError }}</p>
+
+          <h3 class="buy__includes-title">This course includes</h3>
+          <ul class="buy__includes">
+            <li><i class="bx bx-book-open"></i> {{ lessonCount }} lesson{{ lessonCount === 1 ? '' : 's' }}</li>
+            <li><i class="bx bx-task"></i> A quiz after each lesson</li>
+            <li *ngIf="examQuestions"><i class="bx bx-edit"></i> Final exam · {{ examQuestions }} questions</li>
+            <li><i class="bx bx-certification"></i> Verifiable certificate</li>
+            <li><i class="bx bx-infinite"></i> Lifetime access</li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- ---------- Main column ---------- -->
+      <div class="main">
+
+        <!-- Skills -->
+        <section class="block" *ngIf="course.tags?.length">
+          <h2 class="block__title">Skills you'll practise</h2>
+          <div class="skills">
+            <a *ngFor="let tag of course.tags" class="skill"
+               [routerLink]="['/courses-grid']" [queryParams]="{tag: tag}">
+              <i class="bx bx-check"></i> {{ tag }}
+            </a>
+          </div>
+        </section>
+
+        <!-- Description -->
+        <section class="block">
+          <h2 class="block__title">About this course</h2>
+          <p class="prose">{{ course.description }}</p>
+        </section>
+
+        <!-- Curriculum -->
+        <section class="block">
+          <div class="block__head">
+            <h2 class="block__title">Course content</h2>
+            <span class="muted">{{ lessonCount }} lesson{{ lessonCount === 1 ? '' : 's' }}
+              <ng-container *ngIf="examQuestions"> · final exam</ng-container></span>
+          </div>
+
+          <ol class="curriculum">
+            <li *ngFor="let lesson of lessons; let i = index" class="lesson">
+              <span class="lesson__num">{{ i + 1 < 10 ? '0' + (i + 1) : i + 1 }}</span>
+              <i [class]="lessonIcon(lesson.contentType) + ' lesson__icon'"></i>
+              <span class="lesson__title">{{ lesson.title }}</span>
+              <span class="lesson__type">{{ lesson.contentType === 'video' ? 'Video' : 'Reading' }}</span>
+              <span class="lesson__tag preview" *ngIf="lesson.isFree && !isEnrolled">Preview</span>
+              <i class="bx bx-lock-alt lesson__lock" *ngIf="!lesson.isFree && !isEnrolled" title="Enroll to unlock"></i>
+              <i class="bx bx-check-circle lesson__lock ok" *ngIf="isEnrolled" title="Unlocked"></i>
+            </li>
+            <li *ngIf="examQuestions" class="lesson lesson--exam">
+              <span class="lesson__num"><i class="bx bx-certification"></i></span>
+              <i class="bx bx-edit lesson__icon"></i>
+              <span class="lesson__title">Final exam — {{ examQuestions }} questions</span>
+              <span class="lesson__type">Pass mark {{ course.finalExam?.noteMinimale || 70 }}%</span>
+              <i class="bx bx-lock-alt lesson__lock" *ngIf="!isEnrolled"></i>
+            </li>
+          </ol>
+          <p class="muted" *ngIf="!lessonCount">The curriculum for this course is being prepared.</p>
+        </section>
+
+        <!-- AI analysis -->
+        <section class="block">
+          <div class="block__head">
+            <h2 class="block__title"><i class="bx bx-bulb"></i> AI course analysis</h2>
+            <button type="button" class="btn-outline" (click)="generateSummary()" [disabled]="aiLoading">
+              <i class="bx" [ngClass]="aiLoading ? 'bx-loader-alt bx-spin' : 'bx-analyse'"></i>
+              {{ aiLoading ? 'Analysing…' : (aiSummary ? 'Regenerate' : 'Generate analysis') }}
+            </button>
+          </div>
+          <p class="muted" *ngIf="!showAiSummary">
+            A summary, key concepts, prerequisites and objectives generated from the course material.
+          </p>
+          <p class="msg err" *ngIf="aiError"><i class="bx bx-error-circle"></i> {{ aiError }}</p>
+          <p class="msg" *ngIf="showAiSummary && !aiLoading && !aiError && !isEnrolled">
+            <i class="bx bx-lock-alt"></i> Enroll in the course to read its AI analysis.
+          </p>
+
+          <div class="ai" *ngIf="showAiSummary && aiSummary && !aiLoading && isEnrolled">
+            <p class="prose">{{ aiSummary.summary }}</p>
+            <div class="ai__facts">
+              <span *ngIf="aiSummary.level"><i class="bx bx-signal-4"></i> {{ aiSummary.level }}</span>
+              <span *ngIf="aiSummary.duration"><i class="bx bx-time-five"></i> {{ aiSummary.duration }}</span>
+              <span *ngIf="aiSummary.targetAudience"><i class="bx bx-group"></i> {{ aiSummary.targetAudience }}</span>
+            </div>
+            <div class="ai__cols">
+              <div *ngIf="aiSummary.objectives?.length">
+                <h3>Objectives</h3>
+                <ul class="ticks"><li *ngFor="let o of aiSummary.objectives"><i class="bx bx-check"></i> {{ o }}</li></ul>
+              </div>
+              <div *ngIf="aiSummary.prerequisites?.length">
+                <h3>Prerequisites</h3>
+                <ul class="ticks"><li *ngFor="let p of aiSummary.prerequisites"><i class="bx bx-right-arrow-alt"></i> {{ p }}</li></ul>
+              </div>
+            </div>
+            <div *ngIf="aiSummary.concepts?.length">
+              <h3>Key concepts</h3>
+              <div class="concepts">
+                <div class="concept" *ngFor="let c of aiSummary.concepts">
+                  <strong>{{ c.title }}</strong><span>{{ c.description }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Instructor -->
+        <section class="block" *ngIf="course.trainer">
+          <h2 class="block__title">Instructor</h2>
+          <div class="instructor">
+            <span class="instructor__avatar">{{ initials(course.trainer.firstname, course.trainer.lastname) }}</span>
+            <div>
+              <p class="instructor__name">{{ course.trainer.firstname }} {{ course.trainer.lastname }}</p>
+              <p class="muted">Prologic Academy trainer · {{ course.category || 'IT' }}</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reviews -->
+        <section class="block" id="reviews">
+          <h2 class="block__title">Reviews</h2>
+
+          <div class="r-summary" *ngIf="totalReviews > 0">
+            <div class="r-summary__score">
+              <strong>{{ rounded | number:'1.1-1' }}</strong>
+              <span class="stars"><i *ngFor="let s of stars(avgRating)" [class]="s"></i></span>
+              <span class="muted">{{ totalReviews }} review{{ totalReviews > 1 ? 's' : '' }}</span>
+            </div>
+            <div class="r-summary__bars">
+              <div class="bar" *ngFor="let b of ratingBreakdown">
+                <span class="bar__label">{{ b.stars }} <i class="bx bx-star"></i></span>
+                <span class="bar__track"><span class="bar__fill" [style.width.%]="b.pct"></span></span>
+                <span class="bar__pct">{{ b.pct }}%</span>
+              </div>
+            </div>
+          </div>
+          <p class="muted" *ngIf="totalReviews === 0">No reviews yet — enrolled learners can leave the first one.</p>
+
+          <p class="msg ok" *ngIf="reviewSuccess"><i class="bx bx-check-circle"></i> {{ reviewSuccess }}</p>
+          <p class="msg err" *ngIf="reviewError"><i class="bx bx-error-circle"></i> {{ reviewError }}</p>
+
+          <!-- Write a review (enrolled, not yet reviewed) -->
+          <div class="r-form" *ngIf="isLoggedIn() && isEnrolled && !hasReviewed && !editingReview">
+            <h3>Write a review</h3>
+            <div class="rate" role="radiogroup" aria-label="Your rating">
+              <button type="button" *ngFor="let n of [1,2,3,4,5]" (click)="setRating('new', n)"
+                      [attr.aria-label]="n + ' stars'" [class.on]="n <= newReview.rating">
+                <i class="bx" [ngClass]="n <= newReview.rating ? 'bxs-star' : 'bx-star'"></i>
+              </button>
+            </div>
+            <textarea class="form-control" rows="3" [(ngModel)]="newReview.comment"
+                      placeholder="What did you think of this course?"></textarea>
+            <button type="button" class="btn-ink" (click)="submitReview()" [disabled]="reviewLoading">
+              {{ reviewLoading ? 'Submitting…' : 'Submit review' }}
+            </button>
+          </div>
+
+          <!-- Edit own review -->
+          <div class="r-form" *ngIf="editingReview">
+            <h3>Edit your review</h3>
+            <div class="rate" role="radiogroup" aria-label="Your rating">
+              <button type="button" *ngFor="let n of [1,2,3,4,5]" (click)="setRating('edit', n)"
+                      [attr.aria-label]="n + ' stars'" [class.on]="n <= editingReview.rating">
+                <i class="bx" [ngClass]="n <= editingReview.rating ? 'bxs-star' : 'bx-star'"></i>
+              </button>
+            </div>
+            <textarea class="form-control" rows="3" [(ngModel)]="editingReview.comment"></textarea>
+            <div class="r-form__actions">
+              <button type="button" class="btn-ink" (click)="updateReview()" [disabled]="reviewLoading">
+                {{ reviewLoading ? 'Saving…' : 'Save changes' }}
+              </button>
+              <button type="button" class="btn-outline" (click)="editingReview = null">Cancel</button>
+            </div>
+          </div>
+
+          <p class="msg" *ngIf="isLoggedIn() && !isEnrolled">
+            <i class="bx bx-info-circle"></i> Enroll in this course to leave a review.
+          </p>
+
+          <!-- List -->
+          <ul class="r-list">
+            <li class="review" *ngFor="let review of reviews">
+              <span class="review__avatar">{{ initials(review.user?.firstname, review.user?.lastname) }}</span>
+              <div class="review__body">
+                <div class="review__head">
+                  <strong>{{ review.user?.firstname }} {{ review.user?.lastname }}</strong>
+                  <span class="stars small"><i *ngFor="let s of stars(review.rating)" [class]="s"></i></span>
+                  <span class="muted">{{ review.createdAt | date:'dd MMM yyyy' }}</span>
+                  <span class="pending" *ngIf="review.isApproved === false">Pending approval</span>
+                </div>
+                <p>{{ review.comment }}</p>
+                <div class="review__actions"
+                     *ngIf="isLoggedIn() && review.user?._id?.toString() === currentUserId?.toString()">
+                  <button type="button" class="link-btn" (click)="editReview(review)"><i class="bx bx-pencil"></i> Edit</button>
+                  <button type="button" class="link-btn danger" (click)="deleteReview(review._id)"><i class="bx bx-trash"></i> Delete</button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </section>
+</ng-container>

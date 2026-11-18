@@ -180,7 +180,9 @@ exports.getCourseFacets = async (req, res) => {
 exports.getCourseById = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id)
-      .populate("trainer", "firstname lastname"); // ✅ never expose trainer email
+      .populate("trainer", "firstname lastname") // ✅ never expose trainer email
+      // ✅ Public curriculum outline only — titles/type/order, never content or quizzes
+      .populate({ path: "lessons", select: "title contentType order isFree", options: { sort: { order: 1 } } });
 
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
