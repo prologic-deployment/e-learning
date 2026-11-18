@@ -50,7 +50,8 @@ import { UserDashboardComponent } from './components/pages/dashboard/user-dashbo
 import { CvPageComponent } from './components/pages/cv-page/cv-page.component';
 import { CourseViewerComponent } from './components/pages/course-viewer/course-viewer.component';
 import { ResetPasswordComponent } from './components/pages/reset-password/reset-password.component';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
+import { CategoryService } from './services/category.service';
 import { RoleGuard } from './guards/role.guard';
 import { ChatbotComponent } from './components/common/chatbot/chatbot.component';
 import { BrandLogoComponent } from './components/common/brand-logo/brand-logo.component';
@@ -129,6 +130,13 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
+            multi: true
+        },
+        {
+            // Load course categories from the API before the app renders
+            provide: APP_INITIALIZER,
+            useFactory: (categories: CategoryService) => () => categories.load(),
+            deps: [CategoryService],
             multi: true
         }
     ],

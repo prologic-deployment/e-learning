@@ -1,10 +1,16 @@
 /**
- * Course categories — the single source of truth for the whole frontend
- * (header menu, catalogue filters, home page, course pages, trainer/admin
- * course forms). Tech-only taxonomy for Prologic Academy.
+ * Course categories used across the frontend (header menu, catalogue
+ * filters, home page, course pages, trainer/admin course forms).
  *
- * `icon` is a Boxicons class; `color` is the course-thumbnail background
- * (dark tones from the brand palette, white text stays readable).
+ * The real source is the database (seeded by `npm run seed:prod`, served by
+ * GET /api/categories). CategoryService loads it at app start-up and calls
+ * applyCategories(), which replaces the contents of the arrays below IN
+ * PLACE — components that hold a reference see the loaded data.
+ *
+ * The list below is only the built-in FALLBACK, used if the API cannot be
+ * reached. Keep it in sync with back/seeder/data/categories.js.
+ *
+ * `icon` is a Boxicons class; `color` is the course-thumbnail background.
  */
 export interface CourseCategory {
   name: string;
@@ -67,6 +73,26 @@ export const COURSE_CATEGORIES: CourseCategory[] = [
 ];
 
 export const CATEGORY_NAMES: string[] = COURSE_CATEGORIES.map(c => c.name);
+
+/**
+ * Replace the category list with data from the API (in place, so existing
+ * references stay valid). Ignored if the list is empty or malformed.
+ */
+export function applyCategories(list: Partial<CourseCategory>[] | null | undefined): boolean {
+  const valid = (list || [])
+    .filter(c => c && typeof c.name === 'string' && c.name.trim())
+    .map(c => ({
+      name: c.name!.trim(),
+      icon: c.icon || 'bx bx-book-open',
+      color: c.color || '#1E3A8A',
+      description: c.description || '',
+      subcategories: Array.isArray(c.subcategories) ? c.subcategories : []
+    }));
+  if (!valid.length) return false;
+  COURSE_CATEGORIES.splice(0, COURSE_CATEGORIES.length, ...valid);
+  CATEGORY_NAMES.splice(0, CATEGORY_NAMES.length, ...valid.map(c => c.name));
+  return true;
+}
 
 const FALLBACK: CourseCategory = {
   name: 'Other',

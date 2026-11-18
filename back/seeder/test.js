@@ -1,17 +1,17 @@
 /**
- * 🌱 DATABASE SEEDER — injects consistent, realistic test data.
+ * 🧪 TEST SEED — realistic demo data for development and QA.
  *
- * Usage (from back/):
- *   npm run seed              # full seed, keeps existing data (upsert-style)
- *   npm run seed -- --fresh   # WIPE all collections first, then seed
- *   npm run seed -- --users   # users + teams only (fast, for auth testing)
+ *   npm run seed:test            wipe the database, then seed everything
+ *   npm run seed:test -- --users users + teams only (fast, for auth testing)
  *
- * ⚠️ Refuses to run when NODE_ENV=production.
+ * Seeds: categories (same as production), badges, 13 users (admin, managers,
+ * trainers, learners) with teams, 7 courses with lessons, quizzes and final
+ * exams, enrollments in every state, purchases, reviews, certificates,
+ * notifications and CVs.
+ *
+ * ⚠️ DESTRUCTIVE — wipes the collections it seeds. Refused when NODE_ENV is
+ * production or preprod (enforced in seeder/index.js).
  */
-
-require('dotenv').config();
-const mongoose = require('mongoose');
-const config = require('../src/config/env');
 
 const User = require('../src/models/User');
 const Course = require('../src/models/Course');
@@ -24,43 +24,27 @@ const Notification = require('../src/models/Notification');
 const Cart = require('../src/models/Cart');
 const Badge = require('../src/models/Badge');
 const CV = require('../src/models/CV');
-const { initBadges } = require('../src/services/badge.service');
+const Category = require('../src/models/Category');
+const config = require('../src/config/env');
+const { COLORS, log, step, count, seedCategories } = require('./lib/common');
+const { seedBadges } = require('./production');
 
 const USERS = require('./data/users');
 const COURSES = [...require('./data/courses'), ...require('./data/courses-infra')];
 const SCENARIOS = require('./data/scenarios');
-
-const args = process.argv.slice(2);
-const FRESH = args.includes('--fresh');
-const USERS_ONLY = args.includes('--users');
-
-const COLORS = {
-  reset: '\x1b[0m', green: '\x1b[32m', red: '\x1b[31m',
-  yellow: '\x1b[33m', cyan: '\x1b[36m', dim: '\x1b[2m'
-};
-const log = (c, m) => console.log(`${c}${m}${COLORS.reset}`);
-const step = (m) => log(COLORS.cyan, `  ↳ ${m}`);
-const count = (name, n) => log(COLORS.green, `  ✅ ${name}: ${n}`);
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
 const daysAgo = (n) => new Date(Date.now() - n * 24 * 60 * 60 * 1000);
 const daysFromNow = (n) => new Date(Date.now() + n * 24 * 60 * 60 * 1000);
 
-async function connect() {
-  await mongoose.connect(process.env.MONGO_URI);
-  log(COLORS.dim, `📦 Connected to MongoDB: ${mongoose.connection.name}`);
-}
-
 async function wipe() {
-  log(COLORS.yellow, '🧹 Wiping collections (--fresh)...');
-  const collections = [User, Course, Lesson, Enrollment, Purchase, Review, Certificate, Notification, Cart, CV];
+  log(COLORS.yellow, '🧹 Wiping collections...');
+  const collections = [User, Course, Lesson, Enrollment, Purchase, Review, Certificate, Notification, Cart, CV, Category, Badge];
   for (const Model of collections) {
     const r = await Model.deleteMany({});
     step(`${Model.modelName}: ${r.deletedCount} removed`);
   }
-  // Badges are re-created right after by initBadges()
-  await Badge.deleteMany({});
 }
 
 // ── seeders ──────────────────────────────────────────────────────────────────
@@ -152,7 +136,6 @@ const STATE_COMPLETION = {
 };
 
 async function seedEnrollmentsAndActivity() {
-  if (USERS_ONLY) return;
 
   log(COLORS.cyan, '\n🎬 Seeding enrollments, quiz results, purchases, reviews...');
 
@@ -278,7 +261,6 @@ async function seedEnrollmentsAndActivity() {
 }
 
 async function seedNotifications() {
-  if (USERS_ONLY) return;
   log(COLORS.cyan, '\n🔔 Seeding notifications...');
 
   const learners = await User.find({ role: 'user' }).limit(4);
@@ -309,7 +291,6 @@ async function seedNotifications() {
 }
 
 async function seedCVs() {
-  if (USERS_ONLY) return;
   log(COLORS.cyan, '\n📄 Seeding CVs...');
 
   const cvData = [
@@ -366,59 +347,36 @@ async function seedCVs() {
   count('CVs', await CV.countDocuments());
 }
 
-// ── main ─────────────────────────────────────────────────────────────────────
+// ── entry ────────────────────────────────────────────────────────────────────
 
-async function main() {
-  console.log('\n' + '═'.repeat(60));
-  log(COLORS.cyan, '🌱 E-LEARNING DATABASE SEEDER');
-  console.log('═'.repeat(60));
+async function run({ usersOnly = false } = {}) {
+  await wipe();
 
-  if (config.prodLike) {
-    log(COLORS.red, `\n🚫 REFUSING to seed: NODE_ENV=${config.nodeEnv} (production/pre-production).`);
-    process.exit(1);
-  }
+  // Reference data — identical to the production seed
+  await seedCategories();
+  await seedBadges();
 
-  if (FRESH) log(COLORS.yellow, 'Mode: FRESH (all collections wiped first)');
-  if (USERS_ONLY) log(COLORS.yellow, 'Mode: USERS ONLY (auth testing)');
+  await seedUsers();
 
-  try {
-    await connect();
-
-    if (FRESH) await wipe();
-
-    log(COLORS.yellow, '\n🏅 Initializing badges...');
-    await initBadges();
-    count('badges', await Badge.countDocuments());
-
-    await seedUsers();
-
-    if (!USERS_ONLY) {
-      await seedCourses();
-      await seedEnrollmentsAndActivity();
-      await seedNotifications();
-      await seedCVs();
-    }
-
-    console.log('\n' + '═'.repeat(60));
-    log(COLORS.green, '✅ SEED COMPLETE\n');
-    log(COLORS.dim, 'Test accounts (password shown after each email):');
-    log(COLORS.dim, '  admin@test.com        Admin123     → full admin');
-    log(COLORS.dim, '  manager1@test.com     Manager123   → team of 3 learners');
-    log(COLORS.dim, '  manager2@test.com     Manager123   → team of 3 learners');
-    log(COLORS.dim, '  trainer1@test.com     Trainer123   → Node, React + Cybersecurity courses');
-    log(COLORS.dim, '  trainer2@test.com     Trainer123   → Docker, Linux + Networking (paid)');
-    log(COLORS.dim, '  trainer3@test.com     Trainer123   → ML course (paid)');
-    log(COLORS.dim, '  user1@test.com        User1234     → completed course + certificate');
-    log(COLORS.dim, '  user3@test.com        User1234     → overdue deadline (manager alert)');
-    log(COLORS.dim, '  user7@test.com        User1234     → teamless learner');
-    console.log('═'.repeat(60) + '\n');
-  } catch (error) {
-    log(COLORS.red, `\n❌ Seed failed: ${error.message}`);
-    console.error(error);
-    process.exitCode = 1;
-  } finally {
-    await mongoose.connection.close();
+  if (!usersOnly) {
+    await seedCourses();
+    await seedEnrollmentsAndActivity();
+    await seedNotifications();
+    await seedCVs();
   }
 }
 
-main();
+function printAccounts() {
+  log(COLORS.dim, 'Test accounts (password shown after each email):');
+  log(COLORS.dim, '  admin@test.com        Admin123     → full admin');
+  log(COLORS.dim, '  manager1@test.com     Manager123   → team of 3 learners');
+  log(COLORS.dim, '  manager2@test.com     Manager123   → team of 3 learners');
+  log(COLORS.dim, '  trainer1@test.com     Trainer123   → Node, React + Cybersecurity courses');
+  log(COLORS.dim, '  trainer2@test.com     Trainer123   → Docker, Linux + Networking (paid)');
+  log(COLORS.dim, '  trainer3@test.com     Trainer123   → ML course (paid)');
+  log(COLORS.dim, '  user1@test.com        User1234     → completed course + certificate');
+  log(COLORS.dim, '  user3@test.com        User1234     → overdue deadline (manager alert)');
+  log(COLORS.dim, '  user7@test.com        User1234     → teamless learner');
+}
+
+module.exports = { run, printAccounts };

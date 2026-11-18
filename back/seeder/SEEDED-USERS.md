@@ -1,7 +1,7 @@
 # Seeded users — full reference
 
-Every account created by the seeder in `back/` (`npm run seed`, `npm run seed:fresh`,
-`npm run seed:users`). Source of truth: [`data/users.js`](data/users.js).
+Every account created by the **test** seed in `back/` (`npm run seed:test`,
+`npm run seed:test -- --users`). Source of truth: [`data/users.js`](data/users.js). The production seed (`npm run seed:prod`) creates only the admin from `ADMIN_EMAIL` / `ADMIN_PASSWORD`.
 
 **13 users** — 1 admin, 2 managers, 3 trainers, 7 learners. All accounts are
 `isActive: true`.

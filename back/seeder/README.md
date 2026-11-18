@@ -1,26 +1,57 @@
 # 🌱 Database Seeder
 
-Injects consistent, realistic test data for manual testing. All data lives in
-`seeder/data/` (plain JS modules — edit freely), the orchestrator is
-`seeder/seed.js`.
+Two seeds, one entry point (`seeder/index.js`). Run them from `back/`.
 
-## Usage
+| Command | Use it for | Deletes data? | Allowed when `NODE_ENV=production` / `preprod` |
+|---|---|---|---|
+| `npm run seed:prod` | Every environment, incl. production — reference data | **No**, never | ✅ yes |
+| `npm run seed:test` | Development & QA — full demo data set | **Yes**, wipes first | 🚫 refused |
+| `npm run seed:test -- --users` | Auth testing — users & teams only | **Yes**, wipes first | 🚫 refused |
 
-From `back/`:
+`npm run seed` alone prints the usage. Both seeds need `MONGO_URI` in
+`back/.env` and a running MongoDB.
 
-```bash
-npm run seed          # add data, keep existing (fails on duplicate emails)
-npm run seed:fresh    # WIPE everything, then seed  ← recommended for testing
-npm run seed:users    # users + teams only (fast, for auth testing)
+## Production seed — `npm run seed:prod`
+
+Idempotent: safe to run on every deploy, as many times as you like.
+
+1. **Categories & sub-categories** — upserted by name from
+   `seeder/data/categories.js` (7 tech categories: Development, Systems,
+   Networking, DevOps, Cloud, Cybersecurity, Data & AI). Re-running updates
+   icons, colours, descriptions and sub-category lists; nothing is duplicated
+   or deleted. The frontend loads them from `GET /api/categories`.
+2. **Badges** — the 13 badge definitions.
+3. **Admin account** — created from `back/.env` **only if it does not exist**.
+   An existing account is never modified (no password reset).
+
+```env
+ADMIN_EMAIL=admin@yourcompany.tn     # required the first time
+ADMIN_PASSWORD=ChangeMe2026          # ≥ 8 chars, 1 uppercase, 1 digit
+ADMIN_FIRSTNAME=Platform             # optional
+ADMIN_LASTNAME=Admin                 # optional
+ADMIN_DATE_OF_BIRTH=1990-01-01       # optional
+ADMIN_PHONE=+216...                  # optional
 ```
 
-⚠️ Refuses to run when `NODE_ENV=production`.
-Requires `MONGO_URI` in `back/.env` and a running MongoDB.
+If no admin exists and these are not set, the seed stops with a clear error.
+Remove `ADMIN_PASSWORD` from `.env` after the first sign-in.
 
-## What gets seeded
+## Test seed — `npm run seed:test`
+
+**Destructive**: wipes users, courses, lessons, enrollments, purchases,
+reviews, certificates, notifications, carts, CVs, categories and badges, then
+loads the reference data above plus the demo data set below. Test passwords
+are public — never run it against a database with real users (it refuses
+`NODE_ENV=production` and `preprod`).
+
+Files: `seeder/test.js` (orchestration), `seeder/data/*.js` (plain data —
+edit freely), `seeder/production.js`, `seeder/lib/common.js`.
+
+## What the test seed loads
 
 | Collection | Count | Notes |
 |---|---|---|
+| Categories | 7 | same as the production seed (with sub-categories) |
 | Users | 13 | 1 admin, 2 managers, 3 trainers, 7 learners |
 | Teams | 2 | manager1 → 3 members, manager2 → 3 members (user7 teamless on purpose) |
 | Badges | 13 | auto-initialized from badge.service definitions |
