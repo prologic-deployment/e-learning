@@ -14,9 +14,16 @@ router.get("/cache/stats", protect, authorize("admin"), async (req, res) => {
     const redis = redisClient.getClient();
 
     if (!redis) {
-      return res.status(503).json({
-        success: false,
-        message: "Redis non disponible"
+      const enabled = redisClient.isEnabled();
+      return res.status(enabled ? 503 : 200).json({
+        success: !enabled,
+        data: {
+          redis: { status: enabled ? "unavailable" : "disabled" },
+          cache: { enabled }
+        },
+        message: enabled
+          ? "Redis non disponible"
+          : "Cache désactivé (CACHE_ENABLED n'est pas \"true\")"
       });
     }
 
