@@ -155,5 +155,12 @@ router.get("/users", protect, authorize("admin"), async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+// ========================================
+// Trainer sign-up requests (self-registered trainers start locked/pending)
+// ========================================
+const { listTrainerRequests, approveTrainer, rejectTrainer } = require("../controllers/trainer-request.controller");
+router.get("/trainer-requests", protect, authorize("admin"), listTrainerRequests);
+router.patch("/trainer-requests/:id/approve", protect, authorize("admin"), approveTrainer);
+router.patch("/trainer-requests/:id/reject", protect, authorize("admin"), rejectTrainer);
 
 module.exports = router;

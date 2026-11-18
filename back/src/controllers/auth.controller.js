@@ -3,7 +3,20 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const { sendEmail } = require('../services/email.service');
+const { createNotification } = require('../services/notification.service');
 const config = require('../config/env');
+
+// Notify every admin that a trainer sign-up is waiting for review
+async function notifyAdminsOfTrainerRequest(trainer) {
+  const admins = await User.find({ role: "admin", isActive: true }).select("_id");
+  await Promise.all(admins.map(a => createNotification(
+    a._id,
+    "TRAINER_REQUEST",
+    "New trainer request",
+    `${trainer.firstname} ${trainer.lastname} (${trainer.email}) signed up as a trainer and is waiting for approval.`,
+    { userId: trainer._id }
+  )));
+}
 
 const signToken = (user) =>
   jwt.sign(
@@ -15,11 +28,14 @@ const signToken = (user) =>
 // ===== REGISTER =====
 exports.register = async (req, res, next) => {
   try {
-    // ✅ SECURITY: role is NEVER accepted from the client. Public registration
-    // always creates a plain "user". Staff accounts are created by admins via
-    // /api/users/create-trainer and /api/users/managers.
+    // ✅ SECURITY: the client can only ask for "user" or "trainer".
+    // - "user"    → active learner account
+    // - "trainer" → trainer account LOCKED as "pending" until an admin approves
+    //               it (no sign-in before that), see admin trainer-requests.
+    // Admin / manager accounts are never self-assignable.
     const { firstname, lastname, email, password, dateOfBirth, phone } = req.body;
-    const forbiddenRole = req.body.role && req.body.role !== "user";
+    const wantsTrainer = req.body.role === "trainer";
+    const forbiddenRole = req.body.role && !["user", "trainer"].includes(req.body.role);
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -28,13 +44,25 @@ exports.register = async (req, res, next) => {
 
     const user = new User({
       firstname, lastname, email, password,
-      role: "user", // ✅ locked server-side
+      role: wantsTrainer ? "trainer" : "user",
+      approvalStatus: wantsTrainer ? "pending" : "approved",
       dateOfBirth, phone
     });
     await user.save();
 
     if (forbiddenRole) {
       console.warn(`🚨 Registration attempt with elevated role rejected: ${email}`);
+    }
+
+    if (wantsTrainer) {
+      // Let every admin know there is a request to review (best effort)
+      notifyAdminsOfTrainerRequest(user).catch(() => {});
+      return res.status(201).json({
+        success: true,
+        pendingApproval: true,
+        message: "Trainer account created. An administrator must approve it before you can sign in.",
+        data: { id: user._id, firstname, lastname, email, role: "trainer", approvalStatus: "pending" }
+      });
     }
 
     res.status(201).json({
@@ -83,6 +111,24 @@ exports.login = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Invalid email or password"
+      });
+    }
+
+    // ✅ Trainer accounts awaiting / refused admin approval stay locked.
+    // Checked only after the password matched, so the status is never
+    // revealed to someone who does not own the account.
+    if (user.approvalStatus === "pending") {
+      return res.status(403).json({
+        success: false,
+        code: "ACCOUNT_PENDING",
+        message: "Your trainer account is awaiting approval by an administrator. You'll be able to sign in once it is approved."
+      });
+    }
+    if (user.approvalStatus === "rejected") {
+      return res.status(403).json({
+        success: false,
+        code: "ACCOUNT_REJECTED",
+        message: "Your trainer application was not approved. Please contact the Prologic Academy team."
       });
     }
 

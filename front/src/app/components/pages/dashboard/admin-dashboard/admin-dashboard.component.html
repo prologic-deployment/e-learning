@@ -99,6 +99,18 @@
             [style.boxShadow]="activeTab === 'quiz-results' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
             <i class="bx bx-edit"></i> Quiz Results
           </button>
+          <button (click)="setTab('trainers')"
+            style="padding: 9px 14px; border: none; border-radius: 10px; font-size: 12px;
+              font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+              display: inline-flex; align-items: center; gap: 6px;"
+            [style.background]="activeTab === 'trainers' ? 'white' : 'transparent'"
+            [style.color]="activeTab === 'trainers' ? '#1E3A8A' : '#64748b'"
+            [style.boxShadow]="activeTab === 'trainers' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
+            <i class="bx bx-user-check"></i> Trainer Requests
+            <span *ngIf="pendingTrainerCount > 0"
+              style="min-width: 18px; padding: 0 5px; font-size: 11px; line-height: 18px;
+                text-align: center; color: #fff; background: #DC2626;">{{ pendingTrainerCount }}</span>
+          </button>
         </div>
       </div>
     </div>
@@ -1488,6 +1500,82 @@
             <span class="spinner-border spinner-border-sm me-2"></span>Création...
           </span>
         </button>
+      </div>
+    </div>
+
+    <!-- ========== TRAINER REQUESTS TAB ========== -->
+    <div *ngIf="activeTab === 'trainers'">
+      <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-3">
+        <div>
+          <h4 style="font-weight: 700; margin: 0 0 4px;">Trainer requests</h4>
+          <p style="margin: 0; font-size: 14px; color: #5B6270;">
+            People who signed up as trainers. Their account stays locked until you approve it.
+          </p>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="button" (click)="setTrainerFilter('pending')"
+            [class.btn-ink]="trainerRequestsFilter === 'pending'"
+            [class.btn-outline]="trainerRequestsFilter !== 'pending'">
+            Pending <span *ngIf="pendingTrainerCount">({{ pendingTrainerCount }})</span>
+          </button>
+          <button type="button" (click)="setTrainerFilter('rejected')"
+            [class.btn-ink]="trainerRequestsFilter === 'rejected'"
+            [class.btn-outline]="trainerRequestsFilter !== 'rejected'">
+            Rejected
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="trainerActionMessage" class="alert alert-success d-flex align-items-center gap-2">
+        <i class="bx bx-check-circle"></i> {{ trainerActionMessage }}
+      </div>
+      <div *ngIf="trainerRequestsError" class="alert alert-danger d-flex align-items-center gap-2">
+        <i class="bx bx-error-circle"></i> {{ trainerRequestsError }}
+      </div>
+
+      <div style="background: white; border: 1px solid #E3E5EA;">
+        <p *ngIf="trainerRequestsLoading" style="margin: 0; padding: 24px; color: #5B6270;">Loading…</p>
+
+        <div *ngIf="!trainerRequestsLoading && trainerRequests.length === 0"
+          style="padding: 40px 24px; text-align: center; color: #5B6270;">
+          <i class="bx bx-user-check" style="font-size: 36px; color: #1E3A8A;"></i>
+          <p style="margin: 8px 0 0;">
+            {{ trainerRequestsFilter === 'pending' ? 'No trainer requests waiting for approval.' : 'No rejected trainer requests.' }}
+          </p>
+        </div>
+
+        <div class="table-responsive" *ngIf="!trainerRequestsLoading && trainerRequests.length > 0">
+        <table class="table mb-0" style="font-size: 14px;">
+          <thead>
+            <tr style="background: #F6F7F9;">
+              <th style="padding: 12px 16px;">Trainer</th>
+              <th style="padding: 12px 16px;">Email</th>
+              <th style="padding: 12px 16px;">Phone</th>
+              <th style="padding: 12px 16px;">Signed up</th>
+              <th style="padding: 12px 16px; text-align: right;">Decision</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let req of trainerRequests">
+              <td style="padding: 12px 16px; font-weight: 600;">{{ req.firstname }} {{ req.lastname }}</td>
+              <td style="padding: 12px 16px;">{{ req.email }}</td>
+              <td style="padding: 12px 16px;">{{ req.phone || '—' }}</td>
+              <td style="padding: 12px 16px;">{{ req.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td style="padding: 12px 16px; text-align: right; white-space: nowrap;">
+                <button type="button" class="btn-ink" style="height: 34px; padding: 0 12px; font-size: 13px;"
+                  [disabled]="trainerActionId === req._id" (click)="decideTrainer(req, 'approve')">
+                  <i class="bx bx-check"></i> Approve
+                </button>
+                <button *ngIf="trainerRequestsFilter === 'pending'" type="button" class="btn-outline"
+                  style="height: 34px; padding: 0 12px; font-size: 13px; margin-left: 8px;"
+                  [disabled]="trainerActionId === req._id" (click)="decideTrainer(req, 'reject')">
+                  <i class="bx bx-x"></i> Reject
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
       </div>
     </div>
 

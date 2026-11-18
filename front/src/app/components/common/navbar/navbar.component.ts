@@ -42,6 +42,7 @@ const ROLE_MENUS: { [role: string]: { title: string; items: MenuItem[] }[] } = {
       { label: 'Create course', icon: 'bx bx-plus-circle', route: '/admin-dashboard', tab: 'create' }
     ]},
     { title: 'Management', items: [
+      { label: 'Trainer requests', icon: 'bx bx-user-check', route: '/admin-dashboard', tab: 'trainers' },
       { label: 'Reviews', icon: 'bx bx-message-square-dots', route: '/admin-dashboard', tab: 'reviews' },
       { label: 'Assign users', icon: 'bx bx-transfer-alt', route: '/admin-dashboard', tab: 'assign' },
       { label: 'Create staff', icon: 'bx bx-user-plus', route: '/admin-dashboard', tab: 'staff' },

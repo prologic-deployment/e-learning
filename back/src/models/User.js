@@ -50,6 +50,15 @@ validate: {
       type: Boolean,
       default: true
     },
+    // ✅ Self-registered trainers start "pending" and cannot sign in until an
+    // admin approves them. Every other account (and every existing one) is
+    // "approved"; an undefined value is treated as approved.
+    approvalStatus: {
+      type: String,
+      enum: ["approved", "pending", "rejected"],
+      default: "approved"
+    },
+    approvalDecidedAt: { type: Date, default: null },
     manager: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

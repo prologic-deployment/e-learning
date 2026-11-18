@@ -3589,6 +3589,10 @@ a:hover { color: var(--brand); }
 [style*="background: #1E3A8A" i] > .bx, [style*="background:#1E3A8A" i] > .bx,
 [style*="background: #10B981" i] > .bx, [style*="background:#10B981" i] > .bx,
 [style*="background: #F59E0B" i] > .bx, [style*="background:#F59E0B" i] > .bx,
+[style*="background: #0B0D12" i] > span > .bx,
+[style*="background: #1E3A8A" i] > span > .bx,
+[style*="background: #10B981" i] > span > .bx,
+[style*="background: #F59E0B" i] > span > .bx,
 .btn-ink > .bx, .btn-accent > .bx, .btn-brand > .bx, .default-btn > .bx {
     color: #fff;
 }

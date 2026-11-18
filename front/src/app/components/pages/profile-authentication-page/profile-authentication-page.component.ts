@@ -92,13 +92,20 @@ export class ProfileAuthenticationPageComponent implements OnInit {
     this.registerLoading = true;
 
     this.authService.register(this.registerData).subscribe({
-      next: () => {
+      next: (res: any) => {
         this.registerLoading = false;
-        this.registerSuccess = 'Account created successfully ! Please login.';
         this.registerData = {
           firstname: '', lastname: '', email: '',
           password: '', role: 'user', dateOfBirth: '', phone: ''
         };
+        // Trainer sign-ups stay locked until an admin approves them:
+        // keep the message on screen instead of jumping to the login tab.
+        if (res?.pendingApproval) {
+          this.registerSuccess = 'Your trainer account has been created and is awaiting approval by an administrator. '
+            + 'You will receive an email and be able to sign in once it is approved.';
+          return;
+        }
+        this.registerSuccess = 'Account created successfully ! Please login.';
         setTimeout(() => {
           this.activeTab = 'login';
           this.registerSuccess = '';

@@ -154,6 +154,15 @@ export class AdminDashboardComponent implements OnInit {
   quizResultsLoading = false;
   quizResultsFilter = 'all';
 
+  // ✅ Trainer sign-up requests (self-registered trainers start locked)
+  trainerRequests: any[] = [];
+  trainerRequestsLoading = false;
+  trainerRequestsError = '';
+  trainerRequestsFilter: 'pending' | 'rejected' = 'pending';
+  pendingTrainerCount = 0;
+  trainerActionId = '';
+  trainerActionMessage = '';
+
   constructor(
     private statsService: StatsService,
     private authService: AuthService,
@@ -167,6 +176,7 @@ export class AdminDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.authService.getCurrentUser();
     this.loadStats();
+    this.loadTrainerRequests();   // also feeds the badge on the tab
     this.route.queryParams.subscribe(params => {
       if (params['tab']) this.setTab(params['tab']);
     });
@@ -194,6 +204,7 @@ export class AdminDashboardComponent implements OnInit {
 
     if (tab === 'reviews') this.loadReviews();
     if (tab === 'quiz-results') this.loadQuizResults();
+    if (tab === 'trainers') this.loadTrainerRequests();
 
     // ✅ clearCourseForm seulement si on quitte create
     if (tab !== 'create' && this.activeTab !== 'create') {
@@ -236,6 +247,48 @@ export class AdminDashboardComponent implements OnInit {
     this.showCustomCategory = false;
     this.customCategoryInput = '';
     this.customSubCategoryInput = '';
+  }
+
+  // ---------- Trainer requests ----------
+  loadTrainerRequests(): void {
+    this.trainerRequestsLoading = true;
+    this.trainerRequestsError = '';
+    this.http.get<any>(`${this.apiUrl}/admin/trainer-requests`, { params: { status: this.trainerRequestsFilter } })
+      .subscribe({
+        next: (d) => {
+          this.trainerRequests = d.requests || [];
+          this.pendingTrainerCount = d.pendingCount || 0;
+          this.trainerRequestsLoading = false;
+        },
+        error: (err) => {
+          this.trainerRequestsError = err.error?.message || 'Could not load trainer requests';
+          this.trainerRequestsLoading = false;
+        }
+      });
+  }
+
+  setTrainerFilter(f: 'pending' | 'rejected'): void {
+    this.trainerRequestsFilter = f;
+    this.loadTrainerRequests();
+  }
+
+  decideTrainer(req: any, decision: 'approve' | 'reject'): void {
+    if (decision === 'reject' && !confirm(`Reject the trainer request of ${req.firstname} ${req.lastname}?`)) return;
+    this.trainerActionId = req._id;
+    this.trainerActionMessage = '';
+    this.http.patch<any>(`${this.apiUrl}/admin/trainer-requests/${req._id}/${decision}`, {}).subscribe({
+      next: (res) => {
+        this.trainerActionId = '';
+        this.trainerActionMessage = `${req.firstname} ${req.lastname}: ${res.message}`;
+        this.loadTrainerRequests();
+        if (decision === 'approve') { this.users = []; this.loadStats(); }   // refresh lists that count trainers
+        setTimeout(() => this.trainerActionMessage = '', 5000);
+      },
+      error: (err) => {
+        this.trainerActionId = '';
+        this.trainerRequestsError = err.error?.message || 'Action failed';
+      }
+    });
   }
 
   loadStats(): void {

@@ -31,6 +31,16 @@ const protect = async (req, res, next) => {
       });
     }
 
+    // ✅ Locked trainer accounts (pending / rejected) cannot use any API,
+    // even with a token issued before the decision.
+    if (user.approvalStatus === "pending" || user.approvalStatus === "rejected") {
+      return res.status(403).json({
+        success: false,
+        code: user.approvalStatus === "pending" ? "ACCOUNT_PENDING" : "ACCOUNT_REJECTED",
+        message: "This account is not approved yet."
+      });
+    }
+
     // ✅ SECURITY: reject tokens issued before the last password change/reset.
     // tokenVersion is incremented on every credential change.
     if (
