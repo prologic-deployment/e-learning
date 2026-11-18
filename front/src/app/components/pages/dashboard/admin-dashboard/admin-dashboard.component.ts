@@ -270,9 +270,12 @@ export class AdminDashboardComponent implements OnInit {
     }
   }
 
+  // ✅ Back-office list: all courses incl. PENDING ones (the public catalogue
+  // endpoint only returns approved courses, so pending ones never showed here)
   loadCourses(): void {
     this.coursesLoading = true;
-    this.courseService.getAllCourses().subscribe({
+    this.coursesError = '';
+    this.courseService.getManagedCourses().subscribe({
       next: (data) => { this.courses = data.courses; this.coursesLoading = false; },
       error: (err) => { this.coursesError = err.error?.message || 'Error'; this.coursesLoading = false; }
     });
@@ -280,7 +283,7 @@ export class AdminDashboardComponent implements OnInit {
 
   searchCourses(): void {
     this.coursesLoading = true;
-    this.courseService.getAllCourses({ search: this.searchQuery }).subscribe({
+    this.courseService.getManagedCourses(this.searchQuery).subscribe({
       next: (data) => { this.courses = data.courses; this.coursesLoading = false; },
       error: (err) => { this.coursesError = err.error?.message || 'Error'; this.coursesLoading = false; }
     });

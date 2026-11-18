@@ -31,6 +31,14 @@ export class CourseService {
     return this.http.get(`${this.apiUrl}/courses/facets`);
   }
 
+  // Back-office list (authenticated): admin → every non-archived course,
+  // approved AND pending; trainer → own courses. Not paginated.
+  getManagedCourses(search?: string): Observable<any> {
+    let params = new HttpParams();
+    if (search?.trim()) params = params.set('search', search.trim());
+    return this.http.get(`${this.apiUrl}/courses/trainer/all`, { params });
+  }
+
   // Détail d'un cours
   getCourseById(id: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/courses/${id}`);

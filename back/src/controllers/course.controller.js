@@ -43,17 +43,12 @@ exports.createCourse = async (req, res) => {
 
 exports.getAllCourses = async (req, res) => {
   try {
-    let filter = {};
-
-    // ✅ Filtre par rôle
-    if (!req.user) {
-      filter = { isApproved: true };
-    } else if (req.user.role === "user") {
-      filter = { isApproved: true };
-    } else if (req.user.role === "trainer") {
-      filter = { trainer: req.user._id };
-    }
-    // admin et manager voient tout → filter reste {}
+    // ✅ PUBLIC CATALOGUE: approved courses only, for everyone.
+    // This route is unauthenticated (req.user is never set), so the old
+    // "admin sees everything" branch could never run — pending courses never
+    // reached the admin dashboard. Back-office lists use the authenticated
+    // GET /api/courses/trainer/all (getAllCoursesForTrainer) instead.
+    let filter = { isApproved: true };
 
     // ✅ Recherche par titre, description et tags — user input escaped (ReDoS + 500 fix)
     if (req.query.search) {
@@ -435,13 +430,23 @@ exports.enrollCourse = async (req, res) => {
 
 exports.getAllCoursesForTrainer = async (req, res) => {
   try {
-    // ✅ DATA LEAK FIX: trainers only see their own courses (admin sees all)
+    // ✅ DATA LEAK FIX: trainers only see their own courses (admin sees all,
+    // approved AND pending — this is the admin's approval queue)
     const userRole = Array.isArray(req.user.role) ? req.user.role[0] : req.user.role;
-    const filter = userRole === "admin" ? {} : { trainer: req.user._id };
+    const filter = userRole === "admin"
+      ? { isArchived: { $ne: true } }      // archived courses have their own tab
+      : { trainer: req.user._id };
+
+    // Optional search (escaped, case-insensitive) on title / description / tags
+    if (req.query.search) {
+      const safe = String(req.query.search).replace(/[.*+?^${}()|[\]\\]/g, "\\$&").slice(0, 100);
+      const re = new RegExp(safe, "i");
+      filter.$or = [{ title: re }, { description: re }, { tags: re }];
+    }
 
     const courses = await Course.find(filter)
       .populate("trainer", "firstname lastname _id")
-      .sort({ createdAt: -1 });
+      .sort({ isApproved: 1, createdAt: -1 });   // pending first, newest first
 
     res.status(200).json({ courses });
   } catch (error) {
