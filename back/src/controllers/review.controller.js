@@ -60,18 +60,23 @@ exports.addReview = async (req, res) => {
 // ✅ Récupérer les avis d'un cours
 exports.getCourseReviews = async (req, res) => {
   try {
-    const reviews = await Review.find({
-      course: req.params.courseId,
-      isApproved: true  // ✅ seulement approuvés
-    })
+    // Everyone sees approved reviews. A signed-in author also sees their own
+    // review while it waits for approval (flagged isApproved:false), so it
+    // doesn't look lost. Rating stats only count approved reviews.
+    const filter = { course: req.params.courseId };
+    filter.$or = [{ isApproved: true }];
+    if (req.user?._id) filter.$or.push({ user: req.user._id });
+
+    const reviews = await Review.find(filter)
       .populate("user", "firstname lastname avatar")
       .sort({ createdAt: -1 });
 
-    const avgRating = reviews.length > 0
-      ? Math.round(reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length * 10) / 10
+    const approved = reviews.filter(r => r.isApproved);
+    const avgRating = approved.length > 0
+      ? Math.round(approved.reduce((sum, r) => sum + r.rating, 0) / approved.length * 10) / 10
       : 0;
 
-    res.status(200).json({ reviews, avgRating, total: reviews.length });
+    res.status(200).json({ reviews, avgRating, total: approved.length });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }

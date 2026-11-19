@@ -72,6 +72,15 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
+  /** Merge fields into the signed-in user (e.g. a new avatar) and notify subscribers */
+  updateCurrentUser(patch: any): void {
+    const current = this.currentUserSubject.value;
+    if (!current) return;
+    const next = { ...current, ...patch };
+    localStorage.setItem('user', JSON.stringify(next));
+    this.currentUserSubject.next(next);
+  }
+
   getCurrentUser(): any {
     return this.currentUserSubject.value;
   }

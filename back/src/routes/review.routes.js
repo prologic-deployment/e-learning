@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { protect } = require("../middlewares/auth.middleware");
+const { protect, optionalAuth } = require("../middlewares/auth.middleware");
 const authorize = require("../middlewares/role.middleware");
 const {
   addReview,
@@ -13,7 +13,7 @@ const {
 } = require("../controllers/review.controller");
 
 router.get("/all", protect, authorize("admin"), getAllReviews);           // ✅
-router.get("/course/:courseId", getCourseReviews);                        // ✅ public
+router.get("/course/:courseId", optionalAuth, getCourseReviews);          // ✅ public (+ own pending review when signed in)
 router.post("/course/:courseId", protect, addReview);
 router.put("/:reviewId", protect, updateReview);
 router.delete("/:reviewId", protect, deleteReview);

@@ -285,13 +285,16 @@
           <!-- List -->
           <ul class="r-list">
             <li class="review" *ngFor="let review of reviews">
-              <span class="review__avatar">{{ initials(review.user?.firstname, review.user?.lastname) }}</span>
+              <span class="review__avatar">
+                <img *ngIf="review.user?.avatar" [src]="backendUrl + review.user.avatar" alt="">
+                <ng-container *ngIf="!review.user?.avatar">{{ initials(review.user?.firstname, review.user?.lastname) }}</ng-container>
+              </span>
               <div class="review__body">
                 <div class="review__head">
                   <strong>{{ review.user?.firstname }} {{ review.user?.lastname }}</strong>
                   <span class="stars small"><i *ngFor="let s of stars(review.rating)" [class]="s"></i></span>
                   <span class="muted">{{ review.createdAt | date:'dd MMM yyyy' }}</span>
-                  <span class="pending" *ngIf="review.isApproved === false">Pending approval</span>
+                  <span class="pending" *ngIf="review.isApproved === false" title="Only you can see this review until an admin approves it">Pending approval · only visible to you</span>
                 </div>
                 <p>{{ review.comment }}</p>
                 <div class="review__actions"

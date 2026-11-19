@@ -3233,6 +3233,14 @@ a:hover { color: var(--brand); }
     font-weight: 800;
     text-transform: uppercase;
 }
+.user-menu-btn .user-avatar img,
+.user-menu__avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
 .user-avatar__dot {
     position: absolute;
     top: 0;

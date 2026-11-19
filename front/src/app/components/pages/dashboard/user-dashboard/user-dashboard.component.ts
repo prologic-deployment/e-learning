@@ -231,11 +231,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         this.profileUpdateSuccess = 'Avatar mis à jour ! ';
         this.selectedAvatar = null;
         this.avatarPreview = null;
-        const user = this.authService.getCurrentUser();
-        if (user) {
-          user.avatar = res.user.avatar;
-          localStorage.setItem('user', JSON.stringify(user));
-        }
+        this.authService.updateCurrentUser({ avatar: res.user?.avatar });
         this.loadProfile();
         setTimeout(() => this.profileUpdateSuccess = '', 3000);
       },

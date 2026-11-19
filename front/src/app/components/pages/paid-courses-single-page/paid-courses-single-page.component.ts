@@ -18,6 +18,7 @@ export class PaidCoursesSinglePageComponent implements OnInit {
   error = '';
   isOpen = false;
   apiUrl = environment.apiUrl;
+  backendUrl = environment.backendUrl;   // public assets (avatars)
 
   enrollLoading = false;
   enrollSuccess = '';

@@ -228,8 +228,27 @@ const wrapStripAnswers = (req, res, next) => {
   next();
 };
 
+/**
+ * Public routes that can personalise their answer: sets req.user when a valid
+ * token is sent, and never rejects the request when it is missing or invalid.
+ */
+const optionalAuth = async (req, res, next) => {
+  try {
+    const h = req.headers.authorization || "";
+    if (!h.startsWith("Bearer ")) return next();
+    const decoded = jwt.verify(h.split(" ")[1], config.jwtSecret);
+    const user = await User.findById(decoded.id).select("_id role isActive approvalStatus tokenVersion");
+    const versionOk = typeof decoded.tokenVersion !== "number" || decoded.tokenVersion === (user?.tokenVersion || 0);
+    if (user && user.isActive && versionOk && !["pending", "rejected"].includes(user.approvalStatus)) {
+      req.user = user;
+    }
+  } catch (_) { /* anonymous */ }
+  next();
+};
+
 module.exports = {
   protect,
+  optionalAuth,
   authorize,
   isCourseOwnerOrAdmin,
   requireCourseAccess,

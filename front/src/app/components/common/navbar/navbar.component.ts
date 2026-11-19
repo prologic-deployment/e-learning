@@ -94,11 +94,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   showSuggestions = false;
   searchSubject = new Subject<string>();
   apiUrl = environment.apiUrl;
+  backendUrl = environment.backendUrl;
 
   // ✅ Notifications temps réel
   realtimeNotifications: any[] = [];
   showNotifPanel = false;
   private notifSub: Subscription | null = null;
+  private userSub: Subscription | null = null;
 
   constructor(
     public router: Router,
@@ -108,6 +110,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // keep the header in sync when the profile (e.g. avatar) changes
+    this.userSub = this.authService.currentUser$.subscribe(u => this.currentUser = u);
     // ✅ Ajoute ça au début
     this.searchSubject.pipe(
       debounceTime(300),
@@ -156,6 +160,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.notifSub?.unsubscribe();
+    this.userSub?.unsubscribe();
   }
 
   // ✅ Nombre de notifications non lues

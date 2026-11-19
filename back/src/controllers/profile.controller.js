@@ -1,3 +1,5 @@
+const fs = require("fs");
+const path = require("path");
 const User = require("../models/User");
 const Enrollment = require("../models/Enrollment");
 const Purchase = require("../models/Purchase");
@@ -65,17 +67,28 @@ exports.updateProfile = async (req, res) => {
 };
 
 // Mettre à jour mon avatar
+const AVATAR_DIR = path.join(__dirname, "../../uploads/avatars");
+const AVATAR_TYPES = [".jpg", ".jpeg", ".png", ".webp"];
+
 exports.updateAvatar = async (req, res) => {
   try {
-    console.log('📸 updateAvatar called');
-    console.log('req.file:', req.file);
-    
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
+    // only images go to uploads/avatars (multer routes other types elsewhere)
+    const ext = path.extname(req.file.originalname).toLowerCase();
+    if (!AVATAR_TYPES.includes(ext) || !String(req.file.mimetype || "").startsWith("image/")) {
+      fs.unlink(req.file.path, () => {});
+      return res.status(400).json({ message: "Avatar must be a JPG, PNG or WEBP image" });
+    }
+    if (req.file.size > 5 * 1024 * 1024) {
+      fs.unlink(req.file.path, () => {});
+      return res.status(400).json({ message: "Avatar must be 5 MB or less" });
+    }
+
+    const previous = await User.findById(req.user._id).select("avatar");
     const avatarUrl = `/uploads/avatars/${req.file.filename}`;
-    console.log('avatarUrl:', avatarUrl);
 
     const updated = await User.findByIdAndUpdate(
       req.user._id,
@@ -83,11 +96,15 @@ exports.updateAvatar = async (req, res) => {
       { new: true }
     ).select("firstname lastname email avatar");
 
-    console.log('updated user:', updated);
+    // remove the old file (only files we own inside uploads/avatars)
+    const old = previous?.avatar;
+    if (old && old !== avatarUrl && old.startsWith("/uploads/avatars/")) {
+      fs.unlink(path.join(AVATAR_DIR, path.basename(old)), () => {});
+    }
 
     res.status(200).json({ message: "Avatar updated", user: updated });
   } catch (error) {
-    console.error('❌ Error:', error.message);
-    res.status(500).json({ message: "Server error", error: error.message });
+    console.error("updateAvatar:", error.message);
+    res.status(500).json({ message: "Server error" });
   }
 };

@@ -158,7 +158,8 @@
               (click)="showUserMenu = !showUserMenu; showCategoryMenu = false; showNotifPanel = false"
               aria-haspopup="true" [attr.aria-expanded]="showUserMenu">
               <span class="user-avatar">
-                {{ currentUser?.firstname?.[0] }}{{ currentUser?.lastname?.[0] }}
+                <img *ngIf="currentUser?.avatar" [src]="backendUrl + currentUser.avatar" alt="">
+                <ng-container *ngIf="!currentUser?.avatar">{{ currentUser?.firstname?.[0] }}{{ currentUser?.lastname?.[0] }}</ng-container>
                 <span *ngIf="unreadCount > 0" class="user-avatar__dot" aria-hidden="true"></span>
               </span>
               <span class="user-name">{{ currentUser?.firstname }}</span>
@@ -171,7 +172,8 @@
               <!-- Identity -->
               <div class="user-menu__head">
                 <span class="user-menu__avatar">
-                  {{ currentUser?.firstname?.[0] }}{{ currentUser?.lastname?.[0] }}
+                  <img *ngIf="currentUser?.avatar" [src]="backendUrl + currentUser.avatar" alt="">
+                  <ng-container *ngIf="!currentUser?.avatar">{{ currentUser?.firstname?.[0] }}{{ currentUser?.lastname?.[0] }}</ng-container>
                 </span>
                 <span class="user-menu__who">
                   <strong>{{ currentUser?.firstname }} {{ currentUser?.lastname }}</strong>

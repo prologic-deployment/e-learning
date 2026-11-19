@@ -20,6 +20,7 @@ export class TrainerDashboardComponent implements OnInit {
   activeTab: string = 'stats';
   currentUser: any;
   apiUrl = environment.apiUrl;
+  backendUrl = environment.backendUrl;   // public assets (avatars)
 
   // Stats
   stats: any = null;
@@ -264,7 +265,8 @@ export class TrainerDashboardComponent implements OnInit {
     const formData = new FormData();
     formData.append('avatar', this.selectedAvatar);
     this.http.put(`${this.apiUrl}/profile/avatar`, formData).subscribe({
-      next: () => {
+      next: (res: any) => {
+        this.authService.updateCurrentUser({ avatar: res.user?.avatar });
         this.profileUpdateSuccess = 'Avatar updated ! ';
         this.loadProfile();
         this.selectedAvatar = null;
