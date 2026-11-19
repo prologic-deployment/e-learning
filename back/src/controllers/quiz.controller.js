@@ -7,6 +7,7 @@ const { sendEmail } = require("../services/email.service");
 const { completeIfEligible } = require("../services/certificate.service");
 const { checkCompletionBadges, checkQuizBadges, checkCertificateBadges } = require("../services/badge.service");
 const config = require("../config/env");
+const { invalidateCache } = require("../middlewares/cache.middleware");
 
 // ============================================================
 // ✅ Unified quiz/exam grading engine (replaces quiz + quiz2 duplication)
@@ -169,6 +170,7 @@ exports.addFinalExam = async (req, res) => {
       maxAttempts: Math.max(1, Number(maxAttempts) || 3)
     };
     await course.save();
+    await invalidateCache(`cache:GET:/api/courses/${course._id}:*`);
 
     res.status(200).json({ success: true, message: "Final exam added" });
   } catch (error) {
@@ -188,6 +190,7 @@ exports.deleteFinalExam = async (req, res) => {
 
     course.finalExam = { questions: [], noteMinimale: 70, maxAttempts: 3 };
     await course.save();
+    await invalidateCache(`cache:GET:/api/courses/${course._id}:*`);
     res.status(200).json({ success: true, message: "Final exam deleted" });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server error" });

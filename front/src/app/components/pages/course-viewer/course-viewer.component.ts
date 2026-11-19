@@ -52,6 +52,8 @@ export class CourseViewerComponent implements OnInit {
   finalExamError = '';
   allLessonsCompleted = false;
   courseCompleted = false;
+  certLoading = false;
+  certError = '';
 
   reviews: any[] = [];
   avgRating = 0;
@@ -121,6 +123,7 @@ export class CourseViewerComponent implements OnInit {
       next: (data: any) => {
         this.lessons = Array.isArray(data) ? data : [];
         if (this.lessons.length > 0) this.selectLesson(0);
+        this.refreshCompletion();
         this.lessonsLoading = false;
       },
       error: () => { this.lessonsLoading = false; }
@@ -160,13 +163,12 @@ export class CourseViewerComponent implements OnInit {
         this.isEnrolled = !!enrollment;
 
         if (enrollment) {
-          this.completedLessons = enrollment.lessonsCompleted || [];
-          this.courseCompleted = enrollment.progress === 100;
-          this.allLessonsCompleted = this.lessons.length > 0 &&
-            this.lessons.every(
-              l => this.completedLessons.includes(l._id) || !l.quiz?.questions?.length
-            );
+          this.completedLessons = (enrollment.lessonsCompleted || []).map((l: any) => (l?._id || l).toString());
+          // completed is set by the server only when the certificate rules are met
+          // (all quizzes + final exam). progress can be 100% before the exam.
+          this.courseCompleted = enrollment.completed === true;
         }
+        this.refreshCompletion();
         this.cdr.detectChanges();
       },
       error: () => {}
@@ -183,6 +185,7 @@ export class CourseViewerComponent implements OnInit {
         this.enrollLoading = false;
         this.enrollSuccess = 'Enrolled successfully ! ';
         this.isEnrolled = true;
+        this.reloadCourseData();
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -229,10 +232,10 @@ export class CourseViewerComponent implements OnInit {
           if (!this.completedLessons.includes(this.currentLesson._id)) {
             this.completedLessons.push(this.currentLesson._id);
           }
-          this.allLessonsCompleted = this.lessons.every(
-            l => this.completedLessons.includes(l._id) || !l.quiz?.questions?.length
-          );
+          this.refreshCompletion();
         }
+        // the server issues the certificate itself when this was the last step
+        if (res.courseCompleted) this.courseCompleted = true;
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -405,6 +408,52 @@ export class CourseViewerComponent implements OnInit {
 
   // ✅ Progress is computed server-side now; the client only signals completion
   // of the current lesson — no more fabricated { progress: 100 } calls.
+  /** Lessons that must be passed: those with a quiz (same rule as the server) */
+  private requiresQuiz(l: any): boolean {
+    return (l?.quiz?.questions?.length || 0) > 0 || (l?.quiz2?.questions?.length || 0) > 0;
+  }
+
+  refreshCompletion(): void {
+    const required = this.lessons.filter(l => this.requiresQuiz(l));
+    this.allLessonsCompleted = required.length > 0 &&
+      required.every(l => this.completedLessons.includes(l._id));
+    this.cdr.detectChanges();
+  }
+
+  get hasFinalExam(): boolean {
+    return (this.course?.finalExam?.questions?.length || this.course?.finalExam?.questionsCount || 0) > 0;
+  }
+
+  private reloadCourseData(): void {
+    if (!this.course?._id) return;
+    this.http.get(`${this.apiUrl}/courses/${this.course._id}`).subscribe({
+      next: (data: any) => { this.course = data; this.isPurchased = data.isPurchased; this.cdr.detectChanges(); },
+      error: () => {}
+    });
+  }
+
+  /** Courses without a final exam: ask the server for the certificate */
+  claimCertificate(): void {
+    this.certLoading = true;
+    this.certError = '';
+    this.http.post(`${this.apiUrl}/certificates/generate`, { courseId: this.course._id }).subscribe({
+      next: () => {
+        this.certLoading = false;
+        this.courseCompleted = true;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        this.certLoading = false;
+        this.certError = err.error?.message || 'Could not issue the certificate.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  goToCertificates(): void {
+    this.router.navigate(['/dashboard'], { queryParams: { tab: 'certificates' } });
+  }
+
   updateProgress(): void {
     this.http.get(`${this.apiUrl}/enrollments/me`).subscribe({
       next: (data: any) => {

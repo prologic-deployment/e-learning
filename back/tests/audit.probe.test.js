@@ -114,7 +114,12 @@ const { login, makeApi, check, summary } = require('./helpers/e2e');
       // exam flow on enrolled course
       const examCourse = await user('GET', `/api/courses/${enrolledCourse._id}`);
       const examN = examCourse.body?.finalExam?.questions?.length || 0;
-      if (examN) {
+      check('Enrolled learner receives the final exam paper', !examCourse.body?.finalExam?.questionsCount || examN > 0,
+        'finalExam stripped to metadata for an enrolled learner');
+      // the gate only applies while quiz lessons are still missing
+      const done = new Set((myEnrollments[0]?.lessonsCompleted || []).map(l => String(l?._id || l)));
+      const lessonsMissing = lessons.body.some(l => l.quiz?.questions?.length && !done.has(String(l._id)));
+      if (examN && lessonsMissing) {
         const examAttempt = await user('POST', `/api/quiz/final/${enrolledCourse._id}/submit`,
           { answers: new Array(examN).fill(0) });
         check('Exam submit before completing lessons is rejected (4xx)', examAttempt.status >= 400,

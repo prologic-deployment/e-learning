@@ -54,14 +54,16 @@ exports.updateProgress = async (req, res) => {
     // passed AND the final exam passed when the course has one). Previously
     // finishing the lessons alone marked the course "completed", which let a
     // learner claim a certificate without passing the final exam.
-    await completeIfEligible(enrollment)
-      .catch(err => console.error('⚠️ Certificate error:', err.message));
+    const certificate = await completeIfEligible(enrollment)
+      .catch(err => { console.error('⚠️ Certificate error:', err.message); return null; });
     checkEnrollmentBadges(req.user._id).catch(console.error);
 
     await invalidateCache('cache:GET:/api/enrollments:*');
 
     res.status(200).json({
       message: "Progress updated",
+      courseCompleted: !!certificate,
+      certificateId: certificate?._id || null,
       enrollment
     });
   } catch (error) {
@@ -110,7 +112,8 @@ exports.enrollInCourse = async (req, res) => {
    
     await Promise.all([
       invalidateCache('cache:GET:/api/enrollments:*'),
-      invalidateCache('cache:GET:/api/courses:*')  
+      invalidateCache('cache:GET:/api/courses:*'),
+      invalidateCache(`cache:GET:/api/courses/${courseId}:*`)  
     ]);
 
     res.status(201).json({

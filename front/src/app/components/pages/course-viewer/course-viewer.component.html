@@ -35,7 +35,7 @@
             <div *ngIf="courseCompleted" class="alert alert-success mb-4 text-center">
               <h4><i class="bx bx-party"></i> Congratulations !</h4>
               <p>You have successfully completed this course and earned your certificate !</p>
-              <button class="btn btn-success" (click)="router.navigate(['/dashboard'])">
+              <button class="btn btn-success" (click)="goToCertificates()">
                 <i class="bx bx-medal"></i> View My Certificates
               </button>
             </div>
@@ -354,13 +354,17 @@
                     box-shadow: 0 4px 15px rgba(16,185,129,0.4);">
                   <i class="bx bx-certification"></i> Start Final Exam
                 </button>
-                <div *ngIf="!course.finalExam?.questions?.length">
+                <p *ngIf="hasFinalExam && !course.finalExam?.questions?.length" style="color: #64748b;">
+                  Reload the page to load the final exam.
+                </p>
+                <div *ngIf="!hasFinalExam">
                   <p style="color: #64748b;">No final exam for this course.</p>
-                  <button (click)="updateProgress()"
+                  <p *ngIf="certError" class="alert alert-danger" style="border-radius: 10px;">{{ certError }}</p>
+                  <button (click)="claimCertificate()" [disabled]="certLoading"
                     style="padding: 12px 28px; border: none; border-radius: 12px;
                       background: #0B0D12;
                       color: white; font-weight: 600; cursor: pointer;">
-                    <i class="bx bx-medal"></i> Get Certificate
+                    <i class="bx bx-medal"></i> {{ certLoading ? 'Issuing…' : 'Get Certificate' }}
                   </button>
                 </div>
               </div>
@@ -391,7 +395,7 @@
                     <p style="color: #64748b; margin-bottom: 20px;">
                       Your certificate is being generated !
                     </p>
-                    <button (click)="router.navigate(['/dashboard'])"
+                    <button (click)="goToCertificates()"
                       style="padding: 12px 28px; border: none; border-radius: 12px;
                         background: linear-gradient(135deg, #10b981, #059669);
                         color: white; font-weight: 600; cursor: pointer;">
