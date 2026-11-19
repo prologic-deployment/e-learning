@@ -103,11 +103,17 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     });
 
     // ✅ Lire le tab depuis les queryParams
+    // The URL (?tab=) drives the active tab; data is loaded once per tab change.
+    // (Before, setTab() rewrote the URL, which re-fired this listener and
+    // loaded every request of the tab a second time.)
     this.route.queryParams.subscribe(params => {
       const tab = params['tab'] || 'overview';
       const section = params['section'] || '';
       this.activeTab = tab;
-      this.setTab(tab);
+      if (tab !== this.loadedTab) {
+        this.loadedTab = tab;
+        this.loadTab(tab);
+      }
 
       if (section === 'password') {
         setTimeout(() => {
@@ -241,7 +247,13 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
+  /** Tab click: update the URL (the queryParams listener loads the data);
+   *  clicking the tab that is already open refreshes it. */
   setTab(tab: string): void {
+    if (tab === this.activeTab && tab === this.loadedTab) {
+      this.loadTab(tab);
+      return;
+    }
     this.activeTab = tab;
     this.router.navigate([], {
       relativeTo: this.route,
@@ -249,14 +261,19 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
       queryParamsHandling: 'merge',
       replaceUrl: true
     });
+  }
 
-    if (tab === 'overview') { this.loadProfile(); this.loadEnrollments(); this.loadBadges(); }
+  private loadedTab = '';
+
+  private loadTab(tab: string): void {
+    // the profile itself is loaded once in ngOnInit (header + overview)
+    if (tab === 'overview') { this.loadEnrollments(); this.loadBadges(); }
     if (tab === 'courses') this.loadEnrollments();
     if (tab === 'badges') this.loadBadges();
     if (tab === 'certificates') this.loadCertificates();
     if (tab === 'notifications') this.loadNotifications();
     if (tab === 'history') this.loadHistory();
-    if (tab === 'profile') this.loadProfile();
+    if (tab === 'profile' && this.profile) this.loadProfile();   // first visit: ngOnInit already loads it
   }
 
   loadEnrollments(): void {

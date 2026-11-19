@@ -27,24 +27,27 @@ export class AuthService {
 
   // Register
   register(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/register`, data);
+    // Learner sign-ups come back with a session (trainers stay locked until approved)
+    return this.http.post(`${this.apiUrl}/auth/register`, data).pipe(
+      tap((res: any) => this.storeSession(res))
+    );
+  }
+
+  private storeSession(res: any): void {
+    const token = res?.data?.token || res?.token;
+    const user = res?.data?.user || res?.user;
+    if (token && user) {
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
+      this.currentUserSubject.next(user);
+    }
   }
 
   // Login
   login(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/login`, data).pipe(
-      tap((res: any) => {
-        // Single-step login: the session token comes back directly.
-        // Accept both response shapes (data wrapper or flat).
-        const token = res.data?.token || res.token;
-        const user = res.data?.user || res.user;
-
-        if (token && user) {
-          localStorage.setItem('token', token);
-          localStorage.setItem('user', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-        }
-      })
+      // Single-step login: the session token comes back directly.
+      tap((res: any) => this.storeSession(res))
     );
   }
 

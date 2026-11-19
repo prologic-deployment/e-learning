@@ -1,16 +1,20 @@
+/* The header sticks with position: sticky on the host, so it never leaves the
+   layout: switching to position: fixed on scroll made the whole page jump up by
+   the header height (and buttons move under the cursor while clicking). */
+:host {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+}
+
 .navbar-area {
     background-color: var(--whiteColor);
     position: relative !important;
     
     &.sticky {
-        top: 0;
-        left: 0;
-        width: 100%;
-        z-index: 999;
-        position: fixed !important;
         background-color: #ffffff !important;
         box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.09);
-        animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
     }
     .bg-light {
         background-color: transparent !important;

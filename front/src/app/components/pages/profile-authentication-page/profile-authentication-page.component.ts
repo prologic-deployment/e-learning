@@ -71,10 +71,11 @@ export class ProfileAuthenticationPageComponent implements OnInit {
     // AuthService stores it, and the user goes straight to their dashboard.
     this.authService.login(this.loginData).subscribe({
       next: () => {
-        this.loginLoading = false;
         if (this.authService.isLoggedIn()) {
+          // keep the button in its loading state until the dashboard is shown
           this.redirectByRole();
         } else {
+          this.loginLoading = false;
           this.loginError = 'Login failed. Please try again.';
         }
       },
@@ -93,6 +94,11 @@ export class ProfileAuthenticationPageComponent implements OnInit {
 
     this.authService.register(this.registerData).subscribe({
       next: (res: any) => {
+        // Learner accounts are signed in by the API → open the dashboard now
+        if (!res?.pendingApproval && this.authService.isLoggedIn()) {
+          this.redirectByRole();
+          return;
+        }
         this.registerLoading = false;
         this.registerData = {
           firstname: '', lastname: '', email: '',
@@ -105,11 +111,9 @@ export class ProfileAuthenticationPageComponent implements OnInit {
             + 'You will receive an email and be able to sign in once it is approved.';
           return;
         }
-        this.registerSuccess = 'Account created successfully ! Please login.';
-        setTimeout(() => {
-          this.activeTab = 'login';
-          this.registerSuccess = '';
-        }, 2000);
+        // fallback (API without a session): go straight to the login tab
+        this.registerSuccess = 'Account created successfully ! Please sign in.';
+        this.activeTab = 'login';
       },
       error: (err) => {
         this.registerLoading = false;
@@ -122,28 +126,20 @@ export class ProfileAuthenticationPageComponent implements OnInit {
   redirectByRole(): void {
     const returnUrl = this.route.snapshot.queryParams['returnUrl'];
 
+    const done = () => { this.loginLoading = false; this.registerLoading = false; };
     if (returnUrl) {
-      this.router.navigateByUrl(returnUrl);
+      this.router.navigateByUrl(returnUrl).finally(done);
       return;
     }
 
     const role = this.authService.getRole();
 
     // ✅ Every role lands on its own dashboard right after sign-in
-    switch (role) {
-      case 'admin':
-        this.router.navigate(['/admin-dashboard']);
-        break;
-      case 'manager':
-        this.router.navigate(['/manager-dashboard']);
-        break;
-      case 'trainer':
-        this.router.navigate(['/trainer-dashboard']);
-        break;
-      default:
-        this.router.navigate(['/dashboard']);
-        break;
-    }
+    const target = role === 'admin' ? '/admin-dashboard'
+      : role === 'manager' ? '/manager-dashboard'
+      : role === 'trainer' ? '/trainer-dashboard'
+      : '/dashboard';
+    this.router.navigate([target]).finally(done);
   }
 
   // ✅ Marquer un champ comme touché

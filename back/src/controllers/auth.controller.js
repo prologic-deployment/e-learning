@@ -65,10 +65,17 @@ exports.register = async (req, res, next) => {
       });
     }
 
+    // Learner accounts are active right away: return a session (same shape as
+    // /login) so the app signs them in and opens their dashboard directly.
+    const token = signToken({ _id: user._id, role: "user", tokenVersion: user.tokenVersion || 0 });
     res.status(201).json({
       success: true,
       message: "User registered successfully",
-      data: { id: user._id, firstname, lastname, email, role: "user" }
+      data: {
+        id: user._id, firstname, lastname, email, role: "user",
+        token,
+        user: { id: user._id, firstname, lastname, email, role: "user" }
+      }
     });
   } catch (error) {
     next(error);
