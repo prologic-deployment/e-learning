@@ -280,6 +280,8 @@ export class PaidCoursesSinglePageComponent implements OnInit {
       },
       error: (err) => {
         this.cartLoading = false;
+        if (err.status === 409) { this.isEnrolled = true; return; }      // already owned
+        if (/already in cart/i.test(err.error?.message || '')) { this.cartSuccess = 'This course is already in your cart.'; return; }
         this.cartError = err.error?.message || 'Error adding to cart';
       }
     });
@@ -349,7 +351,7 @@ export class PaidCoursesSinglePageComponent implements OnInit {
 
   // ---------- view helpers for the course landing page ----------
 
-  /** Add to cart, then go straight to the cart */
+  /** Add to cart, then go straight to the checkout */
   buyNow(): void {
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/profile-authentication'], { queryParams: { returnUrl: this.router.url } });
@@ -358,11 +360,12 @@ export class PaidCoursesSinglePageComponent implements OnInit {
     this.cartLoading = true;
     this.cartError = '';
     this.cartService.addToCart(this.course._id).subscribe({
-      next: () => { this.cartLoading = false; this.router.navigate(['/cart']); },
+      next: () => { this.cartLoading = false; this.router.navigate(['/checkout']); },
       error: (err) => {
         this.cartLoading = false;
-        // already in cart → still go to the cart
-        if (err.status === 400) { this.router.navigate(['/cart']); return; }
+        if (err.status === 409) { this.isEnrolled = true; return; }      // already owned
+        // already in cart → still go to the checkout
+        if (err.status === 400) { this.router.navigate(['/checkout']); return; }
         this.cartError = err.error?.message || 'Error adding to cart';
       }
     });

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../../../services/cart.service';
 import { AuthService } from '../../../services/auth.service';
+import { formatTnd } from '../../../shared/pricing';
+import { categoryColor, categoryIcon } from '../../../shared/categories';
 
 @Component({
   selector: 'app-cart-page',
@@ -15,6 +17,10 @@ export class CartPageComponent implements OnInit {
   error = '';
   removeLoading = '';
 
+  fmt = formatTnd;
+  color = categoryColor;
+  icon = categoryIcon;
+
   constructor(
     private cartService: CartService,
     private authService: AuthService,
@@ -23,10 +29,15 @@ export class CartPageComponent implements OnInit {
 
   ngOnInit(): void {
     if (!this.authService.isLoggedIn()) {
-      this.router.navigate(['/profile-authentication']);
+      this.router.navigate(['/profile-authentication'], { queryParams: { returnUrl: '/cart' } });
       return;
     }
     this.loadCart();
+  }
+
+  get savings(): number {
+    if (!this.cart) return 0;
+    return Math.max(0, (this.cart.originalTotal ?? this.cart.totalPrice) - this.cart.totalPrice);
   }
 
   loadCart(): void {

@@ -7,6 +7,7 @@ const {
   createCourse,
   getAllCourses,
   getCourseFacets,
+  setSale,
   getCourseById,
   updateCourse,
   deleteCourse,
@@ -32,6 +33,7 @@ router.get("/archived", protect, authorize("admin"), getArchivedCourses);
 // it runs before the cache so the per-user cache key is right.
 router.get("/:id", optionalAuth, cacheConfig.short, getCourseById);
 router.get("/:id/full", protect, authorize("trainer", "admin"), getCourseById);
+router.patch("/:id/sale", protect, authorize("admin"), setSale);   // ✅ promotion (admin)
 
 router.post("/", protect, authorize("trainer", "admin"), upload.single("contentFile"), createCourse);
 

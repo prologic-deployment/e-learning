@@ -344,7 +344,8 @@
   padding-top: 12px;
   border-top: 1px solid var(--line, #E3E5EA);
 }
-.card__price { font-size: 17px; font-weight: 800; color: var(--ink, #0B0D12); &.free { color: #15803D; } }
+.card__price { min-width: 0; }
+.card__price-tag.sale { background: var(--brand, #1E3A8A); color: #fff; }
 .card__cta {
   display: inline-flex;
   align-items: center;

@@ -24,6 +24,7 @@ import { StaffRedirectGuard } from './guards/staff-redirect.guard';
 import { CvPageComponent } from './components/pages/cv-page/cv-page.component';
 import { CourseViewerComponent } from './components/pages/course-viewer/course-viewer.component';
 import { VerifyCertificateComponent } from './components/pages/verify-certificate/verify-certificate.component';
+import { CheckoutPageComponent } from './components/pages/checkout-page/checkout-page.component';
 import { ResetPasswordComponent } from './components/pages/reset-password/reset-password.component';
 import { AdminDashboardComponent } from './components/pages/dashboard/admin-dashboard/admin-dashboard.component';
 import { ManagerDashboardComponent } from './components/pages/dashboard/manager-dashboard/manager-dashboard.component';
@@ -61,6 +62,7 @@ const routes: Routes = [
 
   // ✅ Pages privées user — staff bloqué
   { path: 'cart', component: CartPageComponent, canActivate: [AuthGuard, StaffRedirectGuard] },
+  { path: 'checkout', component: CheckoutPageComponent, canActivate: [AuthGuard, StaffRedirectGuard] },
   { path: 'cv', component: CvPageComponent, canActivate: [AuthGuard, StaffRedirectGuard] },
   { path: 'course/:id', component: CourseViewerComponent, canActivate: [AuthGuard, StaffRedirectGuard] },
 

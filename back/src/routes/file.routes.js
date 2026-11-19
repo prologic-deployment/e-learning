@@ -157,8 +157,15 @@ router.get("/invoice/:purchaseId", protect, async (req, res) => {
       return res.status(403).json({ success: false, message: "Access denied" });
     }
 
+    // One invoice per order: every purchase sharing the order reference
+    const orderPurchases = purchase.orderReference
+      ? await Purchase.find({ orderReference: purchase.orderReference, user: purchase.user }).populate("course", "title price").sort({ createdAt: 1 })
+      : [purchase];
+    const User = require("../models/User");
+    const customer = await User.findById(purchase.user).select("firstname lastname email");
+
     const { generateInvoicePDF } = require("../utils/generateInvoicePDF");
-    const { filePath } = await generateInvoicePDF(purchase);
+    const { filePath } = await generateInvoicePDF(orderPurchases, customer);
     streamFile(req, res, filePath, `invoice_${purchase._id}.pdf`);
   } catch (error) {
     console.error("invoice error:", error.message);

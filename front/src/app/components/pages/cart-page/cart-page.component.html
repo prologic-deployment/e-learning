@@ -1,86 +1,70 @@
-<!-- Page Title -->
-<div class="page-title-area">
+<section class="shop-hero">
   <div class="container">
-    <div class="page-title-content">
-      <ul>
-        <li><a routerLink="/">Home</a></li>
-        <li>Cart</li>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a routerLink="/">Home</a><i class="bx bx-chevron-right"></i><span>Cart</span>
+    </nav>
+    <h1>Your cart</h1>
+    <p class="muted" *ngIf="!loading && cart?.items?.length">
+      {{ cart.items.length }} course{{ cart.items.length > 1 ? 's' : '' }} ready for checkout
+    </p>
+  </div>
+</section>
+
+<section class="shop-body">
+  <div class="container">
+    <p *ngIf="loading" class="muted"><i class="bx bx-loader-alt bx-spin"></i> Loading your cart…</p>
+
+    <!-- Empty -->
+    <div *ngIf="!loading && !cart?.items?.length" class="empty">
+      <i class="bx bx-cart"></i>
+      <h2>Your cart is empty</h2>
+      <p class="muted">Browse the catalogue and add the courses you want to follow.</p>
+      <a routerLink="/courses-grid" class="btn-ink"><i class="bx bx-search"></i> Browse courses</a>
+    </div>
+
+    <div *ngIf="!loading && cart?.items?.length" class="shop-grid">
+      <!-- Items -->
+      <ul class="olist">
+        <li class="oitem" *ngFor="let item of cart.items">
+          <span class="oitem__thumb" [style.background]="color(item.course?.category)">
+            <i [class]="icon(item.course?.category)"></i>
+          </span>
+          <div class="oitem__info">
+            <a class="oitem__title" [routerLink]="['/courses-details', item.course?._id]">{{ item.course?.title }}</a>
+            <span class="muted oitem__meta">
+              {{ item.course?.category || 'Course' }}
+              <ng-container *ngIf="item.course?.trainer"> · {{ item.course.trainer.firstname }} {{ item.course.trainer.lastname }}</ng-container>
+            </span>
+            <button type="button" class="link-btn" (click)="removeFromCart(item.course?._id)"
+                    [disabled]="removeLoading === item.course?._id">
+              <i class="bx bx-trash"></i> {{ removeLoading === item.course?._id ? 'Removing…' : 'Remove' }}
+            </button>
+          </div>
+          <div class="oitem__price">
+            <strong>{{ fmt(item.price) }}</strong>
+            <ng-container *ngIf="item.onSale">
+              <s class="muted">{{ fmt(item.originalPrice) }}</s>
+              <span class="off">-{{ item.discountPercent }}%</span>
+            </ng-container>
+          </div>
+        </li>
       </ul>
-      <h1>Shopping Cart <i class="bx bx-cart"></i></h1>
-    </div>
-  </div>
-</div>
 
-<!-- Cart -->
-<div class="cart-area ptb-100">
-  <div class="container">
-
-    <!-- Loading -->
-    <div *ngIf="loading" class="text-center py-5">
-      <p>Loading cart...</p>
-    </div>
-
-    <!-- Empty Cart -->
-    <div *ngIf="!loading && (!cart || cart.items?.length === 0)" class="text-center py-5">
-      <h4 class="text-muted">Your cart is empty ! <i class="bx bx-cart"></i></h4>
-      <button class="btn btn-primary mt-3" routerLink="/courses-grid">
-        Browse Courses
-      </button>
-    </div>
-
-    <!-- Cart Items -->
-    <div *ngIf="!loading && cart && cart.items?.length > 0">
-      <div class="cart-table table-responsive">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Course</th>
-              <th>Trainer</th>
-              <th>Price</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of cart.items">
-              <td>
-                <strong>{{ item.course?.title }}</strong>
-                <p class="text-muted mb-0" style="font-size: 12px;">
-                  {{ item.course?.description | slice:0:60 }}...
-                </p>
-              </td>
-              <td>
-                {{ item.course?.trainer?.firstname }}
-                {{ item.course?.trainer?.lastname }}
-              </td>
-              <td><strong>{{ item.price }} TND</strong></td>
-              <td>
-                <button class="btn btn-sm btn-danger"
-                  (click)="removeFromCart(item.course?._id)"
-                  [disabled]="removeLoading === item.course?._id">
-                  <i class='bx bx-trash-alt'></i>
-                  {{ removeLoading === item.course?._id ? '...' : 'Remove' }}
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- Cart Total -->
-      <div class="cart-totals">
-        <ul>
-          <li>Total <span><strong>{{ cart.totalPrice }} TND</strong></span></li>
-        </ul>
-        <div class="d-flex gap-3 mt-3">
-          <button class="btn btn-outline-danger" (click)="clearCart()">
-            <i class="bx bx-trash"></i> Clear Cart
-          </button>
-          <button class="default-btn" routerLink="/checkout">
-            <i class="bx bx-credit-card"></i> Go to Payment
-          </button>
+      <!-- Summary -->
+      <aside class="summary">
+        <h2>Summary</h2>
+        <dl>
+          <div><dt>Original price</dt><dd>{{ fmt(cart.originalTotal ?? cart.totalPrice) }}</dd></div>
+          <div *ngIf="savings > 0" class="save"><dt>Promotions</dt><dd>-{{ fmt(savings) }}</dd></div>
+          <div class="total"><dt>Total</dt><dd>{{ fmt(cart.totalPrice) }}</dd></div>
+        </dl>
+        <a routerLink="/checkout" class="btn-ink btn-block"><i class="bx bx-lock-alt"></i> Proceed to checkout</a>
+        <p class="hint"><i class="bx bx-purchase-tag-alt"></i> Have a voucher code? You can apply it at checkout.</p>
+        <div class="summary__links">
+          <a routerLink="/courses-grid"><i class="bx bx-left-arrow-alt"></i> Continue shopping</a>
+          <button type="button" class="link-btn danger" (click)="clearCart()">Clear cart</button>
         </div>
-      </div>
+      </aside>
     </div>
-
   </div>
-</div>
+</section>

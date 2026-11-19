@@ -3,7 +3,17 @@ const Enrollment = require("../models/Enrollment");
 const Course = require("../models/Course");
 
 // Acheter un cours
+// ✅ CLOSED: this endpoint enrolled learners in paid courses without any payment.
+// Purchases now go through the checkout (POST /api/checkout/pay), which
+// applies promotions and vouchers and takes the (simulated) card payment.
 exports.buyCourse = async (req, res) => {
+  return res.status(410).json({
+    message: "Direct purchase is no longer available. Add the course to your cart and use the checkout."
+  });
+};
+
+// (previous implementation, kept for reference — not reachable)
+exports._legacyBuyCourse = async (req, res) => {
   try {
     const { courseId, paymentMethod = "card" } = req.body;
 

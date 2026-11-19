@@ -99,6 +99,15 @@
             [style.boxShadow]="activeTab === 'quiz-results' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
             <i class="bx bx-edit"></i> Quiz Results
           </button>
+          <button (click)="setTab('vouchers')"
+            style="padding: 9px 14px; border: none; border-radius: 10px; font-size: 12px;
+              font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+              display: inline-flex; align-items: center; gap: 6px;"
+            [style.background]="activeTab === 'vouchers' ? 'white' : 'transparent'"
+            [style.color]="activeTab === 'vouchers' ? '#1E3A8A' : '#64748b'"
+            [style.boxShadow]="activeTab === 'vouchers' ? '0 2px 8px rgba(0,0,0,0.1)' : 'none'">
+            <i class="bx bx-purchase-tag-alt"></i> Vouchers &amp; pricing
+          </button>
           <button (click)="setTab('trainers')"
             style="padding: 9px 14px; border: none; border-radius: 10px; font-size: 12px;
               font-weight: 600; cursor: pointer; transition: all 0.2s; white-space: nowrap;
@@ -1504,6 +1513,9 @@
     </div>
 
     <!-- ========== TRAINER REQUESTS TAB ========== -->
+    <!-- ========== VOUCHERS & PRICING TAB ========== -->
+    <app-admin-vouchers *ngIf="activeTab === 'vouchers'"></app-admin-vouchers>
+
     <div *ngIf="activeTab === 'trainers'">
       <div class="d-flex flex-wrap align-items-end justify-content-between gap-3 mb-3">
         <div>

@@ -1,0 +1,206 @@
+<section class="shop-hero">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a routerLink="/">Home</a><i class="bx bx-chevron-right"></i>
+      <a routerLink="/cart">Cart</a><i class="bx bx-chevron-right"></i>
+      <span>Checkout</span>
+    </nav>
+    <h1>{{ order ? 'Order confirmed' : 'Checkout' }}</h1>
+    <p class="muted" *ngIf="!order">Test mode — payments are simulated, no real card is charged.</p>
+  </div>
+</section>
+
+<section class="shop-body">
+  <div class="container">
+
+    <!-- ================= Confirmation ================= -->
+    <div *ngIf="order" class="confirm">
+      <div class="confirm__head">
+        <i class="bx bx-check-circle"></i>
+        <div>
+          <h2>{{ order.total > 0 ? 'Payment successful' : 'Courses unlocked' }}</h2>
+          <p class="muted">
+            Order <strong>{{ order.orderReference }}</strong> ·
+            <ng-container *ngIf="order.card">{{ order.card.brand | titlecase }} •••• {{ order.card.last4 }} · </ng-container>
+            <ng-container *ngIf="!order.card">Covered by voucher {{ order.voucher?.code }} · </ng-container>
+            {{ fmt(order.total) }} paid
+          </p>
+        </div>
+      </div>
+
+      <ul class="olist">
+        <li class="oitem" *ngFor="let l of order.items">
+          <span class="oitem__thumb" [style.background]="color(l.category)"><i [class]="icon(l.category)"></i></span>
+          <div class="oitem__info">
+            <span class="oitem__title">{{ l.title }}</span>
+            <span class="muted oitem__meta">{{ l.trainer || l.category }}</span>
+          </div>
+          <a class="btn-ink" [routerLink]="['/course', l.courseId]"><i class="bx bx-play-circle"></i> Start learning</a>
+        </li>
+      </ul>
+
+      <div class="confirm__actions">
+        <button type="button" class="btn-line" (click)="downloadInvoice()" [disabled]="invoiceLoading">
+          <i class="bx" [ngClass]="invoiceLoading ? 'bx-loader-alt bx-spin' : 'bx-download'"></i> Download invoice
+        </button>
+        <a class="btn-line" routerLink="/dashboard" [queryParams]="{ tab: 'courses' }"><i class="bx bx-book-open"></i> My courses</a>
+      </div>
+    </div>
+
+    <ng-container *ngIf="!order">
+      <p *ngIf="loading" class="muted"><i class="bx bx-loader-alt bx-spin"></i> Preparing your order…</p>
+      <p *ngIf="loadError" class="msg err"><i class="bx bx-error-circle"></i> {{ loadError }}</p>
+
+      <!-- Nothing to pay -->
+      <div *ngIf="!loading && quote && !quote.items.length" class="empty">
+        <i class="bx bx-cart"></i>
+        <h2>{{ quote.ownedItems.length ? 'You already own these courses' : 'Your cart is empty' }}</h2>
+        <p class="muted">{{ quote.ownedItems.length ? 'Find them in your dashboard.' : 'Add courses to your cart to check out.' }}</p>
+        <a [routerLink]="quote.ownedItems.length ? '/dashboard' : '/courses-grid'" class="btn-ink">
+          {{ quote.ownedItems.length ? 'Go to my courses' : 'Browse courses' }}
+        </a>
+      </div>
+
+      <div *ngIf="!loading && quote?.items?.length" class="shop-grid">
+        <div>
+          <!-- Order -->
+          <div class="panel">
+            <h2><i class="bx bx-receipt"></i> Your order</h2>
+            <p class="msg ok" *ngIf="quote.ownedItems.length">
+              <i class="bx bx-info-circle"></i>
+              {{ quote.ownedItems.length }} course(s) in your cart are already yours and won't be charged.
+            </p>
+            <ul class="olist olist--flat">
+              <li class="oitem" *ngFor="let l of quote.items">
+                <span class="oitem__thumb" [style.background]="color(l.category)"><i [class]="icon(l.category)"></i></span>
+                <div class="oitem__info">
+                  <span class="oitem__title">{{ l.title }}</span>
+                  <span class="muted oitem__meta">{{ l.trainer || l.category }}</span>
+                  <span class="tag-save" *ngIf="l.voucherDiscount > 0">Voucher -{{ fmt(l.voucherDiscount) }}</span>
+                </div>
+                <div class="oitem__price">
+                  <strong>{{ l.total === 0 ? 'Free' : fmt(l.total) }}</strong>
+                  <s class="muted" *ngIf="l.total < l.price">{{ fmt(l.price) }}</s>
+                  <span class="off" *ngIf="l.onSale">-{{ l.discountPercent }}%</span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Payment -->
+          <div class="panel">
+            <h2><i class="bx bx-credit-card"></i> Payment</h2>
+
+            <div *ngIf="free" class="covered">
+              <i class="bx bx-gift"></i>
+              <div>
+                <strong>No payment needed</strong>
+                <p class="muted">Your voucher covers the whole order. Confirm to unlock your courses.</p>
+              </div>
+            </div>
+
+            <form *ngIf="!free" class="card-form" (ngSubmit)="pay()" novalidate autocomplete="on">
+              <div class="field">
+                <label for="cc-number">Card number</label>
+                <div class="input-icon" [class.invalid]="errors['number']">
+                  <input id="cc-number" name="cc-number" inputmode="numeric" autocomplete="cc-number"
+                         placeholder="1234 1234 1234 1234" [ngModel]="card.number" (ngModelChange)="onNumber($event)">
+                  <span class="brand" [ngClass]="'brand--' + brand">{{ brand === 'card' ? '' : (brand | uppercase) }}</span>
+                </div>
+                <small class="err" *ngIf="errors['number']">{{ errors['number'] }}</small>
+              </div>
+
+              <div class="field">
+                <label for="cc-name">Name on card</label>
+                <input id="cc-name" name="cc-name" autocomplete="cc-name" [(ngModel)]="card.name"
+                       [class.invalid]="errors['name']" (ngModelChange)="errors['name'] = ''">
+                <small class="err" *ngIf="errors['name']">{{ errors['name'] }}</small>
+              </div>
+
+              <div class="row2">
+                <div class="field">
+                  <label for="cc-exp">Expiry</label>
+                  <input id="cc-exp" name="cc-exp" inputmode="numeric" autocomplete="cc-exp" placeholder="MM / YY"
+                         [ngModel]="card.expiry" (ngModelChange)="onExpiry($event)" [class.invalid]="errors['expiry']">
+                  <small class="err" *ngIf="errors['expiry']">{{ errors['expiry'] }}</small>
+                </div>
+                <div class="field">
+                  <label for="cc-cvc">Security code</label>
+                  <input id="cc-cvc" name="cc-cvc" inputmode="numeric" autocomplete="cc-csc"
+                         [placeholder]="brand === 'amex' ? '4 digits' : 'CVC'"
+                         [ngModel]="card.cvc" (ngModelChange)="onCvc($event)" [class.invalid]="errors['cvc']">
+                  <small class="err" *ngIf="errors['cvc']">{{ errors['cvc'] }}</small>
+                </div>
+              </div>
+
+              <div class="testcards">
+                <button type="button" class="link-btn" (click)="showTestCards = !showTestCards" [attr.aria-expanded]="showTestCards">
+                  <i class="bx bx-test-tube"></i> Test cards
+                  <i class="bx" [ngClass]="showTestCards ? 'bx-chevron-up' : 'bx-chevron-down'"></i>
+                </button>
+                <ul *ngIf="showTestCards">
+                  <li *ngFor="let t of testCards">
+                    <button type="button" (click)="useTestCard(t.number)">
+                      <code>{{ t.number }}</code>
+                      <span [class.ok]="t.ok">{{ t.label }}</span>
+                    </button>
+                  </li>
+                  <li class="muted small">Any future expiry date and any CVC work.</li>
+                </ul>
+              </div>
+              <!-- hidden submit so Enter pays -->
+              <button type="submit" hidden></button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <aside class="summary">
+          <h2>Summary</h2>
+
+          <div class="voucher">
+            <ng-container *ngIf="!appliedCode">
+              <label for="voucher">Voucher code</label>
+              <div class="voucher__row">
+                <input id="voucher" name="voucher" [(ngModel)]="voucherInput" placeholder="e.g. WELCOME20"
+                       (keyup.enter)="applyVoucher()" (ngModelChange)="voucherError = ''" autocomplete="off"
+                       [class.invalid]="voucherError">
+                <button type="button" class="btn-line" (click)="applyVoucher()" [disabled]="!voucherInput.trim() || voucherLoading">
+                  {{ voucherLoading ? '…' : 'Apply' }}
+                </button>
+              </div>
+              <small class="err" *ngIf="voucherError">{{ voucherError }}</small>
+            </ng-container>
+            <div *ngIf="appliedCode" class="voucher__applied">
+              <i class="bx bx-purchase-tag-alt"></i>
+              <div>
+                <strong>{{ appliedCode }}</strong>
+                <span class="muted">{{ quote.voucher?.description || (quote.voucher?.type === 'percent' ? quote.voucher?.value + '% off' : fmt(quote.voucher?.value) + ' off') }}</span>
+              </div>
+              <button type="button" class="link-btn danger" (click)="removeVoucher()" aria-label="Remove voucher"><i class="bx bx-x"></i></button>
+            </div>
+          </div>
+
+          <dl>
+            <div><dt>Original price</dt><dd>{{ fmt(quote.subtotal) }}</dd></div>
+            <div *ngIf="quote.saleSavings > 0" class="save"><dt>Promotions</dt><dd>-{{ fmt(quote.saleSavings) }}</dd></div>
+            <div *ngIf="quote.voucherDiscount > 0" class="save"><dt>Voucher</dt><dd>-{{ fmt(quote.voucherDiscount) }}</dd></div>
+            <div class="total"><dt>Total</dt><dd>{{ fmt(quote.total) }}</dd></div>
+          </dl>
+          <p class="you-save" *ngIf="savings > 0"><i class="bx bx-badge-check"></i> You save {{ fmt(savings) }}</p>
+
+          <p class="msg err" *ngIf="payError"><i class="bx bx-error-circle"></i> {{ payError }}</p>
+
+          <button type="button" class="btn-ink btn-block" (click)="pay()" [disabled]="paying">
+            <i class="bx" [ngClass]="paying ? 'bx-loader-alt bx-spin' : (free ? 'bx-gift' : 'bx-lock-alt')"></i>
+            {{ paying ? 'Processing…' : free ? 'Get my courses' : 'Pay ' + fmt(quote.total) }}
+          </button>
+          <p class="hint"><i class="bx bx-shield-quarter"></i> Simulated payment — card details never leave this test environment and only the last 4 digits are kept.</p>
+          <div class="summary__links">
+            <a routerLink="/cart"><i class="bx bx-left-arrow-alt"></i> Back to cart</a>
+          </div>
+        </aside>
+      </div>
+    </ng-container>
+  </div>
+</section>

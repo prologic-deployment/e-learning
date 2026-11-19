@@ -4,6 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CourseService } from '../../../services/course.service';
 import { environment } from '../../../../environments/environment';
+import { priceView } from '../../../shared/pricing';
 import {
   COURSE_CATEGORIES, CourseCategory, findCategory, categoryColor, categoryIcon
 } from '../../../shared/categories';
@@ -31,6 +32,9 @@ interface Facets {
   styleUrls: ['./courses-basic-grid-page.component.scss']
 })
 export class CoursesBasicGridPageComponent implements OnInit, OnDestroy {
+  /** promotion info for the course cards */
+  pv = priceView;
+
 
   readonly pageSize = 9;
   readonly categories: CourseCategory[] = COURSE_CATEGORIES;

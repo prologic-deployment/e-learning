@@ -12,7 +12,7 @@ import { AuthService } from '../services/auth.service';
 export class StaffRedirectGuard implements CanActivate {
 
   // Routes reserved for learners — staff are still redirected from these
-  private learnerOnlyRoutes = ['/cart', '/cv'];
+  private learnerOnlyRoutes = ['/cart', '/checkout', '/cv'];
 
   constructor(private authService: AuthService, private router: Router) {}
 

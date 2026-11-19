@@ -61,9 +61,9 @@
         </div>
 
         <div class="buy__body">
-          <p class="buy__price" [class.free]="!course.price">
-            {{ course.price ? (course.price + ' TND') : 'Free' }}
-          </p>
+          <div class="buy__price">
+            <app-price [course]="course" size="lg" [showEnds]="true"></app-price>
+          </div>
 
           <!-- Enrolled -->
           <ng-container *ngIf="isLoggedIn() && isEnrolled">
@@ -90,6 +90,7 @@
               <button type="button" class="btn-outline buy__btn" (click)="buyNow()" [disabled]="cartLoading">
                 Buy now
               </button>
+              <p class="buy__hint"><i class="bx bx-purchase-tag-alt"></i> Have a voucher? Apply it at checkout.</p>
             </ng-container>
 
             <p class="buy__hint" *ngIf="!isLoggedIn()">

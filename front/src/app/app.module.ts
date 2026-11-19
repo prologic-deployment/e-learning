@@ -50,6 +50,9 @@ import { UserDashboardComponent } from './components/pages/dashboard/user-dashbo
 import { CvPageComponent } from './components/pages/cv-page/cv-page.component';
 import { CourseViewerComponent } from './components/pages/course-viewer/course-viewer.component';
 import { VerifyCertificateComponent } from './components/pages/verify-certificate/verify-certificate.component';
+import { CheckoutPageComponent } from './components/pages/checkout-page/checkout-page.component';
+import { PriceTagComponent } from './components/common/price-tag/price-tag.component';
+import { AdminVouchersComponent } from './components/pages/dashboard/admin-vouchers/admin-vouchers.component';
 import { ResetPasswordComponent } from './components/pages/reset-password/reset-password.component';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
 import { CategoryService } from './services/category.service';
@@ -101,6 +104,9 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
         CvPageComponent,
         CourseViewerComponent,
         VerifyCertificateComponent,
+        CheckoutPageComponent,
+        PriceTagComponent,
+        AdminVouchersComponent,
         ResetPasswordComponent,
         UserDashboardComponent,
         ChatbotComponent,

@@ -24,7 +24,17 @@ const purchaseSchema = new mongoose.Schema(
     // ✅ E-commerce readiness: provider tracking + invoice reference
     paymentProvider: { type: String, default: "simulated" },
     paymentReference: { type: String, default: null },
-    paymentMethod: { type: String, default: "card" }
+    paymentMethod: { type: String, default: "card" },   // card | voucher (fully covered)
+
+    // ✅ Checkout breakdown (amount = what was actually paid for this course)
+    orderReference: { type: String, default: null, index: true },
+    originalAmount: { type: Number, default: null },   // regular course price
+    saleDiscount: { type: Number, default: 0 },        // promotion (old → new price)
+    voucherCode: { type: String, default: null },
+    voucherDiscount: { type: Number, default: 0 },
+    // card: never stored in full — brand + last 4 digits only
+    cardBrand: { type: String, default: null },
+    cardLast4: { type: String, default: null }
   },
   { timestamps: true }
 );

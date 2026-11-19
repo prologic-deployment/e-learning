@@ -478,3 +478,40 @@ exports.archiveCourse = async (req, res) => {
     res.status(500).json({ message: config.prodLike ? 'Server error' : error.message });
   }
 };
+// ✅ ADMIN — promotion: PATCH /api/courses/:id/sale { salePrice, saleEndsAt }
+// salePrice null/"" clears the promotion. The course page then shows the old
+// price struck through next to the new one.
+exports.setSale = async (req, res) => {
+  try {
+    const course = await Course.findById(req.params.id);
+    if (!course) return res.status(404).json({ message: "Course not found" });
+
+    const raw = req.body?.salePrice;
+    if (raw === null || raw === undefined || raw === "") {
+      course.salePrice = null;
+      course.saleEndsAt = null;
+    } else {
+      const sale = Math.round(Number(raw) * 100) / 100;
+      if (!(course.price > 0)) return res.status(400).json({ message: "Free courses cannot have a promotion" });
+      if (!Number.isFinite(sale) || sale < 0 || sale >= course.price) {
+        return res.status(400).json({ message: `The new price must be between 0 and ${course.price} TND (excluded)` });
+      }
+      let ends = null;
+      if (req.body.saleEndsAt) {
+        ends = new Date(req.body.saleEndsAt);
+        if (isNaN(ends) || ends <= new Date()) return res.status(400).json({ message: "The end date must be in the future" });
+      }
+      course.salePrice = sale;
+      course.saleEndsAt = ends;
+    }
+    await course.save();
+    await Promise.all([
+      invalidateCache('cache:GET:/api/courses:*'),
+      invalidateCache(`cache:GET:/api/courses/${course._id}:*`)
+    ]);
+    const { priceInfo } = require("../utils/pricing");
+    res.status(200).json({ message: "Promotion updated", course: { _id: course._id, title: course.title, salePrice: course.salePrice, saleEndsAt: course.saleEndsAt, ...priceInfo(course) } });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};

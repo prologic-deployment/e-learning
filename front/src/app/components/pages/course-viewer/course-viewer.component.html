@@ -651,9 +651,7 @@
               <p style="color: #64748b; margin-bottom: 8px;">
                 Purchase this course to access the full content.
               </p>
-              <p style="font-size: 22px; font-weight: 800; color: #1E3A8A; margin-bottom: 24px;">
-                {{ course.price }} TND
-              </p>
+              <div style="margin-bottom: 24px;"><app-price [course]="course" size="lg"></app-price></div>
               <a [routerLink]="['/courses-details', course._id]"
                 style="display: inline-block; padding: 14px 32px; border: none;
                   border-radius: 14px; background: #0B0D12;
@@ -697,9 +695,7 @@
                   <div style="display: flex; justify-content: space-between;
                     padding: 10px 0; border-bottom: 1px solid #f1f5f9;">
                     <span style="font-size: 13px; color: #94a3b8;"><i class="bx bx-money"></i> Price</span>
-                    <span style="font-size: 13px; font-weight: 700; color: #0f172a;">
-                      {{ course.price === 0 ? 'Free' : course.price + ' TND' }}
-                    </span>
+                    <app-price [course]="course" size="sm"></app-price>
                   </div>
 
                   <div style="display: flex; justify-content: space-between;

@@ -53,6 +53,10 @@ const courseSchema = new mongoose.Schema(
       required: true,
       default: 0
     },
+    // ✅ Promotion set by an admin: shown as the new price (old price struck
+    // through). null = no promotion. Ends automatically after saleEndsAt.
+    salePrice: { type: Number, default: null, min: 0 },
+    saleEndsAt: { type: Date, default: null },
     deadline: {
       type: Date,
       default: null

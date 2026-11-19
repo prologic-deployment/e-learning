@@ -25,6 +25,7 @@ const Cart = require('../src/models/Cart');
 const Badge = require('../src/models/Badge');
 const CV = require('../src/models/CV');
 const Category = require('../src/models/Category');
+const Voucher = require('../src/models/Voucher');
 const config = require('../src/config/env');
 const { COLORS, log, step, count, seedCategories } = require('./lib/common');
 const { seedBadges } = require('./production');
@@ -51,7 +52,7 @@ async function wipe() {
     .map(c => path.join(CERT_DIR, path.basename(c.certificateUrl)))
     .filter(p => fs.existsSync(p));
 
-  const collections = [User, Course, Lesson, Enrollment, Purchase, Review, Certificate, Notification, Cart, CV, Category, Badge];
+  const collections = [User, Course, Lesson, Enrollment, Purchase, Review, Certificate, Notification, Cart, CV, Category, Badge, Voucher];
   for (const Model of collections) {
     const r = await Model.deleteMany({});
     step(`${Model.modelName}: ${r.deletedCount} removed`);
@@ -353,6 +354,25 @@ async function seedCVs() {
 
 // ── entry ────────────────────────────────────────────────────────────────────
 
+// Promotions + vouchers so the checkout can be tried right away
+async function seedShop() {
+  log(COLORS.cyan, '\n🏷️  Seeding promotions and vouchers...');
+  const admin = await User.findOne({ role: 'admin' });
+  const docker = await Course.findOne({ title: /^Docker & Kubernetes/ });
+  const linux = await Course.findOne({ title: /^Linux System Administration/ });
+  if (docker) { docker.salePrice = Math.round(docker.price * 0.6); docker.saleEndsAt = daysFromNow(10); await docker.save(); }
+  if (linux) { linux.salePrice = Math.round(linux.price * 0.75); linux.saleEndsAt = null; await linux.save(); }
+  count('promotions', [docker, linux].filter(Boolean).length);
+
+  const ml = await Course.findOne({ title: /^Machine Learning Foundations/ });
+  await Voucher.create([
+    { code: 'WELCOME20', description: '20% off your first order', type: 'percent', value: 20, perUserLimit: 1, createdBy: admin?._id },
+    { code: 'STAFF100', description: 'Internal staff — free access to every course', type: 'percent', value: 100, perUserLimit: null, emailDomain: 'prologic.com.tn', createdBy: admin?._id },
+    ...(ml ? [{ code: 'ML30', description: '30 TND off Machine Learning', type: 'fixed', value: 30, course: ml._id, maxUses: 50, expiresAt: daysFromNow(30), createdBy: admin?._id }] : [])
+  ]);
+  count('vouchers', ml ? 3 : 2);
+}
+
 async function run({ usersOnly = false } = {}) {
   await wipe();
 
@@ -367,6 +387,7 @@ async function run({ usersOnly = false } = {}) {
     await seedEnrollmentsAndActivity();
     await seedNotifications();
     await seedCVs();
+    await seedShop();
   }
 }
 
@@ -381,6 +402,9 @@ function printAccounts() {
   log(COLORS.dim, '  user1@test.com        User1234     → completed course + certificate');
   log(COLORS.dim, '  user3@test.com        User1234     → overdue deadline (manager alert)');
   log(COLORS.dim, '  user7@test.com        User1234     → teamless learner');
+  log(COLORS.dim, '');
+  log(COLORS.dim, 'Checkout: vouchers WELCOME20 (20%), ML30 (30 TND off ML), STAFF100 (free, @prologic.com.tn only)');
+  log(COLORS.dim, '          test card 4242 4242 4242 4242 (any future date, any CVC)');
 }
 
 module.exports = { run, printAccounts };

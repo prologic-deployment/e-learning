@@ -39,8 +39,7 @@
               {{ course.trainer?.firstname }} {{ course.trainer?.lastname }}
             </a>
             <div class="price">
-              <span class="new-price" *ngIf="course.price > 0">{{ course.price }} TND</span>
-              <span class="new-price" *ngIf="course.price === 0" style="color: green;">Free</span>
+              <app-price [course]="course" size="sm"></app-price>
             </div>
           </div>
           <div class="popover-quickview">

@@ -1,0 +1,184 @@
+<div class="av">
+  <div class="av__head">
+    <div class="seg" role="tablist">
+      <button type="button" role="tab" [class.on]="section === 'vouchers'" (click)="section = 'vouchers'">
+        <i class="bx bx-purchase-tag-alt"></i> Vouchers <span class="count">{{ vouchers.length }}</span>
+      </button>
+      <button type="button" role="tab" [class.on]="section === 'promotions'" (click)="section = 'promotions'">
+        <i class="bx bx-trending-down"></i> Promotions <span class="count">{{ activePromotions }}</span>
+      </button>
+    </div>
+    <div class="av__actions" *ngIf="section === 'vouchers'">
+      <button type="button" class="btn-line" (click)="openForm('staff')" title="100% off every course, restricted to company e-mail addresses">
+        <i class="bx bx-buildings"></i> Internal staff code
+      </button>
+      <button type="button" class="btn-ink" (click)="openForm()"><i class="bx bx-plus"></i> New voucher</button>
+    </div>
+  </div>
+
+  <p class="notice" *ngIf="notice"><i class="bx bx-check-circle"></i> {{ notice }}</p>
+
+  <!-- ===================== VOUCHERS ===================== -->
+  <ng-container *ngIf="section === 'vouchers'">
+
+    <!-- create form -->
+    <form *ngIf="showForm" class="vform" (ngSubmit)="save()">
+      <div class="vform__title">
+        <h3>New voucher</h3>
+        <button type="button" class="icon-btn" (click)="showForm = false" aria-label="Close"><i class="bx bx-x"></i></button>
+      </div>
+
+      <div class="grid">
+        <label class="f">
+          <span>Code</span>
+          <input name="code" [(ngModel)]="form.code" placeholder="Leave empty to generate" maxlength="32" class="mono">
+          <small>Letters, digits, - or _. Not case-sensitive for learners.</small>
+        </label>
+        <label class="f">
+          <span>Description <em>(shown at checkout)</em></span>
+          <input name="description" [(ngModel)]="form.description" maxlength="200" placeholder="e.g. Spring promotion">
+        </label>
+
+        <label class="f">
+          <span>Applies to</span>
+          <select name="course" [(ngModel)]="form.course">
+            <option value="">Every paid course</option>
+            <option *ngFor="let c of courses" [value]="c._id">{{ c.title }} — {{ fmt(c.price) }}</option>
+          </select>
+        </label>
+        <div class="f">
+          <span>Discount</span>
+          <div class="pair">
+            <select name="type" [(ngModel)]="form.type" aria-label="Discount type">
+              <option value="percent">Percentage</option>
+              <option value="fixed">Fixed amount (TND)</option>
+            </select>
+            <input name="value" type="number" min="1" [max]="form.type === 'percent' ? 100 : null" [(ngModel)]="form.value" aria-label="Discount value">
+          </div>
+          <small *ngIf="form.type === 'percent' && form.value === 100" class="ok">100% → the course is free (no card asked).</small>
+          <small *ngIf="form.type === 'fixed'">Taken off each eligible course in the order.</small>
+        </div>
+
+        <label class="f">
+          <span>Total uses <em>(empty = unlimited)</em></span>
+          <input name="maxUses" type="number" min="1" [(ngModel)]="form.maxUses" placeholder="Unlimited">
+        </label>
+        <label class="f">
+          <span>Uses per person <em>(empty = unlimited)</em></span>
+          <input name="perUserLimit" type="number" min="1" [(ngModel)]="form.perUserLimit" placeholder="Unlimited">
+        </label>
+
+        <label class="f">
+          <span>Restricted to e-mail domain <em>(internal users)</em></span>
+          <div class="prefix"><b>&#64;</b><input name="emailDomain" [(ngModel)]="form.emailDomain" placeholder="prologic.com.tn"></div>
+          <small>Only accounts with this e-mail domain can use the code.</small>
+        </label>
+        <div class="f">
+          <span>Valid</span>
+          <div class="pair">
+            <input name="startsAt" type="date" [(ngModel)]="form.startsAt" aria-label="Starts on">
+            <input name="expiresAt" type="date" [(ngModel)]="form.expiresAt" aria-label="Expires on">
+          </div>
+          <small>From – until (both optional).</small>
+        </div>
+      </div>
+
+      <p class="err" *ngIf="formError"><i class="bx bx-error-circle"></i> {{ formError }}</p>
+      <div class="vform__foot">
+        <button type="button" class="btn-line" (click)="showForm = false">Cancel</button>
+        <button type="submit" class="btn-ink" [disabled]="saving">{{ saving ? 'Creating…' : 'Create voucher' }}</button>
+      </div>
+    </form>
+
+    <p *ngIf="loading" class="muted"><i class="bx bx-loader-alt bx-spin"></i> Loading vouchers…</p>
+    <div *ngIf="!loading && !vouchers.length && !showForm" class="empty">
+      <i class="bx bx-purchase-tag-alt"></i>
+      <p><strong>No vouchers yet.</strong> Create a code for a promotion, or an internal code so staff get courses for free.</p>
+    </div>
+
+    <div class="table-wrap" *ngIf="vouchers.length">
+      <table class="vt">
+        <thead>
+          <tr><th>Code</th><th>Applies to</th><th>Discount</th><th>Used</th><th>Rules</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let v of vouchers">
+            <tr [class.dim]="v.status !== 'active'">
+              <td>
+                <button type="button" class="code" (click)="copy(v.code)" [title]="'Copy ' + v.code">
+                  {{ v.code }} <i class="bx" [ngClass]="copied === v.code ? 'bx-check' : 'bx-copy'"></i>
+                </button>
+                <div class="muted small" *ngIf="v.description">{{ v.description }}</div>
+              </td>
+              <td>{{ v.course ? v.course.title : 'Every paid course' }}</td>
+              <td class="nowrap"><strong>{{ discountLabel(v) }}</strong></td>
+              <td>
+                <button type="button" class="link" (click)="expanded = expanded === v._id ? null : v._id" [disabled]="!v.usedCount">
+                  {{ v.usedCount }}<ng-container *ngIf="v.maxUses"> / {{ v.maxUses }}</ng-container>
+                </button>
+              </td>
+              <td class="rules">
+                <span *ngIf="v.emailDomain"><i class="bx bx-buildings"></i> &#64;{{ v.emailDomain }}</span>
+                <span><i class="bx bx-user"></i> {{ v.perUserLimit ? v.perUserLimit + '× per person' : 'unlimited per person' }}</span>
+                <span *ngIf="v.startsAt || v.expiresAt"><i class="bx bx-calendar"></i>
+                  {{ v.startsAt ? (v.startsAt | date:'d MMM y') : '…' }} → {{ v.expiresAt ? (v.expiresAt | date:'d MMM y') : '…' }}</span>
+              </td>
+              <td><span class="chip" [ngClass]="'chip--' + v.status.replace(' ', '-')">{{ v.status }}</span></td>
+              <td class="acts">
+                <button type="button" class="icon-btn" (click)="toggle(v)" [title]="v.active ? 'Deactivate' : 'Activate'">
+                  <i class="bx" [ngClass]="v.active ? 'bx-pause-circle' : 'bx-play-circle'"></i>
+                </button>
+                <button type="button" class="icon-btn danger" (click)="remove(v)" title="Delete"><i class="bx bx-trash"></i></button>
+              </td>
+            </tr>
+            <tr *ngIf="expanded === v._id" class="redemptions">
+              <td colspan="7">
+                <strong>Last uses</strong>
+                <ul>
+                  <li *ngFor="let r of v.redemptions">
+                    {{ r.user ? (r.user.firstname + ' ' + r.user.lastname) : 'Deleted user' }}
+                    <span class="muted">{{ r.user?.email }}</span> ·
+                    <code>{{ r.orderReference }}</code> · -{{ fmt(r.discount || 0) }} ·
+                    <span class="muted">{{ r.at | date:'d MMM y, HH:mm' }}</span>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+
+  <!-- ===================== PROMOTIONS ===================== -->
+  <ng-container *ngIf="section === 'promotions'">
+    <p class="muted intro">Set a new price on a course: learners see the old price struck through with the discount, everywhere on the site and at checkout. Leave the end date empty for a promotion with no end.</p>
+    <input class="search" [(ngModel)]="promoSearch" placeholder="Search a course…" aria-label="Search a course">
+
+    <div class="table-wrap">
+      <table class="vt promo">
+        <thead><tr><th>Course</th><th>Price</th><th>New price</th><th>Ends on</th><th>Shown as</th><th></th></tr></thead>
+        <tbody>
+          <tr *ngFor="let c of promoCourses">
+            <td><strong>{{ c.title }}</strong><div class="muted small">{{ c.category }}</div></td>
+            <td>{{ fmt(c.price) }}</td>
+            <td>
+              <div class="prefix narrow">
+                <input type="number" min="0" [max]="c.price" step="0.5" [(ngModel)]="promoEdit[c._id].salePrice" placeholder="—" [attr.aria-label]="'New price for ' + c.title"><b>TND</b>
+              </div>
+              <small class="ok" *ngIf="previewPct(c) !== null">-{{ previewPct(c) }}%</small>
+              <small class="err" *ngIf="promoEdit[c._id].error">{{ promoEdit[c._id].error }}</small>
+            </td>
+            <td><input type="date" [(ngModel)]="promoEdit[c._id].saleEndsAt" [attr.aria-label]="'End date for ' + c.title"></td>
+            <td><app-price [course]="c" size="sm" [showEnds]="true"></app-price></td>
+            <td class="acts">
+              <button type="button" class="btn-ink sm" (click)="savePromo(c)" [disabled]="promoEdit[c._id].saving">Save</button>
+              <button type="button" class="icon-btn danger" *ngIf="pv(c).onSale" (click)="savePromo(c, true)" title="Remove promotion"><i class="bx bx-x-circle"></i></button>
+            </td>
+          </tr>
+          <tr *ngIf="!promoCourses.length"><td colspan="6" class="muted">No paid course found.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+</div>

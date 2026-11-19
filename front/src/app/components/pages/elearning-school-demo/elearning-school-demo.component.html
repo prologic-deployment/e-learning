@@ -45,8 +45,7 @@
               {{ course.trainer?.firstname }} {{ course.trainer?.lastname }}
             </a>
             <div class="price mt-2">
-              <span class="new-price text-success" *ngIf="course.price === 0">Free</span>
-              <span class="new-price" *ngIf="course.price > 0">{{ course.price }} TND</span>
+              <app-price [course]="course" size="sm"></app-price>
             </div>
           </div>
         </div>

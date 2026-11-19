@@ -1,0 +1,116 @@
+/* Checkout — shared shop look (app/shared/_shop.scss) + payment form */
+@import "../../../shared/shop";
+
+.olist--flat { border: 0; margin: 0 -22px -22px; border-top: 1px solid var(--line, #E3E5EA); }
+.oitem .tag-save { margin-top: 2px; }
+
+/* ---- card form ---- */
+.card-form { display: flex; flex-direction: column; gap: 14px; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field label, .voucher label { font-size: 13px; font-weight: 700; color: var(--ink, #0B0D12); }
+.field input, .voucher input {
+  height: 46px;
+  width: 100%;
+  padding: 0 12px;
+  border: 1.5px solid var(--line-strong, #C9CDD5);
+  background: #fff;
+  font-size: 15px;
+  color: var(--ink, #0B0D12);
+}
+.field input.invalid, .voucher input.invalid, .input-icon.invalid input { border-color: #B91C1C !important; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.input-icon { position: relative; }
+.input-icon input { padding-right: 104px; letter-spacing: .5px; font-variant-numeric: tabular-nums; }
+.brand {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: .5px;
+  &:not(:empty) { padding: 3px 7px; color: #fff; }
+}
+.brand--visa { background: #1A1F71; }
+.brand--mastercard { background: #111; }
+.brand--amex { background: #2E77BC; }
+.err { color: #B91C1C; font-size: 12px; font-weight: 600; }
+
+.testcards {
+  padding-top: 4px;
+  ul { list-style: none; margin: 10px 0 0; padding: 0; border: 1px dashed var(--line-strong, #C9CDD5); }
+  li + li { border-top: 1px solid var(--line, #E3E5EA); }
+  li.small { padding: 8px 12px; font-size: 12px; }
+  li button {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 4px 12px;
+    padding: 9px 12px;
+    border: 0;
+    background: #fff;
+    text-align: left;
+    cursor: pointer;
+    font-size: 13px;
+    &:hover { background: var(--brand-tint, #EEF2FB); }
+  }
+  code { color: var(--ink, #0B0D12); background: none; padding: 0; font-size: 13px; }
+  span { color: #B91C1C; font-weight: 600; }
+  span.ok { color: #15803D; }
+}
+
+.covered {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px;
+  background: #F0FDF4;
+  border-left: 3px solid #15803D;
+  > i { font-size: 28px; color: #15803D; }
+  strong { display: block; color: #14532D; }
+  p { margin: 2px 0 0; font-size: 14px; }
+}
+
+/* ---- voucher ---- */
+.voucher { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--line, #E3E5EA); display: flex; flex-direction: column; gap: 6px; }
+.voucher__row { display: flex; gap: 8px; input { flex: 1; min-width: 0; text-transform: uppercase; } input::placeholder { text-transform: none; } }
+.voucher__applied {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--brand-tint, #EEF2FB);
+  border: 1px dashed var(--brand, #1E3A8A);
+  > i { font-size: 22px; color: var(--brand, #1E3A8A); }
+  div { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+  strong { font-family: ui-monospace, Consolas, monospace; letter-spacing: .5px; }
+  span { font-size: 12px; }
+  .link-btn i { font-size: 20px; }
+}
+.you-save { margin: -6px 0 14px; font-size: 13px; font-weight: 700; color: #15803D; }
+
+/* ---- confirmation ---- */
+.confirm { max-width: 820px; }
+.confirm__head {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding: 20px 22px;
+  background: #F0FDF4;
+  border-top: 4px solid #15803D;
+  > i { font-size: 40px; color: #15803D; line-height: 1; }
+  h2 { font-size: 22px; font-weight: 800; margin: 0 0 4px; color: #14532D; }
+  p { margin: 0; }
+}
+.confirm .oitem { align-items: center; }
+.confirm .btn-ink { min-height: 42px; padding: 0 16px; font-size: 14px; }
+.confirm__actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.confirm__actions a { text-decoration: none; }
+
+@media (max-width: 575px) {
+  .row2 { grid-template-columns: 1fr; }
+  .confirm .oitem { flex-wrap: wrap; }
+  .confirm .btn-ink { width: 100%; }
+}
