@@ -128,3 +128,50 @@ exports.revokeCertificate = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+// ✅ PUBLIC — certificate details by serial (the QR code on the PDF opens the
+// /verify/<serial> page, which calls this). Serials are random (48 bits), and
+// the response holds only what is printed on the certificate itself.
+exports.getPublicCertificate = async (req, res) => {
+  try {
+    const { signature } = require("../services/certificate.service");
+    const serial = String(req.params.serial || "").trim().toUpperCase();
+    if (!/^CERT-\d{4}-[0-9A-F]{6,24}$/.test(serial)) {
+      return res.status(404).json({ found: false, message: "Certificate not found" });
+    }
+
+    const certificate = await Certificate.findOne({ serial })
+      .populate("user", "firstname lastname")
+      .populate({ path: "course", select: "title category subCategory finalExam.questions trainer", populate: { path: "trainer", select: "firstname lastname" } });
+
+    if (!certificate || !certificate.user || !certificate.course) {
+      return res.status(404).json({ found: false, message: "Certificate not found" });
+    }
+
+    const holder = `${certificate.user.firstname} ${certificate.user.lastname}`;
+    const authentic = !!certificate.verificationCode &&
+      signature(certificate.serial, holder, certificate.course.title) === certificate.verificationCode;
+    const status = !authentic ? "invalid" : certificate.isValid ? "valid" : "revoked";
+    const trainer = certificate.course.trainer;
+
+    res.set("Cache-Control", "no-store");
+    res.status(200).json({
+      found: true,
+      status,                       // valid | revoked | invalid
+      isValid: status === "valid",
+      certificate: {
+        serial: certificate.serial,
+        verificationCode: certificate.verificationCode,
+        holder,
+        course: certificate.course.title,
+        category: certificate.course.category || null,
+        subCategory: certificate.course.subCategory || null,
+        trainer: trainer ? `${trainer.firstname} ${trainer.lastname}` : null,
+        score: certificate.score ?? null,
+        issuedAt: certificate.date,
+        issuer: "Prologic Academy"
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};

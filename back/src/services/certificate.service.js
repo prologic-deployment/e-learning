@@ -67,6 +67,13 @@ function signature(serial, holder, courseTitle) {
     .digest("hex").substring(0, 16).toUpperCase();
 }
 
+const PDF_VERSION = 2;
+
+/** Public page opened by the QR code */
+function verifyPageUrl(serial) {
+  return `${config.frontendUrl}/verify/${encodeURIComponent(serial)}`;
+}
+
 function newSerial(date = new Date()) {
   return `CERT-${date.getFullYear()}-${crypto.randomBytes(6).toString("hex").toUpperCase()}`;
 }
@@ -95,10 +102,11 @@ async function renderPdf(certificate, { score = null } = {}) {
     date: certificate.date || new Date(),
     serial: certificate.serial,
     verificationCode: certificate.verificationCode,
-    verifyUrl: `${config.backendUrl}/api/certificates/verify/${certificate._id}`
+    verifyUrl: verifyPageUrl(certificate.serial)
   });
 
   certificate.certificateUrl = `/uploads/certificates/${fileName}`;
+  certificate.pdfVersion = PDF_VERSION;
   if (score != null) certificate.score = score;
   await certificate.save();
   return certificate;
@@ -187,4 +195,6 @@ async function notifyIssued(userId, course, score) {
   }
 }
 
-module.exports = { isEligible, completeIfEligible, issueCertificate, renderPdf, hasFinalExam, signature };
+module.exports = {
+  PDF_VERSION,
+  verifyPageUrl, isEligible, completeIfEligible, issueCertificate, renderPdf, hasFinalExam, signature };

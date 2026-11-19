@@ -10,6 +10,7 @@
 const PDFDocument = require("pdfkit");
 const path = require("path");
 const fs = require("fs");
+const QRCode = require("qrcode");
 
 const INK = "#0B0D12";
 const BLUE = "#1E3A8A";
@@ -59,10 +60,13 @@ function drawSeal(doc, cx, cy, r) {
  * @param {Date}   d.date
  * @param {string} d.serial
  * @param {string} d.verificationCode
- * @param {string} [d.verifyUrl]
+ * @param {string} [d.verifyUrl]       public page the QR code opens
  * @returns {Promise<{fileName: string, filePath: string}>}
  */
-function generateCertificatePDF(d) {
+async function generateCertificatePDF(d) {
+  const qr = d.verifyUrl
+    ? await QRCode.toBuffer(d.verifyUrl, { errorCorrectionLevel: "M", margin: 1, width: 360, color: { dark: INK, light: "#FFFFFF" } })
+    : null;
   return new Promise((resolve, reject) => {
     fs.mkdirSync(CERT_DIR, { recursive: true });
     const fileName = `certificate_${d.serial}.pdf`;
@@ -106,15 +110,22 @@ function generateCertificatePDF(d) {
 
     // verification block
     const vx = 36, vw = BAND - 64;
-    let vy = 300;
+    let vy = 214;
     const label = (t) => { doc.font("Helvetica-Bold").fontSize(7).fillColor("#9DB4EE").text(t, vx, vy, { width: vw, characterSpacing: 1.6 }); vy += 12; };
     const value = (t, size = 10) => { doc.font("Helvetica").fontSize(size).fillColor("#FFFFFF").text(t, vx, vy, { width: vw }); vy = doc.y + 12; };
     label("CERTIFICATE NO.");   value(d.serial);
     label("VERIFICATION CODE"); value(d.verificationCode);
     label("ISSUED ON");         value(dateText);
-    if (d.verifyUrl) {
-      label("VERIFY ONLINE");
-      doc.font("Helvetica").fontSize(7.5).fillColor("#C7D2EE").text(d.verifyUrl, vx, vy, { width: vw, link: d.verifyUrl });
+    if (qr) {
+      // QR code → public verification page with the certificate details
+      const qs = 96, qy = Math.max(vy + 4, 392);
+      doc.rect(vx, qy, qs + 12, qs + 12).fill("#FFFFFF");
+      doc.image(qr, vx + 6, qy + 6, { width: qs, height: qs, link: d.verifyUrl });
+      const cy = qy + qs + 22;
+      doc.font("Helvetica-Bold").fontSize(7).fillColor("#9DB4EE")
+         .text("SCAN TO VERIFY", vx, cy, { width: vw, characterSpacing: 1.6, lineBreak: false });
+      doc.font("Helvetica").fontSize(7.5).fillColor("#C7D2EE")
+         .text("Opens this certificate's status and details.", vx, cy + 12, { width: vw, lineBreak: false });
     }
 
     // ---------- main area ----------
@@ -173,7 +184,7 @@ function generateCertificatePDF(d) {
 
     // footer note
     doc.font("Helvetica").fontSize(7.5).fillColor("#8A909C")
-       .text("Prologic Academy · prologic.com.tn — This certificate can be verified with its number and code.",
+       .text("Prologic Academy · prologic.com.tn — Scan the QR code or enter the certificate number on the verification page.",
              X, H - 36, { width: MW });
 
     doc.end();

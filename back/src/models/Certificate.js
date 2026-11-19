@@ -22,7 +22,9 @@ const certificateSchema = new mongoose.Schema({
   verificationCode: { type: String, default: null },
   // final exam score (%) printed on the certificate; null when the course has no exam
   score: { type: Number, default: null },
-  isValid: { type: Boolean, default: true }
+  isValid: { type: Boolean, default: true },
+  // PDF layout version — older files are re-rendered on download (v2 adds the QR code)
+  pdfVersion: { type: Number, default: 1 }
 }, { timestamps: true });
 
 // Un seul certificat par user par cours

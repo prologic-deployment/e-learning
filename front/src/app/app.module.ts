@@ -49,6 +49,7 @@ import { TrainerDashboardComponent } from './components/pages/dashboard/trainer-
 import { UserDashboardComponent } from './components/pages/dashboard/user-dashboard/user-dashboard.component';
 import { CvPageComponent } from './components/pages/cv-page/cv-page.component';
 import { CourseViewerComponent } from './components/pages/course-viewer/course-viewer.component';
+import { VerifyCertificateComponent } from './components/pages/verify-certificate/verify-certificate.component';
 import { ResetPasswordComponent } from './components/pages/reset-password/reset-password.component';
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA, APP_INITIALIZER } from '@angular/core';
 import { CategoryService } from './services/category.service';
@@ -99,6 +100,7 @@ import { NotFoundPageComponent } from './components/pages/not-found-page/not-fou
         TrainerDashboardComponent,
         CvPageComponent,
         CourseViewerComponent,
+        VerifyCertificateComponent,
         ResetPasswordComponent,
         UserDashboardComponent,
         ChatbotComponent,

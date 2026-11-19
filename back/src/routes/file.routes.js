@@ -125,9 +125,17 @@ router.get("/certificate/:id", protect, async (req, res) => {
       return res.status(403).json({ success: false, message: "Access denied" });
     }
 
-    const relative = certificate.certificateUrl.replace(/\\/g, "/").replace(/^\/?uploads\//, "");
-    const absolute = safeJoin(relative);
+    let relative = certificate.certificateUrl.replace(/\\/g, "/").replace(/^\/?uploads\//, "");
+    let absolute = safeJoin(relative);
     if (!absolute) return res.status(400).json({ success: false, message: "Invalid file path" });
+
+    // Older layouts (no QR code) or a missing file → render the current design
+    const { renderPdf, PDF_VERSION } = require("../services/certificate.service");
+    if ((certificate.pdfVersion || 1) < PDF_VERSION || !fs.existsSync(absolute)) {
+      await renderPdf(certificate);
+      relative = certificate.certificateUrl.replace(/^\/?uploads\//, "");
+      absolute = safeJoin(relative);
+    }
 
     streamFile(req, res, absolute, "certificate.pdf");
   } catch (error) {

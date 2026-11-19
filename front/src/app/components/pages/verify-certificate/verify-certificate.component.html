@@ -1,0 +1,66 @@
+<section class="v-hero">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a routerLink="/">Home</a><i class="bx bx-chevron-right"></i><span>Verify a certificate</span>
+    </nav>
+    <h1>Verify a certificate</h1>
+    <p class="muted">Scan the QR code on a Prologic Academy certificate, or enter its certificate number.</p>
+
+    <form class="v-form" (ngSubmit)="submit()">
+      <label for="serial" class="sr-only">Certificate number</label>
+      <input id="serial" name="serial" class="form-control" [(ngModel)]="serialInput"
+             placeholder="CERT-2026-XXXXXXXXXXXX" autocomplete="off" spellcheck="false">
+      <button type="submit" class="btn-ink" [disabled]="!serialInput.trim() || loading">
+        <i class="bx bx-search"></i> Verify
+      </button>
+    </form>
+  </div>
+</section>
+
+<section class="v-body">
+  <div class="container">
+    <p *ngIf="loading" class="muted"><i class="bx bx-loader-alt bx-spin"></i> Checking the certificate…</p>
+
+    <div *ngIf="searched && notFound" class="v-card v-card--bad">
+      <div class="v-status">
+        <i class="bx bx-error-circle"></i>
+        <div>
+          <strong>No certificate found</strong>
+          <p>No Prologic Academy certificate has the number <code>{{ serialInput | uppercase }}</code>. Check the number and try again.</p>
+        </div>
+      </div>
+    </div>
+
+    <p *ngIf="error" class="msg err"><i class="bx bx-error-circle"></i> {{ error }}</p>
+
+    <div *ngIf="result?.found" class="v-card" [ngClass]="'v-card--' + result.status">
+      <div class="v-status">
+        <i class="bx" [ngClass]="statusIcon"></i>
+        <div><strong>{{ statusLabel }}</strong><p>{{ statusText }}</p></div>
+      </div>
+
+      <div class="v-main">
+        <span class="v-kicker">Certificate of completion</span>
+        <h2>{{ result.certificate.holder }}</h2>
+        <p class="muted">has successfully completed the course</p>
+        <h3>{{ result.certificate.course }}</h3>
+      </div>
+
+      <dl class="v-grid">
+        <div><dt>Certificate no.</dt><dd><code>{{ result.certificate.serial }}</code></dd></div>
+        <div><dt>Verification code</dt><dd><code>{{ result.certificate.verificationCode }}</code></dd></div>
+        <div><dt>Issued on</dt><dd>{{ result.certificate.issuedAt | date:'d MMMM y' }}</dd></div>
+        <div *ngIf="result.certificate.category">
+          <dt>Category</dt>
+          <dd>{{ result.certificate.category }}<span *ngIf="result.certificate.subCategory"> · {{ result.certificate.subCategory }}</span></dd>
+        </div>
+        <div *ngIf="result.certificate.trainer"><dt>Trainer</dt><dd>{{ result.certificate.trainer }}</dd></div>
+        <div>
+          <dt>Final exam</dt>
+          <dd>{{ result.certificate.score != null ? result.certificate.score + '% — passed' : 'Not required' }}</dd>
+        </div>
+        <div><dt>Issued by</dt><dd>{{ result.certificate.issuer }}</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>

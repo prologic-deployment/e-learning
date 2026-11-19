@@ -23,6 +23,7 @@ import { RoleGuard } from './guards/role.guard';
 import { StaffRedirectGuard } from './guards/staff-redirect.guard';
 import { CvPageComponent } from './components/pages/cv-page/cv-page.component';
 import { CourseViewerComponent } from './components/pages/course-viewer/course-viewer.component';
+import { VerifyCertificateComponent } from './components/pages/verify-certificate/verify-certificate.component';
 import { ResetPasswordComponent } from './components/pages/reset-password/reset-password.component';
 import { AdminDashboardComponent } from './components/pages/dashboard/admin-dashboard/admin-dashboard.component';
 import { ManagerDashboardComponent } from './components/pages/dashboard/manager-dashboard/manager-dashboard.component';
@@ -45,6 +46,10 @@ const routes: Routes = [
   { path: 'courses-details/:id', component: PaidCoursesSinglePageComponent, canActivate: [StaffRedirectGuard] },
   { path: 'courses-details', component: FreeCoursesSinglePageComponent, canActivate: [StaffRedirectGuard] },
   { path: 'courses-details-2', component: PaidCoursesSinglePageComponent, canActivate: [StaffRedirectGuard] },
+
+  // ✅ Public certificate verification (QR code target) — open to everyone
+  { path: 'verify', component: VerifyCertificateComponent },
+  { path: 'verify/:serial', component: VerifyCertificateComponent },
 
   // ✅ Autres pages — staff bloqué
   { path: 'categories', component: CategoriesPageOneComponent, canActivate: [StaffRedirectGuard] },
